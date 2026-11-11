@@ -1,0 +1,204 @@
+/* The Live Threat Board (Track T), on the token set (dd/system.md): type from the one scale, space from the 8 px grid,
+   Midnight by role name. Gold is protection only: here, the four zeros. Red is the threat's marker dot, and a wall's
+   number if it ever stops being zero. Bars are ink at two strengths: one kind of mark, so no colour has to mean a type.
+   Loaded only with the board's chunk; the counter's first lines are threat-first.css, which lands with the page. */
+
+.tb-cols { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-2); align-items: stretch; min-width: 0; }
+/* AG Studio's frame is the card there: no second frame inside it. */
+.st-card .tb-time, .st-card .tb-rules, .st-card .tb-tries { padding: 0; }
+
+/* The counter: the line on the left, the source and the walls on the right. */
+.tb-side { grid-column: 2; grid-row: 1 / span 5; display: grid; gap: var(--s-2); }
+.tb-ago { font-weight: var(--w-body); letter-spacing: 0; text-transform: none; color: var(--lx-ink-3); }
+.tb-newest, .tb-drill { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s-2); margin: var(--s-1) 0 0; font-size: var(--t-small); line-height: 1.5; color: var(--lx-ink); }
+.tb-newest button, .tb-drill button { min-height: 44px; padding: 0; border: 0; background: none; font: inherit; color: var(--lx-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.tb-tries, .tb-rules { scroll-margin-top: var(--s-3); }
+.tb-tries h3, .tb-rules h3 { scroll-margin-top: var(--s-3); outline-offset: 4px; }
+
+/* Which tries: two segments, never a blend of the two. */
+.tb-switch { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-1); }
+.tb-switch button { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-height: 44px; padding: var(--s-1) var(--s-2); border: 1px solid var(--lx-edge); border-radius: var(--r-1); background: transparent; color: var(--lx-ink-2); font: inherit; font-size: var(--t-small); text-align: left; cursor: pointer; transition: border-color var(--d-1) var(--ease), color var(--d-1) var(--ease); }
+.tb-switch button:hover { border-color: var(--lx-edge-2); color: var(--lx-ink); }
+.tb-switch button[aria-pressed="true"] { border-color: var(--lx-ink); color: var(--lx-ink); }
+.tb-switch b { font-family: var(--display); font-size: var(--t-h3); line-height: 1.2; font-weight: var(--w-head); font-variant-numeric: tabular-nums; }
+.tb-seeded { margin: 0; font-size: var(--t-small); line-height: 1.5; color: var(--lx-ink-2); text-wrap: pretty; }
+
+/* The four ways a try could beat Goose, each a count from the rows. */
+.tb-walls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-1); margin: 0; }
+.tb-walls > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.tb-walls dd { margin: 0; font-family: var(--display); font-size: var(--t-num); line-height: 1.05; font-weight: var(--w-display); letter-spacing: -0.01em; color: var(--lx-gold); font-variant-numeric: tabular-nums; }
+.tb-walls dd.alarm { color: var(--lx-mark); }
+.tb-walls dt { font-size: var(--t-micro); line-height: 1.4; color: var(--lx-ink-2); }
+.tb-noorder { margin: 0; font-size: var(--t-small); line-height: 1.5; color: var(--lx-ink-2); text-wrap: pretty; }
+
+/* Ask for a view. */
+.tb-ask { margin-top: var(--s-3); padding-top: var(--s-3); border-top: 1px solid var(--lx-edge); }
+.tb-ask-row { display: flex; gap: var(--s-1); max-width: 88ch; }
+.tb-ask-row input { flex: 1 1 auto; min-width: 0; min-height: 48px; padding: 0 var(--s-2); border: 1px solid var(--lx-edge-2); border-radius: var(--r-pill); background: var(--lx-raised); color: var(--lx-ink); font: inherit; font-size: var(--t-body); transition: border-color var(--d-1) var(--ease); }
+.tb-ask-row input::placeholder { color: var(--lx-ink-3); }
+.tb-ask-row input:hover { border-color: var(--lx-ink-3); }
+.tb-ask-row button { flex: none; min-height: 48px; padding: 0 var(--s-4); border: 0; border-radius: var(--r-pill); background: var(--lx-ink); color: var(--lx-page); font: inherit; font-size: var(--t-body); font-weight: var(--w-strong); cursor: pointer; }
+.tb-ask-row button:disabled { opacity: .45; cursor: default; }
+.tb-ask-view { margin: var(--s-1) 0 0; font-size: var(--t-small); line-height: 1.5; color: var(--lx-ink-3); text-wrap: pretty; }
+.tb-chips, .tb-on { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s-1); margin: var(--s-2) 0 0; padding: 0; }
+.tb-chips button, .tb-on button { min-height: 44px; padding: 0 var(--s-2); border: 1px solid var(--lx-edge); border-radius: var(--r-1); background: transparent; color: var(--lx-ink-2); font: inherit; font-size: var(--t-small); white-space: nowrap; cursor: pointer; transition: color var(--d-1) var(--ease), border-color var(--d-1) var(--ease); }
+.tb-chips button:hover, .tb-on button:hover { color: var(--lx-ink); border-color: var(--lx-edge-2); }
+.tb-on button { color: var(--lx-ink); border-color: var(--lx-edge-2); }
+.tb-on .tb-clear { border-color: transparent; color: var(--lx-ink-2); text-decoration: underline; text-underline-offset: 3px; }
+.tb-view { margin-top: var(--s-2); }
+.tb-view:has(> .tb-view-line:empty:only-child) { margin-top: 0; }
+.tb-view-line { margin: 0; font-size: var(--t-body); line-height: 1.5; color: var(--lx-ink); font-variant-numeric: tabular-nums; text-wrap: pretty; }
+.tb-said { font-size: var(--t-small); color: var(--lx-ink-3); }
+.tb-on { margin-top: var(--s-1); }
+
+/* A card's head. */
+.tb-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s-1) var(--s-2); }
+.tb-head h3 { margin: 0; font-family: var(--display); font-size: var(--t-h3); line-height: 1.2; font-weight: var(--w-head); letter-spacing: -0.008em; text-wrap: balance; }
+.tb-sub { margin: var(--s-1) 0 0; font-size: var(--t-small); line-height: 1.5; color: var(--lx-ink-3); font-variant-numeric: tabular-nums; }
+.tb-mark { font-size: var(--t-micro); line-height: 1.4; color: var(--lx-ink-2); border: 1px solid var(--lx-edge-2); border-radius: var(--r-1); padding: 0 var(--s-1); white-space: nowrap; }
+.tb-none { margin: var(--s-2) 0 0; color: var(--lx-ink-3); font-size: var(--t-small); }
+/* Nothing to draw yet: one line and the two ways on, in a quiet frame, so an empty card reads as finished rather than as a broken chart. */
+.tb-empty { margin: var(--s-2) 0 0; padding: var(--s-3) var(--s-2); border: 1px dashed var(--lx-edge-2); border-radius: var(--r-1); }
+.tb-empty-line { margin: 0; color: var(--lx-ink); font-size: var(--t-body); line-height: 1.4; text-wrap: pretty; }
+.tb-empty-go { margin: var(--s-1) 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s-2); font-size: var(--t-small); }
+.tb-empty-go a, .tb-empty-go button { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: none; font: inherit; color: var(--lx-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.tb-empty-go button { color: var(--lx-ink-2); }
+
+/* What the Watcher set aside: a number and what it is a number of. Ink, not gold: gold is the zeros, and "None" beside it is one (Joshua, Nov 4, 3d: at least as visible as the catch). The numbers size the tiles (the width trick on dt keeps a long label from widening one), so two fit a row at 390 and a third wraps. */
+.tb-catch-box { margin-top: var(--s-2); padding-bottom: var(--s-2); border-bottom: 1px solid var(--lx-edge); }
+.tb-catch { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0; }
+.tb-catch > div { flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.tb-catch dd { margin: 0; font-family: var(--display); font-size: var(--t-num); line-height: 1.05; font-weight: var(--w-display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tb-catch dd.tb-catch-none { white-space: normal; font-family: inherit; font-size: var(--t-small); line-height: 1.5; letter-spacing: 0; color: var(--lx-ink-2); }
+.tb-catch dd.tb-catch-zero { color: var(--lx-gold); }
+.tb-catch dd.alarm { color: var(--lx-mark); }
+.tb-catch dt { width: 0; min-width: 100%; font-size: var(--t-micro); line-height: 1.4; color: var(--lx-ink-2); }
+.tb-catch-noorder { margin: var(--s-1) 0 0; font-size: var(--t-body); line-height: 1.4; color: var(--lx-ink); text-wrap: pretty; }
+.tb-catch-rest { margin: var(--s-1) 0 0; font-size: var(--t-small); line-height: 1.5; color: var(--lx-ink-2); text-wrap: pretty; }
+
+/* Tries over time: a label and its bars, one row per kind. */
+.tb-key { display: flex; flex-wrap: wrap; gap: 0 var(--s-2); margin: var(--s-1) 0 0; padding: 0; list-style: none; font-size: var(--t-micro); line-height: 1.6; color: var(--lx-ink-2); }
+.tb-key li { display: inline-flex; align-items: center; gap: 6px; }
+.tb-key i { width: 8px; height: 8px; border-radius: 2px; }
+.tb-key-caught { background: var(--lx-ink); }
+.tb-key-rest { background: var(--lx-ink-3); }
+.tb-key-paid { background: var(--lx-mark); }
+.tb-part { margin: var(--s-2) 0 0; font-size: var(--t-micro); line-height: 1.4; color: var(--lx-ink-3); }
+.tb-part + .tb-types { margin-top: 4px; }
+.tb-types { list-style: none; margin: var(--s-2) 0 0; padding: 0; display: grid; gap: var(--s-1); }
+.tb-types li { display: grid; grid-template-columns: 176px minmax(0, 1fr); align-items: end; gap: var(--s-2); }
+.tb-types button { display: flex; align-items: center; justify-content: space-between; gap: var(--s-1); width: 100%; min-height: 48px; padding: 0 var(--s-1); border: 1px solid transparent; border-radius: var(--r-1); background: transparent; color: var(--lx-ink-2); font: inherit; font-size: var(--t-small); text-align: left; cursor: pointer; transition: color var(--d-1) var(--ease), border-color var(--d-1) var(--ease); }
+.tb-types button:hover { color: var(--lx-ink); border-color: var(--lx-edge-2); }
+.tb-types button[aria-pressed="true"] { color: var(--lx-ink); border-color: var(--lx-ink); }
+.tb-type-n { font-weight: var(--w-strong); color: var(--lx-ink); font-variant-numeric: tabular-nums; }
+.tb-type-chart { min-width: 0; height: 48px; }
+.tb-axis { display: grid; gap: 0; margin: var(--s-1) 0 0 192px; }
+.tb-axis button { min-height: 44px; min-width: 0; padding: 0; border: 1px solid transparent; border-radius: var(--r-1); background: transparent; color: var(--lx-ink-3); font: inherit; font-size: var(--t-micro); cursor: pointer; transition: color var(--d-1) var(--ease), border-color var(--d-1) var(--ease); }
+.tb-axis button:hover { color: var(--lx-ink); border-color: var(--lx-edge-2); }
+.tb-axis button[aria-pressed="true"] { color: var(--lx-ink); border-color: var(--lx-ink); }
+/* A narrow card: the label over its bars, so the bars have the card's whole width and the days line up under them. */
+.tb-time[data-narrow="1"] .tb-types { gap: var(--s-1); }
+.tb-time[data-narrow="1"] .tb-types li { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.tb-time[data-narrow="1"] .tb-type-chart { height: 40px; }
+.tb-time[data-narrow="1"] .tb-axis { margin-left: 0; }
+
+/* The verdict: a small mark and its word. Red only where the Watcher set the try aside; a wall broken is the alarm. */
+.tb-v { display: inline-flex; align-items: center; gap: var(--s-1); white-space: nowrap; }
+.tb-v i { width: 6px; height: 6px; border-radius: 50%; flex: none; background: var(--lx-ink-3); }
+.tb-v-set-aside i { background: var(--lx-mark); }
+.tb-v-refused i { background: var(--lx-ink-2); }
+.tb-v-held i { background: transparent; box-shadow: inset 0 0 0 1px var(--lx-ink-2); }
+.tb-v-paid { color: var(--lx-mark); font-weight: var(--w-strong); }
+.tb-v-paid i { background: var(--lx-mark); }
+
+/* The grids: the ledger's theme, with the same small-caps header. */
+.tb-grid { margin: var(--s-2) calc(var(--s-1) * -2) 0; min-width: 0; }
+.tb-grid .ag-root-wrapper { border: 0; border-radius: 0; background: transparent; }
+/* The column filters, quiet at rest: words and a hairline; the full box only when a hand or a caret is on one. The same size and weight as the rows they filter. */
+.tb-grid .ag-floating-filter-input input { margin-left: calc(var(--s-1) * -1); width: calc(100% + var(--s-1)); border: 0; border-bottom: 1px solid var(--lx-edge); border-radius: 0; padding: 0 var(--s-1); background: transparent; font-size: var(--t-small); font-weight: var(--w-body); }
+.tb-grid .ag-floating-filter-input .ag-input-field-search-icon { display: none; } /* AG's magnifier sat on the word; the word is the cue. */
+.tb-grid .ag-floating-filter-input input::placeholder { color: var(--lx-ink-3); font-weight: var(--w-body); }
+.tb-grid .ag-floating-filter-input input:hover { border: 1px solid var(--lx-edge-2); border-radius: var(--r-1); }
+.tb-grid .ag-floating-filter-input input:focus { border: 1px solid var(--lx-ink-2); border-radius: var(--r-1); outline: 0; box-shadow: none; }
+/* AG's auto height keeps 150 px for its rows, however few: an empty band under a young record's one row. When a filter empties the table, its "no match" overlay needs that room back. */
+.tb-grid:not(:has(.ag-overlay-no-matching-rows-center, .ag-overlay-no-rows-center)) .ag-grid-scrolling-rows { min-height: 0 !important; }
+.tb-grid .ag-header-cell-text { font-size: var(--t-micro); }
+.tb-grid .ag-cell { display: flex; align-items: center; -webkit-font-smoothing: antialiased; }
+.tb-grid .ag-cell.ag-right-aligned-cell { justify-content: flex-end; }
+.tb-grid .ag-row { cursor: default; }
+.tb-rules .tb-grid .ag-row { cursor: pointer; }
+.tb-grid .tb-row-on { box-shadow: inset 2px 0 0 var(--lx-ink); background: var(--lx-hover-glass); }
+.tb-grid-tries { height: 504px; }
+.tb-grid-tries .ag-group-contracted, .tb-grid-tries .ag-group-expanded { cursor: pointer; } /* header 44 + its filter row 44 + 8 rows of 52 */
+/* The filter box over every try; the grid's row under the header narrows by column. */
+.tb-find { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-1) var(--s-2); margin-top: var(--s-2); }
+.tb-find input { flex: 1 1 16rem; min-width: 0; max-width: 28rem; min-height: 44px; padding: 0 var(--s-2); border: 1px solid var(--lx-edge-2); border-radius: var(--r-2); background: transparent; color: var(--lx-ink); font: inherit; font-size: var(--t-small); }
+.tb-find input::placeholder { color: var(--lx-ink-3); }
+.tb-find p { margin: 0; font-size: var(--t-small); color: var(--lx-ink-2); font-variant-numeric: tabular-nums; }
+/* All tries: the week's shape beside what became of them. */
+.tb-over { margin-top: var(--s-2); }
+.tb-over-charts { display: grid; grid-template-columns: minmax(0, 1fr) 112px; gap: var(--s-2); align-items: center; margin-top: var(--s-1); height: 112px; } /* its room before the chart chunk lands */
+.tb-over-one .tb-over-charts { grid-template-columns: 112px; }
+.tb-grid-wait { margin-top: var(--s-2); }
+.tb-num { font-variant-numeric: tabular-nums; }
+.tb-dim { color: var(--lx-ink-2); }
+.tb-rule-cell { display: flex; flex-direction: column; gap: 2px; min-width: 0; line-height: 1.4; }
+.tb-rule-cell > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: normal; }
+.tb-rule-by { font-size: var(--t-micro); color: var(--lx-ink-3); }
+.tb-rule-by code { font: inherit; }
+/* A row arriving, brand §7's one Enter. AG places its rows with transform, so the cells move, not the row. */
+@keyframes tb-enter { from { opacity: 0; transform: translateY(var(--s-1)); } }
+.tb-grid .tb-fresh .ag-cell, .tb-try-list .tb-fresh { animation: tb-enter var(--d-3) var(--spring) both; }
+
+/* The same rows on a phone. */
+.tb-rule-list, .tb-try-list { list-style: none; margin: var(--s-2) 0 0; padding: 0; }
+.tb-rule-list li + li, .tb-try-list li + li { border-top: 1px solid var(--lx-edge); }
+.tb-rule-list button { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px var(--s-2); width: 100%; min-height: 48px; padding: var(--s-1) 0; border: 0; background: transparent; color: var(--lx-ink); font: inherit; font-size: var(--t-small); text-align: left; cursor: pointer; }
+.tb-rule-list button[aria-pressed="true"] { box-shadow: inset 2px 0 0 var(--lx-ink); padding-left: var(--s-1); }
+.tb-rule-meta { grid-column: 1 / -1; font-size: var(--t-micro); color: var(--lx-ink-3); }
+.tb-try-list li { display: grid; gap: 4px; padding: var(--s-1) 0; font-size: var(--t-small); }
+.tb-try-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px var(--s-1); }
+.tb-try-top b { font-weight: var(--w-strong); }
+.tb-try-rule { color: var(--lx-ink-2); }
+.tb-try-when { font-size: var(--t-micro); color: var(--lx-ink-3); font-variant-numeric: tabular-nums; }
+.tb-more, .tb-dl { min-height: 44px; padding: 0 var(--s-2); border: 1px solid var(--lx-edge-2); border-radius: var(--r-pill); background: transparent; color: var(--lx-ink); font: inherit; font-size: var(--t-small); cursor: pointer; transition: border-color var(--d-1) var(--ease); }
+.tb-more:hover, .tb-dl:hover { border-color: var(--lx-ink-2); }
+.tb-more { margin-top: var(--s-1); }
+.tb-dl { margin-left: auto; align-self: center; }
+.tb-dl + .tb-dl-2 { margin-left: 0; }
+.tb-try-open { all: unset; box-sizing: border-box; display: grid; gap: 4px; width: 100%; min-height: 44px; cursor: pointer; }
+.tb-try-open:focus-visible { outline: 2px solid var(--lx-ink); outline-offset: 2px; border-radius: 4px; }
+.tb-status { margin: var(--s-1) 0 0; font-size: var(--t-small); color: var(--lx-ink-2); font-variant-numeric: tabular-nums; }
+.tb-grid-tries .ag-row { cursor: pointer; }
+.tb-try-sheet-rows { list-style: none; margin: var(--s-1) 0 0; padding: 0; display: grid; gap: var(--s-1); }
+.tb-try-sheet-rows b { font-weight: var(--w-strong); }
+.tb-try-sheet-rows span { color: var(--lx-ink-2); }
+.tb-dl:disabled { opacity: .45; cursor: default; }
+
+.tb-credit { margin: 0; font-size: var(--t-micro); line-height: 1.4; color: var(--lx-ink-3); }
+
+/* Every control takes the ink ring on focus. */
+.tb button:focus-visible, .tb input:focus-visible, .tb a:focus-visible, .st-card .tb-time button:focus-visible, .st-card .tb-rules button:focus-visible, .st-card .tb-tries button:focus-visible, .tb-counter button:focus-visible { outline: 2px solid var(--lx-ink); outline-offset: 2px; }
+
+@media (max-width: 767px) {
+  .tb-cols { grid-template-columns: minmax(0, 1fr); }
+  .tb-side { grid-column: 1; grid-row: auto; margin-top: var(--s-2); gap: var(--s-3); }
+  /* All four zeros in one row and the tabs on one line each, so a phone's tour strip cuts neither (tour-pill, stop 10). */
+  /* One line each, label then count, so a tab is 44 px: on a phone's tour no span may be taller than the room a landing has to
+     move (.lx-hero's top, ledger.css), or the strip's edge can land nowhere clear. Stacked, it was 69 (tour-pill, TOUR_ONLY=real). */
+  .tb-switch { grid-template-columns: auto minmax(0, 1fr); }
+  .tb-switch button { flex-direction: row; align-items: center; justify-content: space-between; gap: var(--s-1); padding: 0 var(--s-1); }
+  .tb-switch b { font-size: var(--t-body); }
+  .tb-chips button { white-space: nowrap; }
+  .tb-ask-row button { padding: 0 var(--s-3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tb-switch button, .tb-chips button, .tb-on button, .tb-types button, .tb-axis button, .tb-more, .tb-dl, .tb-ask-row input { transition: none; }
+  .tb-grid .tb-fresh .ag-cell, .tb-try-list .tb-fresh { animation: none; }
+  .tb-grid .tb-fresh, .tb-try-list .tb-fresh { box-shadow: inset 2px 0 0 var(--lx-ink); background: var(--lx-hover-glass); }
+}
+.tb-sparks-h { margin: var(--s-2) 0 0; font-size: var(--t-small); font-weight: var(--w-strong); }
+.tb-sparks { margin-bottom: var(--s-3); }
+.tb-spark { color: var(--lx-ink-2); display: block; }
+.tb-spark polygon { fill: currentColor; opacity: .16; }
+.tb-spark polyline { fill: none; stroke: currentColor; stroke-width: 1.5; }

@@ -1,0 +1,9 @@
+/* The nav's menu button: quiet text, like the nav's other links, so it sits in the Desk's header and the back room's
+   alike (it inherits each header's ink). The panel's own styles load with the panel (menu.css). */
+.gm-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; border: 0; border-radius: 8px; background: none; color: inherit; font: inherit; font-size: var(--t-small, 15px); white-space: nowrap; cursor: pointer; }
+.gm-btn svg { width: 10px; height: 7px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--d-1, 200ms) var(--spring, cubic-bezier(.22, .8, .24, 1)); }
+.gm-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+/* S1-13: its wide words and its phone word ("Menu", "Close" while open); nav.css shows the phone's at <= 720 px. */
+.gm-btn .gm-w { display: inline-flex; align-items: center; gap: 8px; }
+.gm-btn .gm-ph { display: none; }
+@media (prefers-reduced-motion: reduce) { .gm-btn svg { transition: none; } }

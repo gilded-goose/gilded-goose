@@ -1,0 +1,181 @@
+/* The final C + A system below the hero: cream paper for reading, bold width-set Anybody headlines on the 8px module,
+   ink rules instead of cards, and a torn patch of navy night pond (the one dark material) only where a note is being
+   tested. Cut-paper props (a receipt strip, a torn note) are used sparingly, as storytelling. Each section composes
+   itself (see each component); this file holds the shared parts and each section's layout. */
+
+.sx { padding-block: var(--s12); }
+.sx p { margin-top: 0; }
+@media (min-width: 761px) { .sx { padding-block: var(--s20); } }
+
+.sx-h {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.4rem + 2.2vw, 3.25rem);
+  font-weight: 500;
+  font-stretch: 100%;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  
+  color: var(--ink);
+  text-wrap: balance;
+}
+/* One word per headline set condensed, as C's fitted lines do, so a heading reads as set type, not a template. */
+.sx-h .sx-n { font-stretch: 100%; font-weight: 500; }
+.sx-h-page { font-size: clamp(2.5rem, 1.6rem + 3vw, 4rem); }
+.sx-lede { max-width: 56ch; color: var(--ink-2); font-size: var(--t-md); line-height: 1.5; }
+
+/* The one short line a section may say louder than its body: condensed and heavy, never a serif. */
+.sx-voice {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-stretch: 100%;
+  font-size: var(--t-xl);
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.sx-stack { display: grid; gap: var(--s4); align-content: start; }
+
+.sx-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--tap);
+  padding: 0 var(--s5);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  color: var(--ink);
+  font-weight: var(--w-strong);
+  text-decoration: none;
+  transition: background-color var(--d-ui) ease, color var(--d-ui) ease, transform var(--d-press) var(--ease-out);
+}
+.sx-link:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .sx-link:hover { background: var(--ink); color: var(--surface); } }
+
+/* The night-pond patch: flat navy with heavy riso grain and torn top and bottom edges. No gloss, no glow; it overrides
+   the base stone's lighting. */
+.sx-pond.stone, .sx-pond {
+  background-color: var(--stone);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.9 0 0 0 0 0.88 0 0 0 0 0.8 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color: var(--stone-ink);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* A torn newsprint note: the prop a seller's words are printed on. */
+.sx-note {
+  position: relative;
+  background: var(--newsprint);
+  color: var(--ink);
+}
+
+/* ── Who: heading left, the two readers as ruled lines on the right ─────── */
+.who { display: grid; gap: var(--s8); }
+.who-list { display: grid; margin: 0; padding: 0; list-style: none; }
+.who-list li { display: grid; gap: var(--s2); padding-block: var(--s5); border-top: 1px solid var(--line-strong); }
+.who-list li:last-child { border-bottom: 1px solid var(--line-strong); }
+.who-k { font-family: var(--font-display); font-size: var(--t-lg); font-weight: 600; line-height: var(--lh-head); }
+.who-v { color: var(--ink-2); }
+@media (min-width: 900px) {
+  .who { grid-template-columns: 5fr 1fr 6fr; align-items: start; }
+  .who-list { grid-column: 3; }
+}
+
+/* ── How: a real sequence, four steps along one rule ────────────────────── */
+.how-head { display: grid; gap: var(--s4); margin-bottom: var(--s10); max-width: 760px; }
+.how-steps { display: grid; margin: 0; padding: 0; list-style: none; counter-reset: how; }
+.how-steps li {
+  counter-increment: how;
+  display: grid;
+  grid-template-columns: var(--s12) minmax(0, 1fr);
+  gap: var(--s4);
+  padding-block: var(--s5);
+  border-top: 1px solid var(--line-strong);
+}
+.how-steps li::before {
+  content: counter(how);
+  font-family: var(--font-display);
+  font-size: var(--t-2xl);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1;
+  color: var(--ink);
+}
+.how-steps li[data-approve]::before { color: var(--gold-ink); }
+.how-step { font-family: var(--font-display); font-size: var(--t-lg); font-weight: 600; line-height: var(--lh-head); }
+.how-pay { display: inline-block; margin-left: var(--s2); padding: 0 var(--s3); border-radius: var(--r-pill); background: var(--gold); color: var(--ink); font-size: var(--t-sm); vertical-align: 0.15em; }
+@media (min-width: 900px) {
+  .how-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--s6); }
+  .how-steps li { grid-template-columns: 1fr; gap: var(--s6); padding-top: var(--s4); }
+  .how-steps li::before { font-size: var(--t-3xl); }
+}
+
+/* ── Tap pays: one statement beside an outline of the approve card ──────── */
+.tap { display: grid; gap: var(--s10); align-items: center; }
+.tap-words { display: grid; gap: var(--s5); }
+/* The approve card drawn as a printed receipt strip on a scrap of night pond: a prop, so it may tilt. */
+.tap-stage { display: grid; place-items: center; padding: var(--s12) var(--s6); }
+.tap-card {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  max-width: 360px;
+  margin: 0;
+  padding: var(--s6) var(--s6) var(--s10);
+  background: var(--newsprint);
+  color: var(--ink);
+  transform: none;
+}
+.tap-head { margin-bottom: var(--s3); font-family: var(--font-display); font-weight: 600; font-stretch: 100%;  letter-spacing: 0.02em; }
+.tap-card dl { display: grid; margin: 0 0 var(--s6); }
+.tap-card dl div { display: flex; justify-content: space-between; gap: var(--s4); padding-block: var(--s3); border-bottom: 1px dashed var(--line-strong); }
+.tap-card dt { color: var(--ink-2); }
+.tap-card dd { margin: 0; width: 96px; height: var(--s3); align-self: center; background: var(--line); }
+.tap-approve {
+  display: grid;
+  place-items: center;
+  min-height: 48px;
+  border-radius: var(--r-pill);
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 600;
+}
+@media (min-width: 900px) { .tap { grid-template-columns: 7fr 5fr; gap: var(--s16); } }
+
+/* ── Checked: one band between two rules, the link to the proof ─────────── */
+.chk { display: grid; gap: var(--s6); padding-block: var(--s8); border-block: 1px solid var(--line-strong); }
+.chk .sx-h { font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem); }
+@media (min-width: 900px) { .chk { grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: var(--s12); } }
+
+/* ── Name: three origins, set as a list of large lines ──────────────────── */
+.name-head { display: grid; gap: var(--s4); margin-bottom: var(--s8); }
+.name-list { display: grid; margin: 0; padding: 0; list-style: none; }
+.name-list li {
+  padding-block: var(--s4);
+  border-top: 1px solid var(--line-strong);
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.1rem + 1.4vw, 2.25rem);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+.name-list li:last-child { border-bottom: 1px solid var(--line-strong); }
+.name-gold { color: var(--gold-ink); }
+
+/* ── Builders teaser: a short line and the way in ───────────────────────── */
+.bt { display: grid; gap: var(--s6); justify-items: start; padding-bottom: var(--s8); }
+.bt-ten { font-family: var(--font-display); font-size: clamp(5rem, 2.4rem + 9vw, 11rem); font-weight: 600; font-stretch: 100%; line-height: 0.9; letter-spacing: -0.04em; }
+@media (min-width: 900px) {
+  .bt { grid-template-columns: auto minmax(0, 1fr); align-items: end; column-gap: var(--s10); }
+  .bt-ten { grid-row: span 3; }
+}
+
+/* ── Secondary pages while they are written ─────────────────────────────── */
+.pg { display: grid; gap: var(--s6); padding-block: var(--s16) var(--s20); }
+.pg .sx-lede { font-size: var(--t-lg); max-width: 48ch; }
+.pg-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s4); padding-top: var(--s6); border-top: 1px solid var(--line-strong); color: var(--ink-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sx-link { transition: none; }
+  .sx-link:active { transform: none; }
+}

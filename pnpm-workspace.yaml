@@ -1,0 +1,27 @@
+packages:
+  - core
+  - server
+  - web
+  - trust
+allowBuilds:
+  esbuild: true
+  # onnxruntime-web's protobuf code runs as shipped; its install script isn't needed (029).
+  protobufjs: false
+# @paypal/agent-toolkit lists every framework it supports as a hard dependency. Goose imports only its plain entry
+# (`/openai`, which loads none of these at run time), so they are left out of the install (ADR 0010, 024 Toolkit item 8).
+overrides:
+  "@paypal/agent-toolkit>ai": "-"
+  "@paypal/agent-toolkit>@langchain/core": "-"
+  "@paypal/agent-toolkit>openai": "-"
+  "@paypal/agent-toolkit>@modelcontextprotocol/sdk": "-"
+  "@paypal/agent-toolkit>@dotenvx/dotenvx": "-"
+  "@paypal/agent-toolkit>os": "-"
+  # pnpm audit --prod (high): mathjs <15.2.0 (GHSA-29qv-4j9f-fjw5, GHSA-jvff-x2qm-6286) and zod <4.6.6
+  # (GHSA-mrhx-c7xc-m3w5). The Toolkit's plain entry uses mathjs only for `round`, and its tool calls never validate
+  # with zod; core/test/toolkit.test.ts loads the real Toolkit on these versions and lists its two tools.
+  "@paypal/agent-toolkit>mathjs": "^15.2.0"
+  "@paypal/agent-toolkit>zod": "^4.6.6"
+  # Voice on the device (029): the browser build of transformers.js uses onnxruntime-web only. Its Node backend
+  # (onnxruntime-node, ~290 MB) and image library (sharp) never load in a browser, so they are left out of the install.
+  "@huggingface/transformers>onnxruntime-node": "-"
+  "@huggingface/transformers>sharp": "-"

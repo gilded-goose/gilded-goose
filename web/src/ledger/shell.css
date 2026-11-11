@@ -1,0 +1,60 @@
+/* The board's first lines ride in this sheet, not one of their own: index.html names every sheet twice, on every route. */
+@import "../studio/threat-first.css";
+/* The ledger's shell table (ShellTable.tsx, Track B session 6): the grid's geometry in plain CSS, so the AG Grid that
+   replaces it lands on the same lines. A 44 px header and its hairline, 72 px rows, 16 px cell padding, 32 px at the
+   first column, the same small-caps header, hairlines between rows (gridTheme.ts, ledger.css `.lx-grid`). It fills the
+   `.lx-grid` box and scrolls inside it, as the grid does. Session 7 (DD, B-6 → B-7): every size, weight and line is the
+   token the grid reads (`--t-small` cells, a `--t-micro` header at `--w-strong`, `--lx-row` / `--lx-row-lh` from
+   ledger.css's `.lx-grid`), the money column is right-aligned in both, and a skipped seller is one rule (`.lx-skip`)
+   in both; the swap moves no header, no figure and no row (measured: scratchpad table-measure.ts). */
+.lx-shell { height: 100%; overflow: auto; font-family: var(--lx-face); font-size: var(--t-small); color: var(--lx-ink); }
+.lx-shell-t { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+.lx-shell-t th, .lx-shell-t td { padding: 0 var(--s-2); text-align: left; vertical-align: top; border-bottom: 1px solid var(--lx-edge); box-sizing: border-box; overflow: hidden; }
+.lx-shell-t th:first-child, .lx-shell-t td:first-child { padding-left: var(--s-4); }
+/* The grid's header row is 44 px with its hairline under it (45 in all); the shell's border sits inside its box. */
+.lx-shell-t th { height: calc(var(--lx-head) + 1px); vertical-align: middle; font-size: var(--t-micro); font-weight: var(--w-strong); font-variant-caps: all-small-caps; letter-spacing: var(--track-eyebrow); color: var(--lx-ink-3); border-bottom-color: var(--lx-edge-2); white-space: nowrap; }
+/* A grid cell carries a 1 px transparent border inside its 72 px (AG Grid's), so its text starts at --s-2 from the row's top. */
+.lx-shell-t td { height: var(--lx-row); padding-top: var(--s-2); line-height: var(--lx-row-lh); }
+.lx-shell-t .lx-shell-r { text-align: right; } /* (0,2,0) over the cells' text-align: left (0,1,1): AMOUNT and the figures end at the column's 16 px, as the grid's do */
+.lx-shell-row { cursor: pointer; }
+.lx-shell-row:hover, .lx-shell-row:focus-visible { background: var(--lx-hover-glass); outline: none; }
+.lx-shell-row:focus-visible { box-shadow: inset 0 0 0 2px var(--lx-ink); }
+.lx-shell-row.lx-week { color: var(--lx-ink-2); }
+.lx-shell-row.lx-week .lx-did { color: var(--lx-ink-2); }
+.lx-shell-t .lx-open-cell { text-align: center; }
+.lx-shell-t .lx-open { margin: 6px auto 0; }
+.lx-shell-t tfoot td { height: 72px; padding-top: 0; vertical-align: middle; background: var(--card); border-top: 1px solid var(--line-2); border-bottom: 0; white-space: nowrap; }
+.lx-shell-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* The page's HTML first paint (web/prerender.ts sets `data-first-ledger`; SessionLedger.tsx removes it when its chunk
+   runs): the two web faces wait. Painted in them, the first paint asked for both files (122 KB) beside main.js on a
+   1.6 Mbps phone and pushed the rows back by 600 ms (measured, session 6). Until the chunk runs, the text wears the
+   tuned fallbacks tokens.css defines (size-adjusted Arial / Helvetica), the same faces font-display: swap shows first;
+   the chunk brings the real faces, as it did before the first paint existed. */
+html[data-first-ledger] body, html[data-first-ledger] body * { font-family: "Archivo Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important; } /* the whole document, over any rule that names the face itself (the phone's rail, nav.css); the attribute is gone before any other surface renders */
+html[data-first-ledger] .lx-hero h1, html[data-first-ledger] .tb-line { font-family: "Hanken Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important; }
+html[data-first-ledger] .tb-second { max-width: calc(62 * .5727em); } /* the board's first lines: 62ch in Archivo, as the hero's measures below */
+/* The stand-in keeps the page's lines (system.md §5, ruled B-6; Track B session 7). Two things the fallback faces' one
+   size-adjust can't reach (tokens.css: it is tuned for the whole site's swap, and moving it re-wrapped the week card's
+   paragraph on the phone, CLS +0.031): the hero's measures are in `ch`, the width of the face's own "0" (Archivo .5727 em,
+   the tuned Arial .5477), so the stand-in's box was 4% narrower and the lede re-wrapped ("who, what, / why" at 1440);
+   here they are Archivo's 44 / 58 ch in em. And the last pixels per line: against Archivo the stand-in's thesis runs .7%
+   narrow, its lede .2% wide and the bar's links 1% narrow, so each takes a hair of letter-spacing (measured as unwrapped
+   widths against the web faces at 1440 and 390, scratchpad tune.ts). Gone with the attribute, in the swap. */
+html[data-first-ledger] .lx-thesis { max-width: calc(44 * .5727em); letter-spacing: .0032em; }
+html[data-first-ledger] .lx-lede { max-width: calc(58 * .5727em); letter-spacing: -.001em; }
+html[data-first-ledger] .lx .gn .dk-practice-ph { letter-spacing: .0056em; }
+html[data-first-ledger] .lx .gn :is(.dk-menu, .dk-layer a, .dk-judge) { letter-spacing: .0065em; } /* the right group's 6.4 px over its 65 letters: each link's start within 0.7 px */
+/* The phone's lede (15 px) breaks "writes / it," with Archivo's line one at 359.9 of 374; any tighter and the stand-in
+   pulls "it," up, so here it keeps the face's own spacing: the same lines, "See the proof" 2.2 px from Archivo's (a
+   layout shift counts from 3 px). */
+@media (max-width: 767px) { html[data-first-ledger] .lx-lede { letter-spacing: 0; } }
+
+/* The week chart's frame while AG Charts' chunk loads (Week.tsx WeekShell; Track B session 8, Round 3's design judge:
+   the card stood empty ~300 ms at 1440). Bars.tsx's geometry: padding 12 top, 16 right, 4 bottom; the price labels in
+   a column at the left, their gridlines in --lx-edge from its edge to the right padding; the days centred in their
+   bands under the plot. 13 px --lx-ink-2 text, as chartText. --wk-l and --wk-b are the axes' measured bands. */
+.lx-wk-shell { --wk-l: 40px; --wk-t: 12px; --wk-b: 30px; --wk-r: 16px; position: relative; height: 100%; font-family: var(--lx-face); font-size: 13px; line-height: 16px; color: var(--lx-ink-2); }
+.lx-wk-tick { position: absolute; left: var(--wk-l); right: var(--wk-r); top: calc(var(--wk-t) + (100% - var(--wk-t) - var(--wk-b)) * var(--at)); height: 0; border-top: 1px solid var(--lx-edge); }
+.lx-wk-tick > span { position: absolute; right: calc(100% + 11px); top: -8px; white-space: nowrap; }
+.lx-wk-day { position: absolute; bottom: calc(var(--wk-b) - 27px); left: calc(var(--wk-l) + (100% - var(--wk-l) - var(--wk-r)) * var(--at)); transform: translateX(-50%); white-space: nowrap; }

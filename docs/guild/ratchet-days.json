@@ -1,0 +1,21 @@
+{
+  "about": "One row a day of the ratchet's numbers, written by scripts/ratchet-board.ts. The trend on the board reads it.",
+  "days": [
+    {
+      "date": "2026-11-04",
+      "sha": "4728dbae",
+      "numbers": {
+        "tests": 1790,
+        "coverage": 100,
+        "claims": 187,
+        "heaviestBytes": 702693,
+        "firstScreenMs": 453,
+        "axe": 0,
+        "keyboard": 4,
+        "console": 0,
+        "assets404": 0,
+        "walks": 1
+      }
+    }
+  ]
+}

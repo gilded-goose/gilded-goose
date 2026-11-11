@@ -1,0 +1,656 @@
+/* Desk-J2 (Fri Oct 30): the wallet (`?wallet=1`) in the Desk's plum velvet, the shop side's design language
+   (joshua-final-design.md), as Desk-J did for the classic page (run.css) and /safe.html (safe.css). Same page, same
+   words, same flows, same states: only the skin changed.
+   Flat matte velvet with a fine grain; cream text; hairlines, and a light edge or a shadow, never both; one display face
+   (Hanken, light) over the body face (Archivo); tabular money; cream is the one action on a surface; gold only where
+   code protects you (the refusal, your locked limit, code's counter, money given back) and on the deal waiting for your
+   tap; red stays the threat's own number. No gradients, no glow, no stamps, nothing that loops.
+
+   Everything sits in `.wallet.dk[data-palette="v"]` (Wallet.tsx and first-paint.tsx), so it reads the Desk's tokens
+   (desk/tokens.css, read only) and maps the site's older variable names onto them for the pieces drawn by shared
+   components (Ask Goose). The static page around #root (the practice line, <html>) is skinned on `body.wallet-on`,
+   which the first paint sets before this sheet applies. Loaded only with the wallet's own chunk (and blocking, as its
+   first paint, on the built page: web/prerender.ts). */
+/* No tokens.css here (Track F, tokens stage 2): it is main.css's (run.css), ahead of this sheet on every page that loads the wallet. */
+@import "./nav/nav.css";
+@import "./menu/menu-button.css";
+
+/* ---------- the page around the wallet ---------- */
+/* the velvet with its fine grain (the Desk's noise at the Desk's .07, as run.css bakes it), on <html> so it runs the
+   whole page with no fixed layer */
+html:has(> body.wallet-on) { background: var(--page-solid) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .92 0 0 0 0 .86 0 0 0 .112 -.0385'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); color-scheme: dark; }
+body.wallet-on {
+  background: transparent; color: var(--ink); font: var(--t-body)/1.5 var(--face);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; color-scheme: dark;
+}
+body.wallet-on ::selection { background: color-mix(in srgb, var(--gold) 30%, transparent); } /* as desk.css .dk ::selection */
+body.wallet-on .page { max-width: 1200px; padding: 0 var(--s-4) var(--s-5); }
+/* ---------- the wallet: the Desk's tokens, under the site's older names ---------- */
+.wallet.dk {
+  --bg: var(--page-solid); --white: var(--card); --grey: var(--ink-2); --soft: var(--ink-3); --paper: var(--well); --hint: var(--ink-3);
+  --teal: var(--ink); --teal-wash: var(--surface-2); --red-wash: color-mix(in srgb, var(--red) 8%, transparent); --amber: var(--ink);
+  --cream: transparent; --brass: var(--gold); --brass-hi: var(--gold-hi); --brass-ink: var(--gold-hi); --brass-wash: var(--gold-wash);
+  --desk: var(--page-solid); --on-desk: var(--ink); --on-desk-2: var(--ink-2); --ink2: var(--ink-2);
+  font-family: var(--face); font-size: var(--t-body); line-height: 1.5; color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.wallet :is(button, input, select, textarea) { font-family: inherit; }
+.wallet :is(h1, h2, h3) { font-family: var(--display); font-weight: var(--w-head); letter-spacing: var(--track-head); }
+.wallet p, .wallet li { text-wrap: pretty; }
+.wallet :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.wallet .wwait { font-size: var(--t-body); padding: var(--s-5) 0; color: var(--ink-2); }
+.wallet h2 { margin: 0; font-size: var(--t-h3); line-height: 1.15; }
+/* .tally .nw is unscoped on purpose: wallet.css ships in the bundle beside the judge box, whose live tally (JudgeBox.tsx) keeps its "bought over the max" on one line by it */
+.wallet .nw, .tally .nw { white-space: nowrap; }
+.wallet .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wallet .muted { color: var(--ink-2); }
+.wallet .refused { color: var(--red); }
+.wallet .ok { color: var(--ink); }
+.wallet a:not(:is(.btn, .gn a, .mkt, .safe, .replay, .dealbar)) { color: var(--ink); text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.wallet a:not(:is(.btn, .gn a, .mkt, .safe, .replay, .dealbar)):hover { text-decoration-color: var(--ink); }
+/* Goose's gilt egg, flat: one gold, no gradient, no highlight */
+.wallet svg path[fill^="url(#wgold"] { fill: var(--gold); }
+.wallet svg ellipse[opacity] { display: none; }
+/* the one primary action on a surface: cream on velvet, a precise press */
+.wallet .btn { min-height: 48px; padding: 0 var(--s-4); border: 0; border-radius: var(--r-pill); background: var(--cta); color: var(--on-cta); font-weight: var(--w-strong); transition: transform var(--d-1) var(--ease), background var(--d-1); }
+.wallet .btn:hover { background: var(--cta-hover); }
+.wallet .btn:active { transform: scale(.985) translateY(1px); }
+.wallet .linkish { padding: var(--s-2) 4px; margin: calc(-1 * var(--s-2)) 0; border: 0; background: none; color: var(--ink); font-weight: var(--w-strong); text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 4px; cursor: pointer; }
+.wallet .linkish:hover { text-decoration-color: var(--ink); }
+.wallet .linkish[disabled] { opacity: .6; cursor: default; }
+
+/* ---------- the header: the one nav every page wears (web/src/nav/nav.css, imported above; S1, Joshua Fri 3:40 PM) ---------- */
+/* The page around it already holds the grid (its own gutter), so the nav's row sits flush in it. */
+.wallet .wnav .dk-nav-in { max-width: none; padding: 0; }
+/* No rule of its own under the bar (commit 5, S1-3's Needs): the classic page, the market and safe.html draw none, and
+   from 721 px nav.css draws every flush bar's band and glass out to the window's edges. */
+.wallet .wnav { position: relative; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* W4 (Round 2's design judge: "the wallet still reads as its own site"): the landing's bar, item for item (index.html,
+   SiteNav.tsx), Shopper the open view. nav.css still carries two rules from when the wallet's bar held Desk, Settings and
+   Mute in Shopper's place (`header.gn.dk-nav.wnav`: Shopper hidden from 721 px; the row closed up at --t-micro from 721
+   to 899 px). They no longer apply: the bar is the landing's, so it takes the landing's rules (S1 may drop them). */
+@media (min-width: 721px) { .wallet header.gn.dk-nav.wnav .dk-layer a[href$="desk=1"] { display: inline-flex; } }
+@media (min-width: 721px) and (max-width: 899px) {
+  .wallet header.gn.dk-nav.wnav .dk-nav-in { gap: var(--s-1); }
+  .wallet header.gn.dk-nav.wnav :is(.dk-layer a, .dk-judge) { font-size: var(--t-small); }
+}
+@media (min-width: 800px) and (max-width: 899px) { .wallet header.gn.dk-nav.wnav .dk-menu { padding: 0 12px; font-size: var(--t-small); } }
+/* W4, item 3: on a phone the menu button's box ends at the page's 16 px gutter, never in it (nav.css's -12 px pulls a
+   padded bar's button out to its edge; this bar sits flush in the page's column, which is the gutter). */
+@media (max-width: 720px) { .wallet .gn.wnav .dk-menu { margin-right: 0; } }
+/* Mute Goose (3b), a Settings card since Round 1 (Goose's voice): a hairline pill with its words at every width */
+.wallet .wmute { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-2); border-radius: var(--r-pill); background: none; color: var(--ink); font: inherit; font-size: var(--t-small); font-weight: var(--w-body); white-space: nowrap; cursor: pointer; transition: border-color var(--d-1); }
+.wallet .wmute:hover { border-color: var(--ink); }
+.wallet .wmute svg { flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.wallet .wmute svg path:first-child { fill: currentColor; stroke: none; }
+.wallet .svoice .wnote { margin: 4px 0 var(--s-2); }
+.wallet .svoice .wmute:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* ---------- W-8, the calm hero: the headline, its one line, Ask and its chips; the deal beside them ---------- */
+/* Natural height (DD ruling, Sat Oct 31; system.md §3): --s-12 to the hairline, then the deal's story, whose head shows
+   below the hero at 1440 x 900 */
+.wallet .whero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-4); align-items: start; padding: var(--s-8) 0 var(--s-12); }
+/* The Ask under the headline is the box and its chips, never a card (index.html's global .ask paints one) */
+.wallet .whero .ask { margin: 0; padding: 0; border: 0; border-radius: 0; background: none; }
+.wallet .whero.solo { grid-template-columns: minmax(0, 1fr); }
+.wallet .whero.solo .wlead { max-width: 720px; }
+.wallet .wlead { display: flex; flex-direction: column; min-width: 0; }
+.wallet .whero > .hero { margin: 0; }
+.wallet .dhead { padding: 0; }
+.wallet .dhead h1 { margin: 0; max-width: 15ch; color: var(--ink); font-size: var(--t-h1, var(--t-h2)); line-height: 1.04; font-weight: var(--w-display); letter-spacing: var(--track-display); text-wrap: balance; }
+.wallet .dnum { font-variant-numeric: tabular-nums; }
+.wallet .dline { margin: var(--s-2) 0 0; color: var(--ink-2); font-size: var(--t-lead); line-height: 1.4; }
+.wallet .dlabel { margin: var(--s-1) 0 0; color: var(--ink-3); font-size: var(--t-micro); line-height: 1.4; }
+/* The hero's Ask: the box and its chips, no card around them (the deal card is the one card on the first screen) */
+.wallet .ask .askg.ahero { margin: var(--s-5) 0 0; }
+.wallet .ahlabel { display: block; margin: 0 0 var(--s-1); color: var(--ink-2); font-size: var(--t-small); line-height: 1.4; }
+.wallet .wchips { display: flex; flex-wrap: wrap; gap: var(--s-1); margin: var(--s-2) 0 0; padding: 0; list-style: none; }
+.wallet .wchip { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2); border: 1px solid var(--line); border-radius: var(--r-1); background: none; color: var(--ink-2); font: inherit; font-size: var(--t-small); cursor: pointer; transition: color var(--d-1), border-color var(--d-1); }
+.wallet .wchip:hover { color: var(--ink); border-color: var(--line-2); }
+.wallet .wchip[disabled] { cursor: progress; }
+.wallet .ahero .aaway { margin: var(--s-2) 0 0; }
+.wallet .ahero + .only { margin-top: var(--s-2); }
+
+/* ---------- the week's own section, under the first screen ---------- */
+.wallet .wdesk { padding-top: var(--s-12); border-top: var(--hair); }
+.wallet .wdhead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2); margin: 0 0 var(--s-4); }
+.wallet .wdhead .trayh { padding: 0; border: 0; }
+.wallet .wways { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.wallet .wways .replay.quiet { margin-top: 0; }
+.wallet .haggle .wswap { margin-top: var(--s-2); padding-top: var(--s-1); }
+/* W4: Watch the week / Skip to the end and "Watch it again on the run page" are the Desk's hairline pill ("Keep
+   watching", desk.css .dk-pill): --t-small at --w-strong, 1 px --line-2, --s-3 sides, 44 px, sentence case, no glyph. */
+.wallet :is(.skip, .replay.quiet) { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-2); border-radius: var(--r-pill); background: none; color: var(--ink); font-size: var(--t-small); font-weight: var(--w-strong); line-height: 1.2; white-space: nowrap; cursor: pointer; transition: border-color var(--d-1), background var(--d-1); }
+.wallet :is(.skip, .replay.quiet):hover { border-color: var(--ink-2); background: var(--surface); }
+/* The wallet's Settings, in Your week's head (and "‹ Your week" back from it): a text link, the secondary action */
+.wallet .wset { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--t-small); white-space: nowrap; }
+.wallet .shead .wset { margin: 0 0 var(--s-1); }
+.wallet .week .whead { justify-content: space-between; }
+.wallet .week .whead .wset { margin: calc(-1 * var(--s-1)) 0; }
+
+/* ---------- the two trays, the same width; the deal card runs to the foot of the taller one ---------- */
+.wallet .desk { --slip-dx: 0px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-4); align-items: start; }
+.wallet .tray { display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; }
+.wallet .trayh { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px var(--s-2); margin: 0; padding: 0 0 var(--s-2); border-bottom: var(--hair); color: var(--ink-2); font-family: var(--face); font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: var(--track-eyebrow); text-transform: uppercase; line-height: 1.35; }
+.wallet .trayh b { color: var(--ink-3); font-weight: var(--w-body); letter-spacing: 0; text-transform: none; }
+.wallet .clears, .wallet .logfold { display: none; }
+.wallet .notes .trayh { order: -2; } .wallet .notes .scam { order: -1; }
+
+/* The sellers the Watcher read: hairline rows, the verdict on the right in words */
+.wallet .slip { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--s-2); align-items: baseline; padding: var(--s-2) 0; border-bottom: var(--hair); }
+.wallet .slip b { font-size: var(--t-body); font-weight: var(--w-strong); }
+.wallet .slip .amt { font-size: var(--t-body); text-align: right; font-variant-numeric: tabular-nums; }
+.wallet .slip q { color: var(--ink-2); font-size: var(--t-small); quotes: "“" "”"; font-style: normal; }
+.wallet .slip q::before { content: open-quote; } .wallet .slip q::after { content: close-quote; }
+.wallet .slip .ok { grid-column: 2; color: var(--ink-3); font-size: var(--t-micro); text-align: right; white-space: nowrap; }
+.wallet .slip.v-held .ok { color: var(--gold); }
+
+/* The refused note: the lead card, one quiet velvet card (the set-aside seller is never gold-edged); gold stays on the
+   Watcher's verdict, the protection line */
+.wallet .scam { position: relative; padding: var(--s-3) var(--s-3) var(--s-2); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); }
+.wallet .rhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px var(--s-2); }
+.wallet .rhead h2 { margin: 0; font-size: var(--t-lead); line-height: 1.2; font-weight: var(--w-head); }
+.wallet .rhead span { color: var(--ink-3); font-size: var(--t-micro); }
+.wallet .sline { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); margin: var(--s-1) 0 var(--s-2); }
+.wallet .scam .amt { margin: 0; font-family: var(--display); font-size: var(--t-h2); line-height: 1.1; font-weight: var(--w-display); font-variant-numeric: tabular-nums; }
+.wallet .scam del { position: relative; text-decoration: none; color: var(--ink-3); padding: 0 2px; margin-left: -2px; } /* the strike's 2 px overhang lives in its own box (a3b-screens: nothing holds more than it shows), the number stays put */
+.wallet .scam del::after { content: ""; position: absolute; left: 0; right: 0; top: 54%; height: 1.5px; background: var(--red); transform-origin: 0 50%; }
+/* The Watcher's verdict: words, level, in gold, inside one hairline */
+.wallet .sslot { position: relative; flex: none; }
+.wallet .stamp { display: flex; align-items: center; gap: var(--s-1); padding: 0; color: var(--gold); }
+.wallet .stamp svg { width: 22px; height: 26px; flex: none; }
+.wallet .stamp b { display: block; font-family: var(--display); font-size: var(--t-lead); line-height: 1.1; font-weight: var(--w-head); }
+.wallet .stamp small { display: block; color: var(--ink-2); font-size: var(--t-micro); }
+.wallet .rnote { margin: 0; font-size: var(--t-body); line-height: 1.5; }
+.wallet .rnote small { display: block; margin-bottom: 6px; color: var(--ink-3); font-size: var(--t-micro); line-height: 1.4; }
+/* the phrases the Watcher caught: a thin red underline in the threat's colour, never a wash */
+.wallet .rnote mark { color: inherit; padding: 0 1px; background-color: transparent; background-image: linear-gradient(var(--red), var(--red)); background-repeat: no-repeat; background-position: 0 100%; background-size: 100% 1.5px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.wallet .why { display: grid; gap: 6px; margin: var(--s-2) 0 0; padding: 0; list-style: none; }
+.wallet .why li { display: flex; align-items: baseline; gap: var(--s-1); color: var(--ink); font-size: var(--t-small); line-height: 1.4; }
+.wallet .why svg { flex: none; width: 12px; height: 12px; color: var(--red); transform: translateY(1px); }
+.wallet .sfoot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 var(--s-2); margin-top: var(--s-2); padding-top: 4px; border-top: var(--hair); font-size: var(--t-micro); }
+.wallet .sfoot > span { color: var(--ink-3); }
+/* The attack demo, one tap from the refusal it's about, at every width (the old header's "Try to break it" is gone; S1). */
+.wallet .wbreak2 { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font-weight: var(--w-strong); white-space: nowrap; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 4px; }
+.wallet .rlink { display: inline-block; padding: 11px 0; line-height: 22px; font-weight: var(--w-strong); }
+.wallet .count { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px var(--s-2); margin: 2px 0 0; color: var(--ink-3); font-size: var(--t-micro); }
+.wallet .count b { color: var(--ink-2); font-weight: var(--w-body); }
+
+/* Goose's haggle, one hairline row per round; the round where code stepped in says so in gold */
+.wallet .log { display: grid; margin: calc(-1 * var(--s-2)) 0 0; padding: 0; list-style: none; }
+.wallet .log li { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto; gap: var(--s-2); align-items: baseline; padding: var(--s-1) 0; border-bottom: var(--hair); color: var(--ink-2); font-size: var(--t-small); line-height: 1.4; }
+.wallet .log .rn { color: var(--ink-3); font-size: var(--t-micro); }
+.wallet .log b { color: var(--ink); font-weight: var(--w-body); font-variant-numeric: tabular-nums; }
+.wallet .log s { text-decoration-thickness: 1px; }
+.wallet .log .code { color: var(--gold); }
+
+/* ---------- the deal: one velvet card, the price beside your locked limit, then the one tap ---------- */
+.wallet .hero { display: flex; flex-direction: column; flex: 1; margin-top: 4px; padding: var(--s-3) var(--s-3) var(--s-2); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); }
+.wallet .dt { display: flex; justify-content: space-between; gap: var(--s-2); align-items: flex-start; }
+/* W-5 (DD, Sat Nov 1): the deal's eyebrow is --ink-2, as the Desk's "YOUR DEAL"; gold stays on the lock line. */
+.wallet .kicker { margin: 0; color: var(--ink-2); font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: var(--track-eyebrow); text-transform: uppercase; }
+.wallet .hero h2 { margin: 4px 0 0; font-size: var(--t-h3); line-height: 1.1; font-weight: var(--w-head); }
+.wallet .from { margin: 2px 0 0; color: var(--ink-2); font-size: var(--t-small); }
+.wallet .prow { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--s-1) var(--s-3); margin: var(--s-2) 0 4px; }
+.wallet .price { font-family: var(--display); font-size: var(--t-num, var(--t-h2)); line-height: 1; font-weight: var(--w-display); letter-spacing: var(--track-display); font-variant-numeric: tabular-nums; }
+/* your limit, which no note, chip or typed max can raise: code protects you here, so a gold hairline */
+.wallet .lim { display: flex; align-items: center; gap: var(--s-1); margin: 0 0 4px; padding: 0 0 0 var(--s-2); border-left: 1px solid var(--line); color: var(--gold); font-size: var(--t-micro); line-height: 1.3; }
+.wallet .lim svg { width: 20px; height: 24px; flex: none; }
+.wallet .lim b { display: block; color: var(--ink); font-size: var(--t-body); font-weight: var(--w-head); font-variant-numeric: tabular-nums; }
+.wallet .lim b small { display: block; color: var(--gold); font-size: var(--t-micro); font-weight: var(--w-body); }
+.wallet .below { margin: var(--s-1) 0 var(--s-2); color: var(--ink-2); font-size: var(--t-body); }
+.wallet .below b { color: var(--ink); font-weight: var(--w-strong); }
+
+/* The Approve: the card's one filled block, cream; with nothing to pay with, the labeled picture of one */
+/* The room the settled block takes, real PayPal message included (DD, Nov 4). `--later` is `.wlater`'s height with a real
+   message, by width, read on live (Nov 4: 112 at 320 to 390, 93 at 430 and 480, 72 at 520 and 600, 54 at 700 and 768, 93 at
+   1024, 72 at 1100 and over). `.wlater` holds it when PayPal sends nothing, so what's under Approve never moves: a quiet
+   gap beats things moving. */
+.wallet { --later: 72px; }
+@media (min-width: 900px) and (max-width: 1090px) { .wallet { --later: 93px; } }
+@media (max-width: 899px) { .wallet { --later: 54px; } }
+@media (max-width: 640px) { .wallet { --later: 72px; } }
+@media (max-width: 480px) { .wallet { --later: 93px; } }
+@media (max-width: 400px) { .wallet { --later: 112px; } }
+.wallet .acts { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s-2); margin-top: auto; }
+.wallet .acts > * { grid-column: 1 / -1; }
+/* The first paint's block (first-paint.tsx): the real pieces, in their real places, unseen until the wallet draws them. The password warning shows from the start. */
+.wallet .acts-held > :not(.apractice) { visibility: hidden; }
+.wallet .acts:has(> .aterms) > .aterms { grid-column: 1; grid-row: 2; }
+.wallet .acts:has(> .aterms) > .only { grid-column: 2; grid-row: 2; }
+.wallet .approve { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 48px; padding: var(--s-1) var(--s-4); border: 0; border-radius: var(--r-pill); background: var(--cta); color: var(--on-cta); font-size: var(--t-body); font-weight: var(--w-strong); line-height: 1.25; cursor: default; user-select: none; }
+.wallet .approve .a1 { display: inline-flex; align-items: center; gap: var(--s-1); font-variant-numeric: tabular-nums; }
+.wallet .approve:has(.a2, .a3) { border-radius: var(--r-3); }
+.wallet .approve .a1 svg { width: 14px; height: 17px; }
+.wallet .approve .a2 { margin-top: 6px; padding: 1px var(--s-1); border-radius: var(--r-1); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--on-cta) 35%, transparent); color: var(--on-cta); font-size: var(--t-micro); font-weight: var(--w-body); }
+.wallet .approve .a3 { align-self: stretch; margin-top: var(--s-1); padding-top: var(--s-1); border-top: 1px solid color-mix(in srgb, var(--on-cta) 20%, transparent); color: var(--on-cta); font-size: var(--t-small); font-weight: var(--w-body); text-align: center; }
+.wallet button.approve.live { cursor: pointer; transition: transform var(--d-1) var(--ease), background var(--d-1); }
+.wallet button.approve.live:hover { background: var(--cta-hover); }
+.wallet button.approve.live:active { transform: scale(.99) translateY(1px); }
+.wallet button.approve.live:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; } /* S1-13 part 5: the one shared ring (checklist §4), was 4 px */
+.wallet button.approve.live[aria-disabled="true"] { opacity: .75; cursor: progress; }
+.wallet button.approve.live[aria-busy="true"] { opacity: 1; }
+.wallet .aterms { margin: var(--s-1) 0 0; color: var(--ink-2); font-size: var(--t-micro); }
+.wallet .apractice { grid-column: 1 / -1; margin: var(--s-1) 0 0; font-size: var(--t-small); }
+.wallet .astatus { margin: 4px 0 0; min-height: 1.3em; color: var(--ink-2); font-size: var(--t-small); text-align: center; }
+.wallet .astatus:empty { min-height: 0; margin: 0; }
+.wallet .aerr { margin: var(--s-1) 0 0; color: var(--ink); font-size: var(--t-small); text-align: center; }
+.wallet .only { display: flex; align-items: center; gap: 6px; margin: var(--s-1) 0 0; color: var(--ink-2); font-size: var(--t-micro); }
+/* the quiet second actions: the price-swap try and the run page, never a second filled button */
+.wallet .hero .wswap { margin-top: var(--s-2); padding-top: var(--s-1); border-top: var(--hair); }
+.wallet .wswap .linkish { min-height: 44px; margin: 0; padding: 0; }
+.wallet .wswap p { margin: 0; color: var(--ink-2); font-size: var(--t-small); }
+.wallet .aswap { margin: 0 0 var(--s-2); padding: var(--s-1) var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-2); }
+.wallet .replay { display: flex; align-items: center; justify-content: center; gap: var(--s-1); min-height: 48px; margin-top: var(--s-2); padding: 0 var(--s-4); border-radius: var(--r-pill); background: var(--cta); color: var(--on-cta); font-weight: var(--w-strong); font-size: var(--t-small); text-decoration: none; text-align: center; }
+.wallet .replay svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.wallet .replay.quiet { margin-top: var(--s-2); }
+/* Desk-J4: in the hero, Approve is the one full-width block; the run-page link is a content-width outline, the same
+   shape as "Watch the week again", closing the quiet group under the swap. */
+.wallet .hero .replay.quiet { justify-self: start; align-self: flex-start; width: auto; }
+
+/* PayPal's Pay Later message under Approve (PayPal additions 4): PayPal's own element at its own size, in its own words
+   and colours; only our container (a hairline over it) and our one line under it are styled here. */
+.wlater { box-sizing: border-box; min-height: var(--later); margin-top: var(--s-2); padding-top: var(--s-1); border-top: 1px solid var(--line); }
+.wlater paypal-message { display: block; }
+.wlater-yours { margin: 6px 0 0; color: var(--ink-3); font-size: var(--t-micro); line-height: 1.4; }
+.wlater-yours:empty { margin: 0; }
+/* PayPal sent no message: one line saying what the spot is for (the menu's Pay Later lands on this box). */
+.wlater-none { margin: 0; color: var(--ink-3); font-size: var(--t-micro); line-height: 1.4; }
+
+/* ---------- the page under the desk: Ask and its doors on the left, your week and wants on the right ---------- */
+.wallet .under { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-4); align-items: start; margin-top: var(--s-6); padding-top: var(--s-6); border-top: var(--hair); }
+.wallet .ucol { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-2); align-content: start; min-width: 0; }
+/* W-8: the two doors (how Goose keeps you safe, the market) side by side under Your week and your wants */
+.wallet .doors { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--s-2); }
+.wallet.no-deal .band:not(:has(.wdesk)) + .under { margin-top: 0; }
+/* each piece a velvet card with one hairline edge, never nested; the doors are rows */
+.wallet .under :is(.ask, .week, .wants), .wallet .settings > .scard { margin: 0; padding: var(--s-3); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); color: var(--ink); }
+.wallet .whead { display: flex; align-items: baseline; gap: var(--s-1); flex-wrap: wrap; margin-bottom: var(--s-2); }
+.wallet .whead h2 { font-size: var(--t-h3); }
+
+/* Ask Goose, drawn by the shared component; skinned as the classic page skins it */
+.wallet .ask .askg { margin: 0; padding: 0; border: 0; }
+.wallet .ask .kicker { color: var(--ink-3); }
+.wallet .ask h2 { margin: 2px 0 var(--s-2); font-size: var(--t-h3); line-height: 1.15; }
+.wallet.no-deal .ask h2 { font-size: var(--t-h2); font-weight: var(--w-display); letter-spacing: var(--track-display); }
+.wallet .askrow { align-items: center; margin: 0; padding: var(--s-1) var(--s-1) var(--s-1) var(--s-2); border: 1px solid var(--line); border-radius: var(--r-3); background: var(--well); }
+.wallet .askrow:focus-within { outline: 0; border-color: var(--ink-2); }
+.wallet .askrow textarea { min-height: 48px; padding: 11px 0; color: var(--ink); font-size: var(--t-body); line-height: 1.35; }
+.wallet .askrow textarea::placeholder { color: var(--ink-3); opacity: 1; }
+.wallet .askrow .btn { align-self: stretch; min-height: 48px; min-width: 56px; padding: 0 var(--s-3); font-size: var(--t-small); }
+.wallet .askrow .btn[disabled]:not([aria-busy="true"]) { opacity: .6; background: none; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-2); }
+/* Desk-J4: with a deal on screen, Approve is the one cream fill; Ask is a plum button with an ink edge. With no deal
+   Ask is the one action and keeps the cream. */
+.wallet.has-deal .askrow button.btn:not([disabled]) { background: var(--surface-2); color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink-2); }
+.wallet.has-deal .askrow button.btn:not([disabled]):hover { background: var(--well); }
+.wallet .askrow .snap { min-height: 48px; padding: 0 var(--s-2); background: none; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-2); }
+.wallet .askrow .snap:hover { background: var(--well); }
+.wallet .askrow .snapin:focus-visible + .snap { outline: 2px solid var(--focus); outline-offset: 3px; }
+/* The photo input is drawn by its label (.snap); its own button text would otherwise count as width it hides. */
+.wallet .askrow .snapin { font-size: 0; padding: 0; border: 0; } .wallet .askrow .snapin::file-selector-button { display: none; }
+.wallet .ask .muted, .wallet .ask .small { color: var(--ink-2); }
+.wallet .ask .mic { margin: var(--s-1) 2px 0; color: var(--ink-3); font-size: var(--t-micro); }
+/* Desk-J3: at desktop the Ask card has the same 32 px of room on all four sides; its last line brings no margin of its own. */
+@media (min-width: 900px) { .wallet .under .ask { padding: var(--s-4); } }
+.wallet .ask .saw > :last-child { margin-bottom: 0; }
+.wallet .saw { margin: var(--s-2) 0 0; padding-top: var(--s-2); border-top: var(--hair); }
+.wallet .saw > p, .wallet .saw .muted { color: var(--ink-3); font-size: var(--t-micro); }
+.wallet .sawrow { font-weight: var(--w-body); }
+.wallet .sawbox { min-height: 44px; box-sizing: border-box; border: 1px solid var(--line-2); border-radius: var(--r-2); background: var(--well); }
+.wallet .sawbox:focus-within { outline: 0; border-color: var(--ink); }
+.wallet .sawbox input { min-height: 44px; padding-block: 0; color: var(--ink); background: none; font-weight: var(--w-head); font-variant-numeric: tabular-nums; }
+.wallet .sawbox input::placeholder { color: var(--ink-3); opacity: 1; }
+.wallet .sawbox:has(input:placeholder-shown) > span[aria-hidden] { color: var(--ink-3); }
+.wallet .sawx { color: var(--ink-2); } .wallet .sawx:hover { color: var(--ink); }
+.wallet .sawpick p { color: var(--ink); }
+.wallet .sawpick button { border: 1px solid var(--line-2); border-radius: var(--r-2); background: none; color: var(--ink); font-weight: var(--w-strong); font-variant-numeric: tabular-nums; }
+.wallet .sawpick button:hover { background: var(--well); }
+.wallet .gchip { min-height: 44px; padding: 4px var(--s-2); border-radius: var(--r-1); background: none; box-shadow: inset 0 0 0 1px var(--line-2); color: var(--ink); font-weight: var(--w-body); }
+.wallet .gchip[data-over] { background: none; box-shadow: inset 0 0 0 1px var(--gold-line); color: var(--gold); }
+.wallet .gchip .gforget { color: var(--ink-2); }
+.wallet .gchips .fict { color: var(--ink-3); }
+.wallet .askdone, .wallet .askdone a { color: var(--ink); }
+.wallet .asknote { color: var(--ink-2); }
+.wallet .askdot { width: 6px; height: 6px; margin: 0 var(--s-1) 2px 0; background: var(--ink-2); animation: none; }
+.wallet details.readby summary { color: var(--ink-2); }
+.wallet :is(.ladhear, details.readby summary) { display: inline-flex; align-items: center; min-height: 44px; padding: 0; margin-left: 0; }
+.wallet .ladans { padding: var(--s-2) var(--s-3) 4px; border: 1px solid var(--line-2); border-radius: var(--r-3); background: none; }
+.wallet .ladder[data-layer="cheaper"] .ladans, .wallet .ladder[data-layer="over-budget"] .ladans { background: none; border-color: var(--line-2); }
+.wallet .ladder[data-layer="cheaper"] .ladline { color: var(--ink); }
+.wallet .ladline { font-family: var(--display); font-weight: var(--w-head); letter-spacing: var(--track-head); }
+.wallet .ladno { padding: var(--s-1) var(--s-2); border: 1px dashed var(--line-2); border-radius: var(--r-2); background: none; }
+.wallet .ladno .refused { color: var(--ink-2); }
+.wallet .ladno b { color: var(--ink); }
+.wallet .ladsim { border-left: 1px dashed var(--line-2); }
+
+/* The two doors: hairline rows with a mark, a title and one line; the safety story carries the gold egg */
+.wallet :is(.mkt, .safe) { display: flex; align-items: center; gap: var(--s-2); min-height: 64px; padding: var(--s-2) var(--s-3); border: 1px solid var(--card-line); border-radius: var(--r-3); background: none; color: var(--ink); text-decoration: none; transition: background var(--d-1), border-color var(--d-1); }
+.wallet :is(.mkt, .safe):hover { background: var(--well); border-color: var(--line-2); }
+.wallet :is(.mkt, .safe) b { display: block; font-size: var(--t-body); font-weight: var(--w-strong); }
+.wallet :is(.mkt, .safe) span { display: block; color: var(--ink-2); font-size: var(--t-small); }
+.wallet .mkt svg { width: 22px; height: 22px; flex: none; fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.wallet .safe svg.egg { width: 18px; height: 22px; flex: none; }
+
+/* Your week: three counts in light display figures, then the rows they count */
+.wallet .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0; list-style: none; border-top: var(--hair); border-bottom: var(--hair); }
+.wallet .tile { padding: var(--s-2) 0 var(--s-2); }
+.wallet .tile + .tile { padding-left: var(--s-3); border-left: var(--hair); }
+.wallet .tile .n { color: var(--ink); font-family: var(--display); font-size: var(--t-h2); line-height: 1; font-weight: var(--w-display); font-variant-numeric: tabular-nums; }
+.wallet .tile.yes .n { color: var(--gold); }
+.wallet .tile.no .n { color: var(--red); }
+.wallet .tile .t { margin-top: 6px; color: var(--ink-2); font-size: var(--t-micro); line-height: 1.25; }
+.wallet .wnote { margin: var(--s-1) 0 0; color: var(--ink-3); font-size: var(--t-micro); }
+.wallet .wrows { margin-top: var(--s-1); }
+.wallet .wrows summary { display: flex; align-items: center; justify-content: space-between; min-height: 44px; color: var(--ink); font-size: var(--t-small); font-weight: var(--w-strong); cursor: pointer; list-style: none; }
+.wallet .wrows summary::-webkit-details-marker { display: none; }
+.wallet .wrows summary span { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; color: var(--ink-2); font-size: var(--t-body); line-height: 1; }
+@media (prefers-reduced-motion: no-preference) { .wallet .wrows summary span { transition: transform var(--d-1) var(--ease); } }
+.wallet .wrows[open] summary span { transform: rotate(90deg); }
+.wallet .wrows ul { list-style: none; margin: 0; padding: 0; }
+.wallet .wrows li { display: flex; justify-content: space-between; gap: var(--s-2); padding: var(--s-1) 0 var(--s-1) var(--s-2); border-top: var(--hair); border-left: 2px solid var(--line-2); }
+.wallet .wrows li.w-waiting { border-left-color: var(--gold); }
+.wallet .wrows li.w-refused { border-left-color: var(--ink-3); }
+.wallet .wrows li > span b { display: block; font-size: var(--t-small); font-weight: var(--w-strong); }
+.wallet .wrows li > span span { display: block; color: var(--ink-2); font-size: var(--t-micro); line-height: 1.4; }
+.wallet .wrows .p { font-size: var(--t-small); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.wallet .wrows li.w-refused .p { color: var(--ink-3); text-decoration: line-through; text-decoration-thickness: 1px; }
+.wallet .wrows li.w-mismatch { border-left-color: var(--red); background: var(--red-wash); }
+.wallet .wrows li.w-mismatch > span > span { color: var(--ink); }
+.wallet .wrows li.w-mismatch .p { color: var(--red); }
+.wallet .wrows li.w-refunded { border-left-color: var(--gold); }
+
+/* Your wants: one hairline row per want */
+.wallet .wants .whead { margin-bottom: var(--s-1); }
+.wallet .wempty { margin: 0; color: var(--ink); font-size: var(--t-small); }
+/* W-8: the empty list's one action, a quiet link-button to the Ask box (44 px tall, never a second primary). */
+.wallet .wlist { margin: 0; padding: 0; list-style: none; }
+.wallet .want { padding: var(--s-2) 0; border-top: var(--hair); }
+.wallet .want:first-child { border-top: 0; }
+.wallet .want .wtop { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px var(--s-1); height: auto; border: 0; }
+.wallet .want .wtop b { font-size: var(--t-body); font-weight: var(--w-strong); }
+.wallet .wtag { padding: 1px var(--s-1); border-radius: var(--r-1); box-shadow: inset 0 0 0 1px var(--line-2); color: var(--ink-2); font-size: var(--t-micro); white-space: nowrap; }
+.wallet .wwaits { margin: 4px 0 var(--s-1); color: var(--ink-2); font-size: var(--t-small); }
+.wallet .wwarn { margin: 4px 0; color: var(--red); font-size: var(--t-small); line-height: 1.4; }
+.wallet .wwarn::before { content: "\00d7" / ""; margin-right: 6px; }
+.wallet .wacts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-2); font-size: var(--t-small); }
+.wallet .wmax { display: inline-flex; align-items: center; gap: var(--s-1); color: var(--ink-2); }
+.wallet .wmax select { appearance: none; box-sizing: border-box; min-height: 44px; padding: 4px var(--s-4) 4px var(--s-1); border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--well) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1.5 5 5 5-5' fill='none' stroke='%23f4eadc' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center; color-scheme: dark; color: var(--ink); font: inherit; font-variant-numeric: tabular-nums; }
+.wallet .wremove { box-sizing: border-box; min-height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-2); border-radius: var(--r-pill); background: none; color: var(--ink); font: inherit; font-size: var(--t-small); cursor: pointer; transition: border-color var(--d-1); }
+.wallet .wremove:hover { border-color: var(--ink); }
+.wallet .wacts .linkish { min-height: 44px; margin: 0; padding: 4px; }
+/* "Really want" and "Show me tradeoffs" are switches with their state on show: a cream knob slid right when on */
+.wallet .wants .wprio { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; padding: 0 var(--s-2) 0 var(--s-1); border: 1px solid var(--line-2); border-radius: var(--r-1); background: none; color: var(--ink); font: inherit; font-size: var(--t-small); cursor: pointer; }
+.wallet .wants .wprio[aria-checked="true"] { border-color: var(--ink-2); }
+.wallet .wants .wknob, .wallet .wtrade input { position: relative; flex: none; width: 36px; height: 22px; border-radius: var(--r-pill); background: none; box-shadow: inset 0 0 0 1px var(--line-2); }
+.wallet .wants .wknob::after, .wallet .wtrade input::before { content: ""; position: absolute; top: 4px; left: 4px; width: 14px; height: 14px; border-radius: var(--r-pill); background: var(--ink-3); }
+.wallet .wants .wprio[aria-checked="true"] .wknob, .wallet .wtrade input:checked { background: var(--cta); box-shadow: none; }
+.wallet .wants .wprio[aria-checked="true"] .wknob::after, .wallet .wtrade input:checked::before { left: 18px; background: var(--on-cta); }
+.motion .wallet :is(.wants .wknob::after, .wtrade input::before) { transition: left var(--d-1) var(--ease); }
+.wallet .wtrade { display: flex; align-items: center; gap: var(--s-2); min-height: 44px; margin: var(--s-2) 0 0; color: var(--ink-2); font-size: var(--t-small); line-height: 1.45; cursor: pointer; }
+.wallet .wtrade b { color: var(--ink); font-weight: var(--w-strong); }
+.wallet .wtrade input { appearance: none; -webkit-appearance: none; margin: 0; cursor: pointer; }
+/* The dial under each limit: off reads as plain text; on is a protection, so its line is gold */
+.wallet .wdial { margin: var(--s-1) 0 0; padding: var(--s-1) 0 0; border-top: var(--hair); }
+.wallet .wdial p { margin: 0; color: var(--ink-2); font-size: var(--t-micro); line-height: 1.45; }
+.wallet .wdial[data-dial="on"] p { color: var(--gold); }
+.wallet .wdial .linkish { min-height: 44px; }
+.wallet .wdasks { margin: var(--s-2) 0 0; color: var(--ink-2); font-size: var(--t-micro); line-height: 1.45; }
+.wallet .wdasks summary { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); font-size: var(--t-small); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 4px; cursor: pointer; list-style: none; }
+.wallet .wdasks summary::-webkit-details-marker { display: none; }
+.wallet .wdasks summary:hover { color: var(--ink); }
+.wallet .wdasks p { margin: 0; }
+.wallet .wmemory { margin-top: 0; }
+.wallet .wmemory .wlist { margin-top: var(--s-1); }
+.wallet .wmemory .want .wtop { align-items: center; justify-content: space-between; }
+.wallet .wmemory > .linkish { margin-top: var(--s-1); }
+
+/* ---------- Settings: a title, then your limits (a hairline card per category) and what Goose remembers ---------- */
+.wallet .shead { padding: var(--s-5) 0 var(--s-4); }
+.wallet .shead h1 { margin: 0; font-size: var(--t-h1, var(--t-h2)); line-height: 1.04; font-weight: var(--w-display); letter-spacing: var(--track-display); }
+.wallet .shead p { margin: var(--s-2) 0 0; color: var(--ink-2); font-size: var(--t-lead); }
+.wallet .settings { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); align-items: start; }
+.wallet .scard .wlimits .wlist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--s-5); margin-top: 6px; }
+.wallet .scard .wlimits .want { display: flex; flex-direction: column; padding: var(--s-2) 0 var(--s-1); border-top: var(--hair); }
+.wallet .scard .wlimits .want:first-child { border-top: var(--hair); }
+.wallet .scard .wlimits .want p { margin: 4px 0 0; }
+.wallet .scard .wlimits .want .wtop { align-items: center; justify-content: space-between; }
+.wallet .scard .wlimits .wdial { margin-top: auto; padding-top: 4px; border-top: 0; }
+.wallet .scard .wlimits .want { padding-bottom: var(--s-2); }
+.wallet .scard .wlimits .wmax { margin: 4px 0 4px; }
+/* "Set for this demo" is a plain label: gold stays on the limit the deal card shows locked */
+.wallet .settings .linkish { display: inline-flex; align-items: center; min-height: 44px; margin: 4px 0; padding: 0 var(--s-3); border: 1px solid var(--line-2); border-radius: var(--r-pill); font-size: var(--t-small); text-decoration: none; transition: border-color var(--d-1); }
+.wallet .settings .linkish:hover { border-color: var(--ink); }
+.wallet .settings > .scard:has(> .wmemory) { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-template-rows: auto 1fr; align-items: start; column-gap: var(--s-5); }
+.wallet .settings > .scard > .wmemory { grid-row: 1 / span 2; }
+.wallet .settings > .scard:has(> .wmemory) > :not(.wmemory) { grid-column: 2; }
+.wallet .settings .wtrade { margin: 4px 0 0; padding: 0 0 var(--s-2); border-bottom: var(--hair); }
+.wallet .settings:has(> .scard:is([data-state="away"], [data-state="offline"])) { min-height: 40vh; align-content: start; }
+/* Until the limits are read: a screen's room, so the footer under it is off the screen when they land (Wallet.tsx). */
+.wallet .settings[data-reading] { min-height: 100vh; align-content: start; }
+
+/* ---------- the deal's other states: each in the Desk's words and colours ---------- */
+/* Paid: a status where the Approve was, not a control. Fresh (the first time this tab shows the order), it rises in
+   once and the egg's check draws; on a reload it is simply there. */
+.wallet .hero .pslot { position: relative; }
+.wallet .paid { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: var(--s-1); min-height: 64px; padding: var(--s-2) 0 var(--s-2); border: 0; border-top: 1px solid var(--line-2); border-bottom: var(--hair); border-radius: 0; color: var(--ink); text-align: left; }
+.wallet .paid .p1 { display: inline-flex; align-items: center; gap: var(--s-1); font-family: var(--display); font-size: var(--t-h3); line-height: 1.1; font-weight: var(--w-display); font-variant-numeric: tabular-nums; }
+.wallet .paid .p1 svg { width: 18px; height: 22px; overflow: visible; }
+.wallet .hero .pslot .pegg { fill: var(--gold); }
+.wallet .hero .pslot .pk { stroke: var(--on-cta); }
+.wallet .paid .p2 { color: var(--ink-2); font-size: var(--t-micro); overflow-wrap: anywhere; }
+.wallet .paid .oid { color: var(--ink); font-size: var(--t-micro); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.motion .wallet .hero .pslot.fresh .paid { animation: wrise .4s var(--ease) both; }
+.motion .wallet .hero .pslot.fresh .pk { stroke-dasharray: 1; animation: wcheck .34s var(--ease) .3s both; }
+@keyframes wrise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes wcheck { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+/* Undone: the money came back, a protection moment, so its edge and words are gold */
+.wallet .paid.undone { border-top-color: var(--gold-line); }
+.wallet .paid.undone .p1 { color: var(--gold); font-size: var(--t-h3); }
+.wallet .paid.undone .p2 { color: var(--ink-2); font-size: var(--t-small); line-height: 1.4; }
+.motion .wallet .hero .paid.undone .p1 { animation: wrise .4s var(--ease) both; }
+/* Undo on a paid purchase: quiet, under Paid, never louder than the status */
+.wallet .wtake :is(a, .linkish) { display: inline-flex; align-items: center; min-height: 44px; padding-left: 0; padding-right: 0; }
+.wallet .wtake { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: var(--s-1); text-align: left; }
+.wallet .wundo { display: inline-flex; align-items: center; min-height: 44px; margin-top: 6px; padding: 0 var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-2); background: none; color: var(--ink); font: inherit; font-size: var(--t-small); font-weight: var(--w-strong); cursor: pointer; transition: background var(--d-1); }
+.wallet .wundo:hover { background: var(--well); }
+.wallet .wundo-none, .wallet .wundo-done, .wallet .wundo-err { display: block; margin-top: 6px; color: var(--ink-2); font-size: var(--t-micro); }
+.wallet .wundo-err { color: var(--ink); }
+.wallet .wasked { margin: 4px 0 0; color: var(--ink); font-size: var(--t-small); }
+.wallet .wnever { margin-top: 4px; text-align: left; font-size: var(--t-small); }
+.wallet .wnever summary { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); font-weight: var(--w-strong); cursor: pointer; }
+.wallet .wnever summary span { display: inline-block; margin-left: 4px; transition: transform var(--d-1); }
+.wallet .wnever[open] summary span { transform: rotate(90deg); }
+.wallet .wnever p { margin: 4px 0 0; color: var(--ink-2); }
+.wallet .hero .wnever[open] { padding: 0 var(--s-2) var(--s-1); border: 1px solid var(--line); border-radius: var(--r-2); }
+.wallet .wnever-acts a { display: inline-flex; align-items: center; min-height: 44px; font-weight: var(--w-strong); }
+.wallet .wask { display: flex; flex-direction: column; align-items: flex-start; margin-top: 6px; font-size: var(--t-small); text-align: left; }
+.wallet .wask .linkish { min-height: 44px; }
+.wallet .wask p { margin: 0; }
+.wallet .wask .wask-said { margin-top: 4px; padding: var(--s-1) var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-2); }
+/* A hold waiting on PayPal: your money held for you, so a gold hairline; the re-check its one button */
+.wallet .held { display: flex; flex-direction: column; align-items: stretch; gap: var(--s-2); padding: var(--s-2) var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-3); color: var(--ink); text-align: center; }
+.wallet .held .h1 { margin: 0; font-size: var(--t-small); line-height: 1.45; }
+.wallet .held .recheck { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-1); min-height: 48px; padding: 0 var(--s-4); border: 0; border-radius: var(--r-pill); background: var(--cta); color: var(--on-cta); font: inherit; font-size: var(--t-small); font-weight: var(--w-strong); cursor: pointer; }
+/* Waiting out PayPal's 10 seconds: a hairline, never pressable; a short line under the count empties with the seconds */
+.wallet .held .recheck[aria-disabled="true"] { border: 1px dashed var(--line-2); background: none; color: var(--ink-2); cursor: default; font-variant-numeric: tabular-nums; }
+@property --left { syntax: "<number>"; inherits: true; initial-value: 1; }
+.wallet .held .rring { display: none; }
+.wallet .held .recheck[aria-disabled="true"] .rring { display: block; flex: none; width: 24px; height: 1.5px; border-radius: var(--r-pill); background: var(--ink-2); transform: scaleX(var(--left)); transform-origin: 0 50%; }
+.motion .held .recheck { transition: --left 1s linear; }
+.wallet .held .recheck:focus-visible, .wallet .wundo:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+/* A wrong amount captured: both amounts in the threat's red, Undo the one filled button */
+.wallet .wrong { display: flex; flex-direction: column; align-items: stretch; gap: var(--s-2); padding: var(--s-2) var(--s-2); border: 1px solid color-mix(in srgb, var(--red) 45%, transparent); border-radius: var(--r-2); text-align: center; }
+.wallet .wrong .w1 { margin: 0; color: var(--red); font-size: var(--t-body); line-height: 1.4; }
+.wallet .wundo.primary { justify-content: center; min-height: 48px; margin-top: 0; border: 0; background: var(--cta); color: var(--on-cta); font-size: var(--t-small); }
+.wallet .wrong .wundo-done, .wallet .wrong .wundo-none { margin-top: 0; }
+/* One eyebrow (system.md §2): "Waiting for PayPal" is --ink-2 like "Waiting for your tap"; gold is the lock line and the
+   deal, not a status (DD, NITS-1 W-5 b). A wrong amount's eyebrow is --ink-2 too; the threat's red is the 6 px marker
+   dot before it (system.md §2: an eyebrow is never coloured by state, POL-2 ruling; POL-3). */
+.wallet .kicker.k-held, .wallet .kicker.k-paid, .wallet .kicker.k-wrong { color: var(--ink-2); }
+.wallet .kicker.k-wrong::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 var(--s-1) 0 0; border-radius: var(--r-pill); background: var(--red); vertical-align: .14em; }
+
+/* Goose's server not answering: said once, calmly, as a quiet note with a still lamp; never a pulse */
+.wallet :is(.wants:is([data-state="away"], [data-state="offline"]) > .wnote, .aaway) { position: relative; margin: var(--s-1) 0 0; padding: var(--s-2) var(--s-2) var(--s-2) 34px; border: 1px solid var(--line-2); border-radius: var(--r-2); color: var(--ink); font-size: var(--t-small); line-height: 1.45; }
+.wallet :is(.wants:is([data-state="away"], [data-state="offline"]) > .wnote, .aaway)::before { content: ""; position: absolute; left: 14px; top: 19px; width: 7px; height: 7px; border-radius: var(--r-pill); background: var(--ink-3); }
+.wallet .aaway { margin: var(--s-2) 0 var(--s-2); }
+.wallet .away { position: relative; padding: var(--s-2) var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-2); background: var(--page-solid); color: var(--ink); text-align: left; }
+.wallet .away p { margin: 0; }
+.wallet .away .aw1 { display: flex; align-items: center; gap: var(--s-1); font-size: var(--t-small); font-weight: var(--w-strong); line-height: 1.3; }
+.wallet .away .aw2 { margin-top: 4px; padding-left: 17px; color: var(--ink-2); font-size: var(--t-micro); line-height: 1.45; }
+.wallet .away .lamp, .wallet .approve .lamp { flex: none; width: 7px; height: 7px; border-radius: var(--r-pill); background: var(--ink-3); }
+.wallet .away[data-live="away"] .lamp { background: var(--ink-2); }
+.wallet .approve .lamp { display: inline-block; margin-right: 7px; vertical-align: 1px; background: currentColor; opacity: .55; }
+.wallet .away.at-acts { margin: var(--s-2) 0 0; }
+
+/* The phone's deal-waiting bar: a link down to the deal, never a second Approve */
+.wallet .dealbar { display: none; }
+
+/* The foot: one hairline, quiet words */
+.wallet .wfoot { margin: var(--s-8) 0 0; padding: var(--s-3) 0 var(--s-4); border-top: var(--hair); color: var(--ink-3); font-size: var(--t-micro); }
+/* A short page (the empty week, Settings) still ends at the window's foot, and nothing above moves. */
+body.wallet-on { display: flex; flex-direction: column; min-height: 100svh; }
+body.wallet-on .page { flex: 1 0 auto; display: flex; flex-direction: column; width: 100%; box-sizing: border-box; padding-bottom: 0; }
+body.wallet-on #root, body.wallet-on main.wallet { flex: 1 0 auto; display: flex; flex-direction: column; }
+body.wallet-on main.wallet > .wfoot { margin-top: auto; }
+body.wallet-on main.wallet > :is(.under, .settings) { flex-grow: 0; }
+body.wallet-on main.wallet > :is(.under, .settings) + .wfoot { margin-top: var(--s-8); }
+
+
+/* ---------- the phone: one column; the refusal, then the deal and its Approve on the first screen ---------- */
+@media (max-width: 899px) {
+  /* One gutter with every route's bar (S1-3's Needs): 32 px from 721 px, as the Desk's; 16 px on a phone. */
+  body.wallet-on .page { padding: 0 var(--s-4) var(--s-4); }
+}
+@media (max-width: 720px) { body.wallet-on .page { padding-inline: var(--s-2); } }
+@media (max-width: 899px) {
+
+  /* W-8: one column, in reading order: the headline, its line, Ask and its chips, then the deal */
+  .wallet .whero { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-3); padding: var(--s-3) 0 var(--s-5); }
+  .wallet .dhead h1 { max-width: none; font-size: var(--t-h2); line-height: 1.05; }
+  .wallet .dline { margin: var(--s-1) 0 0; font-size: var(--t-body); line-height: 1.4; }
+  .wallet .dlabel { margin: var(--s-1) 0 0; }
+  .wallet .ask .askg.ahero { margin-top: var(--s-3); }
+  /* brand.md 10.3 (≤80 words at 390): two chips on a phone, one row; the third is a desktop extra. */
+  .wallet .wchips li:nth-child(n+3) { display: none; }
+  .wallet .wdesk { padding-top: var(--s-4); }
+  .wallet .wdhead { margin-bottom: var(--s-2); }
+  .wallet .wdhead .trayh { display: block; }
+
+  .wallet .desk { display: flex; flex-direction: column; gap: var(--s-2); }
+  .wallet .tray { display: contents; }
+  .wallet .trayh { display: none; }
+  .wallet .scam { order: 1; padding: var(--s-2) var(--s-2) 4px; }
+  .wallet .rhead { gap: 0 var(--s-1); }
+  .wallet .rhead h2 { font-size: var(--t-lead); }
+  .wallet .sline { margin: 2px 0 var(--s-1); }
+  .wallet .scam .amt { font-size: var(--t-h3); }
+  .wallet .stamp { gap: var(--s-1); padding: 0; }
+  .wallet .stamp b { font-size: var(--t-body); } .wallet .stamp small { font-size: var(--t-micro); }
+  /* one level line on a phone, "Set aside by the Watcher": the same words, a row shorter */
+  .wallet .stamp > span { display: flex; align-items: baseline; gap: 5px; white-space: nowrap; }
+  .wallet .stamp b { line-height: 1.2; }
+  .wallet .rnote { font-size: var(--t-small); line-height: 1.45; }
+  .wallet .rnote small { font-size: var(--t-micro); margin-bottom: 4px; }
+  .wallet .why { gap: 0; margin-top: 6px; }
+  .wallet .why li { font-size: var(--t-small); }
+  /* The rounds it came back in are in the folded haggle and its ledger row; on a phone the card ends at its links. */
+  .wallet .sfoot { margin-top: 6px; flex-wrap: nowrap; } .wallet .sfoot > span { display: none; }
+  .wallet .hero { order: 2; margin-top: 0; padding: var(--s-2) var(--s-2) var(--s-2); }
+  /* .hero h2 keeps --t-h3: the phone's step is tokens.css's (a second step here read as body text at 17 px) */
+  .wallet .prow { flex-wrap: nowrap; gap: var(--s-2); margin: var(--s-1) 0 4px; }
+  .wallet .price { font-size: var(--t-h2); }
+  .wallet .lim { gap: var(--s-1); padding: 0 0 0 var(--s-1); } .wallet .lim b { font-size: var(--t-body); } .wallet .lim b small { display: inline; }
+  /* the Approve block first, then the reason it's a good price, then the quiet second actions */
+  .wallet .hero .acts { display: contents; }
+  .wallet .hero .acts > * { order: 4; }
+  .wallet .hero .acts > :is(.wswap, .replay) { order: 6; }
+  .wallet .hero .below { order: 5; margin: var(--s-2) 0 0; font-size: var(--t-small); }
+  .wallet .hero:has(.paid) .below { order: 3; margin: 6px 0 var(--s-2); }
+  .wallet .hero .prow { margin-bottom: var(--s-2); }
+  .wallet .hero .wswap { margin-top: var(--s-2); }
+  .wallet .wundo { min-height: 44px; }
+  .wallet .wtake .wundo { align-self: stretch; justify-content: center; }
+  .wallet button.approve.live { font-size: var(--t-body); }
+  .wallet .acts:has(> .aterms) > .only { grid-column: 1 / -1; grid-row: auto; margin-top: 6px; }
+  .wallet .slip { order: 3; padding: var(--s-1) 0; } .wallet .slip q { display: none; } .wallet .slip.v-clear { display: none; }
+  .wallet .clears { order: 4; display: block; margin: 0; padding-top: var(--s-1); border-top: var(--hair); color: var(--ink-3); font-size: var(--t-micro); line-height: 1.5; } .wallet .clears b { color: var(--ink-2); font-weight: var(--w-body); }
+  .wallet .count { order: 5; margin-top: calc(-1 * var(--s-1)); padding-bottom: var(--s-1); border-bottom: var(--hair); font-size: var(--t-micro); }
+  /* Desk-J5: the Watcher's fine print starts where the cards' words start (16 px in), between its two hairlines */
+  .wallet :is(.clears, .count) { padding-inline: var(--s-2); }
+  .wallet .logfold { order: 6; display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 56px; padding: var(--s-1) var(--s-2); border: 1px solid var(--line); border-radius: var(--r-2); background: none; color: var(--ink-3); font: inherit; font-size: var(--t-micro); line-height: 1.4; text-align: left; cursor: pointer; }
+  .wallet .logfold b { display: block; color: var(--ink); font-size: var(--t-small); font-weight: var(--w-strong); }
+  .wallet .logfold > span:last-child { color: var(--ink-2); font-size: var(--t-lead); transition: transform var(--d-1); }
+  .wallet .logfold[aria-expanded="true"] > span:last-child { transform: rotate(90deg); }
+  .wallet .log { order: 7; margin: 0; }
+  .wallet .desk .wswap { order: 8; margin-top: 0; }
+  .wallet .log:not([data-open]) { display: none; }
+  .wallet .log li { grid-template-columns: 62px minmax(0, 1fr) auto; gap: var(--s-1); font-size: var(--t-small); }
+
+  .wallet .under, .wallet .settings { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+  /* W-8: one list on a phone: your week, your wants, then the two doors */
+  .wallet .under { display: flex; flex-direction: column; align-items: stretch; margin-top: var(--s-5); padding-top: var(--s-4); } .wallet .ucol { display: contents; }
+  .wallet .doors { grid-template-columns: minmax(0, 1fr); }
+  .wallet .under :is(.ask, .week, .wants), .wallet .settings > .scard { padding: var(--s-2) var(--s-2); }
+  .wallet.no-deal .ask h2 { font-size: var(--t-h2); } /* .ask h2 keeps --t-h3: the phone's step is tokens.css's */
+  .wallet .askrow { padding-left: var(--s-2); gap: 6px; }
+  .wallet .askrow textarea { font-size: var(--t-body); }
+  .wallet :is(.mkt, .safe) { padding: var(--s-2) var(--s-2); }
+  .wallet .tile .n { font-size: var(--t-h2); }
+  .wallet .tile + .tile { padding-left: var(--s-2); }
+  .wallet .wants .wacts { display: grid; grid-template-columns: 1fr auto; gap: var(--s-1) var(--s-2); }
+  .wallet .wants .wprio { grid-column: 1 / -1; justify-self: start; }
+  .wallet .shead { padding: var(--s-3) 0 var(--s-3); }
+  .wallet .shead h1 { font-size: var(--t-h2); }
+  .wallet .shead p { font-size: var(--t-small); }
+  .wallet .scard .wlimits .wlist { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .wallet .scard .wlimits .want { padding: var(--s-2) 0 6px; }
+  .wallet .settings > .scard:has(> .wmemory) { grid-template-columns: minmax(0, 1fr); }
+  .wallet .settings > .scard > .wmemory { grid-row: auto; }
+  .wallet .settings > .scard:has(> .wmemory) > :not(.wmemory) { grid-column: 1; }
+  .wallet .settings .wtrade { margin-top: var(--s-2); }
+  .wallet .wfoot { margin-top: var(--s-5); }
+  .wallet.has-deal .wfoot { padding-bottom: 76px; }
+  /* Docked to the edge, full width, so the page reads as scrolling under a bar; a gold hairline: the deal waits for you */
+  .wallet .dealbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: center; gap: var(--s-1); min-height: 52px; padding: 0 var(--s-2) env(safe-area-inset-bottom); border-top: 1px solid var(--gold-line); background: var(--page-solid); color: var(--ink); font-size: var(--t-small); font-weight: var(--w-strong); text-decoration: none; font-variant-numeric: tabular-nums; }
+}
+/* Under 480 px the Ask box keeps the want on its own line, Ask and Snap it side by side below it. */
+@media (max-width: 479px) {
+  .wallet .askrow { flex-wrap: wrap; padding: 6px; }
+  .wallet .askrow textarea { flex: 1 1 100%; padding: var(--s-1) var(--s-1) 4px; min-height: 48px; }
+  .wallet .askrow .btn { flex: 1 1 0; justify-content: center; min-height: 48px; }
+}
+
+/* ---------- the replay of the recorded week (about 6 s) ----------
+   Played only when the shopper asks ("Watch the week"; W4: the page opens on the end). Each step's moment is `--at` on
+   its element (first-paint.tsx). Only opacity and transforms move, inside boxes drawn at their final size, so nothing
+   shifts and the deal never moves. Each thing lands once (a fade and an 8 px rise) and nothing loops; the Watcher's
+   phrases underline as it reads them, the struck price strikes, and the verdict lands once. Done,
+   skipped, or with reduced motion asked for, none of this applies and the desk is its end state. */
+@media (prefers-reduced-motion: no-preference) {
+  .desk[data-replay="play"] * { --go: calc(var(--at, 0s) + var(--t0, 0s)); }
+  .desk[data-replay="play"] .slip.enter, .desk[data-replay="play"] .scam.enter { animation: dslip var(--d-3) var(--ease) var(--go) both; }
+  .desk[data-replay="play"] .rnote mark { animation: dmark var(--d-3) var(--ease) var(--go) both; }
+  .desk[data-replay="play"] .stamp { animation: dslip var(--d-3) var(--ease) var(--go) both; }
+  .desk[data-replay="play"] .scam .amt del { animation: ddim var(--d-2) var(--ease) var(--go) both; }
+  .desk[data-replay="play"] .scam .amt del::after { animation: dstrike var(--d-2) var(--ease) var(--go) both; }
+  .desk[data-replay="play"] .count, .desk[data-replay="play"] .clears { animation: dfade var(--d-3) var(--ease) var(--go) both; }
+  .desk[data-replay="play"] .why li { animation: dslip var(--d-3) var(--ease) var(--go) both; }
+  .desk[data-replay="play"] .sfoot { animation: dfade var(--d-3) var(--ease) var(--go) both; }
+  .desk[data-replay="play"] .log li.enter .rn { animation: dfade var(--d-2) var(--ease) var(--go) both; }
+  .desk[data-replay="play"] .log li.enter > span:not(.rn), .desk[data-replay="play"] .log li.enter > b { animation: dslip var(--d-3) var(--ease) var(--go) both; }
+  /* W4 (Round 2's a11y: words held at .5 opacity read 3.1-4.3:1): nothing is ever held dim. A step not yet reached is
+     not there (opacity 0), then lands in --d-3; the deal card and the headline's count never fade at all. */
+}
+@media (prefers-reduced-motion: reduce) { .wallet .skip { display: none; } }
+@keyframes dslip { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes dmark { from { background-size: 0 1.5px; } to { background-size: 100% 1.5px; } }
+@keyframes ddim { from { color: var(--ink); } to { color: var(--ink-3); } }
+@keyframes dstrike { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes dfade { from { opacity: 0; } to { opacity: 1; } }
+
+
+/* W6: a landing on Approve (the menu's, the tour's stop 6, a Tab) brings the whole deal card: its margins reach the card's
+   top and foot, as far as fits above the foot chrome (Wallet.tsx useApproveFit sets --am-t / --am-b on the card). */
+.wallet section.hero #approve { scroll-margin: var(--am-t, 0px) 0 var(--am-b, 0px); }
+
+/* B-11's lockup in the wallet's bar: nav.css places it and "Practice only" at every width now (S1-13; the DD's ~07:50
+   ruling retired the scoped copy here, whose 0 14px padding left the link 34 px tall on a phone). */

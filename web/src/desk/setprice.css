@@ -1,0 +1,8 @@
+/* Set your price: the form a want, a real watch or Find's row uses. Its own file, so Find carries only this. */
+.dk-setprice-line { flex: 1 0 100%; margin: var(--s-1) 0 0; color: var(--ink-2); font-size: var(--t-small); }
+.dk-setprice { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--s-2); margin: var(--s-2) 0; }
+.dk-setprice label { display: grid; gap: 2px; }
+.dk-setprice-in { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; padding: 0 var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-pill); color: var(--ink); }
+.dk-setprice-in:focus-within { border-color: var(--ink-2); }
+.dk-setprice input { width: 5.5ch; min-height: 42px; border: 0; outline: 0; background: none; color: inherit; font: inherit; font-size: 16px; }
+.dk-setprice .dk-pill { min-height: 44px; }

@@ -1,0 +1,293 @@
+/* The scroll story (Track S2). Every class is ds- (or the steps' older dk-story/dk-diff), so nothing here touches the
+   hero, the run or the deal card. Colors, type, space and motion come only from tokens.css. One idea per screen,
+   left-aligned headlines, generous space. Two glass surfaces, each lit by the egg's one warm light: the ticket and the
+   scam caught under step 02. The one gold line is the protection line. Only the moment's card, the difference's payoff
+   line (brand.md 10.7, the two cinematic reveals) and the step rail move, once, as they scroll into view, transform
+   and opacity only, and never under reduced motion. */
+
+/* The rhythm (Joshua, Fri 3:15 PM: "spacious, never empty"): one gap between every pair of sections, half of it on
+   each side: Track B's --section-y (96, 48 on a phone). The hero ends in --section-y too, so hero to the first section
+   is the same gap. Motion is --d-3 throughout, with two named exceptions, both lines that draw across once: the
+   moment's track (--ds-draw) and step 02's gold rule (--ds-rule). Every section starts on one hairline, so each gap
+   (--section, 192 at 1440) has its hairline in the middle (brand.md section 3; the DD's gate on e785023d). */
+
+/* Type: every size is a tokens.css step (the DD's gate on b304f9c0). One named exception, --t-payoff, for the two
+   lines that end an act: the difference's payoff and the close's question. */
+/* The section heads (the steps', the band's) are --t-h1 (the DD, slice 5). The moment's head stays --t-h2 at every
+   width: it sits beside the 104 px price, and at 56 it breaks "The Marsh / Lights ticket". Pinned by story-type.test.
+   At <=720 the hero itself steps down to --t-h1 (hero.css), so the section heads step to --t-h2 there and stay under
+   it (36 > 30). Under 430 px Joshua's headline is smaller still (24, Wed Nov 4, 3d) and the heads stay 30: the DD's call
+   whether they follow. .ds-h2's own rules live in hero.css (the first paint draws one); that sheet loads first, so
+   .ds-close-h here outranks them by source order and keeps --t-payoff. */
+.ds .ds-moment-h { font-size: var(--t-h2); }
+/* The site's one eyebrow is .dk-eyebrow (tokens.css), on the same element; this adds only the story's space under it. */
+.ds-kicker { margin: 0 0 var(--s-3); font-size: var(--t-small); color: var(--ink-3); }
+.ds-small { margin: 0; font-size: var(--t-micro); line-height: 1.5; color: var(--ink-3); }
+.ds-num { font-variant-numeric: tabular-nums lining-nums; }
+
+/* Links and buttons */
+.ds a { color: var(--ink); }
+.ds-textlink { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: 0; background: none; color: var(--ink); font-size: var(--t-small); font-weight: var(--w-strong); text-decoration: none; }
+.ds-textlink .ds-u, .ds a.ds-src .ds-u, .ds-runs .ds-u { text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 6px; transition: text-decoration-color var(--d-1); }
+.ds-textlink:hover .ds-u, .ds a.ds-src:hover .ds-u, .ds-runs a:hover .ds-u { text-decoration-color: var(--ink); }
+.ds-textlink [aria-hidden] { transition: transform var(--d-1) var(--ease); }
+.ds-textlink:hover [aria-hidden] { transform: translateX(2px); }
+.ds-cta, .ds-approve { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 28px; border: 0; border-radius: var(--r-pill); background: var(--cta); color: var(--on-cta); font-size: var(--t-body); font-weight: var(--w-strong); text-decoration: none; white-space: nowrap; transition: background var(--d-1), transform 120ms var(--ease); }
+.ds a.ds-cta { color: var(--on-cta); }
+.ds-cta:hover, .ds-approve:hover { background: color-mix(in srgb, var(--cta) 70%, white); }
+.ds-cta:active, .ds-approve:active { transform: scale(.985) translateY(1px); }
+/* The replay tag: says, on the button itself, that this tap is a replay. */
+.ds-tag { display: inline-block; padding: calc(var(--s-1) / 4) var(--s-1); border-radius: var(--r-pill); box-shadow: inset 0 0 0 1px currentColor; text-transform: uppercase; letter-spacing: var(--track-eyebrow); font-size: var(--t-micro); line-height: var(--lh-micro); font-weight: var(--w-strong); }
+.ds-tag-quiet { opacity: .7; }
+
+/* The reveal: two things move, once each (Round 0's design judge, B's blessing, Fri evening: a fade on every section
+   read as "fade-up on everything"). The moment's card lifts in and its track draws; the step rail lights step by step
+   (and step 02's gold rule traces). Every headline and sentence is simply there. */
+/* The cinematic reveal (brand.md 10.7): the payoff line and the ticket ([data-cine]), each once, opacity 0 -> 1 with a
+   32 px rise, --d-cine on --spring, when the block's top crosses 70% of the screen (Story.tsx). Hidden only under
+   .ds-live (the script ran) and only below the fold at load; the transition belongs to the reveal alone (.ds-in), so
+   hiding a block when the story mounts is instant and never plays a fade-out off screen. */
+.ds-live [data-cine]:not(.ds-in) { opacity: 0; transform: translate3d(0, var(--s-4), 0); }
+/* brand.md 10.7's third named exception: --d-cine (tokens.css, 900 ms), for the payoff line and the ticket only. */
+.ds-live [data-cine].ds-in { transition: opacity var(--d-cine) var(--spring), transform var(--d-cine) var(--spring); }
+
+/* Glass, lit: the egg's warm light sits in the glass itself (velvet alone gives glass nothing to show). The solid
+   fallback (no backdrop-filter, or reduced transparency) comes with the tokens. */
+.ds-ticket, .ds-caught { background: var(--glass-light), var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-line); box-shadow: var(--glass-edge), var(--glass-shadow); border-radius: var(--r-3); }
+
+/* 1. The live moment */
+/* brand.md 10.7, cinematic 2: two equal columns and the ticket a size up, so the price is the picture. Below 1000 px
+   the moment stacks (the copy, then the ticket at its 1440 width), so the price never shrinks: 104, or 72 on a phone.
+   The radius is the glass's own (--r-3, from .ds-ticket, .ds-caught above). */
+.ds-moment { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-8); align-items: start; }
+.ds-ticket { padding: var(--s-6); }
+@media (max-width: 999px) {
+  .ds-moment { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+  .ds-ticket { max-width: var(--ds-ticket-w); }
+}
+.ds-ticket-top { display: flex; justify-content: space-between; gap: var(--s-2); font-size: var(--t-micro); color: var(--ink-3); }
+.ds-ticket-item { margin: var(--s-3) 0 0; font-family: var(--display); font-weight: var(--w-head); font-size: var(--t-h3); line-height: 1.2; letter-spacing: var(--track-head); color: var(--ink); }
+.ds-ticket-seller { margin: 4px 0 0; font-size: var(--t-small); color: var(--ink-2); }
+.ds-ticket-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px var(--s-2); margin: var(--s-4) 0 var(--s-1); }
+.ds-now-price { font-family: var(--display); font-weight: var(--w-display); font-size: var(--t-price); line-height: .95; letter-spacing: -.035em; color: var(--ink); }
+.ds-ticket-price s { font-size: var(--t-lead); color: var(--ink-3); text-decoration-thickness: 1px; }
+
+.ds-track { margin: var(--s-4) 0 0; }
+.ds-track-plot { position: relative; height: 136px; }
+.ds-track-plot svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ds-track-line { fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-linejoin: round; }
+.ds-track-limit { stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 4 5; }
+.ds-track-lim { position: absolute; left: 0; margin-top: 6px; font-size: var(--t-micro); line-height: 16px; color: var(--ink-3); }
+.ds-track-dot { position: absolute; z-index: 1; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: var(--ink); }
+/* The line draws left to right once, when the ticket has landed (a clip that opens; the glass behind it shows through,
+   so no cover is painted). Like the reveal, the transition belongs to the draw alone (.ds-in), so hiding the line when
+   the story mounts is instant. */
+.ds-track-line { clip-path: inset(-4px 0 -4px 0); }
+.ds-track.ds-in .ds-track-line { transition: clip-path var(--ds-draw) var(--ease); }
+.ds-live .ds-track:not(.ds-in) .ds-track-line { clip-path: inset(-4px 100% -4px 0); }
+/* The dot shows once the line has reached it (Moment.tsx's Track adds .ds-shown). */
+.ds-live .ds-track:not(.ds-shown) .ds-track-dot { opacity: 0; }
+.ds-track.ds-shown .ds-track-dot { transition: opacity var(--d-3) var(--spring); }
+.ds-track-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); margin: var(--s-2) 0 0; padding: 0; list-style: none; text-align: center; }
+.ds-track-days li { display: grid; gap: 2px; font-size: var(--t-micro); color: var(--ink-2); }
+.ds-track-days .ds-p { font-variant-numeric: tabular-nums; }
+.ds-track-days li.ds-now { color: var(--ink); font-weight: var(--w-strong); }
+
+.ds-ticket-act { margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid var(--glass-line); }
+.ds-approve { width: 100%; min-height: 56px; }
+.ds-approve svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ds-approve.ds-done { background: none; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-2); cursor: default; white-space: normal; padding: 10px 20px; text-align: center; }
+.ds-approve.ds-done:active { transform: none; }
+.ds-tapline { margin: 12px 0 0; font-size: var(--t-micro); line-height: 1.5; color: var(--ink-2); }
+.ds-after { display: flex; flex-wrap: wrap; gap: 0 var(--s-4); margin-top: 4px; }
+
+/* 2. The three steps: a hairline draws itself down them as you read; the protection step's mark is gold, and the
+   recorded week's scam sits under it, in glass. */
+.dk-story { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-6); }
+.dk-story-head { align-self: start; position: sticky; top: 112px; }
+.dk-steps-story { position: relative; list-style: none; margin: 0; padding: 0 0 0 var(--s-5); display: grid; gap: var(--s-6); }
+.dk-trace { position: absolute; left: 3px; top: 10px; bottom: 10px; width: 1px; background: var(--line); }
+.dk-trace span { position: absolute; inset: 0 0 auto; height: calc(var(--p, 0) * 100%); background: var(--ink-2); }
+.dk-steps-story > li { position: relative; }
+/* A step not reached yet dims its number and title only; its sentence stays readable (.45 on the whole step put the
+   body copy near 2.5:1 on the velvet). */
+.dk-steps-story > li > :is(.dk-n, h3, p) { transition: opacity var(--d-3) var(--ease); }
+.dk-steps-story > li:not(.dk-on) > h3 { opacity: .45; }
+.dk-steps-story > li:not(.dk-on) > .dk-n { opacity: .6; }
+.dk-steps-story > li:not(.dk-on) > p { opacity: .8; }
+.dk-steps-story > li::before { content: ""; position: absolute; left: calc(-1 * var(--s-5)); top: 10px; width: 7px; height: 7px; border-radius: 50%; background: var(--page-solid); box-shadow: inset 0 0 0 1px var(--line-2); transition: background var(--d-3), box-shadow var(--d-3); }
+.dk-steps-story > li.dk-on::before { background: var(--ink); box-shadow: none; }
+.dk-steps-story > li.dk-guard.dk-on::before { background: var(--gold); }
+.dk-n { display: block; font-size: var(--t-micro); color: var(--ink-3); font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+.dk-steps-story h3 { font-size: var(--t-h3); line-height: 1.15; font-weight: var(--w-display); margin: 0 0 8px; }
+.dk-steps-story > li.dk-guard.dk-on > h3 { color: var(--gold); }
+.dk-steps-story > li > p { margin: 0; max-width: 34em; color: var(--ink-2); }
+/* Under step 03, the one link to the page that names the parts (?desk=how), on the steps' text column. Its target is
+   44 px; the half below the words is given back as margin (the ledger's pattern), so the velvet from its words to the
+   next section's hairline is the page's 96, not 107. A flex row, so the margin shortens the paragraph. */
+.ds-steps-more { display: flex; margin: var(--s-3) 0 0; padding-left: var(--s-5); }
+.ds-steps-more .ds-textlink { margin-bottom: -11px; margin-bottom: calc((1lh - 44px) / 2); }
+
+.ds-caught { margin-top: var(--s-3); padding: var(--s-3); max-width: 34em; }
+.ds-caught .ds-eyebrow { margin-bottom: var(--s-1); }
+.ds-caught-h { margin: 0; font-family: var(--display); font-weight: var(--w-head); font-size: var(--t-h3); line-height: 1.25; color: var(--ink); }
+.ds-note { margin: var(--s-3) 0 0; padding: 2px 0 2px var(--s-3); border-left: 1px solid var(--line-2); }
+.ds-note p { margin: 0; font-size: var(--t-body); line-height: 1.55; color: var(--ink); }
+.ds-sellers { margin: var(--s-3) 0 0; padding: 0; list-style: none; border-top: 1px solid var(--glass-line); }
+.ds-sellers li { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); padding: 14px 0; border-bottom: 1px solid var(--glass-line); }
+.ds-who { display: grid; gap: 2px; min-width: 0; }
+.ds-name { font-size: var(--t-body); color: var(--ink); }
+.ds-why { font-size: var(--t-small); color: var(--ink-2); }
+.ds-price { font-size: var(--t-lead); color: var(--ink); white-space: nowrap; }
+.ds-sellers .ds-aside .ds-name, .ds-sellers .ds-aside .ds-price, .ds-sellers .ds-aside .ds-why { color: var(--ink-3); }
+.ds-sellers .ds-over .ds-price { color: var(--ink-2); }
+.ds-protect { position: relative; display: flex; align-items: center; gap: 12px; margin: var(--s-3) 0 0; padding-top: var(--s-3); font-size: var(--t-lead); line-height: 1.4; color: var(--gold); }
+.ds-protect svg { flex: none; width: 24px; height: 24px; fill: none; stroke: var(--gold); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+/* The gold hairline traces across once, when step 3 lights, then stays. */
+.ds-protect-rule { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--gold-line); transform-origin: 0 50%; transition: transform var(--ds-rule) var(--ease); }
+.ds-live .dk-guard:not(.dk-on) .ds-protect-rule { transform: scaleX(0); }
+
+/* 3. The difference, said once (brand.md 10.7, cinematic 1): the setup, then the payoff as the biggest type on the
+   site after the hero. The line that matters is the bright one: the setup is --ink-2, the payoff --ink. */
+.ds .ds-setup { margin: 0; max-width: 20em; font-family: var(--display); font-weight: var(--w-display); font-size: var(--t-h2); line-height: 1.12; letter-spacing: var(--track-display); color: var(--ink-2); text-wrap: balance; }
+.ds .ds-payoff { margin: var(--s-3) 0 0; max-width: 11em; font-family: var(--display); font-weight: var(--w-display); font-size: var(--t-payoff); line-height: 1; letter-spacing: -.03em; color: var(--ink); text-wrap: balance; }
+/* Under the payoff, one quiet sentence: a seller can't raise your limit (Track C, row s2-diff-limits). It starts on
+   the payoff's left edge, at every width (the DD's gate on b304f9c0). */
+
+/* 4. The proof band */
+.ds-band-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
+.ds-band-head .ds-eyebrow { flex-basis: 100%; margin-bottom: 0; }
+.ds-band-row { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); margin-top: var(--ds-head); border-top: var(--hair); border-bottom: var(--hair); }
+.ds-stat { padding: var(--s-5) var(--s-4); }
+.ds-stat + .ds-stat { border-left: var(--hair); }
+.ds-stat:first-child { padding-left: 0; }
+.ds-stat:last-child { padding-right: 0; }
+.ds-impact .ds-band-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ds-impact .ds-fig { font-size: var(--t-h2); }
+.ds-scene { margin: var(--s-5) 0 0; padding-left: var(--s-3); border-left: var(--hair); }
+.ds-scene ol { margin: var(--s-2) 0 0; padding: 0; list-style: none; display: grid; gap: var(--s-1); font-size: var(--t-body); line-height: 1.4; color: var(--ink); }
+.ds-fig { margin: 0; font-family: var(--display); font-weight: var(--w-display); font-size: var(--t-h1); line-height: 1; letter-spacing: var(--track-display); color: var(--ink); }
+.ds-say { margin: var(--s-2) 0 0; max-width: 22em; font-size: var(--t-small); line-height: 1.55; color: var(--ink-2); text-wrap: pretty; }
+.ds a.ds-src { display: inline-flex; gap: 6px; align-items: center; min-height: 44px; margin-top: var(--s-1); font-size: var(--t-micro); color: var(--ink); text-decoration: none; }
+.ds-runs { margin: var(--s-2) 0 0; padding: 0; list-style: none; }
+.ds-runs a { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); min-height: 44px; border-top: var(--hair); font-size: var(--t-small); color: var(--ink); text-decoration: none; transition: background var(--d-1); }
+.ds-runs a:hover { background: var(--surface); }
+.ds-runs .ds-num { flex: none; white-space: nowrap; }
+/* The band's three figures are one size, --t-h1 (the DD's gate on b304f9c0), so their numerals share a baseline; the
+   blind test leads by its wider column and the line under it, not by a bigger number. */
+
+/* 5. The close */
+.ds-close { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-8); align-items: center; }
+.ds-close-copy { grid-column: 1; grid-row: 1; }
+/* The close's question shares the payoff's size (--t-payoff): the two lines that end an act. */
+.ds-close-h { font-size: var(--t-payoff); line-height: 1.02; letter-spacing: -.02em; }
+/* The answer, a step under the question, on one line (at full size it would wrap to "Try to trick / Goose."). */
+.ds-close-2 { margin-top: .12em; font-size: .68em; color: var(--ink-2); white-space: nowrap; }
+.ds-close-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-4); margin-top: var(--s-5); }
+.ds-close-notes { margin-top: var(--s-5); padding-top: var(--s-3); border-top: var(--hair); max-width: 36em; }
+.ds-close-notes p { margin: 0 0 var(--s-1); font-size: var(--t-small); line-height: 1.55; color: var(--ink-2); }
+.ds-close-notes a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 4px; transition: text-decoration-color var(--d-1); }
+.ds-close-notes a:hover { text-decoration-color: var(--ink); }
+.ds-close-egg { grid-column: 2; grid-row: 1; position: relative; justify-self: center; width: 168px; height: 222px; }
+.ds-close-egg img { position: relative; z-index: 1; display: block; width: 168px; height: auto; }
+/* A contact shadow: a soft, flat ellipse (blurred), not a gradient. */
+.ds-close-shadow { position: absolute; left: 50%; bottom: 0; width: 120px; height: 14px; margin-left: -60px; border-radius: 50%; background: rgb(var(--elev) / .55); filter: blur(7px); }
+.ds-nowrap { white-space: nowrap; }
+
+@media (min-width: 721px) {
+  /* The moment's words sit at the ticket's middle, not over 300 px of empty column; the close's egg a size up, so it
+     holds its column instead of floating. */
+  .ds-moment-copy { align-self: center; }
+  .ds-close-egg { width: 216px; height: 286px; }
+  .ds-close-egg img { width: 216px; }
+  .ds-close-shadow { width: 154px; margin-left: -77px; }
+}
+
+/* Phone: one column, the same order, the same rhythm a size down. */
+@media (max-width: 720px) {
+  .ds { --ds-head: var(--s-5); }
+  .ds-moment, .ds-close, .dk-story { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+  .ds-ticket { padding: var(--s-3); }
+  .ds-track-plot { height: 104px; }
+  .ds .ds-payoff { margin-top: var(--s-2); }
+  .dk-story { gap: var(--s-5); }
+  .dk-story-head { position: static; }
+  .dk-steps-story { gap: var(--s-5); padding-left: var(--s-4); }
+  .ds-steps-more { padding-left: var(--s-4); }
+  .dk-steps-story > li::before { left: calc(-1 * var(--s-4)); }
+  .ds-caught { padding: var(--s-3); margin-left: calc(-1 * var(--s-4)); }
+  .ds-caught-h { font-size: var(--t-lead); }
+  .ds-band-row { grid-template-columns: minmax(0, 1fr); border-bottom: 0; }
+  .ds-impact .ds-band-row { grid-template-columns: minmax(0, 1fr); }
+  .ds-impact .ds-stat { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s-3); align-items: center; }
+  .ds-impact .ds-say { grid-column: 1 / -1; }
+  .ds-impact a.ds-src { grid-column: 2; grid-row: 1; margin-top: 0; }
+  .ds-stat { padding: var(--s-4) 0; }
+  .ds-stat + .ds-stat { border-left: 0; border-top: var(--hair); }
+  .ds-stat:last-child { border-bottom: var(--hair); }
+  .ds-close { row-gap: var(--s-3); }
+  .ds-close-copy { grid-row: 2; grid-column: 1; }
+  .ds-close-egg { grid-row: 1; grid-column: 1; justify-self: start; width: 96px; height: 128px; margin-bottom: -8px; }
+  .ds-close-egg img { width: 96px; }
+  .ds-close-shadow { width: 72px; margin-left: -36px; height: 10px; }
+}
+
+/* Desk's fixed grain drifts up at 3% of scroll (Desk.tsx's paint), and its 10% bleed ran out on this longer page,
+   leaving a flat band at the bottom of the screen. A deeper bleed below covers any scroll this page reaches.
+   Track G (freeze fix): a full-page capture (DevTools, Playwright fullPage) paints this fixed layer once, at the
+   top, so a bleed of 60vh ended in a hard line partway down the landing. The bleed now reaches past the whole
+   landing, so the grain is one continuous background in a capture too. Live scrolling is unchanged. */
+.dk-grain { bottom: -10000px; }
+
+/* Printing (Story.tsx's beforeprint): every block is already final; nothing is caught mid-move. */
+.ds-print *, .ds-print *::before, .ds-print *::after { transition: none !important; }
+
+/* Reduced motion: everything shown, nothing moves. */
+@media (prefers-reduced-motion: reduce) {
+  .ds *, .ds *::before, .ds *::after { transition: none !important; }
+  .ds .ds-mask > span, .ds [data-sr], .ds [data-sr] *, .ds [data-cine] { transform: none !important; opacity: 1 !important; }
+  .ds .ds-track-line { clip-path: none !important; }
+  .ds .ds-track-dot { opacity: 1 !important; }
+}
+/* Print without a beforeprint (some print paths skip the event): every reveal final, the track drawn. */
+@media print {
+  .ds [data-cine] { opacity: 1 !important; transform: none !important; }
+  .ds .ds-track-line { clip-path: none !important; }
+  .ds .ds-track-dot { opacity: 1 !important; }
+}
+
+/* The challenge's place, first under the hero, and the three promises under it (Joshua, Nov 3). Three columns on a wide
+   screen, one on a phone. The chip under "can't overspend" is the hero's chip, same size and same 44 px. */
+.ds-promise-list { list-style: none; margin: var(--s-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); }
+.ds-promise-list h3 { margin: 0; font-family: var(--display); font-weight: var(--w-head); font-size: var(--t-lead); line-height: 1.25; letter-spacing: var(--track-head); color: var(--ink); }
+.ds-promise-list > li > p { margin: var(--s-2) 0 0; color: var(--ink-2); line-height: 1.55; text-wrap: pretty; }
+.ds-promise-list > li > p.ds-promise-fear { margin: 0 0 var(--s-1); font-size: var(--t-small); }
+.ds-promise-try { margin-top: var(--s-3); border: 1px solid var(--line); background: none; color: var(--ink-2); border-radius: var(--r-1); padding: 0 12px; min-height: 44px; font-size: var(--t-small); text-align: left; transition: border-color var(--d-1), color var(--d-1); }
+.ds-promise-try:hover { border-color: var(--line-2); color: var(--ink); }
+.ds-promise-proofs { list-style: none; margin: var(--s-2) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 var(--s-3); }
+.ds-promise-proofs a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-size: var(--t-small); text-decoration: none; }
+@media (max-width: 860px) { .ds-promise-list { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); } }
+
+/* A week with Goose (Week.tsx): calm, still, four rows on hairlines, the day in the eyebrow's small caps beside one sentence. */
+.ds-week-list { list-style: none; margin: 0; padding: 0; max-width: 46em; border-bottom: var(--hair); }
+.ds-week-list > li { display: grid; grid-template-columns: 6em minmax(0, 1fr); column-gap: var(--s-4); align-items: baseline; padding: var(--s-3) 0; border-top: var(--hair); }
+.ds-week-day { font-size: var(--t-micro); font-weight: var(--w-strong); text-transform: uppercase; letter-spacing: var(--track-eyebrow); color: var(--ink-3); }
+.ds-week-list p { margin: 0; font-size: var(--t-body); line-height: 1.55; color: var(--ink); text-wrap: pretty; }
+.ds-week-note { margin-top: var(--s-3); }
+@media (max-width: 520px) { .ds-week-list > li { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-1); } }
+
+/* Real prices on the landing (RealMarket.tsx): nothing at all, no hairline and no button, until the panel has drawn, but its room is held so nothing below jumps when it lands.
+   A fit of the panel's drawn height at each width, read off a real page; `scripts/design-holds.ts` fails when the two drift apart. No answer shuts the room: realprices.css. */
+.ds-real:not(:has(.c3)) { padding: 0; border: 0; min-height: max(875px, 1330px - 90vw); }
+.ds-real:not(:has(.c3)) .ds-real-try { display: none; }
+
+/* 04 to 06, the calm sections (Calm.tsx): the label, one headline, a few plain sentences, on the section's hairline. The
+   pull quote is the headline's own size; what's kept sits on hairlines like the week's rows; no gold, no motion of their own. */
+.ds-quote { max-width: 16em; text-wrap: balance; }
+.ds-calm .ds-lede + .ds-lede { margin-top: var(--s-3); }
+.ds-calm .ds-lede.ds-calm-first { margin-top: 0; }
+.ds-calm-list { list-style: none; margin: var(--s-5) 0 var(--s-3); padding: 0; max-width: 46em; border-bottom: var(--hair); }
+.ds-calm-list > li { padding: var(--s-3) 0; border-top: var(--hair); font-size: var(--t-body); line-height: 1.55; color: var(--ink-2); text-wrap: pretty; }
+.ds-calm .ds-textlink { margin-top: var(--s-2); }
+.ds .ds-doesnt-h { margin: var(--s-6) 0 var(--s-2); }
+.ds-doesnt { margin: 0; max-width: 46em; font-size: var(--t-body); line-height: 1.55; color: var(--ink-2); text-wrap: pretty; }

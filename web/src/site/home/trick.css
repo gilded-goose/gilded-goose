@@ -1,0 +1,226 @@
+/* Home part 6: Try to trick Goose. The form is printed on the paper; the answer lands in a torn patch of navy night pond, the one
+   place a note is tested: the note is a torn newsprint scrap, the goose looks at it and turns away from one it sets
+   aside, and a set-aside note is struck through in vermilion. The count and the latest tries sit
+   under it as ruled records. Stacked on phone, two columns from 900px. */
+
+.trk-head { display: grid; gap: var(--s4); margin-bottom: var(--s8); max-width: 760px; }
+
+.trk-grid { display: grid; gap: var(--s6); align-items: start; }
+/* Spacing here is the grids' gap alone; base.css's `p + p` margin would double it. */
+.trk-grid p { margin-top: 0; }
+.trk-work, .trk-side { display: grid; gap: var(--s4); min-width: 0; }
+
+.trk-form { display: grid; gap: var(--s3); }
+.trk-label { font-size: var(--t-sm); font-weight: var(--w-strong); color: var(--ink); }
+.trk-note {
+  width: 100%;
+  min-height: 120px;
+  padding: var(--s4) var(--s5);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-4);
+  background: var(--surface-raised);
+  font-size: var(--t-md);
+  line-height: var(--lh-body);
+  resize: vertical;
+  transition: border-color var(--d-ui) ease, box-shadow var(--d-ui) ease;
+}
+.trk-note::placeholder { color: var(--ink-3); }
+.trk-note:focus-visible, .trk-money:focus-within {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--focus) 22%, transparent);
+}
+
+.trk-row { display: flex; flex-wrap: wrap; align-items: end; gap: var(--s3); }
+.trk-price { display: grid; gap: var(--s1); }
+.trk-money {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  height: var(--tap);
+  padding: 0 var(--s4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface-raised);
+  color: var(--ink-2);
+  transition: border-color var(--d-ui) ease, box-shadow var(--d-ui) ease;
+}
+.trk-money input {
+  width: 96px;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--t-base);
+  outline: none;
+}
+.trk-row .btn { flex: 1 0 auto; border-radius: var(--r-pill); }
+
+.trk-chips { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); padding-top: var(--s1); }
+.trk-chips-h { width: 100%; font-size: var(--t-xs); color: var(--ink-3); }
+.trk-chip {
+  min-height: var(--tap);
+  padding: 0 var(--s3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--t-sm);
+  transition: border-color var(--d-ui) ease, color var(--d-ui) ease, background-color var(--d-ui) ease, transform var(--d-press) var(--ease-out);
+}
+.trk-chip[aria-pressed="true"] { border-color: var(--ink); color: var(--surface); background: var(--ink); }
+.trk-chip:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .trk-chip:hover { border-color: var(--ink-3); color: var(--ink); }
+}
+
+.trk-error { font-size: var(--t-sm); color: var(--vermilion-ink); }
+.trk-away { font-size: var(--t-sm); color: var(--held); }
+
+.trk-ai {
+  display: grid;
+  gap: var(--s3);
+  justify-items: start;
+  padding-top: var(--s5);
+  border-top: 1px solid var(--line-strong);
+}
+.trk-ai-copy { display: grid; gap: var(--s1); }
+.trk-ai-h { font-family: var(--font-display); font-size: var(--t-lg); font-weight: 600;  }
+.trk-ai-p { font-size: var(--t-sm); color: var(--ink-2); max-width: 60ch; }
+.trk-ai .btn { white-space: normal; text-align: left; }
+
+/* The stone: the empty state teaches the four stamps; an answer replaces it. */
+.trk-stone { position: relative; padding: var(--s5); min-height: 280px; overflow: hidden; }
+.trk-stone > .trk-answer { padding-right: 0; padding-bottom: var(--s16); }
+.trk-empty { display: grid; gap: var(--s4); }
+.trk-empty-h { color: var(--stone-ink-2); font-size: var(--t-sm); }
+.trk-means { display: grid; margin: 0; padding: 0; list-style: none; }
+.trk-means li {
+  display: grid;
+  gap: var(--s2);
+  padding-block: var(--s3);
+  border-top: 1px solid var(--stone-line);
+  color: var(--stone-ink-2);
+  font-size: var(--t-sm);
+}
+.trk-means li:first-child { border-top: 0; padding-top: 0; }
+
+.trk-answer { display: grid; gap: var(--s3); outline: none; }
+.trk-answer:focus-visible { outline: 2px solid var(--stone-ink); outline-offset: var(--s2); }
+.trk-answer-tags { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); font-size: var(--t-sm); color: var(--stone-ink-2); }
+.trk-by { color: var(--stone-ink); font-weight: var(--w-medium); }
+.trk-asked { margin-left: auto; }
+.trk-quote {
+  margin: 0;
+  padding: var(--s4) var(--s5);
+  font-family: var(--font-display);
+  font-size: var(--t-md);
+  font-weight: var(--w-medium);
+  line-height: 1.4;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.trk-answer[data-verdict="aside"] .trk-quote::after {
+  content: "";
+  position: absolute;
+  left: var(--s3);
+  right: var(--s3);
+  top: 50%;
+  height: 2px; /* control */
+  background: var(--vermilion);
+  transform: none;
+  pointer-events: none;
+}
+.trk-verdict { padding-top: var(--s1); }
+.trk-verdict .stamp-die { min-height: 32px; font-size: var(--t-base); }
+.trk-held { color: var(--stone-ink); font-weight: var(--w-medium); }
+.trk-kind { font-size: var(--t-sm); color: var(--stone-ink); }
+.trk-kind span { color: var(--stone-ink-2); margin-right: var(--s2); }
+.trk-small { font-size: var(--t-sm); color: var(--stone-ink-2); }
+.trk-paid { font-weight: var(--w-medium); color: var(--vermilion-ink); }
+.stone .trk-paid { color: var(--vermilion-stone); }
+
+.trk-how { border-top: 1px solid var(--stone-line); padding-top: var(--s2); font-size: var(--t-sm); color: var(--stone-ink-2); }
+.trk-how summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap);
+  color: var(--stone-ink);
+  cursor: pointer;
+  list-style: none;
+}
+.trk-how summary::-webkit-details-marker { display: none; }
+.trk-how summary::after { content: "›"; margin-left: var(--s2); transition: transform var(--d-ui) var(--ease-out); }
+.trk-how[open] summary::after { transform: rotate(90deg); }
+.trk-how dl { display: grid; gap: var(--s2); margin: 0 0 var(--s2); }
+.trk-how dl div { display: grid; gap: var(--s1); }
+.trk-how dt { color: var(--stone-ink); font-weight: var(--w-medium); }
+.trk-how dd { margin: 0; overflow-wrap: anywhere; }
+
+/* The count and the latest tries: records on the bench. */
+.trk-count, .trk-feed {
+  display: grid;
+  gap: var(--s3);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line-strong);
+}
+.trk-count-h { display: flex; align-items: center; gap: var(--s2); font-size: var(--t-sm); font-weight: var(--w-medium); color: var(--ink-2); }
+.trk-count-line { min-height: 48px; color: var(--ink-3); }
+.trk-count-none { color: var(--ink-2); }
+.trk-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3) var(--s4); margin: 0; padding: 0; list-style: none; }
+.trk-split li { display: grid; gap: 0; min-width: 0; }
+.trk-split-n { font-family: var(--font-display); font-size: var(--t-2xl); font-weight: 600; font-stretch: 100%; line-height: 1; letter-spacing: -0.02em; color: var(--ink); }
+.trk-split-w { font-size: var(--t-xs); color: var(--ink-2); }
+.trk-split li[data-verdict="aside"] .trk-split-w { color: var(--vermilion-ink); }
+.trk-split li[data-verdict="held"] .trk-split-w { color: var(--held); }
+.trk-split li[data-verdict="over"] .trk-split-w { color: var(--lead); }
+.trk-split li[data-verdict="clear"] .trk-split-w { color: var(--gold-ink); }
+
+.trk-tries { display: grid; margin: 0; padding: 0; list-style: none; }
+.trk-tries li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "stamp when" "kind kind";
+  align-items: center;
+  gap: var(--s1) var(--s3);
+  padding-block: var(--s2);
+  border-top: 1px solid var(--line);
+  font-size: var(--t-sm);
+}
+.trk-tries li:first-child { border-top: 0; }
+.trk-tries .stamp-die { min-height: 24px; font-size: var(--t-xs); }
+.trk-tries .stamp { grid-area: stamp; }
+.trk-try-kind { grid-area: kind; min-width: 0; color: var(--ink); }
+.trk-try-when { grid-area: when; justify-self: end; color: var(--ink-3); white-space: nowrap; }
+.trk-missed { font-size: var(--t-sm); color: var(--stone-ink); }
+.trk-paid-tag { font-weight: var(--w-strong); color: var(--vermilion-ink); }
+.trk-feed .trk-small { color: var(--ink-3); }
+
+@media (min-width: 761px) {
+  .trk-stone { padding: var(--s8); min-height: 360px; }
+  .trk-stone > .trk-answer { padding-right: 0; padding-bottom: var(--s20); }
+  .trk-means li { grid-template-columns: 180px 1fr; align-items: center; gap: var(--s4); }
+  .trk-split { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .trk-quote { font-size: var(--t-md); }
+  .trk-tries li { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "stamp kind when"; gap: var(--s3); }
+}
+
+@media (max-width: 760px) {
+  .trk-quote { font-size: var(--t-base); }
+  .trk-ai .btn { width: 100%; justify-content: center; text-align: center; }
+}
+
+@media (min-width: 900px) {
+  .trk-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s8); }
+}
+
+@media (min-width: 900px) and (max-width: 1099px) {
+  .trk-split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trk-chip, .trk-note, .trk-money { transition: none; }
+  .trk-chip:active { transform: none; }
+}

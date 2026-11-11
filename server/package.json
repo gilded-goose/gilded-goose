@@ -1,0 +1,26 @@
+{
+  "name": "@goose/server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "TURSO_DATABASE_URL= TURSO_AUTH_TOKEN= PING_PUSH= VAPID_PUBLIC_KEY= VAPID_PRIVATE_KEY= VAPID_SUBJECT= RENDER= RENDER_EXTERNAL_URL= RENDER_GIT_COMMIT= node --watch --env-file=../.env src/main.ts",
+    "start": "node --env-file=../.env src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "echo server runs TypeScript directly on Node 22+"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.91.1",
+    "@gilded-goose/trust": "workspace:*",
+    "@goose/core": "workspace:*",
+    "@hono/node-server": "2.1.5",
+    "@libsql/client": "^0.18.0",
+    "@paypal/agent-toolkit": "1.11.0",
+    "hono": "^4.10.0",
+    "undici": "7.30.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}

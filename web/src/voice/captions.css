@@ -1,0 +1,49 @@
+/* Track V (042): Goose's captions and mute toggle (web/src/voice/captions.ts). A small velvet glass bar under the page's
+   header (never over it: the menu and the nav stay reachable while a line plays; captions.ts places it under the
+   header it finds, this `top` is the fallback). It carries the Desk's tokens on every page the way the menu does
+   (`.gv-cap` sits beside `.gm-root` in web/src/desk/tokens.css), and never covers the bottom, where Approve lives on a phone. */
+.gv-cap {
+  position: fixed; z-index: 2147483000; top: calc(env(safe-area-inset-top, 0px) + 64px); left: 50%;
+  display: flex; align-items: center; gap: 12px; box-sizing: border-box;
+  width: max-content; max-width: min(560px, calc(100vw - 32px)); padding: 6px 18px 6px 6px;
+  border-radius: var(--r-3); border: 1px solid var(--glass-line);
+  background: var(--glass-bg); color: var(--ink);
+  box-shadow: var(--glass-edge), var(--glass-shadow);
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  font: var(--w-body) var(--t-small)/1.4 var(--display);
+  opacity: 0; transform: translate(-50%, -4px);
+  pointer-events: none; /* the words never take a tap meant for the page under them; only Mute does */
+  transition: opacity var(--d-1) var(--ease), transform var(--d-1) var(--ease);
+}
+.gv-cap[hidden] { display: none; }
+/* Round 6b B1: over a landed run it steps aside (captions.ts `clear`); kept in layout, so it can tell when it's clear again. */
+.gv-cap[data-aside] { visibility: hidden; }
+.gv-cap.gv-in { opacity: 1; transform: translate(-50%, 0); }
+.gv-words { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.gv-cap[data-muted="1"] .gv-words { color: var(--ink-2); }
+
+.gv-mute {
+  pointer-events: auto;
+  flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; min-width: 44px; padding: 0 12px 0 10px;
+  border-radius: var(--r-1); border: 1px solid var(--line-2); background: transparent; color: inherit;
+  font: inherit; font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: .01em; cursor: pointer;
+  transition: background-color var(--d-1), color var(--d-1), border-color var(--d-1);
+}
+.gv-mute svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.gv-mute svg path:first-child { fill: currentColor; stroke: none; }
+.gv-mute:hover { border-color: var(--ink-3); }
+.gv-mute[aria-pressed="true"] { background: var(--cta); color: var(--on-cta); border-color: var(--cta); }
+.gv-mute:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Announced, never seen: the screen reader's copy of the words. */
+.gv-live { position: fixed; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gv-cap, .gv-mute { transition: none; }
+  .gv-cap { transform: translate(-50%, 0); }
+}
+@media (forced-colors: active) {
+  .gv-cap { border-color: CanvasText; }
+  .gv-mute { border-color: ButtonText; }
+  .gv-mute[aria-pressed="true"] { background: Highlight; color: HighlightText; }
+}

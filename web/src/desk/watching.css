@@ -1,0 +1,17 @@
+/* The Watching list and "Set your price" (Joshua, Nov 5): Your wants' own chunk, off the Desk's first paint. Gold is
+   protection only, so a ping is said in words and weight, not gold. */
+.dk-watching-h { margin: var(--s-3) 0 var(--s-2); font: var(--w-head) var(--t-h3) var(--display); }
+.dk-watch { margin: var(--s-2) 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 2fr); gap: var(--s-2) var(--s-3); }
+.dk-watch dt { color: var(--ink-3); font-size: var(--t-small); }
+.dk-watch dd { margin: 0; color: var(--ink); line-height: 1.45; overflow-wrap: anywhere; }
+.dk-watch dd b { font-weight: var(--w-strong); }
+.dk-pinged .dk-watch div:last-child dd { font-weight: var(--w-strong); }
+.dk-watch-heads { margin: var(--s-1) 0 0; color: var(--ink-2); font-size: var(--t-small); }
+.dk-watch-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-top: var(--s-2); }
+.dk-watch-acts .dk-setprice { margin: 0; }
+.dk-watch-open { width: auto; min-height: 48px; padding: 0 var(--s-4); }
+@media (max-width: 640px) { .dk-watch-open { width: 100%; } }
+.dk-watch-first { margin-top: var(--s-3); }
+.dk-watch-first h2 { margin: 0; font: var(--w-head) var(--t-h3) var(--display); }
+.dk-watch-said { margin: var(--s-3) 0 0; max-width: 40em; color: var(--ink-3); font-size: var(--t-small); line-height: 1.55; }
+@media (max-width: 640px) { .dk-watch { grid-template-columns: minmax(0, 1fr); } }

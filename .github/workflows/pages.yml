@@ -1,0 +1,59 @@
+# Runs only on the live branch (and main, where it deploys after the public flip), only when the mirror's own files
+# change, or by hand (Joshua, Sat Oct 31: about a quarter of October's Actions minutes went here).
+# H5, the backup URL (lever 6): the static seeded demo on GitHub Pages, served under /gilded-goose/.
+# Every push dry-builds it and opens both pages from a static server under that path (the recorded weeks replay
+# in the browser, H1), so the mirror can't rot unseen. Deploying needs a public repo (Pages on a private repo is a
+# paid plan) and runs only on main once the repo is public: Joshua's public flip (Wed Nov 11), plus Settings → Pages →
+# Source: GitHub Actions, turns it on with no other step. No keys, no server: /api never answers there, and the
+# page says live mode isn't answering.
+name: pages
+on:
+  push:
+    branches: [auto/m2-attacks-blocked, main]
+    paths:
+      - .github/workflows/pages.yml
+      - scripts/pages-smoke.ts
+      - web/vite.config.ts
+      - web/prerender.ts
+      - web/*.html
+      - web/public/**
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: corepack enable
+      - run: corepack pnpm install --frozen-lockfile
+      # W64: the mirror is the same product as the hosted link: the wallet at `/`, the attack demo one tap away.
+      - run: GOOSE_BASE=/gilded-goose/ VITE_WALLET=1 corepack pnpm --filter @goose/web build
+      - name: "dry run: the wallet, the demo and the safe page load under /gilded-goose/ with no server"
+        run: |
+          mkdir -p site && cp -r web/dist site/gilded-goose
+          (cd site && python3 -m http.server 4174 >/dev/null 2>&1 &)
+          for i in $(seq 30); do curl -sf http://localhost:4174/gilded-goose/ >/dev/null && break; sleep 1; done
+          corepack pnpm exec playwright install --with-deps chromium
+          node scripts/pages-smoke.ts http://localhost:4174/gilded-goose/
+      - if: github.ref == 'refs/heads/main' && github.event.repository.private == false
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event.repository.private == false
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

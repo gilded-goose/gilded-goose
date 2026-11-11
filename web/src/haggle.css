@@ -1,0 +1,162 @@
+/* "The haggle" (?desk=haggle, Track H; laid out by Track H2): the back room's Midnight. Colours are the back room's
+   --lx-* names (web/src/ledger/midnight.css, the aliases the system spec keeps); type, space, radii and motion are only
+   the Desk's tokens (web/src/desk/tokens.css, in scope because the page's root is also `.dk`), on the Desk's width
+   (1200 content, 32 gutters; 16 on a phone). No pixel size of its own beyond hairlines, marks and the 44/48 px controls.
+   Gold marks only the deal and your max; red (--lx-mark) only the set-aside seller's number and its × mark.
+
+   Layout (Joshua, Fri 3:40 PM: "the haggle page leads with the haggle"): a short title, then the ladder and round by
+   round side by side on the first screen, the deal card under the ladder (beside the rounds). At 1080 px and under the
+   ladder stacks over the rounds and the deal card follows the rounds; the page's sentence and buttons follow the haggle. */
+
+body:has(.hg), body.desk-on:has(.hg) { background: var(--lx-page); }
+.hg {
+  position: relative; min-height: 100vh; background: var(--lx-page); color: var(--lx-ink); font-family: var(--face); color-scheme: dark;
+  font-size: var(--t-body); line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: clip;
+}
+.hg::before { content: ""; position: fixed; inset: 0; background-image: var(--lx-grain); opacity: 0.05; pointer-events: none; z-index: 0; }
+.hg > :not(.gn) { position: relative; z-index: 1; } /* over the grain and light; SiteNav (.gn) keeps its own sticky place */
+.hg *, .hg *::before, .hg *::after { box-sizing: border-box; }
+:where(.hg) :where(p, h1, h2, h3, figure, blockquote) { margin: 0; } /* zero specificity, so each element's own margin wins */
+.hg a { color: inherit; text-decoration-color: var(--lx-edge-2); text-underline-offset: .2em; transition: text-decoration-color var(--d-1) var(--ease); }
+.hg a:hover { text-decoration-color: currentColor; }
+.hg a:focus-visible, .hg button:focus-visible { outline: 2px solid var(--lx-ink); outline-offset: 3px; border-radius: var(--r-1); }
+
+/* The same box as SiteNav's (.dk-nav-in: 1200 with its 32 px gutters inside, 16 at 720 and under), so the haggle's
+   left edge sits under the nav's brand. */
+.hg-wrap { width: 100%; max-width: var(--w-page, 1200px); margin: 0 auto; padding: 0 var(--s-4); }
+@media (max-width: 720px) { .hg-wrap { padding: 0 var(--s-2); } }
+/* CD-3 (Round 4: arrival CLS 0.058): the page's body is a screen tall from the first frame, so the foot starts below the
+   fold before the rows land and never moves into view; it is in its place when a visitor scrolls to it. */
+main.hg-wrap { min-height: calc(100vh - var(--nav-h, 64px)); }
+
+/* The title: short, so the haggle itself is the first screen. One nav layer: the way back is the bar's "Shopper". */
+.hg-intro { padding: var(--s-3) 0 var(--s-2); }
+.hg-title { min-width: 0; max-width: 80ch; }
+.hg-intro h1 { font-family: var(--display); font-size: var(--t-h1, clamp(36px, 4vw, 56px)); line-height: 1.04; font-weight: var(--w-display); letter-spacing: -.012em; }
+.hg-how { font-size: var(--t-lead); line-height: 1.4; color: var(--lx-ink-2); max-width: 80ch; text-wrap: pretty; }
+.hg-title .hg-how { margin-top: var(--s-1); }
+/* The actions sit under the lede at every width (the h1 stands alone), left-aligned with it, in one row so "Watch it
+   again" joins it in place. */
+.hg-title .hg-acts { margin-top: var(--s-2); flex-wrap: nowrap; }
+.hg-source { display: flex; align-items: center; gap: var(--s-1); margin-top: var(--s-2); font-size: var(--t-micro); color: var(--lx-ink); }
+.hg-source i { width: 6px; height: 6px; border-radius: 50%; background: var(--lx-gold); flex: none; }
+.hg-why-week, .hg-said { margin-top: var(--s-1); font-size: var(--t-small); color: var(--lx-ink-2); max-width: 62ch; }
+.hg-said { color: var(--lx-ink); }
+/* brand.md §10.9's state block (SW): what happened at --t-h3, the cause in one --t-body line, one outline pill. */
+.hg-state { max-width: 32em; padding: var(--s-4) 0; }
+.hg-state-t { font-family: var(--display); font-size: var(--t-h3); line-height: 1.2; font-weight: var(--w-head); color: var(--lx-ink); }
+.hg-state-l { margin-top: var(--s-1); font-size: var(--t-body); color: var(--lx-ink-2); }
+.hg-state .hg-btn { margin-top: var(--s-3); }
+
+/* Two hairline pills: the page's lit object is the deal card, and a replay of what is on screen is never the primary
+   (DD, CD-1; system.md §5). One pill, so there is no cream fill here to revive by dropping a class (DD, CD-2 nit). */
+.hg-acts { display: flex; flex-wrap: wrap; gap: var(--s-2); flex: none; }
+.hg-btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--s-4); border-radius: var(--r-pill); border: 0;
+  background: transparent; color: var(--lx-ink); box-shadow: inset 0 0 0 1px var(--lx-edge-2); font: inherit; font-size: var(--t-body); font-weight: var(--w-strong); cursor: pointer; white-space: nowrap;
+  transition: color var(--d-1) var(--ease), box-shadow var(--d-1) var(--ease);
+}
+.hg-btn:active { transform: translateY(1px); }
+/* A disabled pill keeps its solid hairline, quieter, with ink-3 words (system.md §5, Rings). */
+.hg-btn:disabled { color: var(--lx-ink-3); box-shadow: inset 0 0 0 1px var(--lx-edge); cursor: default; transform: none; }
+/* "Watch it play" and "Watch it again" in one cell: the pill keeps the longer label's width (the other is hidden). */
+.hg-lbl { display: inline-grid; }
+.hg-lbl > span { grid-area: 1 / 1; text-align: center; }
+.hg-lbl > span:not([data-on]) { visibility: hidden; }
+/* The replay pill's place, held before there is anything to watch (CD-3): not drawn, not focusable, not heard. */
+.hg-btn[data-off] { visibility: hidden; }
+
+/* The ladder (and the deal under it) on the left, the conversation on the right. */
+/* Beside the rounds (>1080) the left column is sized so the deal card's last line clears the window's bottom 96 px at
+   1440×900 (the tour pill's band; CD-3): the ladder 248 tall (Haggle.tsx), --s-2 above the grid and between ladder and card. */
+.hg-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-6); padding: var(--s-2) 0 var(--s-8); border-top: 1px solid var(--lx-edge); align-items: start; }
+.hg h2 { font-family: var(--display); font-size: var(--t-h3); line-height: 1.2; font-weight: var(--w-head); letter-spacing: var(--track-head); margin-bottom: var(--s-1); }
+.hg-side { position: sticky; top: calc(var(--nav-h, 64px) + var(--s-3)); /* clear of SiteNav's sticky bar */ display: grid; gap: var(--s-2); min-width: 0; }
+.hg-chart { min-width: 0; }
+.hg-key { list-style: none; margin: 0 0 var(--s-1); padding: 0; display: flex; flex-wrap: wrap; gap: 0 var(--s-2); font-size: var(--t-micro); line-height: 1.8; color: var(--lx-ink-2); }
+.hg-key li { display: inline-flex; align-items: center; gap: var(--s-1); }
+.hg-sw { display: inline-block; width: 18px; height: 0; border-top: 2px solid var(--lx-ink-3); }
+.hg-sw-goose { border-top-width: 3px; border-color: var(--lx-ink); }
+.hg-sw-deal { border-color: var(--lx-ink-2); }
+.hg-sw-seller { border-top-style: dotted; }
+/* The ladder's height, in CSS so the first paint is right at every width (`tall` in Haggle.tsx draws the chart to match). */
+.hg-canvas { width: 100%; height: 220px; }
+@media (min-width: 768px) { .hg-canvas { height: 300px; } }
+@media (min-width: 1081px) { .hg-canvas { height: 248px; } }
+/* The ladder's place while it loads: its final height, one still line, no motion of any kind. */
+.hg-hold { display: flex; align-items: center; justify-content: center; height: 100%; border: 1px solid var(--lx-edge); border-radius: var(--r-3); font-size: var(--t-small); color: var(--lx-ink-3); }
+/* The chart's sentence is its text alternative; the rounds beside it carry every number on screen, so it is read, not shown. */
+.hg-chart figcaption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.hg-talk { min-width: 0; }
+.hg-rounds { list-style: none; margin: 0; padding: 0; display: grid; }
+.hg-round { display: grid; gap: var(--s-1); padding: var(--s-2) 0; border-bottom: 1px solid var(--lx-edge); }
+.hg-round:first-child { padding-top: 0; }
+@media (prefers-reduced-motion: no-preference) { .hg-round { animation: hg-in var(--d-3) var(--spring) both; } }
+@keyframes hg-in { from { opacity: 0; transform: translateY(8px); } }
+/* The replay redraws the ladder only (DD, CD-2; system.md §7): a round the ladder hasn't reached yet stays laid out at
+   ink-3 and comes to its colours as its round draws. Colour only; nothing moves. */
+.hg-round :is(h3, .hg-who, .hg-who b, .hg-who s, .hg-note, .hg-reason, .hg-tag) { transition: color var(--d-1) var(--ease); }
+.hg-round.hg-yet :is(h3, .hg-who, .hg-who b, .hg-who s, .hg-note, .hg-reason, .hg-tag) { color: var(--lx-ink-3); }
+.hg-round h3 { font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: var(--track-eyebrow); text-transform: uppercase; color: var(--lx-ink-2); }
+/* SW: a round is folded to its one fact, Goose's move (and any seller set aside); a tap opens its asks, notes and reasons.
+   The summary is the round's 44 px row: its label in a fixed column so every sentence starts on one line, the move in ink, a chevron that turns when open. */
+.hg-round details > summary { display: grid; grid-template-columns: calc(var(--s-8) + var(--s-3)) minmax(0, 1fr); align-items: baseline; gap: 0 var(--s-2); min-height: 44px; padding: var(--s-1) var(--s-4) var(--s-1) 0; position: relative; cursor: pointer; list-style: none; border-radius: var(--r-1); }
+.hg-round details > summary::-webkit-details-marker { display: none; }
+.hg-round details > summary::after { content: "›"; position: absolute; right: var(--s-1); top: var(--s-1); color: var(--lx-ink-3); transition: transform var(--d-1) var(--ease); }
+.hg-round details[open] > summary::after { transform: rotate(90deg); }
+.hg-round details > summary:focus-visible { outline: 2px solid var(--lx-ink); outline-offset: 3px; }
+.hg-round summary > h3 { grid-area: 1 / 1; margin: 0; }
+.hg-round summary > :not(h3) { grid-column: 2; justify-self: start; }
+.hg-round summary .hg-tag { margin-left: 0; }
+.hg-sum { font-size: var(--t-small); color: var(--lx-ink); }
+.hg-open { display: grid; gap: var(--s-1); padding: 0 0 var(--s-1); }
+.hg-round.hg-yet .hg-sum { color: var(--lx-ink-3); }
+.hg-msg { display: grid; gap: 0; }
+.hg-who { font-size: var(--t-small); color: var(--lx-ink-2); }
+.hg-who b { font-weight: var(--w-strong); color: var(--lx-ink); font-variant-numeric: tabular-nums lining-nums; }
+.hg-note { padding-left: var(--s-2); border-left: 1px solid var(--lx-edge-2); font-size: var(--t-small); color: var(--lx-ink-3); font-style: italic; overflow-wrap: anywhere; }
+.hg-aside .hg-who s { color: var(--lx-mark); text-decoration-thickness: 1.5px; }
+.hg-tag { display: inline-block; margin-left: var(--s-1); padding: 0 var(--s-1); border-radius: var(--r-pill); font-size: var(--t-micro); line-height: 1.6; color: var(--lx-ink-2); box-shadow: inset 0 0 0 1px var(--lx-edge-2); }
+/* The refusal reads under the quoted note it answers, so it indents to the note's text (the note's rule is 1px + --s-2). */
+.hg-aside .hg-reason { padding-left: calc(var(--s-2) + 1px); }
+.hg-reason { font-size: var(--t-small); color: var(--lx-ink-3); max-width: 60ch; text-wrap: pretty; }
+.hg-goose { margin-left: var(--s-3); padding: var(--s-1) var(--s-2); border-radius: var(--r-3); background: var(--lx-raised); border: 1px solid var(--lx-edge); }
+.hg-goose .hg-who { color: var(--lx-ink); }
+/* Gold edges belong to the deal card alone (spec §5); the take is marked by the gold point on the ladder. */
+.hg-next { padding: var(--s-2) 0; font-size: var(--t-micro); color: var(--lx-ink-3); }
+
+/* The deal card: one card, its price the one big number. */
+.hg-end { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: var(--s-1) var(--s-3); padding: var(--s-3); border-radius: var(--r-3); border: 1px solid var(--lx-edge); border-bottom: 2px solid color-mix(in srgb, var(--lx-gold) 62%, transparent); background: var(--lx-raised-2); }
+.hg-end > :not(.hg-end-top) { grid-column: 2; }
+.hg-end-top { grid-row: 1 / span 3; }
+.hg-end-k { font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: var(--track-eyebrow); text-transform: uppercase; color: var(--lx-ink-2); }
+.hg-end-big { font-family: var(--display); font-size: var(--t-num, 40px); line-height: 1.05; font-weight: var(--w-display); letter-spacing: -.01em; color: var(--lx-gold); font-variant-numeric: tabular-nums lining-nums; }
+.hg-end > p:not([class]) { font-size: var(--t-small); color: var(--lx-ink); text-wrap: pretty; }
+.hg-link { color: var(--lx-ink) !important; white-space: nowrap; }
+.hg-talk .hg-end { margin-top: var(--s-3); }
+
+
+.hg-foot { padding-top: var(--s-4); padding-bottom: var(--s-6); border-top: 1px solid var(--lx-edge); }
+.hg-foot p { font-size: var(--t-micro); color: var(--lx-ink-3); max-width: 70ch; }
+
+@media (max-width: 1080px) {
+  .hg-intro { padding-bottom: var(--s-3); }
+  .hg-grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); padding-top: var(--s-3); padding-bottom: var(--s-3); }
+  .hg-side { position: static; gap: var(--s-3); }
+}
+@media (max-width: 767px) {
+  .hg-intro { padding: var(--s-2) 0 var(--s-2); }
+  .hg-grid { gap: var(--s-3); padding: var(--s-2) 0 var(--s-3); }
+  /* Both pills on one row at 390: the phone's quieter pill (44 px touch target, --t-small, --s-2 sides). */
+  .hg-acts .hg-btn { flex: 0 1 auto; min-height: 44px; padding: 0 var(--s-2); font-size: var(--t-small); }
+  .hg-source { min-height: calc(2 * 1.5 * var(--t-micro)); } /* the loading line is one line, the source two: hold it */
+  .hg-key { min-height: calc(2 * 1.8 * var(--t-micro)); } /* the sellers' keys arrive with the rows: hold their second line */
+  .hg-goose { margin-left: var(--s-2); }
+  /* SW 4 (the DD: one --s-* step, no raw nudge): the rounds sit lower under their heading at 390 (--s-4, not --s-1), so at
+     390x844 the tour strip's top edge (786) runs above Round 2's whole summary box, never through it or its ink. */
+  .hg-talk > h2 { margin-bottom: var(--s-4); }
+  .hg-end { grid-template-columns: minmax(0, 1fr); padding: var(--s-2); }
+  .hg-end > :not(.hg-end-top), .hg-end-top { grid-column: auto; grid-row: auto; }
+  .hg-foot { padding-top: var(--s-3); padding-bottom: var(--s-5); }
+}

@@ -1,0 +1,773 @@
+/* The Desk: the shopper's page. Every class is dk- so nothing here touches the classic page or the wallet. Colors come
+   only from tokens.css; so do type, radii, space and motion. Joshua's final direction (Oct 30): a jewelry case at night.
+   Flat velvet with a fine grain, the golden egg as the one lit object, everything else quiet and exact: hairlines, a
+   light edge or a shadow (never both), no gradients, no glow, no pulsing, motion only for real activity. */
+.dk { position: relative; min-height: 100vh; background: var(--page-solid); color: var(--ink); font-family: var(--face); font-size: var(--t-body); line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: clip; isolation: isolate; }
+:where(.dk) button { font: inherit; color: inherit; cursor: pointer; } /* :where, so every .dk-x button class wins */
+:where(.dk) h1, :where(.dk) h2, :where(.dk) h3 { font-family: var(--display); font-weight: var(--w-head); letter-spacing: var(--track-head); }
+.dk-wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--s-4); }
+.dk :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: var(--r-1); }
+.dk a.dk-linkbtn { color: inherit; text-decoration: none; }
+/* One click to Studio (Joshua, Nov 5). The head says whether the licence still stands (data-st), so past its day this is simply gone, with nothing to move. */
+.dk h1:focus, .dk h2:focus, .dk h3:focus { outline: none; }
+/* The classic page's busy underline (run.css, safe.css) is global; the Desk says what it's doing in words instead. */
+.dk [aria-busy="true"]::after { content: none; }
+.dk-stage[aria-busy="true"] { cursor: auto; }
+.dk p, .dk-st { text-wrap: pretty; }
+.dk h1, .dk h2, .dk h3 { text-wrap: balance; }
+.dk ::selection { background: color-mix(in srgb, var(--gold) 30%, transparent); }
+
+/* velvet: a fine fixed grain over the flat color, still (S1-3: it no longer drifts with the scroll, so no will-change) */
+.dk-grain { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: var(--grain, 0);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .92 0 0 0 0 .86 0 0 0 1.6 -.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+/* nav: the one nav's rules live in web/src/nav/nav.css (every route draws it). Here, only what is the Desk's own: on the
+   landing its hairline draws itself in once. */
+.dk-intro { transform-origin: 0 50%; animation: draw 1.2s var(--ease) .15s both; }
+@keyframes draw { from { transform: scaleX(0); } }
+.dk-arr { font-size: var(--t-small); transition: transform var(--d-1) var(--ease); }
+.dk-linkbtn:hover .dk-arr { transform: translateX(2px); }
+
+/* masked line reveals: each line rises out of its own mask, once */
+.dk-mask { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.dk-mask > span { display: block; transform: translateY(105%); }
+.dk-hero .dk-mask > span { transform: none; } /* the headline fades with the rest of the hero (story/hero.css), no rise */
+@keyframes rise { to { transform: none; } }
+
+@keyframes fade { from { opacity: 0; } }
+
+/* the Ask field: the page's one glass surface, with a faint edge light that follows the cursor */
+.dk-ask { position: relative; width: min(600px, 100%); display: flex; align-items: center; gap: var(--s-1); padding: var(--s-1) var(--s-1) var(--s-1) var(--s-2); border-radius: var(--r-3); background: var(--card); border: 1px solid var(--line);
+  transition: border-color var(--d-1); animation: fade 700ms var(--ease) 700ms both; }
+.dk-ask::before { content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0; transition: opacity var(--d-2); /* raw-ok: the ring is a 1 px hairline (brand.md section 5: nothing off the grid except 1 px hairlines) */
+  background: radial-gradient(160px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--ink) 70%, transparent), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); } /* raw-ok: #000 is the mask's coverage, not a colour */
+.dk-ask:hover::before { opacity: 1; }
+/* The ring styles the whole field; the input inside never draws its own rectangle. */
+/* Round 0 a11y (S1-3): focus anywhere in the box draws the 2 px focus ring on the whole field, in every browser; where a
+   button inside has the keyboard's focus, its own ring shows instead, so only one ring says where focus is. */
+.dk-ask:focus-within { border-color: var(--ink-2); outline: 2px solid var(--focus); outline-offset: 3px; }
+.dk-ask:has(button:focus-visible) { outline: none; }
+.dk .dk-ask input { flex: 1; min-width: 0; border: 0; background: none; color: var(--ink); font: inherit; font-size: var(--t-body); padding: 12px 0; outline: none; } /* raw-ok: 12 inside a 44 px control (brand.md section 5) */
+.dk-ask input::placeholder { color: var(--ink-3); }
+.dk-ic { width: 44px; height: 44px; border-radius: var(--r-1); border: 0; background: none; display: grid; place-items: center; color: var(--ink-2); transition: background var(--d-1), color var(--d-1); }
+.dk-ic:hover, .dk-ic[aria-pressed="true"] { background: var(--well); color: var(--ink); }
+.dk-ic svg, .dk-go svg { width: 20px; height: 20px; }
+/* The mic (Track V's HoldToTalk): gold while it listens; while the model loads or the words are worked out, the icon
+   dims once and holds still (no loop: looping motion is banned, crit-1 #14), and the line under the box says why. */
+.dk-ic[data-mic="listening"] { background: var(--well); color: var(--gold); }
+.dk-ic svg { transition: opacity var(--d-1) var(--ease); }
+.dk-ic[data-mic="loading"] svg, .dk-ic[data-mic="starting"] svg, .dk-ic[data-mic="working"] svg { opacity: .45; }
+.dk-mic-line { margin: var(--s-2) 0 0; color: var(--ink-2); font-size: var(--t-micro); }
+.dk-mic-line span { color: var(--ink-3); }
+/* S1-9: the Watcher's cue under the box, in the mic line's place and type. */
+.dk-cue { margin: var(--s-2) 0 0; color: var(--ink-2); font-size: var(--t-micro); line-height: var(--lh-micro, 1.4); }
+/* S1-9: a done run's set-aside and deal rows open their sheets (the name is the button; its hit area the row's head). */
+.dk-fr .dk-row-go { justify-self: start; max-width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; font-weight: var(--w-strong); text-align: left; cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--d-1) var(--ease); }
+.dk-fr .dk-row-go::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 72px; }
+.dk-fr .dk-row-go:hover, .dk-fr .dk-row-go:focus-visible { text-decoration-color: currentColor; }
+.dk-fr .dk-row-go:focus-visible { outline: none; }
+.dk-fr:has(.dk-row-go:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (max-width: 720px) { .dk-fr .dk-row-go::after { height: 64px; } }
+@media (prefers-reduced-motion: reduce) { .dk-ic svg { transition: none; } }
+.dk-go { width: 48px; height: 48px; border-radius: var(--r-2); border: 0; background: var(--cta); color: var(--on-cta); display: grid; place-items: center; transition: transform 120ms var(--ease), background var(--d-1); }
+.dk-go:hover { background: var(--cta-hover); }
+.dk-go:active { transform: scale(.96); }
+.dk-go[disabled] { opacity: .55; cursor: progress; }
+/* DK part 9: under a cap it isn't busy, it has nothing to send today, so it takes the empty box's quiet look (line 438),
+   not the busy fade over the lit gold. */
+.dk-go[data-off="cap"] { opacity: 1; cursor: default; background: var(--well); color: var(--ink-3); }
+
+/* the egg: the one lit object. No pedestal, no halo; a soft contact shadow only. */
+.dk-egg { --lean: 0deg; position: relative; width: 320px; height: 420px; display: grid; justify-items: center; }
+.dk-egg-body { position: relative; width: 320px; height: 384px; padding: 0; border: 0; background: none; }
+.dk-egg-lit { position: absolute; inset: 0; }
+.dk-egg-dark { display: none; }
+.dk-egg-tilt { position: absolute; inset: 0; padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; }
+.dk-egg-still, .dk-egg-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.dk-egg-gl { opacity: 0; transition: opacity var(--d-3) var(--ease); }
+.dk-egg-gl.dk-on { opacity: 1; }
+.dk-egg-body:has(.dk-egg-gl.dk-on) .dk-egg-still { opacity: 0; transition: opacity var(--d-3) var(--ease); }
+.dk-egg-shadow { position: absolute; top: 352px; left: 50%; width: 200px; height: 22px; margin-left: calc(-1 * var(--s-12)); border-radius: 50%; background: radial-gradient(closest-side, rgb(var(--elev) / .62), rgb(var(--elev) / .2) 60%, transparent); }
+
+/* stage: the run, on the page under one hairline */
+.dk-stage { position: relative; margin: 0 0 var(--s-8); padding: var(--s-6) 0 0; border-top: var(--hair); scroll-margin-top: 80px; animation: fade var(--d-3) var(--ease) both; }
+.dk-runhead { display: flex; align-items: center; gap: var(--s-2); }
+.dk-live { display: inline-flex; align-items: center; gap: var(--s-1); font-size: var(--t-small); color: var(--ink-2); }
+.dk-live i { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-2); }
+.dk-live.dk-done i { background: var(--ink); }
+.dk-stage :is(h1, h2) { font-size: var(--t-h2); line-height: 1.1; margin: var(--s-1) 0 0; font-weight: var(--w-display); }
+.dk-steps { margin-left: auto; display: flex; gap: var(--s-1); align-items: center; font-size: var(--t-micro); color: var(--ink-3); }
+.dk-steps .dk-dot { width: 16px; height: 1px; background: var(--line-2); }
+.dk-steps .dk-dot.dk-on { background: var(--ink); }
+.dk-steps .dk-now { color: var(--ink); font-weight: var(--w-strong); }
+.dk-fiction { font-size: var(--t-small); color: var(--ink-2); margin: var(--s-1) 0 0; }
+/* A failed ask's failure, under her ask (DK part 8): body size, full ink, the cause under it in small. */
+.dk-s-why { font-size: var(--t-body); color: var(--ink); margin: var(--s-1) 0 0; }
+/* "Here's what I understood." (Joshua, Oct 30): her words, Goose's one sentence, then a quiet card of what code read.
+   Near-monochrome: hairlines, steady spacing, one cream action. Gold stays for protection only. */
+.dk-s-ut { display: flex; flex-direction: column; max-width: 680px; }
+.dk-asked { align-self: flex-end; max-width: 85%; margin: 0 0 var(--s-2); padding: var(--s-1) var(--s-2); border-radius: var(--r-3) var(--r-3) var(--r-1) var(--r-3); background: var(--well); border: var(--hair); color: var(--ink); font-size: var(--t-body); line-height: 1.45; overflow-wrap: anywhere; }
+.dk-s-ut :is(h1, h2) { margin: 0 0 var(--s-2); font-size: var(--t-h2); font-weight: var(--w-head); line-height: 1.2; }
+.dk-ut { padding: var(--s-1) var(--s-4) var(--s-4); border-radius: var(--r-3); background: var(--card); border: 1px solid var(--card-line); animation: arrive var(--d-3) var(--ease) both; }
+.dk-ut dl { margin: 0; }
+.dk-ut dl > div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--s-2); padding: var(--s-3) 0; border-bottom: var(--hair); align-items: baseline; }
+.dk-ut dt { text-transform: uppercase; letter-spacing: var(--track-eyebrow); font-size: var(--t-micro); font-weight: var(--w-strong); color: var(--ink-2); }
+.dk-ut dd { margin: 0; min-width: 0; }
+.dk-ut dd p { margin: 0; color: var(--ink-2); font-size: var(--t-small); line-height: 1.55; text-wrap: pretty; }
+.dk-ut-item { font: var(--w-head) var(--t-h3) var(--display); line-height: 1.2; overflow-wrap: anywhere; }
+.dk-ut-lim { font-family: var(--display); font-size: var(--t-h3); font-weight: var(--w-display); font-variant-numeric: tabular-nums; }
+.dk-ut-cat { margin-left: var(--s-1); color: var(--ink-2); font-size: var(--t-small); }
+.dk-ut dd .dk-ut-held { margin: 0; color: var(--ink); }
+.dk-ut dd .dk-ut-held + p { text-wrap: pretty; } /* H-5: "in code." never alone on a line at 390 */
+.dk-ut-why { margin-top: 0; }
+.dk-ut-why summary { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; color: var(--ink); font-size: var(--t-small); font-weight: var(--w-strong); list-style: none; cursor: pointer; text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 4px; } /* the same quiet link as "Change my words" */
+.dk-ut-why summary::-webkit-details-marker { display: none; }
+.dk-ut-why summary svg { width: 12px; height: 8px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--d-1) var(--ease); }
+.dk-ut-why[open] summary svg { transform: rotate(180deg); }
+.dk-ut dd .dk-ut-why p { margin: 0; }
+.dk-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-1); }
+.dk-tags li { display: inline-flex; align-items: center; gap: 0; min-height: 44px; padding: 0 0 0 var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-pill); font-size: var(--t-small); }
+.dk-tags button { position: relative; width: 44px; height: 44px; border: 0; border-radius: 50%; background: none; color: var(--ink-2); font-size: var(--t-body); line-height: 1; display: grid; place-items: center; transition: background var(--d-1), color var(--d-1); }
+.dk-tags button::after { content: ""; position: absolute; inset: -2px; } /* a 44px target */
+.dk-tags button:hover { background: var(--well); color: var(--ink); }
+.dk-ut-act { display: flex; align-items: center; gap: var(--s-3); margin-top: var(--s-4); }
+.dk-ut-act .dk-approve { width: auto; padding: 0 var(--s-4); }
+.dk-ut-act .dk-why-btn { display: inline-flex; align-items: center; margin: 0; padding: 0; }
+
+/* the live run: sellers arrive one by one, each note is read (a thin line marks the reading), the scam seller is
+   quietly set aside, and the protection and the deal land together. Gold only for that moment. */
+.dk-live-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: var(--s-4); align-items: start; }
+.dk-feed { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-1); align-content: start; min-height: calc(var(--n, 4) * 80px - 8px); }
+.dk-fr { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: var(--s-2); align-items: center; min-height: 72px; padding: var(--s-1) var(--s-2) var(--s-1) var(--s-2); border-radius: var(--r-2); background: var(--card); border: 1px solid var(--card-line); overflow: hidden;
+  animation: arrive var(--d-3) var(--ease) both; transition: border-color var(--d-2), background var(--d-2); }
+@keyframes arrive { from { opacity: 0; transform: translateY(8px); } }
+.dk-fr.dk-reading::after { content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%; background: var(--ink-2); transform-origin: 0 50%; animation: draw 500ms linear both; }
+.dk-fr .dk-pic { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; border: var(--hair); font-family: var(--display); font-size: var(--t-small); color: var(--ink-2); justify-self: center; }
+.dk-fr .dk-who { display: grid; gap: 0; min-width: 0; }
+.dk-fr .dk-name { font-weight: var(--w-strong); font-size: var(--t-body); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dk-fr .dk-st { font-size: var(--t-small); color: var(--ink-2); display: flex; gap: var(--s-1); min-width: 0; }
+.dk-fr .dk-st i { width: 5px; height: 5px; border-radius: 50%; background: var(--ink-3); }
+.dk-fr .dk-price { font-family: var(--display); font-size: var(--t-lead); font-weight: var(--w-head); font-variant-numeric: tabular-nums; }
+.dk-fr.dk-clear .dk-st i { background: var(--ink); }
+.dk-fr.dk-held .dk-st i { background: none; box-shadow: inset 0 0 0 1px var(--ink-2); }
+.dk-fr.dk-best { border-color: var(--line); } /* quiet: the deal card is the one raised object */
+.dk-fr.dk-best .dk-pic { border-color: var(--ink-2); color: var(--ink); }
+/* set aside: quiet by shape (flat, dashed, struck, a hollow marker) at full AA contrast. Never gold. */
+.dk-fr.dk-aside { background: transparent; border-style: dashed; border-color: var(--line-2); }
+.dk-fr.dk-aside .dk-name, .dk-fr.dk-aside .dk-price { color: var(--ink-2); font-weight: var(--w-body); }
+.dk-fr.dk-aside .dk-price { text-decoration: line-through; text-decoration-thickness: 1px; }
+.dk-fr.dk-aside .dk-pic { border-style: dashed; color: var(--ink-3); }
+.dk-fr.dk-aside .dk-st i { background: none; box-shadow: inset 0 0 0 1px var(--ink-3); }
+/* over her cap or the limit (Track H-3, DD §5 "Over-cap row"): an ordinary row (solid ring, solid dot, price not
+   struck), dimmed by colour only. Never the set-aside's dashes or strike: that is the Watcher's verdict alone. */
+.dk-fr.dk-over .dk-name, .dk-fr.dk-over .dk-st, .dk-fr.dk-over .dk-price { color: var(--ink-3); }
+.dk-fr.dk-over .dk-st i { background: var(--ink-3); }
+
+.dk-right { display: grid; gap: var(--s-2); }
+.dk-protect { display: flex; gap: var(--s-2); align-items: flex-start; padding: var(--s-3); border-radius: var(--r-3); background: var(--card); border: 1px solid var(--gold-line); animation: arrive var(--d-3) var(--ease) both; }
+.dk-protect-ic { width: 26px; height: 26px; flex: none; fill: none; stroke: var(--gold); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.dk-protect-ic path + path { stroke-dasharray: 12; stroke-dashoffset: 12; animation: tick var(--d-3) var(--ease) .35s forwards; }
+.dk-protect h3 { font-size: var(--t-h3); line-height: 1.2; margin: 0; font-weight: var(--w-head); }
+.dk-protect .dk-stay { margin: 0; color: var(--gold); font-size: var(--t-body); }
+.dk-stay .dk-why-btn { margin-left: var(--s-1); }
+.dk-why-btn { border: 0; background: none; padding: var(--s-1) 0; margin: calc(-1 * var(--s-1)) 0; min-height: 44px; min-width: 44px; /* DK, the DD at H-7 item 5: a 44 × 44 target at every width */ font-size: var(--t-small); font-weight: var(--w-strong); color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 4px; transition: text-decoration-color var(--d-1); }
+.dk-why-btn:hover { text-decoration-color: var(--ink); }
+.dk-deal2 { padding: var(--s-3); border-radius: var(--r-3); background: var(--card); border: 1px solid var(--card-line); animation: arrive var(--d-3) var(--ease) both; }
+.dk-deal2.dk-final { border-color: var(--gold-line); }
+/* Once the run is done there is one material card, and it is the deal (Joshua, Oct 30); the skip above it is a quiet
+   line on the velvet, with its gold shield. */
+.dk-one .dk-protect { border: 0; border-radius: 0; background: none; padding: 0 0 var(--s-2); border-bottom: 1px solid var(--line); }
+/* The material card: lit like an object in a case. A matte velvet surface a step above the page (no fill gradient, no
+   glow blob), a faint highlight on its top edge, and a warm gold edge light from below: the bottom edge itself is gold,
+   following the corners, with a little warm spill under it. When the run finishes, the case light comes on once. */
+.dk-deal2.dk-mat { position: relative; padding: var(--s-4); border-radius: var(--r-3); background: var(--card-2); border: 1px solid var(--glass-line); border-bottom: 2px solid var(--gold-line);
+  box-shadow: var(--glass-edge), 0 12px 26px -16px color-mix(in srgb, var(--gold) 38%, transparent), var(--glass-shadow); }
+.dk-deal2.dk-mat.dk-final { animation: arrive var(--d-3) var(--ease) both, caselight 700ms var(--ease) 120ms both; }
+@keyframes caselight {
+  from { border-bottom-color: color-mix(in srgb, var(--gold) 15%, transparent); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--ink) 4%, transparent), 0 12px 26px -16px transparent, var(--glass-shadow); }
+}
+@media (prefers-reduced-motion: reduce) { .dk-deal2.dk-mat.dk-final { animation: none; } }
+.dk-before summary span { text-transform: uppercase; letter-spacing: var(--track-eyebrow); font-size: var(--t-micro); font-weight: var(--w-strong); }
+.dk-mat .dk-lim i { display: none; }
+.dk-pr { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 var(--s-2); margin: var(--s-1) 0 0; }
+.dk-mat .dk-big { letter-spacing: -.03em; margin: 0; }
+.dk-was { font-family: var(--display); font-size: var(--t-h3); font-weight: var(--w-display); color: var(--ink-2); text-decoration-thickness: 1px; text-decoration-color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.dk-mat .dk-lim { margin: var(--s-1) 0 var(--s-2); line-height: 1.6; }
+.dk-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* "Before you approve": folded; it opens to what code checked. */
+.dk-before { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 0 0 var(--s-3); }
+.dk-before summary { list-style: none; display: flex; align-items: center; justify-content: space-between; min-height: 48px; cursor: pointer; color: var(--ink); }
+.dk-before summary::-webkit-details-marker { display: none; }
+.dk-before summary i { width: 8px; height: 8px; border-right: 1.4px solid var(--ink-2); border-bottom: 1.4px solid var(--ink-2); transform: translateY(-2px) rotate(45deg); transition: transform var(--d-2) var(--ease); }
+.dk-before[open] summary i { transform: translateY(2px) rotate(-135deg); }
+.dk-before summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--r-1); }
+.dk-before ul { list-style: none; margin: 0; padding: 0 0 var(--s-2); display: grid; gap: var(--s-1); }
+/* Its own list only (`ul > li`): the steps ahead share the fold's look (Trail.tsx's `.tl-fold.dk-before`), and a bare
+   `li` put this bullet on every step and lifted the connector onto the next word (the DD, DK part 9 nit at 390). */
+.dk-before ul > li { position: relative; padding-left: var(--s-2); color: var(--ink-2); font-size: var(--t-small); line-height: 1.6; }
+.dk-was-li .dk-was { font: inherit; color: inherit; }
+.dk-before ul > li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+/* The secondary button (dd/system.md §5; crit-1 [5]): the hairline outline pill in sentence case, like every secondary
+   (Keep watching, Stop watching, View); no uppercase tracking. */
+.dk-pill { font-size: var(--t-small); font-weight: var(--w-strong); border: 1px solid var(--line-2); background: none; color: var(--ink); border-radius: var(--r-pill); padding: 0 var(--s-3); min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: var(--s-1); white-space: nowrap; transition: border-color var(--d-1), background var(--d-1); }
+.dk-pill:hover { border-color: var(--ink-2); background: var(--surface); }
+.dk-pill[disabled] { opacity: .7; cursor: progress; }
+.dk-saved .dk-pill[disabled] { opacity: 1; cursor: default; border-color: var(--gold-line); color: var(--gold-hi); }
+.dk-tick { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+/* "Rather wait?": a quiet card under the deal, never a second material one. */
+.dk-wait { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-3); flex-wrap: wrap; padding: var(--s-3) var(--s-4); border: 1px solid var(--line); border-radius: var(--r-3); animation: arrive var(--d-3) var(--ease) .15s both; }
+.dk-wait > p { margin: 0; flex: 1 1 200px; color: var(--ink-2); font-size: var(--t-small); line-height: 1.6; }
+.dk-wait b { color: var(--ink); font-weight: var(--w-strong); }
+.dk-saved > p { color: var(--gold-hi); }
+.dk-k { font-size: var(--t-small); color: var(--ink-2); }
+.dk-big { font-family: var(--display); font-size: var(--t-num); font-weight: var(--w-display); letter-spacing: -.02em; line-height: 1.05; margin: 0 0 var(--s-1); font-variant-numeric: tabular-nums; }
+.dk-waited { margin: 0; font-size: var(--t-small); color: var(--ink-2); }
+.dk-lim { color: var(--ink-2); font-size: var(--t-small); margin: 0 0 var(--s-2); display: flex; align-items: center; gap: var(--s-1); }
+/* H-6 (Round 4 judges, fix 5): the No deal card. The sentence, the Watcher's verdict under a hairline, then the card's
+   standard space (--s-3, as "Before you approve" keeps above Approve) before its two choices, stacked full width. */
+/* H-7 (DD at H-6): "No deal" wears the one eyebrow (.dk-eyebrow, tokens.css), and the sentence under it is the card's
+   answer, as the price is the deal card's: --t-body in --ink, --s-1 under the eyebrow (the grid step between the deal
+   card's 10 px at 1440 and 6 px at 390). The verdict and the saved line stay --t-small --ink-2: they are its footnotes. */
+.dk-nodeal .dk-waited { margin-top: var(--s-1); font-size: var(--t-body); color: var(--ink); line-height: var(--lh-body); text-wrap: pretty; }
+.dk-nodeal-aside { margin: var(--s-2) 0 0; padding-top: var(--s-2); border-top: 1px solid var(--line); font-size: var(--t-small); color: var(--ink-2); line-height: 1.6; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--s-1); }
+.dk-nodeal-aside i { width: 5px; height: 5px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--ink-3); flex: none; align-self: center; }
+.dk-nodeal-act { display: grid; gap: var(--s-1); margin-top: var(--s-3); }
+.dk-nodeal-act .dk-pill { width: 100%; min-height: 48px; }
+.dk-nodeal-saved { margin: 0; font-size: var(--t-small); color: var(--ink-2); line-height: 1.6; }
+.dk-lim i { width: 5px; height: 5px; border-radius: 50%; background: var(--ink-2); flex: none; }
+/* the primary action: cream on velvet, a precise press */
+.dk-approve { width: 100%; justify-content: center; white-space: nowrap; display: inline-flex; align-items: center; gap: var(--s-1); border: 0; border-radius: var(--r-pill); padding: 0 var(--s-3); min-height: 52px; background: var(--cta); color: var(--on-cta); font-size: var(--t-body); font-weight: var(--w-strong); transition: transform 120ms var(--ease), background var(--d-1); }
+.dk-approve:hover { background: var(--cta-hover); }
+.dk-approve:active { transform: scale(.985) translateY(1px); }
+.dk-approve svg { width: 18px; height: 18px; }
+.dk-approve[disabled] { opacity: .7; cursor: progress; }
+.dk-deal-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); margin-top: var(--s-2); }
+.dk-onlytap { font-size: var(--t-micro); color: var(--ink-2); margin: 0; }
+.dk-practice { font-size: var(--t-small); color: var(--ink); margin: var(--s-2) 0 0; }
+/* The AI reader's line on the run (Joshua, Nov 6): quiet, under the card, never inside it. */
+.dk-reader { margin: var(--s-3) 0 0; font-size: var(--t-small); color: var(--ink-2); }
+/* The reader line sits under the card, not in it (the fresh Q: on every run, outside the deal card and its folds), so it
+   takes the card's own text inset: that card's padding token plus its 1px border, on whichever card is above it (push 18g;
+   it hugged the border at 390). A wide dk-one is itself the padded box, so it needs nothing there. */
+.dk-right:not(.dk-one):has(.dk-deal2.dk-nodeal) .dk-reader { padding-inline: calc(var(--s-3) + 1px); } /* raw-ok: the card's 1 px border (brand.md section 5: nothing off the grid except 1 px hairlines) */
+.dk-right:not(.dk-one):has(.dk-deal2.dk-mat) .dk-reader { padding-inline: calc(var(--s-4) + 1px); } /* raw-ok: the card's 1 px border (brand.md section 5: nothing off the grid except 1 px hairlines) */
+@media (max-width: 720px) {
+  .dk-right:not(.dk-one):has(.dk-deal2.dk-nodeal) .dk-reader, .dk-right:not(.dk-one):has(.dk-deal2.dk-mat) .dk-reader { padding-inline: calc(var(--s-2) + 1px); } /* raw-ok: the card's 1 px border (brand.md section 5: nothing off the grid except 1 px hairlines) */
+  /* A phone's dk-one draws the card's bottom edge with no padding of its own: the line keeps the gap the wide box keeps. */
+  .dk[data-app] .dk-right.dk-one .dk-reader { padding: 0 var(--s-2) var(--s-2); }
+}
+.dk-mat .dk-onlytap { color: var(--ink); opacity: .82; line-height: 1.5; }
+.dk-said { margin: 0 0 var(--s-2); padding: var(--s-1) var(--s-2); border-radius: var(--r-1); border: var(--hair); font-size: var(--t-small); color: var(--ink); }
+
+/* back from PayPal: the check is your tap, confirmed */
+.dk-paid { max-width: 560px; margin: 0 auto; text-align: center; display: grid; justify-items: center; gap: var(--s-1); padding: var(--s-2) 0; }
+.dk-paid .dk-big { margin: 0; }
+.dk-paid .dk-waited { max-width: 44ch; margin-bottom: var(--s-1); }
+.dk-paid .dk-pic { width: 56px; height: 56px; display: grid; place-items: center; }
+.dk-paid .dk-pic svg { width: 48px; height: 48px; }
+.dk-check { width: 52px; height: 52px; margin-bottom: var(--s-1); }
+.dk-check circle { fill: none; stroke: var(--line-2); stroke-width: 1.2; }
+.dk-check path { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 32; stroke-dashoffset: 32; animation: tick var(--d-3) var(--ease) .2s forwards; }
+@keyframes tick { to { stroke-dashoffset: 0; } }
+.dk-receipt { margin: 0 0 var(--s-3); font-size: var(--t-micro); color: var(--ink-2); }
+.dk-mono { display: block; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: var(--t-micro); }
+
+/* buttons that aren't the main action */
+.dk-btn2 { border: 1px solid var(--line-2); background: none; border-radius: var(--r-2); padding: 0 var(--s-3); min-height: 48px; font-weight: var(--w-strong); transition: background var(--d-1), border-color var(--d-1); }
+.dk-btn2:hover { background: var(--well); border-color: var(--ink-2); }
+.dk-btn2:active { transform: translateY(1px); }
+.dk-linkbtn { border: 0; background: none; padding: 0; min-height: 44px; font-weight: var(--w-strong); display: inline-flex; align-items: center; gap: var(--s-1); font-size: var(--t-small); }
+
+/* sheets: details, never a wall of text. A bottom sheet on a phone, a centred dialog on desktop. */
+.dk-scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 20; animation: fade var(--d-2) var(--ease) both; }
+.dk-sheet { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); width: min(600px, 100%); max-height: 88vh; overflow-y: auto; z-index: 21; background: var(--sheet); border: 1px solid var(--card-line); border-bottom: 0;
+  border-radius: var(--r-3) var(--r-3) 0 0; padding: var(--s-1) var(--s-4) var(--s-4); animation: up var(--d-3) var(--ease) both; }
+@keyframes up { from { transform: translate(-50%, 16%); opacity: 0; } }
+.dk-handle { width: 36px; height: 4px; border-radius: var(--r-pill); background: var(--line-2); margin: 0 auto var(--s-3); }
+.dk-sheet h3 { font-size: var(--t-h3); line-height: 1.15; margin: var(--s-1) 0 var(--s-3); font-weight: var(--w-display); }
+.dk-reasons { list-style: none; margin: 0 0 var(--s-3); padding: 0; }
+.dk-reasons li { display: flex; gap: var(--s-1); align-items: baseline; padding: var(--s-2) 0; border-bottom: var(--hair); font-size: var(--t-body); }
+.dk-reasons li:last-child { border-bottom: 0; }
+.dk-reasons i { width: 5px; height: 5px; border-radius: 50%; background: var(--ink-3); flex: none; transform: translateY(-2px); }
+.dk-reasons li.dk-calm i { background: var(--ink); }
+.dk-reasons a.dk-why-btn { display: inline-flex; align-items: center; } /* An inline link ignores min-height; the sheet's other controls are 44 tall. */
+.dk-safe { display: flex; gap: var(--s-1); align-items: center; padding: var(--s-2) var(--s-2); border-radius: var(--r-2); border: 1px solid var(--gold-line); margin-bottom: var(--s-2); font-size: var(--t-small); }
+.dk-safe .dk-protect-ic { width: 22px; height: 22px; margin: 0; }
+.dk-facts { margin: 0 0 var(--s-3); }
+.dk-facts div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--s-2); padding: var(--s-2) 0; border-bottom: var(--hair); }
+.dk-facts div:last-child { border-bottom: 0; }
+.dk-facts dt { font-size: var(--t-small); color: var(--ink-2); }
+.dk-facts dd { margin: 0; font-size: var(--t-small); }
+.dk-small { display: block; font-size: var(--t-micro); color: var(--ink-2); }
+.dk-acts { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+/* DK part 10 (S1-13's tour, stop 02 at 390x667, offline): a sheet taller than its 88vh scrolls, and its actions sat at
+   the end of that scroll, past the window's bottom edge ("See it behind the scenes ›" at 642-686). They stick to the
+   sheet's foot instead, on the sheet's own (opaque) colour, so both are whole at any height and the facts scroll under
+   them; the shadow carries that colour over the sheet's bottom padding, so no fact shows below them. */
+.dk-sheet .dk-acts { position: sticky; bottom: 0; z-index: 1; background: var(--sheet); padding-top: var(--s-2); box-shadow: 0 var(--s-4) 0 var(--sheet); }
+/* DK part 11 (the DD gate, Sat 09:44: at 390x667 the foot sliced the trust box through its first line). The foot's top
+   edge is one more hairline, like the facts' own, and a --s-3 fade of the sheet's colour above it, so a line running
+   under the foot fades out instead of being cut mid-letter. The fade starts above the hairline (an absolute child's 100%
+   is measured inside the border) and takes no taps. The foot keeps --s-3 above it (margins collapse, so the trust box's
+   --s-2 becomes --s-3), so at the end of the scroll the fade covers only empty sheet. */
+.dk-sheet .dk-acts { border-top: var(--hair); margin-top: var(--s-3); }
+.dk-sheet .dk-acts::before { content: ""; position: absolute; bottom: calc(100% + var(--hair-w)); left: 0; right: 0; height: var(--s-3); background: linear-gradient(transparent, var(--sheet)); pointer-events: none; }
+
+.dk-footer { margin: 0; padding: var(--s-5) 0 var(--s-8); color: var(--ink-3); font-size: var(--t-micro); border-top: var(--hair); text-wrap: balance; }
+
+@media (min-width: 721px) {
+  .dk-sheet { top: 50%; bottom: auto; width: min(560px, calc(100% - 48px)); border: 1px solid var(--card-line); border-radius: var(--r-3); padding: var(--s-4); transform: translate(-50%, -50%); animation: pop var(--d-3) var(--ease) both; }
+  .dk-handle { display: none; }
+}
+@keyframes pop { from { transform: translate(-50%, -48%); opacity: 0; } }
+
+/* phone */
+@media (max-width: 720px) {
+  .dk-ut { padding: 0 var(--s-2) var(--s-3); }
+  .dk-ut dl > div { grid-template-columns: 1fr; gap: var(--s-1); padding: var(--s-2) 0; }
+  .dk-ut-act { flex-direction: column; align-items: stretch; gap: var(--s-1); }
+  .dk-ut-act .dk-approve { width: 100%; }
+  .dk-ut-act .dk-why-btn { align-self: center; }
+  .dk { font-size: var(--t-body); }
+  .dk-wrap { padding: 0 var(--s-2); }
+  /* S1-3: the phone bar scrolls with the page in the app too (DD ruling, Sat Oct 31: one behaviour; system.md section 4). */
+  .dk-steps { display: none; }
+  .dk-egg { width: 130px; height: 158px; }
+  .dk-egg-body { width: 130px; height: 156px; }
+  .dk-egg-shadow { width: 84px; margin-left: calc(-1 * var(--s-5)); height: 10px; top: 144px; }
+  /* Joshua (Wed Nov 4, 3d): the phone's first screen holds the promises, the Ask box and the start of the Challenge. */
+  @media (max-width: 430px) {
+    .dk-egg { width: 88px; height: 107px; }
+    .dk-egg-body { width: 88px; height: 106px; }
+    .dk-egg-shadow { width: 56px; margin-left: calc(-2 / 3 * var(--s-5)); height: 7px; top: 97px; }
+  }
+  .dk-stage { padding-top: var(--s-4); }
+  .dk-live-grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); margin-top: var(--s-3); }
+  .dk-feed { min-height: calc(var(--n, 4) * 72px - 8px); }
+  .dk-fr { grid-template-columns: 36px minmax(0, 1fr) auto; gap: var(--s-1); min-height: 64px; padding: var(--s-1) var(--s-2) var(--s-1) var(--s-1); }
+  .dk-fr .dk-pic { width: 34px; height: 34px; font-size: var(--t-small); }
+  .dk-fr .dk-name { font-size: var(--t-small); }
+  .dk-fr .dk-st { font-size: var(--t-micro); }
+  .dk-fr .dk-price { font-size: var(--t-body); }
+  .dk-protect, .dk-deal2 { padding: var(--s-2); }
+  .dk-deal2.dk-mat { padding: var(--s-3) var(--s-2); }
+  .dk-wait { padding: var(--s-2); }
+  .dk-wait .dk-pill, .dk-mat .dk-deal-foot .dk-pill { width: 100%; }
+  .dk-mat .dk-deal-foot { flex-direction: column; align-items: stretch; gap: var(--s-1); }
+  .dk-mat .dk-onlytap { font-size: var(--t-small); }
+  /* S1-12: a phone's sheet rises over the bottom rail (z 30) as well as the page, so none of its controls sit under the
+     rail: "See it behind the scenes ›" was drawn at 776–820, wholly under it, at 390x844. The scrim dims the rail with
+     the page (the sheet is modal); the menu (z 60) still opens above both. */
+  .dk-scrim { z-index: 32; }
+  .dk-sheet { z-index: 33; padding: var(--s-1) var(--s-2) calc(var(--s-3) + env(safe-area-inset-bottom)); }
+  .dk-sheet h3 { font-size: var(--t-h3); }
+  .dk-facts div { grid-template-columns: 80px minmax(0, 1fr); }
+  .dk-acts { flex-direction: column-reverse; align-items: stretch; }
+  .dk-acts > * { justify-content: center; text-align: center; }
+}
+
+/* The opening (opening.ts; Joshua, Oct 30): a jewelry case at night, the case light coming on. Only the egg and one
+   hairline until the glide; the light is --lit (0 → 1), lifted by real loading; one easing family, the spring. */
+@property --lit { syntax: "<number>"; inherits: true; initial-value: 1; }
+.dk-egg.dk-lighting { transition: --lit 460ms var(--spring); }
+.dk-lighting .dk-egg-dark { display: block; position: absolute; inset: 0; width: 100%; height: 100%; filter: brightness(calc(var(--lit) * .4)); opacity: calc(.6 + var(--lit) * .4); }
+/* A rim of gold first (the light at the egg's own edge, falling off inward), then the full shine: the lit egg is masked
+   by an ellipse fitted to the still's outline, whose soft clear centre closes as the light rises. */
+.dk-lighting .dk-egg-lit { opacity: clamp(0, calc(var(--lit) * 4), 1);
+  -webkit-mask-image: radial-gradient(36.9% 43.6% at 50% 52.1%, transparent calc((1 - var(--lit)) * 60% - 20%), #000 calc((1 - var(--lit)) * 140%)); /* raw-ok: #000 is the mask's coverage */
+  mask-image: radial-gradient(36.9% 43.6% at 50% 52.1%, transparent calc((1 - var(--lit)) * 60% - 20%), #000 calc((1 - var(--lit)) * 140%)); } /* raw-ok: #000 is the mask's coverage */
+.dk-lighting .dk-egg-shadow { opacity: var(--lit); }
+html.dk-opening .dk-egg-body, html.dk-opening .dk-egg-shadow { will-change: transform; }
+html.dk-opening:not(.dk-handed) .dk-hero-egg { opacity: 0; }
+html.dk-opening .dk-hero-egg, html.dk-opened .dk-hero-egg { animation: none; }
+/* Everything but the egg and the words waits for the opening's end. The words come first (S2-3, Round 2's design
+   judge): the bar's contents fade in at html.dk-words (opening.ts: the Desk has mounted and the faces are in), a beat
+   after the headline leads, and rest there while the hairline draws in under them. */
+.dk-nav-in, .dk-grain, .dk > footer, .dk main > :not(.dk-hero) { transition: opacity 360ms var(--spring); }
+html.dk-opening .dk-nav-in, html.dk-opening .dk-grain, html.dk-opening .dk > footer, html.dk-opening .dk main > :not(.dk-hero) { opacity: 0; }
+html.dk-opening .dk-nav-in { transition-delay: var(--d-1); } /* the headline leads the bar by a beat (a desktop: the phone's headline waits for the glide, below) */
+html.dk-opening.dk-words .dk-nav-in { opacity: 1; }
+html.dk-opening .dk-intro { opacity: 0; animation: none; }
+html.dk-opened .dk-intro { animation: none; }
+/* The headline comes up whole where it stands (no rise, no line-by-line) at html.dk-words, the egg still dark in its
+   case beside it; the sheen crosses it later as the egg passes. The line under it, the Ask box and the chips sit where
+   the case's egg stands until the glide carries it off, so they come up with the glide, as the egg leaves. */
+html.dk-opening .dk-hero .dk-mask > span, html.dk-opened .dk-hero .dk-mask > span { transform: none; animation: fade 480ms var(--spring) 60ms both; }
+html:is(.dk-opening, .dk-opened) :is(.dk-sub, .dk-see) { animation: fade 420ms var(--spring) 260ms both; }
+html.dk-opening .dk-ask, html.dk-opened .dk-ask { animation: fade 420ms var(--spring) 300ms both; }
+html.dk-opening .dk-chips, html.dk-opened .dk-chips { animation: fade 420ms var(--spring) 340ms both; }
+/* (More specific than the timing rules above, whose `animation` shorthand would otherwise set it back to running.) */
+html.dk-opening:not(.dk-words) .dk-hero h1, html.dk-opening:not(.dk-words) .dk-hero h1 * { animation-play-state: paused; }
+html.dk-opening:not(.dk-gliding) .dk-hero .dk-hero-copy > :not(h1), html.dk-opening:not(.dk-gliding) .dk-hero .dk-hero-copy > :not(h1) * { animation-play-state: paused; }
+/* One soft gold sheen crosses the headline once, following the egg: a wide feathered band, never a hard edge. */
+html.dk-sheen .dk-hero .dk-mask > span {
+  background: linear-gradient(100deg, var(--ink) 30%, var(--gold-hi) 50%, var(--ink) 70%) 100% 0 / 320% 100% no-repeat;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  animation: fade 480ms var(--spring) 60ms both, dk-sheen 1100ms var(--spring) calc(var(--i, 0) * 40ms) both; }
+@keyframes dk-sheen { from { background-position: 100% 0; } to { background-position: 0 0; } }
+/* On a phone the egg rises through the headline's place: the headline and its sheen wait for the glide, until it has
+   passed (the bar's contents still come with the words). */
+@media (max-width: 720px) {
+  html.dk-opening .dk-nav-in { transition-delay: 0s; }
+  html.dk-opening:not(.dk-gliding) .dk-hero h1, html.dk-opening:not(.dk-gliding) .dk-hero h1 * { animation-play-state: paused; }
+  html.dk-opening .dk-hero .dk-mask > span, html.dk-opened .dk-hero .dk-mask > span { animation-delay: 300ms; }
+  html.dk-sheen .dk-hero .dk-mask > span { animation-delay: 300ms, calc(240ms + var(--i, 0) * 40ms); }
+  html:is(.dk-opening, .dk-opened) :is(.dk-sub, .dk-see) { animation-delay: 500ms; }
+  html.dk-opening .dk-ask, html.dk-opened .dk-ask { animation-delay: 540ms; }
+  html.dk-opening .dk-chips, html.dk-opened .dk-chips { animation-delay: 580ms; }
+}
+/* Any tap, key or scroll: the finished hero at once. */
+html.dk-skip .dk-hero .dk-mask > span { animation: none; transform: none; }
+html.dk-skip :is(.dk-sub, .dk-see), html.dk-skip .dk-ask, html.dk-skip .dk-chips { animation: none; }
+#dk-case { --spring: cubic-bezier(.22, .8, .24, 1); } /* the case sits outside .dk, so without its own copy of the token its glide (var(--spring)) is invalid and the hairline jumps */
+#dk-case i.dk-to-nav { background-color: rgba(244, 234, 220, .12); } /* raw-ok: the velvet --line; the case is outside .dk, so Velvet's tokens don't reach it */
+#dk-case i.dk-to-nav::after { opacity: 0; transition: opacity 640ms var(--spring); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dk *, .dk *::before, .dk *::after { animation: none !important; transition: none !important; }
+  .dk-mask > span { transform: none !important; }
+  .dk-check path, .dk-protect-ic path + path { stroke-dashoffset: 0; }
+  .dk-hero-copy, .dk-hero-egg, .dk-grain { transform: none !important; }
+}
+
+/* The Desk as an app (Joshua, Oct 30): once she asks, one workspace (DK, Sat Oct 31: no left rail at any width; the
+   menu in the bar lists every room). Gold only on the egg when Goose protects. */
+.dk-app { display: block; padding: var(--s-5) 0 var(--s-8); }
+/* One egg: the header's, which glows when Goose protects her. */
+.dk-work { min-width: 0; }
+.dk-work-ask { margin-bottom: var(--s-4); }
+/* One column: the ask spans the workspace and an asked headline sits below the deal's price instead of competing with
+   it. The nav keeps Shopper and Behind the scenes here too (S1: one nav, the same on every page). */
+.dk[data-app] .dk-ask { width: 100%; animation: none; } /* the same box, moved: no second fade-in */
+.dk[data-app] .dk-s-ut { max-width: 760px; } /* a card reads as one thought, not a full-width form */
+/* While the card waits for her yes, the Ask box follows it at the card's width, quiet: the card leads (Desk-S6). */
+.dk-work-ask.dk-work-after { max-width: 640px; margin: var(--s-3) 0 0; }
+.dk[data-app] .dk-work-after .dk-ask { background: none; border-color: var(--glass-line); }
+/* The card as one receipt (Desk-S6): each label above its value on every width, the item the largest line, the limit a
+   step quieter, and Shop for this right under it. */
+@media (min-width: 721px) {
+  .dk[data-app] .dk-s-ut { max-width: 640px; }
+  .dk[data-app] .dk-ut { padding: var(--s-1) var(--s-5) var(--s-4); }
+  .dk[data-app] .dk-ut dl > div { grid-template-columns: 1fr; gap: var(--s-1); padding: var(--s-3) 0; }
+  .dk[data-app] .dk-ut dl > div:last-child { border-bottom: 0; padding-bottom: 0; }
+  .dk[data-app] .dk-ut dt { padding-top: 0; }
+  .dk[data-app] .dk-ut-act { margin-top: var(--s-2); }
+  .dk[data-app] .dk-ut-act .dk-approve { min-height: 52px; min-width: 220px; justify-content: center; }
+}
+/* On a wide screen the understood card stands on the Run room's skeleton (Desk-S7): her words, the heading set large
+   and the quiet Ask box hold the left; the card is a raised object on the right, where the deal card will land. Grid
+   areas only, so the reading order (her words, heading, card, Ask box) is the same as on a phone. */
+@media (min-width: 1100px) {
+  .dk[data-app] .dk-s-ut { display: grid; max-width: none; grid-template-columns: minmax(0, 1fr) minmax(0, 472px); column-gap: var(--s-6); align-items: start; }
+  .dk[data-app] .dk-s-ut > .dk-asked { grid-column: 1; grid-row: 1; justify-self: start; align-self: start; margin: 0 0 var(--s-3); border-radius: var(--r-3) var(--r-3) var(--r-3) var(--r-1); }
+  .dk[data-app] .dk-stage .dk-s-ut > :is(h1, h2):not(.dk-big) { grid-column: 1; grid-row: 2; margin: 0; font-size: var(--t-h1); font-weight: var(--w-display); line-height: 1.08; letter-spacing: -.015em; text-wrap: balance; }
+  .dk[data-app] .dk-s-ut > .dk-work-after { grid-column: 1; max-width: none; margin: var(--s-5) 0 0; }
+  .dk[data-app] .dk-s-ut > .dk-ut { grid-column: 2; grid-row: 1 / -1; padding: var(--s-1) var(--s-4) var(--s-4); border-radius: var(--r-3); border: 1px solid var(--glass-line); }
+  .dk[data-app] .dk-s-ut .dk-ut-item { line-height: 1.15; text-wrap: balance; }
+  .dk[data-app] .dk-s-ut .dk-ut-act { gap: var(--s-2); }
+  .dk[data-app] .dk-s-ut .dk-ut-act .dk-approve { min-width: 0; flex: 1 1 auto; }
+}
+.dk[data-app] .dk-work-after .dk-ask input { font-size: var(--t-body); padding: var(--s-1) 0; }
+.dk[data-app] .dk-work-after .dk-go { width: 44px; height: 44px; }
+/* The send button lights only when there are words to send, so the stage's one cream button stays the only one. */
+.dk[data-app] .dk-ask:has(input:placeholder-shown) .dk-go { background: var(--well); color: var(--ink-2); }
+.dk[data-app] .dk-stage :is(h1, h2):not(.dk-big) { font-size: var(--t-h2); font-weight: var(--w-head); line-height: 1.2; }
+.dk[data-app] .dk-mat .dk-deal-foot { align-items: stretch; }
+.dk[data-app] .dk-stage { border-top: 0; padding-top: 0; margin-bottom: 0; scroll-margin-top: 104px; }
+.dk-room-wait { opacity: 0; animation: dk-room-wait 0s linear .4s forwards; }
+@keyframes dk-room-wait { to { opacity: 1; } }
+.dk-room-lost .dk-pane-sub { margin-bottom: 0; }
+.dk-room-lost .dk-approve { width: auto; margin-top: var(--s-3); padding: 0 var(--s-4); min-height: 44px; }
+.dk-pane-h { margin: 0; font: var(--w-head) var(--t-h2) var(--display); line-height: 1.2; }
+.dk-pane-sub { margin: var(--s-1) 0 var(--s-4); max-width: 40em; color: var(--ink-2); font-size: var(--t-small); line-height: 1.55; }
+.dk-tabs { display: flex; gap: var(--s-1); margin-bottom: var(--s-3); border-bottom: var(--hair); overflow-x: auto; scrollbar-width: none; }
+.dk-tabs button { position: relative; flex: none; min-height: 44px; padding: 0 var(--s-2); border: 0; background: none; color: var(--ink-2); font: inherit; font-size: var(--t-small); transition: color var(--d-1); }
+.dk-tabs button:hover { color: var(--ink); }
+.dk-tabs [aria-selected="true"] { color: var(--ink); font-weight: var(--w-strong); }
+/* Each label reserves its bold width (a hidden bold copy), so the row never shifts when a tab turns bold. */
+.dk-tab-t { display: inline-grid; }
+.dk-tab-t::after { content: attr(data-text); font-weight: var(--w-strong); height: 0; overflow: hidden; visibility: hidden; }
+.dk-tabs button:first-child { padding-left: 0; } /* the first tab starts on the column's edge */
+.dk-tabs [aria-selected="true"]::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: -1px; height: 2px; border-radius: var(--r-pill); background: var(--ink); }
+.dk-scene { padding: var(--s-4); border-radius: var(--r-3); background: var(--card); border: 1px solid var(--card-line); animation: arrive var(--d-3) var(--ease) both; }
+.dk-scene :is(h2, h3) { margin: 0 0 var(--s-1); font: var(--w-head) var(--t-h3) var(--display); line-height: 1.2; }
+.dk-scene-line { margin: 0 0 var(--s-3); max-width: 36em; color: var(--ink); font-size: var(--t-body); line-height: 1.55; text-wrap: pretty; }
+.dk-scene-amt { display: block; color: var(--ink); font: var(--w-display) var(--t-num) var(--display); line-height: 1.05; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.dk-rows .dk-scene-amt { font-size: var(--t-h3); }
+.dk-scene-why { margin: 0; color: var(--ink-2); font-size: var(--t-small); }
+.dk-protect.dk-flat { margin: 0 0 var(--s-3); padding: 0; border: 0; background: none; animation: none; }
+.dk-protect-h { margin: 0; color: var(--ink); font: var(--w-head) var(--t-h3) var(--display); line-height: 1.25; text-wrap: balance; }
+.dk-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-2); }
+.dk-cards :is(h2, h3) { margin: 0; font: var(--w-head) var(--t-h3) var(--display); line-height: 1.25; }
+.dk-cards .dk-row-top { margin-bottom: var(--s-2); }
+.dk-cards .dk-pill { min-height: 44px; }
+.dk-scene .dk-pill, .dk-rows .dk-pill { text-transform: none; letter-spacing: 0; font-size: var(--t-small); }
+.dk[data-app] > footer { display: none; } /* in the app the header's "Practice only" is the one disclaimer; the payments line sits by the button */
+.dk-tabs button:first-child::after { left: 0; }
+.dk-scene .dk-approve { width: auto; padding: 0 var(--s-4); }
+.dk-scene .dk-wait { padding: 0; border: 0; animation: none; } /* one card, not a card in a card */
+.dk[data-app] .dk-intro { animation: none; } /* the header's hairline is drawn once, on the landing; the app opens with it whole */
+.dk-rows { list-style: none; margin: 0; padding: 0; border-top: var(--hair); }
+.dk-rows li { padding: var(--s-3) 0; border-bottom: var(--hair); }
+/* Settings: Goose's voice and your name continue the limits' list (the DD, check 2 d: no empty band between two
+   hairlines); after a state block instead of the limits, they keep their own top rule. DK part 7: they aren't limits,
+   so one step between blocks (16) sets them apart, still under the one hairline; it also keeps the voice row off the
+   tour strip's edge at 390x667 (609) and the name row's off it at 390x844 (786), where part 6's grid rows put them. */
+.dk-rows + .dk-rows.dk-voice { border-top: 0; margin-top: var(--s-2); }
+.dk-row-top { display: flex; flex-direction: column; gap: var(--s-1); }
+.dk-rows :is(h2, h3) { margin: 0; font: var(--w-head) var(--t-h3) var(--display); line-height: 1.3; }
+.dk-tag { color: var(--ink-3); font-size: var(--t-small); }
+.dk-rows p { margin: 0; max-width: 40em; color: var(--ink-2); font-size: var(--t-small); line-height: 1.55; text-wrap: pretty; }
+.dk-rows .dk-why-btn { padding-left: 0; padding-right: 0; }
+/* In the app gold means protection only: the deal card loses its gold lip and glow, and lands without the case light. */
+.dk[data-app] .dk-deal2.dk-mat { border-bottom: 1px solid var(--glass-line); box-shadow: var(--glass-edge), var(--glass-shadow); }
+.dk[data-app] .dk-deal2.dk-mat.dk-final { animation: arrive var(--d-3) var(--ease) both; }
+/* The deal card in the app fits a 900px-tall window whole: the price a touch smaller, the rows a touch tighter. */
+.dk[data-app] .dk-deal2.dk-mat { padding: var(--s-3) var(--s-4) var(--s-3); }
+.dk[data-app] .dk-mat .dk-lim { margin-bottom: var(--s-1); }
+.dk[data-app] .dk-before { margin-bottom: var(--s-2); }
+.dk[data-app] .dk-mat .dk-deal-foot { flex-direction: column; margin-top: var(--s-2); gap: var(--s-1); } /* Approve, then who pays, then details */
+/* On a wide screen the deal card stands alone on the right; the quiet "Rather wait?" sits under the sellers. */
+/* The sellers as one quiet list on every width (Desk-S6): rows under hairlines, the deal's row a faint step up, the
+   set-aside flat and struck, so the deal card is the one raised object. */
+.dk[data-app] .dk-live-grid > .dk-feed { gap: 0; min-height: calc(var(--n, 4) * 72px); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); overflow: hidden; }
+.dk[data-app] .dk-live-grid > .dk-feed .dk-fr { border: 0; border-radius: 0; background: none; border-bottom: 1px solid var(--line); }
+.dk[data-app] .dk-live-grid > .dk-feed .dk-fr:last-child { border-bottom: 0; }
+.dk[data-app] .dk-live-grid > .dk-feed .dk-fr.dk-best { background: var(--surface); }
+@media (max-width: 720px) { .dk[data-app] .dk-live-grid > .dk-feed { min-height: calc(var(--n, 4) * 64px); } }
+/* The heading (with the demo's one honesty line) and the sellers hold the left; the deal stands on the right from the very top,
+   level with the heading, so it is the first thing the eye lands on and fits the first screen whole (Desk-S6). */
+.dk-live-grid { margin-top: 0; }
+@media (min-width: 721px) {
+  .dk-live-grid { grid-template-rows: auto auto 1fr; row-gap: var(--s-3); }
+  .dk-live-grid > .dk-live-head { grid-column: 1; grid-row: 1; }
+  .dk-live-grid > .dk-feed { grid-column: 1; grid-row: 2; }
+  .dk-live-grid > .dk-right { grid-column: 2; grid-row: 1 / -1; }
+  .dk-live-grid > .dk-wait { grid-column: 1; grid-row: 3; align-self: start; }
+  .dk[data-app] .dk-live-head :is(h1, h2):not(.dk-big) { font-size: var(--t-h3); }
+  /* The sellers as one quiet list (Desk-S6): rows under hairlines, the deal's row a faint step up, the set-aside flat
+     and struck; "Rather wait?" a plain line under it, so the deal card is the one raised object. */
+  .dk[data-app] .dk-live-grid > .dk-wait { padding: 0; border: 0; }
+  /* Protection and the deal are one card once the run is done: the skip leads it, the price follows. */
+  .dk[data-app] .dk-right.dk-one { gap: var(--s-2); padding: var(--s-3) var(--s-4) var(--s-2); border-radius: var(--r-3); border: 1px solid var(--glass-line); animation: arrive var(--d-3) var(--ease) both; }
+  .dk[data-app] .dk-right.dk-one .dk-deal2.dk-mat { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; animation: none; }
+  .dk[data-app] .dk-right.dk-one .dk-protect { padding: 0 0 var(--s-2); animation: none; }
+}
+/* On a phone the same one card: the skip is its top, joined to the deal under an inset hairline (her ask stays above). */
+@media (max-width: 720px) {
+  .dk[data-app] .dk-right.dk-one { gap: 0; animation: arrive var(--d-3) var(--ease) both; } /* SM-5: its mount, the run's start */
+  .dk[data-app] .dk-right.dk-one .dk-protect { position: relative; padding: var(--s-3) var(--s-2) var(--s-2); border: 1px solid var(--glass-line); border-bottom: 0; border-radius: var(--r-3) var(--r-3) 0 0; animation: none; }
+  .dk[data-app] .dk-right.dk-one .dk-protect::after { content: ""; position: absolute; left: 20px; right: 20px; bottom: 0; border-top: 1px solid var(--line); }
+  .dk[data-app] .dk-right.dk-one .dk-deal2.dk-mat { border-top: 0; border-radius: 0 0 var(--r-3) var(--r-3); animation: none; }
+  .dk[data-app] .dk-mat .dk-onlytap { text-wrap: pretty; }
+  /* The run lands on the sellers, so the proof (three checked, one set aside) sits right above the deal; the heading's
+     words are just above, so the small repeat of her ask is not needed (Desk-S6). */
+  .dk[data-app] .dk-right-ask { display: none; }
+}
+.dk-right-ask { display: none; }
+/* SM-5 (Round 3 design judge, fix 1): with a seller to set aside, the protection line and the deal are one card (.dk-one)
+   from the run's first frame, so the column has no enter at done (it blinked to opacity 0 and came back 94 px lower).
+   A held place keeps its size and is drawn in the frame its words are true: the protection line at the verdict (its
+   shield's tick draws then), the eyebrow and the price from the first row read (never "…"). */
+.dk-protect[data-wait], .dk-deal2 [data-wait] { visibility: hidden; }
+.dk-protect[data-wait] .dk-protect-ic path + path { animation: none; }
+/* A seller's row is in the list from the first frame, held (hidden, still) until it arrives; its enter and its reading
+   line start then, and the rows still to come never push the deal card down (on a phone, $84.00 moved 91 px). */
+.dk-fr[data-wait], .dk-fr[data-wait]::after { visibility: hidden; animation: none; }
+/* "What happens after your tap" while its chunk is still on the way (the run waits up to 1.5 s for it, so rarely): its
+   place on the deal card at its drawn size, so Approve never moves. Since DK check 2 it is a chevron row like "Before
+   you approve" (`.dk-before`, whose margins it wears here too), open over the steps: 85 px at 1440 and 81 px at <=720
+   (the summary is 44 px there; the box includes its hairline), its hairline below and none above, measured by scripts/sm7-part-probe.ts (1 px less since DK part 9: the steps no longer wear the bullet list's 1.6 line height); 106 px
+   before. The row above it drops its bottom margin for either (trail.css draws the drawn row). */
+.dk-deal2 .tl-hold.dk-before { border-top: 0; min-height: 85px; margin: 0 0 var(--s-3); } /* trail.css .dk-deal2 .tl.tl-fold */
+@media (max-width: 720px) { .dk-deal2 .tl-hold.dk-before { min-height: 81px; } }
+.dk-mat .dk-before:not(.tl-fold, .tl-hold):has(+ .tl-fold, + .tl-hold) { margin-bottom: 0 !important; }
+.dk-fr.dk-aside .dk-price { color: var(--ink-3); } /* a set-aside's price, struck and dimmed: never a price to weigh */
+/* Approve is the card's one button; details is a quiet link under it. */
+.dk[data-app] .dk-mat .dk-deal-foot .dk-pill { width: auto; align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: none; color: var(--ink); text-transform: none; letter-spacing: 0; font-size: var(--t-small); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 4px; }
+.dk-rows-end { margin: var(--s-3) 0 0; color: var(--ink-2); font-size: var(--t-small); }
+.dk-rows-end .dk-why-btn { margin-left: var(--s-1); }
+.dk-amt { margin-right: var(--s-1); color: var(--ink); font-family: var(--display); font-size: var(--t-h3); font-variant-numeric: tabular-nums; }
+.dk-pick { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1); color: var(--ink-2); font-size: var(--t-small); }
+/* The select in the Desk's own clothes: no OS chevron, an ink one drawn here. */
+.dk-pick select { appearance: none; -webkit-appearance: none; min-height: 46px; padding: 0 var(--s-5) 0 var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--well) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1.5 5 5 5-5' fill='none' stroke='%23f4eadc' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center; color: var(--ink); font: inherit; cursor: pointer; }
+.dk-pick select:hover { border-color: var(--ink-2); }
+/* A limit row: the name and its tag on the left, the amount (or the select that is the amount) on the right. */
+.dk-limit { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--s-3); }
+.dk-rows li.dk-limit { padding: var(--s-2) 0; }
+.dk-rows .dk-limit > p { margin: 0; display: flex; align-items: center; justify-content: flex-end; gap: var(--s-1); }
+.dk-limit .dk-pick select { width: 148px; font-family: var(--display); font-size: var(--t-lead); font-variant-numeric: tabular-nums; }
+@media (min-width: 721px) { .dk-limit { grid-template-columns: minmax(0, 1fr) 260px; } }
+.dk-pick select option { background: var(--sheet); color: var(--ink); }
+@media (max-width: 720px) {
+  /* S1b: on a phone the one bottom rail every page wears (web/src/nav, ViewRail) carries the app's rooms, then the
+     other views; the page ends above it (nav.css pads the body). */
+  .dk-app { display: block; padding: var(--s-3) 0 var(--s-5); min-height: 0; }
+  .dk-limit .dk-amt { font-size: var(--t-lead); }
+  .dk-limit .dk-pick select { width: auto; padding: 0 var(--s-4) 0 12px; background-position: right 12px center; /* raw-ok: 12 inside a 46 px control (brand.md section 5) */ font-size: var(--t-body); }
+  .dk-protect.dk-flat { gap: var(--s-1); }
+  .dk[data-app] .dk-deal2.dk-mat { padding: var(--s-3) var(--s-2); }
+  .dk-right-ask { display: block; margin: 0 0 var(--s-2); color: var(--ink-2); font-size: var(--t-small); } /* on a phone the header's "Judge?" link is the way behind the scenes */
+  .dk[data-app] .dk-footer { padding-bottom: var(--s-8); }
+  .dk-scene { padding: var(--s-3) var(--s-2); }
+  .dk-scene .dk-approve { width: 100%; }
+}
+/* The deal card's own pass (Desk-S7). Each payment sentence wraps whole, so "Only your tap pays." never splits; the
+   proof line under the price wraps balanced; the one raised card sits a little deeper on the velvet (both widths). */
+.dk-sent { display: inline-block; }
+.dk[data-app] .dk-mat .dk-lim { display: block; } /* inline phrases (.dk-sent), not flex items; its dot is hidden here */
+@media (min-width: 721px) {
+  /* The left column ends level with the deal card: "Rather wait?" settles to the card's foot. */
+  .dk[data-app] .dk-live-grid > .dk-wait { align-self: end; }
+}
+@media (max-width: 720px) {
+  /* The sellers' list has its heading on the first screen: the run's status line (Checked every seller, and the
+     Search / Cart / Pay steps) sits right above the list, under her words, and the finished run lands on it. */
+  .dk[data-app] .dk-live-head { display: flex; flex-direction: column; }
+  .dk[data-app] .dk-live-head > .dk-runhead { order: 1; margin: var(--s-3) 0 0; }
+  /* The status line costs the first screen ~30 px; the one card gives a little back so Approve and the payments line
+     stay clear of the bar's fade. */
+  .dk[data-app] .dk-right.dk-one .dk-protect { padding-bottom: var(--s-2); }
+}
+/* Round 2 (Desk-S7). The one raised card in each room sits a clear step off the velvet: a lighter surface, a lit top
+   edge and a deeper shadow. No gold: the lift is light, not colour. */
+.dk[data-app] .dk-s-ut > .dk-ut, .dk[data-app] .dk-right.dk-one, .dk[data-app] .dk-right.dk-one .dk-protect { --lift: var(--card-lift, var(--card-2)); }
+@media (min-width: 1100px) {
+  .dk[data-app] .dk-s-ut > .dk-ut { background: var(--lift); border-color: var(--glass-line); }
+  /* Her words and the heading lead the left; the Ask box settles to the card's foot, so the two columns end together. */
+  .dk[data-app] .dk-s-ut { grid-template-rows: auto auto 1fr auto; }
+  .dk[data-app] .dk-s-ut > .dk-work-after { grid-row: 4; align-self: end; }
+}
+@media (min-width: 721px) {
+  .dk[data-app] .dk-right.dk-one { background: var(--lift); border-color: var(--glass-line); }
+  /* The card's foot as one row: who pays on the left (each sentence whole), View details on the right. */
+  .dk[data-app] .dk-mat .dk-deal-foot { flex-direction: row; align-items: center; justify-content: space-between; gap: var(--s-2); margin-top: var(--s-2); }
+  .dk[data-app] .dk-mat .dk-deal-foot .dk-pill { align-self: center; flex: none; }
+}
+.dk[data-app] .dk-pr { column-gap: var(--s-1); }
+@media (max-width: 720px) {
+  .dk[data-app] .dk-right.dk-one .dk-protect, .dk[data-app] .dk-right.dk-one .dk-deal2.dk-mat { background: var(--lift); }
+  .dk[data-app] .dk-right.dk-one .dk-deal2.dk-mat { box-shadow: var(--glass-shadow); }
+  /* Price, then proof, then the fine print: the payments line a step smaller than the proof above it. */
+  .dk[data-app] .dk-mat .dk-onlytap { font-size: var(--t-micro); }
+  .dk[data-app] .dk-mat .dk-deal-foot .dk-pill { padding: 0; }
+}
+/* A two-line seller status keeps its dot on the first line. */
+.dk-fr .dk-st { align-items: baseline; }
+.dk-fr .dk-st i { flex: none; transform: translateY(-2px); }
+/* Round 3 (Desk-S7). The Ask box's centre meets the Shop for this row, so the two columns share one line; the lit top
+   edge a touch brighter; on a phone the deal card's foot sits closer, with less empty card under View details. */
+@media (min-width: 1100px) {
+  .dk[data-app] .dk-s-ut > .dk-work-after { margin-bottom: var(--s-3); }
+  .dk[data-app] .dk-s-ut > .dk-ut { box-shadow: var(--glass-edge), var(--glass-shadow); }
+}
+@media (min-width: 721px) {
+  .dk[data-app] .dk-right.dk-one { box-shadow: var(--glass-edge), var(--glass-shadow); }
+}
+@media (max-width: 720px) {
+  .dk[data-app] .dk-right.dk-one .dk-protect { box-shadow: var(--glass-edge); }
+  .dk[data-app] .dk-right.dk-one .dk-deal2.dk-mat { padding-bottom: var(--s-1); }
+}
+/* Round 4 (Desk-S7). On a phone the deal card's foot is one row like desktop's: who pays on the left, View details on
+   the right. The two-line foot costs height, so the card gives ~34 px back elsewhere and the whole foot still clears
+   the bar's fade on the run's first screen. (Centring the Ask composition was tried here and left out: see 031.) */
+@media (max-width: 720px) {
+  .dk[data-app] .dk-mat .dk-deal-foot { flex-direction: row; align-items: center; justify-content: space-between; gap: var(--s-2); margin-top: var(--s-1); }
+  .dk[data-app] .dk-mat .dk-deal-foot .dk-onlytap { flex: 1 1 auto; min-width: 0; }
+  .dk[data-app] .dk-mat .dk-deal-foot .dk-pill { flex: none; align-self: center; }
+  .dk[data-app] .dk-pr { margin: 0; }
+  .dk[data-app] .dk-mat .dk-before { margin-bottom: var(--s-1); }
+  .dk[data-app] .dk-mat .dk-before summary { min-height: 44px; }
+  .dk[data-app] .dk-right.dk-one .dk-protect { padding-top: var(--s-2); }
+  .dk[data-app] .dk-right.dk-one .dk-deal2.dk-mat { padding-top: var(--s-1); }
+  .dk[data-app] .dk-live-grid { row-gap: var(--s-2); }
+}
+
+/* Track SM: the phone's pinned money line (Round 1 judge: the deal card left the screen as the case rose): the deal
+   card's own eyebrow and price, solid on the page colour, stuck at the top from the first set-aside on. Not drawn on a
+   wide screen, where the card itself stands still beside the rows. Here, not in the moment's chunk (SM-3): its slot is
+   held from the run's first frame, so the run's one scroll puts it at the top before the sellers arrive. */
+.sm-pin { display: none; }
+@media (max-width: 720px) {
+  .sm-held { min-height: 100svh; } /* the stage is a screen tall, so the page can scroll the slot to the top at once */
+  .sm-pin { position: sticky; top: var(--nav-h); z-index: 5; /* under the bar, which is sticky on a phone too (S1-13, brand.md §10.4) */ display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-2); margin: 0 0 var(--s-2); padding: var(--s-1) 0; border-bottom: var(--hair); background: none; transition: opacity var(--d-1) var(--ease); }
+  .sm-pin[data-stuck] { background: var(--page-solid); } /* solid only while stuck, so in flow it is a line on the page, not a slab */
+  /* data-wait: the slot held before the verdict; data-hidden: the deal card or its "Your money stays put." is in view */
+  .sm-pin[data-hidden], .sm-pin[data-wait] { opacity: 0; pointer-events: none; }
+  .sm-pin-stay { color: var(--gold); font-size: var(--t-small); } /* the protection line's own voice (.dk-stay) */
+  .sm-pin[data-short] .sm-pin-stay { visibility: hidden; } /* SM-5: the card says it on this screen; the pin keeps the price */
+  .sm-pin-deal { display: flex; align-items: baseline; gap: var(--s-1); }
+  .sm-pin b { font: var(--w-head) var(--t-h3) / var(--lh-head) var(--display); font-variant-numeric: tabular-nums; color: var(--ink); }
+}
+
+/* SM-6 (Round 4 design judge: the run opened on empty containers, a glass deal panel with nothing in it for ~0.5 s and
+   one row over ~140 px of bordered list for ~1 s). system.md §3 "Held in the run": a held place is empty and undrawn,
+   never a frame with nothing in it. Every row (and the set-aside's case) keeps its place from the run's first frame, so
+   nothing moves; the list's frame is drawn by its ::before and hugs only the rows that have landed (--drawn, set by
+   Desk.tsx before each paint); the held places below it are bare velvet. Same frame, same glass as before (glass.css
+   draws it on the list itself once the run is an app; here it moves to the ::before). */
+.dk[data-app] .dk-live-grid > ol.dk-feed { position: relative; overflow: visible; border-color: transparent; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* The frame reaches under each row in the frame the row lands (the row's enter starts there, below), so it never stands
+   open over nothing; its first appearance fades in with the first row. Reduced motion: no fade (the Desk's own rule). */
+.dk[data-app] .dk-live-grid > ol.dk-feed::before { content: ""; position: absolute; top: -1px; left: -1px; right: -1px; height: calc(var(--drawn, 0px) + 2px); border: 1px solid var(--glass-line); border-radius: var(--glass-r); background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-edge); pointer-events: none; transition: opacity var(--d-3) var(--ease); }
+.dk[data-app] .dk-live-grid > ol.dk-feed:not([data-drawn])::before { height: 0; opacity: 0; } /* before its first row: nothing drawn */
+/* A landing row starts its enter in the frame it lands (one frame into it, not at opacity 0), so the price it carries
+   to the deal card is never drawn in a frame where its row is not. */
+.dk[data-app] .dk-live-grid > ol.dk-feed > .dk-fr { animation-delay: -24ms; }
+/* A row's status line holds the height of its last words (the verdict's "Set aside: …" wraps to two lines on a phone),
+   so a verdict never grows the row under its first line: the words still to come are an invisible twin in the same cell. */
+.dk[data-app] .dk-live-grid .dk-fr .dk-who > :first-child { grid-row: 1; grid-column: 1; }
+.dk[data-app] .dk-live-grid .dk-fr .dk-who > .dk-st { grid-row: 2; grid-column: 1; }
+.dk[data-app] .dk-live-grid .dk-fr .dk-who[data-final]::after { content: attr(data-final); grid-row: 2; grid-column: 1; visibility: hidden; padding-left: var(--s-2); font-size: var(--t-small); }
+@media (max-width: 720px) { .dk[data-app] .dk-live-grid .dk-fr .dk-who[data-final]::after { font-size: var(--t-micro); } }
+/* The list no longer clips its rows, so the first and last round their own corners (the deal's row has a faint fill). */
+.dk[data-app] .dk-live-grid > ol.dk-feed > .dk-fr:first-child { border-radius: calc(var(--glass-r) - 1px) calc(var(--glass-r) - 1px) 0 0; }
+.dk[data-app] .dk-live-grid > ol.dk-feed > .dk-fr:last-child { border-radius: 0 0 calc(var(--glass-r) - 1px) calc(var(--glass-r) - 1px); }
+/* The last drawn row's hairline would double the frame's edge; a row whose case is held ends at its first line (its
+   hairline and its reading line wait under the drawn part, not under the held case). */
+.dk[data-app] .dk-live-grid > ol.dk-feed > .dk-fr:has(+ .dk-fr[data-wait]),
+.dk[data-app] .dk-live-grid > ol.dk-feed > .dk-fr:has(> .sm-case[data-wait]) { border-bottom-color: transparent; }
+.dk[data-app] .dk-live-grid > ol.dk-feed > .dk-fr::after { bottom: var(--held, 0px); }
+/* The right column holds its place undrawn (no frame, no words) until its first content (SM-7: the verdict's shield
+   line, or a price read clean); then the card draws at full opacity and never fades again. */
+.dk-live-grid > .dk-right[data-wait] { visibility: hidden; }
+/* SM-5 nit (DD): the verdict's sentence breaks evenly ("Goose set TixQuack / aside." never leaves one ragged word). */
+.dk-protect h3 { text-wrap: balance; }
+
+/* SM-7 (DD's SM-6 ruling 2; system.md §3 "a price is drawn only beside a row whose note has read clean"): the one card's
+   two parts are each drawn from their own first content (Desk.tsx `part`). A part not yet drawn holds no frame. */
+/* The shield line alone (from the verdict until the first clean row's "Nothing set aside", a beat later): the price's block is
+   not drawn and holds no place, so the card hugs the line and grows down when the price comes; the line never moves. */
+.dk-right.dk-one[data-part="shield"] > .dk-deal2 { display: none; }
+.dk[data-app] .dk-right.dk-one[data-part="shield"] .dk-protect::after { content: none; } /* the phone's hairline over the price */
+@media (min-width: 721px) {
+  .dk[data-app] .dk-right.dk-one[data-part="shield"] .dk-protect { padding-bottom: 0; border-bottom: 0; } /* the column pads it */
+}
+@media (max-width: 720px) {
+  /* The foot note sits under the card on a phone: held (undrawn) until the card has its price, so it lands once. */
+}
+/* The price alone (a clean row read before the set-aside; no market today, DD's SM-6 ruling 6): the card's glass frame
+   is the column's (glass.css), so the column steps out of it (its border kept, transparent, so nothing inside moves) and
+   the same frame is drawn around the price's part only, as far out as the column's border and padding; the shield line's
+   place above it is held, undrawn velvet. At the verdict the column's own frame draws whole. */
+.dk[data-app] .dk-live-grid .dk-right.dk-one[data-part="price"] { background: none; border-color: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.dk[data-app] .dk-live-grid .dk-right.dk-one[data-part="price"] .dk-deal2.dk-mat { isolation: isolate; }
+.dk[data-app] .dk-live-grid .dk-right.dk-one[data-part="price"] .dk-deal2.dk-mat::before { content: ""; position: absolute; inset: -1px -1px -2px; z-index: -1; border: 1px solid var(--glass-line); border-bottom: 2px solid var(--gold-line); border-radius: var(--glass-r); background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-edge), var(--glass-shadow); pointer-events: none; }
+@media (min-width: 721px) {
+  .dk[data-app] .dk-live-grid .dk-right.dk-one[data-part="price"] .dk-deal2.dk-mat::before { inset: calc(-1px - var(--s-3)) calc(-1px - var(--s-4)) calc(-2px - var(--s-2)); } /* the card's border + its padding (.dk-right.dk-one above), named by the same tokens so the two cannot drift */
+}
+/* The pin's price waits with the card's: until then the pin says "Your money stays put." alone, and when the card's own
+   line is in view too (data-short) the pin has nothing left to say, so it steps aside whole (never an empty band). */
+.sm-pin-deal[data-wait] { visibility: hidden; }
+@media (max-width: 720px) { .sm-pin[data-short]:has(> .sm-pin-deal[data-wait]) { opacity: 0; pointer-events: none; } }
+
+/* Track DK (068): Limits in code's "Your name" row. The field takes the row's whole width while it is open. */
+.dk-name-act { display: flex; justify-content: flex-end; }
+.dk-name-row:has(.vg-form) .dk-name-act { grid-column: 1 / -1; justify-content: flex-start; }
+
+/* DK (the DD, part 2 nit 2): while the Desk draws its own waking block where the content goes (pending, no button; or
+   failed, with Try again), Track R's page-wide waking line stands down, so "waking up" is said once and "fills in" never
+   sits beside a failed request's Try again. Offline and "updated" lines are untouched. */
+/* Only the live Desk's own classes trigger it (never `.dk`, which /system's specimens wear: core/test/sys-pages.test.ts). */
+body:has(.dk-s-wait .st-note[data-kind="waking"], .dk-pane .st-note[data-kind="waking"], .dk-s-wait[data-trouble="waking"]):has(.st-strip > .st-note[data-kind^="waking"]) :is(.st-strip, .st-sr) { display: none; }

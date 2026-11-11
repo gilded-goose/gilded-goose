@@ -1,0 +1,80 @@
+/* Gilded Goose tokens. The world: a departures concourse in daylight. Pale cool stone,
+   one dark board on the wall, one gold lamp. Flat colour everywhere: no gradients, no glows. Gold is only what is
+   yours (your limit, the deal, Approve, the egg); signal red only for a refused seller.
+   Contrast (WCAG, measured on --gg-stone): ink 15.6:1, ink-2 7.3:1, ink-3 4.7:1, red-text 5.2:1, gold-text 5.3:1;
+   ink on gold 10.6:1. On the board face: flap ink 13.6:1, gold 9.2:1, red 5.2:1, dim 4.7:1, label 5.0:1. */
+@import "@fontsource-variable/funnel-display/index.css";
+@import "@fontsource-variable/funnel-sans/index.css";
+@import "@fontsource-variable/azeret-mono/index.css";
+
+.gg {
+  color-scheme: light;
+  /* The concourse. */
+  --gg-stone: oklch(0.948 0.004 255);
+  --gg-stone-2: oklch(0.918 0.005 255);
+  --gg-paper: oklch(0.992 0.002 255);
+  --gg-hair: oklch(0.2 0.012 260 / 0.12);
+  --gg-hair-2: oklch(0.2 0.012 260 / 0.2);
+  --gg-ink: oklch(0.2 0.012 260);
+  --gg-ink-2: oklch(0.42 0.012 260);
+  --gg-ink-3: oklch(0.52 0.01 260);
+
+  /* The board. */
+  --gg-housing: oklch(0.185 0.006 260);
+  --gg-face: oklch(0.255 0.006 260);
+  --gg-face-fold: oklch(0.215 0.006 260);
+  --gg-axle: oklch(0.12 0.004 260);
+  --gg-flap-ink: oklch(0.95 0.008 95);
+  --gg-flap-dim: oklch(0.64 0.008 260);
+  --gg-flap-label: oklch(0.655 0.01 260);
+
+  /* Yours, and refused. */
+  --gg-gold: oklch(0.83 0.14 82);
+  --gg-gold-press: oklch(0.78 0.145 80);
+  --gg-gold-text: oklch(0.5 0.105 72);
+  --gg-gold-tint: oklch(0.83 0.14 82 / 0.16);
+  --gg-red: oklch(0.69 0.19 32);
+  --gg-red-text: oklch(0.52 0.19 30);
+  --gg-red-tint: oklch(0.69 0.19 32 / 0.1);
+  --gg-ok: oklch(0.6 0.13 155);
+
+  --gg-display: "Funnel Display Variable", "Funnel Sans Variable", system-ui, sans-serif;
+  --gg-sans: "Funnel Sans Variable", system-ui, sans-serif;
+  --gg-mono: "Azeret Mono Variable", ui-monospace, "Cascadia Mono", monospace;
+
+  /* Type scale (1.25, fluid at the top). */
+  --gg-t-xs: 0.8125rem;
+  --gg-t-s: 0.9375rem;
+  --gg-t-m: 1.0625rem;
+  --gg-t-l: 1.3125rem;
+  --gg-t-xl: clamp(1.5rem, 1.15rem + 1.1vw, 2rem);
+  --gg-t-2xl: clamp(2rem, 1.3rem + 2.4vw, 3.25rem);
+  --gg-t-hero: clamp(2.5rem, 1.35rem + 3.9vw, 4.75rem);
+
+  /* Space (4 px base). */
+  --gg-1: 4px; --gg-2: 8px; --gg-3: 12px; --gg-4: 16px; --gg-5: 24px; --gg-6: 32px; --gg-7: 48px; --gg-8: 64px; --gg-9: 96px;
+  --gg-gutter: max(16px, min(4vw, 56px));
+
+  /* Shape: flaps 4, controls 8, sheets 16. No pills. */
+  --gg-r-flap: 4px;
+  --gg-r-control: 8px;
+  --gg-r-sheet: 16px;
+
+  /* Motion. */
+  --gg-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --gg-inout: cubic-bezier(0.77, 0, 0.175, 1);
+  --gg-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --gg-press: 140ms;
+  --gg-ui: 200ms;
+
+  /* Depth: neutral and low; only what floats casts a shadow. */
+  --gg-shadow-float: 0 1px 2px oklch(0.2 0.012 260 / 0.08), 0 12px 32px -12px oklch(0.2 0.012 260 / 0.24);
+  --gg-shadow-sheet: 0 2px 6px oklch(0.2 0.012 260 / 0.08), 0 32px 72px -24px oklch(0.2 0.012 260 / 0.34);
+
+  /* Layers. */
+  --gg-z-egg: 2;
+  --gg-z-bar: 10;
+  --gg-z-ping: 20;
+  --gg-z-scrim: 30;
+  --gg-z-sheet: 31;
+}

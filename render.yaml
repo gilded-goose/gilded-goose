@@ -1,0 +1,80 @@
+# H4: Render Blueprint, one free Node web service that serves the API and the built web page from one origin
+# (server/src/main.ts serves web/dist when it exists), so no static-site rewrite has to proxy the live stream.
+# UNTESTED until Joshua's Render account exists: field names are from render.com/docs/blueprint-spec (read Sat Oct 24).
+# Nothing secret lives here: every key is `sync: false`, typed by Joshua into Render's form once, never committed.
+#
+# Joshua's clicks (private repo, this repo only):
+#   1. Render dashboard → New → Blueprint → connect GitHub, and grant access to ONLY paypal-hackathon.
+#   2. Pick this repo and branch; Render reads this file and asks for each `sync: false` value:
+#      PUBLIC_URL and WEB_URL = the service's https://<name>.onrender.com address (the same for both);
+#      PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET = the SANDBOX app's; ANTHROPIC_API_KEY = a key whose Console spend
+#      cap is already set (QUEUE: Joshua's list, item 8). Leave ANTHROPIC_API_KEY empty to host with the plain rule only.
+#   3. Apply. Then the H4 live check: /api/health answers, a judge round's cap key isn't "unknown" (the server logs the
+#      X-Forwarded-For shape once if it is), and the page says live mode is waking while the free instance starts.
+# Free instances sleep when idle and their disk is wiped on restart (caps and run library reset). Launch (Joshua, Sat Oct 31):
+# an external uptime check pings /api/health every 5 minutes and the service moves to an always-on paid instance; Joshua
+# does both (docs/ops/uptime.md). `plan:` below changes to `starter` only after his upgrade, so a sync never undoes it.
+# ONE PROCESS (fresh Q, Nov 5): the week's double-pay stop lives in the server's memory (server/src/main.ts, `weekStop`),
+# so it holds only while one process serves. Never scale this past one instance, and know that each deploy briefly runs the
+# old and new process side by side: a pay-twice window, accepted before the freeze. A second process needs a shared lock
+# first (shared Lesson 44).
+services:
+  - type: web
+    name: gilded-goose
+    runtime: node
+    plan: starter
+    # Deploys wait for GitHub (Joshua, Thu Nov 5 5:15 PM §1c): a commit goes live only once ALL its GitHub checks pass
+    # (`check` on every push, `pages` when the mirror's files change; Render counts skipped as passed). A commit with no
+    # check, a red one, or a push while Actions can't run is never auto-deployed (render.com/docs/deploys, "Integrating
+    # with CI"). Manual Deploy in the dashboard still works. Applies through the Blueprint's sync (docs/ops/uptime.md §E).
+    autoDeployTrigger: checksPass
+    # Not corepack: it can't run pnpm 12.15.0 ("Cannot find module …/pnpm/12.15.0/bin/pnpm.cjs", pnpm 12's layout changed;
+    # Render's first deploy, Wed Oct 28). Not `npm install -g` either: Render's global node_modules is read-only (EROFS).
+    # Same version as package.json's packageManager. VITE_WALLET=1 (W64): the hosted link opens on the wallet with a deal
+    # waiting; the attack demo is one tap away at `?wallet=0`.
+    # Track R (launch, cache-safe deploys): then copy the previous release's hashed chunks that this build lacks into
+    # web/dist/assets (read from the still-live old instance), so a page opened before the deploy keeps finding its
+    # files; it writes web/dist/release.json and never fails the build (bounded, `|| true`). scripts/carry-assets.ts.
+    buildCommand: npx --yes pnpm@12.15.0 install --frozen-lockfile && VITE_WALLET=1 npx --yes pnpm@12.15.0 --filter @goose/web build && (node scripts/carry-assets.ts || true)
+    # Not `pnpm start`: it reads ../.env, and node exits when an --env-file is missing (checked on node 24).
+    startCommand: cd server && node src/main.ts
+    healthCheckPath: /api/health
+    envVars:
+      # Render's Node version setting as remembered, not on the spec page read: check the build log says Node 24.
+      - key: NODE_VERSION
+        value: "24"
+      - key: HOST
+        value: 0.0.0.0
+      - key: PAYPAL_ENVIRONMENT
+        value: sandbox
+      # Hold, re-check, then capture or void (021 §3 decision 1; both attended sandbox runs passed Oct 28). Also the
+      # code's default; written here so the hosted intent is plain to read. /api/health shows it as `intent`.
+      - key: PAYMENT_INTENT
+        value: AUTHORIZE
+      # AG Studio licence (Track AS, 044 §2): read by the web build into the browser bundle, as AG intends. Empty or
+      # absent, Behind the scenes stays the AG Grid Community ledger; valid, it becomes the AG Studio dashboard.
+      # Joshua starts the trial himself (his Nov 4 message) and types the key here; never in the repo.
+      - key: VITE_AG_STUDIO_LICENSE
+        sync: false
+      - key: PUBLIC_URL
+        sync: false
+      - key: WEB_URL
+        sync: false
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      # The sandbox webhook's id (Joshua set it in Render Thu Oct 29): the server asks PayPal to verify each event's
+      # signature against it, and answers 503 to every webhook while it is unset. Listed here so a Blueprint sync never
+      # drops it.
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      # The Turso store (Joshua set both in Render Thu Oct 29): the caps, the run library, the shopper's week and the runs
+      # (their pages, rows and orders) survive a restart. Unset, they stay on the instance's disk and /api/health says store "disk". Set but unreachable (the free
+      # plan archives a database idle 10 days: README, Troubleshooting), the server starts with live mode paused.
+      - key: TURSO_DATABASE_URL
+        sync: false
+      - key: TURSO_AUTH_TOKEN
+        sync: false

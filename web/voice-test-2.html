@@ -1,0 +1,70 @@
+<!doctype html>
+<!--
+  Track V (029): speech to text on the device, for the iPhone, whose own speech service never started (019).
+  Hold the button, talk, let go: the browser records, Whisper (in a Web Worker, WebGPU or WebAssembly) turns it into
+  text in this tab. The audio and the text never leave the device. This test page alone keeps each try's words and
+  timings in this browser (localStorage), so a test survives Safari reloading the tab; Clear removes them. The
+  downloads are the model's files and ONNX Runtime (029, "Network"). Test-only, like /voice-test: nothing links here.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Developer mic test 2 · Gilded Goose</title>
+<style>
+  /* Desk-J3: the Desk's plum velvet palette (desk/tokens.css, .dk[data-palette="v"]), spelled out: a dev tool, so only the colours. */
+  :root { color-scheme: dark; --fg: #f4eadc; --bg: #2c1520; --line: rgba(244, 234, 220, .3); --ok: #f4eadc; --bad: #f0a59a; --hold: #f4eadc; }
+  body { font: 17px/1.4 system-ui, sans-serif; color: var(--fg); background: var(--bg); margin: 0; padding: 16px; max-width: 640px; }
+  button { font: inherit; }
+  #hold { font-weight: 600; padding: 28px 18px; border-radius: 16px; border: 2px solid var(--line); margin: 12px 0; width: 100%; background: transparent; color: inherit;
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: none; }
+  /* the page's one action: cream, as the Desk's; held down, it turns to an outline so the press shows */
+  #hold { border-color: var(--hold); background: var(--hold); color: var(--bg); }
+  #hold[data-state="listening"] { border-color: var(--hold); background: transparent; color: var(--fg); }
+  #hold:disabled { opacity: .6; }
+  #transcript { font-size: 22px; min-height: 1.4em; border-top: 1px solid var(--line); padding-top: 8px; }
+  dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; }
+  dt { opacity: .8; } dd { margin: 0; font-variant-numeric: tabular-nums; }
+  .bad { color: var(--bad); }
+  #clear { padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: inherit; }
+  ol { padding-left: 20px; } li { margin: 4px 0; overflow-wrap: anywhere; }
+  /* the one nav, flush with the page's edges (the body holds a 16 px gutter) */
+  body > .gn { margin: -16px -16px 16px; } .gn-slot { display: contents; }
+</style>
+</head>
+<body>
+<!-- B-11 (brand.md §10.1): the vector egg the lockup's o uses (web/src/brand/egg.ts EGG_SYMBOL), as index.html's -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><radialGradient id="ggG" cx="38%" cy="30%" r="78%"><stop offset="0" stop-color="#fff3c4"/><stop offset=".34" stop-color="#f0cb62"/><stop offset=".74" stop-color="#b98a1c"/><stop offset="1" stop-color="#6e4f06"/></radialGradient><symbol id="ggEgg" viewBox="4.4 2.2 15.2 18.8"><path d="M12 2.2c-4.2 0-7.6 6.3-7.6 11.2a7.6 7.6 0 0 0 15.2 0C19.6 8.5 16.2 2.2 12 2.2Z" fill="url(#ggG)"/></symbol></defs></svg>
+<!-- The one nav every page wears (S1, Joshua Fri 3:40 PM; web/src/nav, its sheet and menu from nav/mount.tsx). -->
+<header class="gn dk-nav">
+  <div class="dk-nav-in">
+    <a class="gg gg-bar" href="%BASE_URL%?desk=1" aria-label="Gilded Goose">Gilded<span class="sp"> </span>G<span class="o"><span class="oc">o</span><svg aria-hidden="true"><use href="#ggEgg"/></svg></span>ose</a>
+    <span class="dk-practice-ph">Practice only</span>
+    <div class="dk-grow"></div>
+    <span class="gn-slot" data-gn-menu><button type="button" class="gm-btn dk-menu" aria-haspopup="dialog" aria-expanded="false"><span class="gm-w">Everything Goose does <svg viewBox="0 0 12 8" aria-hidden="true"><path d="m1 1.5 5 5 5-5" /></svg></span><span class="gm-ph">Menu</span></button></span>
+    <div class="dk-layer" role="group" aria-label="View"><a href="%BASE_URL%?desk=1">Shopper</a><a href="%BASE_URL%?desk=ledger">Behind the scenes</a></div>
+    <a class="dk-judge" href="%BASE_URL%?desk=tour"><span>Judge<span class="dk-jl">? Start here</span></span><span class="dk-jt"> tour</span> <span class="dk-arr" aria-hidden="true">›</span></a>
+  </div>
+</header>
+<h1>Developer mic test</h1>
+<p>Speech to text on this device. Nothing on the Gilded Goose site links here. Your voice never leaves this phone; the first press downloads the speech model once. Your tries are kept in this browser so they survive a reload.</p>
+<p id="warn" class="bad" role="alert" hidden></p>
+<button id="hold" type="button">Hold to talk</button>
+<p id="status" role="status" aria-live="polite">Press and hold the button. The first press gets the mic ready.</p>
+<p id="transcript" aria-live="polite"></p>
+<dl>
+  <dt>Model load</dt><dd id="load">–</dd>
+  <dt>Release to text</dt><dd id="lag">–</dd>
+  <dt>Backend · model</dt><dd id="backend">–</dd>
+  <dt>Recording</dt><dd id="format">–</dd>
+  <dt>Runs</dt><dd id="runs">0</dd>
+  <dt>Model</dt><dd id="loads">not loaded yet</dd>
+  <dt>Page opened</dt><dd id="opens">–</dd>
+</dl>
+<ol id="log" reversed></ol>
+<button id="clear" type="button">Clear saved tries</button>
+<script type="module" src="/src/voice/voice-test-2.ts"></script>
+<script type="module" src="/src/nav/mount.tsx"></script>
+</body>
+</html>

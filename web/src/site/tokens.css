@@ -1,0 +1,151 @@
+/*
+ * Final direction (Lucas, Nov 7 late, refs: Pelmatech, Vertix, a credit-score phone app): minimal and product-first.
+ * Near-white neutral surfaces, near-black ink, and one accent: the yolk of the golden egg, used only for your limit,
+ * money that matters and Approve. Panels that were dark are light cards now; the only dark is the phone and the
+ * primary button. Type: Mona Sans (one grotesk, regular and medium) with Geist Mono for figures and ids.
+ */
+/* midnight.css (the Desk's back room, loaded with Under the hood's board) sets color-scheme: dark on :root and stays loaded
+   after the page closes; html:root outranks it, so this site's scrollbars and controls stay light (hood-board.test.ts). */
+html:root { color-scheme: light; }
+:root {
+  color-scheme: light;
+
+  /* Colour */
+  /* The ground sits a step below white so the glass panes (white, translucent) read as a lighter layer above it. */
+  --surface: oklch(0.967 0.002 85);
+  --surface-2: oklch(0.945 0.002 85);
+  --surface-raised: oklch(1 0 0);
+  --ink: oklch(0.17 0 0);
+  --ink-2: oklch(0.42 0 0);
+  --ink-3: oklch(0.5 0 0);
+  --line: oklch(0.92 0 0);
+  --line-strong: oklch(0.85 0 0);
+  --stone: oklch(0.962 0 0);
+  --stone-2: oklch(0.935 0 0);
+  --stone-line: oklch(0.9 0 0);
+  --stone-ink: oklch(0.17 0 0);
+  --stone-ink-2: oklch(0.42 0 0);
+  --gold: oklch(0.87 0.16 92);
+  --kraft: oklch(0.962 0 0);
+  --kraft-dark: oklch(0.85 0 0);
+  --newsprint: oklch(1 0 0);
+  --stone-deep: oklch(0.15 0 0);
+  --gold-ink: oklch(0.5 0.1 78);
+  --gold-stone: oklch(0.5 0.1 78);
+  --gold-deep: oklch(0.36 0.07 70);
+  --vermilion: oklch(0.62 0.2 34);
+  --vermilion-ink: oklch(0.52 0.19 32);
+  --vermilion-stone: oklch(0.52 0.19 32);
+  --lead: oklch(0.5 0.014 255);
+  --lead-stone: oklch(0.5 0.01 255);
+  --held: oklch(0.5 0.025 62);
+  --held-stone: oklch(0.5 0.025 62);
+  /* PayPal's own blues, only where money moves through PayPal. */
+  --gold-tint: oklch(0.87 0.16 92 / 0.22);
+  --paypal: #0070e0;
+  --paypal-deep: #003087;
+  --signal: oklch(0.55 0.11 165);
+  --focus: oklch(0.45 0.13 250);
+
+  /* Gold is flat ink (Lucas: no metallic gradients). These names stay so older rules keep working. */
+  --gold-metal: var(--gold);
+  --gold-metal-hover: oklch(0.9 0.15 94);
+  --gold-edge: none;
+
+  /* Type */
+  --font-display: "Mona Sans Variable", "Mona Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: var(--font-display);
+  --font-sans: "Mona Sans Variable", "Mona Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono Variable", "Geist Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --t-xs: 0.8125rem;   /* 13px: the floor, tags and fine print */
+  --t-sm: 0.875rem;    /* 14px */
+  --t-base: 1rem;      /* 16px: body */
+  --t-md: 1.125rem;    /* 18px: lead sentences */
+  --t-lg: 1.375rem;    /* 22px */
+  --t-xl: 1.75rem;     /* 28px: section heads on phone */
+  --t-2xl: 2.25rem;    /* 36px: section heads */
+  --t-3xl: 3rem;       /* 48px: page titles */
+  --t-display: clamp(2.5rem, 1.6rem + 4.2vw, 5rem); /* 40 → 80px: the home headline */
+
+  --lh-tight: 1.08;
+  --lh-head: 1.18;
+  --lh-body: 1.55;
+
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-strong: 600;
+
+  /* Space (4px scale) */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+  --s8: 32px;
+  --s10: 40px;
+  --s12: 48px;
+  --s16: 64px;
+  --s20: 80px;
+  --s24: 96px;
+
+  --gutter: var(--s4);
+  --page-max: 1200px;
+  --measure: 68ch;
+  --header-h: 56px;
+  --section-gap: var(--s12);
+  --tap: 44px;
+
+  /* Shape */
+  --r-1: 4px;
+  --r-2: 8px;
+  --r-3: 12px;
+  --r-4: 20px;
+  --r-pill: 999px;
+
+  /* Depth: one scale, neutral soft shadows, never glows */
+  --shadow-1: 0 1px 2px oklch(0.17 0.01 70 / 0.06), 0 1px 1px oklch(0.17 0.01 70 / 0.04);
+  --shadow-2: 0 4px 12px oklch(0.17 0.01 70 / 0.08), 0 1px 3px oklch(0.17 0.01 70 / 0.06);
+  --shadow-3: 0 24px 48px oklch(0.17 0.01 70 / 0.16), 0 4px 12px oklch(0.17 0.01 70 / 0.08);
+
+  /* Glass (Lucas, Nov 8): one neutral material in two thicknesses, for the floating things only: the bar, the pick,
+     the approve sheet and the receipt. Light catches the top rim; the sheen is a white tone shift, never a hue; the gold
+     stays the egg's. prefers-reduced-transparency makes it solid (base.css). */
+  --glass: oklch(1 0 0 / 0.64);
+  --glass-thick: oklch(0.995 0 0 / 0.8);
+  --glass-blur: blur(18px) saturate(1.7);
+  --glass-blur-thick: blur(30px) saturate(1.8);
+  --glass-line: oklch(0.17 0 0 / 0.08);
+  --glass-rim: inset 0 1px 0 oklch(1 0 0 / 0.95), inset 0 0 0 1px oklch(1 0 0 / 0.55), inset 0 -1px 0 oklch(0.17 0 0 / 0.04);
+  --glass-sheen: linear-gradient(180deg, oklch(1 0 0 / 0.75) 0%, oklch(1 0 0 / 0) 46%);
+  --glass-depth: 0 1px 1px oklch(0.17 0.01 70 / 0.04), 0 8px 24px -8px oklch(0.17 0.01 70 / 0.14), 0 32px 64px -24px oklch(0.17 0.01 70 / 0.16);
+
+  /* Layers */
+  --z-sticky: 10;
+  --z-sheet-backdrop: 30;
+  --z-sheet: 40;
+  --z-toast: 50;
+
+  /* Motion (spec §7) */
+  --d-press: 120ms;
+  --d-ui: 200ms;
+  --d-enter: 320ms;
+  --d-reveal: 600ms;
+  --d-stamp: 90ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (min-width: 761px) {
+  :root {
+    --gutter: var(--s6);
+    --header-h: 64px;
+    --section-gap: var(--s20);
+  }
+}
+
+@media (min-width: 1100px) {
+  :root { --gutter: var(--s10); }
+}

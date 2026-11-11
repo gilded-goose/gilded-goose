@@ -1,0 +1,179 @@
+/* The one nav (Joshua, Fri Oct 30, 3:40 PM: "Every page uses the one Desk nav (Gilded Goose · Everything Goose does ·
+   Shopper · Behind the scenes · Judge? Start here) and the same layout grid"; S1). The Desk's header, moved here so
+   every route draws the same bar on the same 1200 px grid: the Desk, the judge tour, the back room (Behind the scenes,
+   Proof, the haggle) through SiteNav.tsx, and the wallet's first paint as plain markup with these classes
+   (first-paint.tsx; wallet.css imports this file, so the first paint is styled with no JS).
+
+   Colors are the page's tokens (tokens.css) where the nav sits inside a Desk palette, with the velvet values as the
+   fallback; the back room (Midnight, no Desk palette around it) maps them to its own --lx names (data-room="back").
+   index.html draws the same bar for the classic page and the market (main.tsx loads this sheet with the first screen's
+   own, and puts the real menu button in once React is there). */
+
+.gn { position: sticky; top: 0; z-index: 10; display: block; color: var(--ink, #f4eadc); font-family: var(--face, "Archivo Goose", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif); font-size: var(--t-body, 17px); line-height: 1.5; background: var(--page-solid, #2c1520); } /* solid at rest; glass once scrolled (below) */
+.gn[data-room="back"] { --ink: var(--lx-ink); --ink-2: var(--lx-ink-2); --ink-3: var(--lx-ink-3); --line: var(--lx-edge); --page-solid: var(--lx-page); --focus: var(--lx-ink); --face: var(--lx-face); }
+/* S1-10 (DD, AS-10/11): the back room's scrolled bar is Midnight glass on every back-room page (system.md §6), set on the
+   bar itself. The Studio's root carries no Midnight palette, so its bar took Velvet's plum glass from the page around
+   it; the ledger's took Midnight's from its root. The values are tokens.css's Midnight glass block; the Desk's bar keeps
+   Velvet's. */
+/* The back room's bar takes Midnight glass from tokens.css (its Midnight block names .gn[data-room="back"]); no values are typed here (DD §0, §6). */
+/* The back room's canvas is Midnight to its edges (Track L's rule, which keyed on its own header before this one). */
+html:has(.gn[data-room="back"]), html:has(.gn[data-room="back"]) body { background: var(--lx-page); }
+/* The bar's one ring on every route (checklist §4; S1-13 part 5). `header.gn` (0,2,1), not `.gn` (0,2,0): a room's blanket
+   ring (the ledger's `.lx :focus-visible`, offset 2 px, read after this file) tied it and won by order, so the skip link
+   drew a second ring in the ledger. scripts/one-nav.ts tabs once on every route and holds the ring to one value. */
+header.gn :focus-visible { outline: 2px solid var(--focus, #f4eadc); outline-offset: 3px; border-radius: 8px; }
+.gn a { color: inherit; text-decoration: none; }
+/* S1-11: "Skip to content", the bar's first Tab stop, off screen until focused, then a hairline pill at the bar's left. */
+.gn .gn-skip { position: absolute; z-index: 70; left: var(--s-2, 16px); top: 6px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2, 16px); border: 1px solid var(--line-2, rgba(244, 234, 220, .3)); border-radius: var(--r-pill, 999px); background: var(--page-solid, #2c1520); color: var(--ink, #f4eadc); font-size: var(--t-small, 15px); transform: translateY(-200%); }
+/* W7 (the DD's nit from W-6): focused, it sits over the brand, so the bar's solid runs from its left edge out to the
+   gutter (a shadow of its own shape, moved left by the gutter: no spread, so it never leaves the bar's band) and nothing
+   of the egg shows in its rounded ends. The egg under it also fades out while it is focused, so not even the anti-aliased
+   seam where the two shapes meet shows its light (measured: scripts/w7-skip-shots.ts). Opacity, not visibility: the
+   brand stays the next Tab stop. */
+.gn .gn-skip:focus { transform: none; box-shadow: calc(-1 * var(--s-2, 16px)) 0 0 var(--page-solid, #2c1520); }
+.gn:has(> .gn-skip:focus) .gg .o { opacity: 0; }
+/* S1-12 (the DD at W-7, system.md §2: one style per component): the Desk's bar (SiteNav) is the same link. Two things
+   made it another one there. Its shape: the Desk's `.dk :focus-visible` (desk.css, read after this file) set an 8 px
+   corner, so the focused pill stays a pill here. Its place: the bars above sit flush in their page's column, where
+   --s-2 is the brand's left edge + 16; SiteNav spans the window, with its column (.dk-nav-in, 1200 px, padded 32 px, 16
+   on a phone) inside, so the link takes the same spot from that column's edge (at 390 it sat 16 px left, and the name's
+   last 8 px showed at its right end; at 1440 it sat at the window's edge, far from the brand). */
+.gn .gn-skip:focus { border-radius: var(--r-pill, 999px); }
+.gn > .gn-skip { left: calc(max(0px, (100% - 1200px) / 2) + var(--s-4, 32px) + var(--s-2, 16px)); }
+.gn:is(.wnav, .page > *, .hero > *) > .gn-skip { left: var(--s-2, 16px); }
+@media (max-width: 720px) { .gn > .gn-skip { left: calc(2 * var(--s-2, 16px)); } .gn:is(.wnav, .page > *, .hero > *) > .gn-skip { left: var(--s-2, 16px); } }
+/* The hairline under the bar (the Desk's landing draws it in once: desk.css). */
+.gn .dk-intro { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line, rgba(244, 234, 220, .12)); }
+.gn .dk-nav-in { display: flex; align-items: center; gap: 16px; height: 64px; max-width: 1200px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; }
+/* The lockup (B-11's .gg-bar, brand.md §10.1; scripts/brand-shots.ts BAR_CSS, with the DD's 07:05 ruling): the mark
+   keeps its size, and its link is a 44 px target at every width (22 px words + 11 px above and below; the phone's 20 px
+   + 12). Where "Practice only" is a caption under the wordmark (721-1279 px, and under 360) the link's padding moves
+   under the words, so the caption sits inside the 44 px and the words stay where B-11 placed them. */
+.gn .gn-home { display: contents; }
+.gn .gg-bar { flex: none; padding-block: 11px; }
+.gn .dk-practice-ph { font-size: var(--t-micro, 13px); color: var(--ink-3, #b49f9c); padding-left: 16px; border-left: 1px solid var(--line, rgba(244, 234, 220, .12)); line-height: 20px; }
+.gn .dk-grow { flex: 1; }
+.gn .dk-menu { color: var(--ink-2, #cdb9b5); transition: color var(--d-1, 200ms); }
+.gn .dk-menu:hover, .gn .dk-menu[aria-expanded="true"] { color: var(--ink, #f4eadc); }
+/* The two views, with an underline that glides to the one under the pointer and settles back on the open one. */
+.gn .dk-layer { position: relative; display: inline-flex; gap: 4px; }
+.gn .dk-layer a { display: inline-flex; align-items: center; justify-content: center; padding: 0 12px; min-height: 44px; font-size: var(--t-small, 15px); color: var(--ink-2, #cdb9b5); transition: color var(--d-1, 200ms); }
+/* The open view: aria-current on the live bar; data-current on the System page's specimen bar, which shows the look
+   without telling a screen reader it is the current page (specimens.test.ts). Same specificity through :is(). */
+.gn .dk-layer a:hover, .gn .dk-layer a:is([aria-current], [data-current]) { color: var(--ink, #f4eadc); }
+/* The underline sits on the bar's own box, 16 px above its foot (--nav-h), not on the words' metrics: the views are
+   44 px boxes centred in the bar, so from their foot that is 16 px less half the bar's spare height (6 px in a 64 px
+   bar). The same line in the first paint and in React (DD, B-7's nit: the first paint's drew 4-5 px lower). */
+.gn .dk-under { position: absolute; left: 0; bottom: calc(var(--s-2, 16px) - (var(--nav-h, 64px) - 44px) / 2); height: 1px; width: var(--uw, 0); background: var(--ink, #f4eadc); transform: translateX(var(--ux, 0)); transition: transform var(--d-2, 300ms) var(--spring, ease-out), width var(--d-2, 300ms) var(--spring, ease-out); }
+/* Its first measure lands where the first paint's line already is, at once (SiteNav marks the glide ready after it). */
+.gn .dk-layer:not([data-glide]) .dk-under { transition: none; }
+/* Before the glide has measured (the first paint, or no JS), the open view carries its own underline, on the same line. */
+.gn .dk-layer:not([style*="--uw"]) a:is([aria-current], [data-current]) { position: relative; }
+.gn .dk-layer:not([style*="--uw"]) a:is([aria-current], [data-current])::after { content: ""; position: absolute; left: 0; right: 0; bottom: calc(var(--s-2, 16px) - (var(--nav-h, 64px) - 44px) / 2); height: 1px; background: var(--ink, #f4eadc); }
+.gn .dk-judge { font-size: var(--t-small, 15px); display: inline-flex; align-items: center; gap: 0; min-height: 44px; padding: 0 4px 0 8px; color: var(--ink-2, #cdb9b5); transition: color var(--d-1, 200ms); }
+.gn .dk-judge:hover, .gn .dk-judge[aria-current] { color: var(--ink, #f4eadc); }
+.gn .dk-judge[aria-current] { box-shadow: inset 0 -7px 0 -6px var(--ink, #f4eadc); }
+/* "Judge? Start here" on a wide screen, "Judge tour" on a phone (a bare "Judge?" named no place to go). */
+.gn .dk-jt { display: none; margin-left: .28em; }
+.gn .dk-arr { margin-left: 6px; font-size: var(--t-small, 15px); transition: transform var(--d-1, 200ms) var(--ease, ease-out); }
+.gn .dk-judge:hover .dk-arr { transform: translateX(2px); }
+@media (prefers-reduced-motion: reduce) { .gn .dk-under, .gn .dk-arr { transition: none; } }
+
+/* ---------- the bar at every width (S1-13, brand.md §10.4 and §10.6) ----------
+   One sticky bar on every page and width, --nav-h tall (64 px; 56 on a phone), solid at rest and frosted once the page
+   has scrolled past 8 px (land.ts markScrolled). `header.gn.dk-nav` outranks the page rules that would undo it: the
+   rooms that make every child relative (`.lx > *`, `.hg > *`, `.pf > *`, `.st-page > *`) and the bars that sit flush in
+   their page's own column (`.wallet .wnav`, index.html's `.page > .gn`, safe.html's `.hero > .gn`, which draw no band of
+   their own). A flush bar gets the page's colour out to the window's edges with a spread shadow clipped to its own
+   height (no box wider than the window, so nothing scrolls sideways). */
+header.gn.dk-nav { position: sticky; top: 0; z-index: 20; --gn-frost: rgba(44, 21, 32, .93); } /* Velvet's bar tint: --glass-bar-bg's value, the fallback outside the .dk tokens */
+header.gn.dk-nav[data-room="back"] { --gn-frost: rgba(21, 16, 19, .93); } /* Midnight's */
+header.gn.dk-nav:is(.wnav, .page > *, .hero > *) { --gn-band: var(--page-solid, #2c1520); background: var(--gn-band); box-shadow: 0 0 0 100vmax var(--gn-band); clip-path: inset(0 -100vmax); }
+/* The frost (§10.6): B-11's --glass-bar-bg (the page's own colour at .92) over --glass-bar-blur (40 px), so nothing
+   under the bar reads; the fallbacks are the same values, for a page outside the .dk tokens (safe.html, the wallet).
+   The -webkit- line stays literal on purpose: some Safari builds drop a var() inside -webkit-backdrop-filter, and with
+   no blur the line under the bar reads (Joshua saw "A ticket to The Marsh Lights, Saturday" through it).
+   scripts/frost.ts holds both to --glass-bar-blur and measures the band. While the menu is open the bar is
+   solid, so two glass layers never stack. */
+header.gn.dk-nav[data-scrolled] {
+  --gn-band: var(--glass-bar-bg, var(--gn-frost));
+  background: var(--glass-bar-bg, var(--gn-frost));
+  -webkit-backdrop-filter: blur(40px) saturate(140%);
+  backdrop-filter: var(--glass-bar-blur, blur(40px) saturate(140%));
+  box-shadow: var(--glass-edge, none), 0 1px 0 var(--glass-line, transparent);
+}
+header.gn.dk-nav:is(.wnav, .page > *, .hero > *)[data-scrolled] { box-shadow: var(--glass-edge, none), 0 0 0 100vmax var(--gn-band); }
+/* No blur in this browser, or the visitor asked for less transparency: the page's own colour, opaque. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  header.gn.dk-nav[data-scrolled] { --gn-band: var(--page-solid, #2c1520); background: var(--page-solid, #2c1520); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  header.gn.dk-nav[data-scrolled] { --gn-band: var(--page-solid, #2c1520); background: var(--page-solid, #2c1520); }
+}
+html:has(.gm-root) header.gn.dk-nav[data-scrolled] { --gn-band: var(--page-solid, #2c1520); background: var(--page-solid, #2c1520); -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* An anchor or a focused control never lands under the sticky bar (§10.4): its height and --s-1. */
+html { scroll-padding-top: calc(64px + var(--s-1, 8px)); }
+
+/* Nothing in the bar ever wraps inside itself: the wordmark, the views and the judge's door are one line each. */
+.gn .dk-layer a, .gn .dk-judge, .gn .wtabs a { white-space: nowrap; }
+
+/* "Practice only", one treatment (DD ruling on W 3b + 4): beside the brand after a hairline from 1280 px (the rule at
+   the top), a caption under the wordmark from 721 to 1279 px, as on a phone, so the row keeps its room. The selectors
+   carry `header.gn.dk-nav` so a page's own placement (the wallet's caption at every wide width) gives way to this. */
+@media (min-width: 721px) and (max-width: 1279px) {
+  header.gn.dk-nav .dk-nav-in { position: relative; }
+  header.gn.dk-nav .gg-bar { align-self: center; padding-block: 4px 18px; }
+  /* The egg is inside the wordmark now (B-11): the caption starts where the words do, at the column's edge. */
+  header.gn.dk-nav .dk-practice-ph { position: absolute; left: var(--s-4, 32px); top: calc(50% + 6px); padding: 0; border: 0; line-height: 14px; white-space: nowrap; pointer-events: none; }
+  header.gn.dk-nav:is(.wnav, .page > *, .hero > *) .dk-practice-ph { left: 0; }
+}
+@media (min-width: 1280px) {
+  header.gn.dk-nav .gg-bar { align-self: auto; padding-block: 11px; }
+  header.gn.dk-nav .dk-practice-ph { position: static; padding: 0 0 0 var(--s-2, 16px); border-left: 1px solid var(--line, rgba(244, 234, 220, .12)); line-height: 20px; }
+}
+/* 721-1023 px: the row is tight (measured: at 721 px the wordmark, "Behind the scenes" and "Judge? Start here" each
+   broke onto a second line). The gaps close to 8 px, the views' padding to 8 px, the menu to --t-small, and the judge's
+   door takes its short words, "Judge tour", as the phone's menu says it. */
+@media (min-width: 721px) and (max-width: 1023px) {
+  header.gn.dk-nav .dk-nav-in { gap: var(--s-1, 8px); }
+  header.gn.dk-nav .dk-menu { font-size: var(--t-small, 15px); }
+  header.gn.dk-nav .dk-layer { gap: 0; }
+  header.gn.dk-nav .dk-layer a { padding: 0 var(--s-1, 8px); }
+  header.gn.dk-nav .dk-judge .dk-jl { display: none; }
+  header.gn.dk-nav .dk-judge .dk-jt { display: inline; }
+}
+/* 721-799 px (W, session 5: measured at 721 on the classic, market and safe pages, the judge tour's link ran 15 px past
+   the bar's edge into the gutter; the row's content is 673 px in 657). The menu closes to 8 px padding at --t-micro, as
+   the wallet's bar does here: 31 px back, so the row fits with room to spare. Measured by docs/video/track-s1e/judge-fit.ts. */
+@media (min-width: 721px) and (max-width: 799px) {
+  header.gn.dk-nav .dk-menu { padding: 0 var(--s-1, 8px); font-size: var(--t-micro, 13px); }
+}
+
+/* ---------- the phone (S1-13, brand.md §10.4: one bar, no bottom rail) ----------
+   One sticky 56 px row: the brand · a 20 px hairline with 12 px either side · "Practice only" · "Menu". The views, the
+   judge's door and a page's own tabs are in the menu's sheet (Menu → any view or item: ≤ 2 taps). The bottom rail is
+   gone from every page, and core/test/menu.test.ts fails if its class comes back anywhere in web/. */
+
+@media (max-width: 720px) {
+  html { scroll-padding-top: calc(56px + var(--s-1, 8px)); }
+  .gn .dk-nav-in { position: relative; height: 56px; min-height: 0; flex-wrap: nowrap; padding: 0 var(--s-2, 16px); gap: var(--s-1, 8px); }
+  .gn .gg-bar { padding-block: 12px; } /* 20 px words + 12 + 12: the 44 px target (the DD, 07:05) */
+  .gn .dk-practice-ph { margin-left: 4px; padding-left: 12px; line-height: 20px; white-space: nowrap; } /* the row's 8 px gap + 4: 12 px either side of the hairline */
+  .gn .dk-layer, .gn .dk-judge, .gn.wnav .wtabs { display: none; }
+  /* "Menu": --t-small at --w-strong in ink, a 44 px target whose words end at the 16 px gutter, 16 px from the bar's
+     right edge. "Close" while the sheet is open (MenuButton.tsx). */
+  .gn .dk-menu { order: 3; min-width: 44px; padding: 0; justify-content: flex-end; font-size: var(--t-small, 15px); font-weight: var(--w-strong, 560); color: var(--ink, #f4eadc); }
+  .gn .gm-btn .gm-w { display: none; }
+  .gn .gm-btn .gm-ph { display: inline; }
+}
+/* Under 360 px the row has no room for "Practice only" beside the brand: it is the caption under the wordmark there,
+   as it was on every phone before (never dropped: it is the nav's one practice line). */
+@media (max-width: 359px) {
+  .gn .gg-bar { align-self: center; padding-block: 4px 20px; }
+  .gn .dk-practice-ph { position: absolute; left: var(--s-2, 16px); top: 32px; margin: 0; padding: 0; border: 0; font-size: var(--t-micro, 13px); line-height: 14px; pointer-events: none; }
+  .gn.wnav .dk-practice-ph, .page > .gn .dk-practice-ph, .hero > .gn .dk-practice-ph { left: 0; }
+}
+
+/* The practice sentence (index.html's and safe.html's, every word kept) is the page's footer line now; the nav's
+   "Practice only" is the one line at the top (S1b: the strip above the nav folded into the nav's slot). */
+.gn-foot { margin: var(--s-5, 40px) 0 0; padding: var(--s-2, 16px) 0 0; border-top: 1px solid var(--line, rgba(244, 234, 220, .12)); color: var(--ink-3, #b49f9c); font-size: var(--t-micro, 13px); line-height: 1.4; }

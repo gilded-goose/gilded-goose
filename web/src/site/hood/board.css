@@ -1,0 +1,118 @@
+/* Under the hood, the page. The Live Threat Board is the Desk's own component (studio/*), drawn in the back room's names
+   (--lx-*, --s-*, --t-*). This sheet gives those names this site's light values inside .hood-board only, so the board
+   reads as part of the same site and nothing outside it changes. */
+
+.hood-sec { display: grid; gap: var(--s3); min-width: 0; }
+.hood-sec-h { font-family: var(--font-display); font-size: var(--t-xl); font-weight: 600; font-stretch: 100%; letter-spacing: -0.02em; }
+.hood-sec-p { max-width: var(--measure); color: var(--ink-2); }
+.hood-wait { min-height: 160px; color: var(--ink-3); }
+.hood-page-ledger { display: grid; gap: var(--s3); }
+.hood-page-ledger .hood-grid { height: 640px; border: 1px solid var(--line-strong); border-radius: var(--r-3); }
+
+/* AG Studio draws some of its parts outside the board's box (portals), so the names also sit on the root (the haggle's chart samples it) while this page
+   is open (Page.tsx); the two names the site itself uses (--r-1, --r-2) stay inside the board only. */
+.hood-board,
+html.hood-on {
+  /* the back room's colour names, in this site's light neutrals */
+  --lx-page: var(--surface);
+  --lx-raised: #ffffff; /* the charts' canvas can't read oklch(), so the names they sample are hex (the site's own ramp) */
+  --lx-row: var(--surface-raised);
+  --lx-row-lh: 1.4;
+  --lx-head: var(--ink);
+  --lx-edge: #e4e4e4;
+  --lx-edge-2: #cecece;
+  --lx-ink: #0f0f0f;
+  --lx-ink-2: #4d4d4d;
+  --lx-ink-3: #636363;
+  --lx-gold: #825b0c;
+  --lx-mark: #be260b;
+  --lx-face: var(--font-sans);
+  --lx-hover-glass: var(--surface-2);
+  /* Every --lx-* name midnight.css sets on :root needs its light value here, or it falls through to the Desk's dark one:
+     --lx-hover was missing, so AG Studio's pivot rows (gridRowHoverColor) painted #221b1f on hover (the film's capture
+     rig, Nov 11). hood-board.test.ts holds the whole list; hood-hover.ts reads a hovered row in a browser. */
+  --lx-hover: var(--surface-2);
+  --lx-raised-2: var(--surface-2);
+  --lx-gold-wash: var(--gold-tint);
+  --lx-scrim: oklch(0 0 0 / 0.4);
+  --lx-shadow: none;
+  --lx-grain: none;
+  /* the Desk names the back room's aliases (ledger/midnight.css) point at */
+  --page-solid: var(--surface);
+  --card: var(--surface-raised);
+  --card-2: var(--surface-2);
+  --well: var(--surface-2);
+  --line-2: var(--line-strong);
+  --gold-wash: var(--gold-tint);
+  --red: #be260b;
+  --scrim: oklch(0 0 0 / 0.4);
+  --shadow: none;
+  --face: var(--font-sans);
+  --egg-light: transparent;
+  --lx-light: transparent;
+  --display: var(--font-display);
+  /* the Desk's 8px-grid spacing, type scale and motion names */
+  --s-1: var(--s2);
+  --s-2: var(--s4);
+  --s-3: var(--s6);
+  --s-4: var(--s8);
+  --s-5: var(--s10);
+  --t-micro: var(--t-xs);
+  --t-small: var(--t-sm);
+  --t-body: var(--t-base);
+  --t-h3: var(--t-md);
+  --t-h2: var(--t-xl);
+  --t-num: var(--t-2xl);
+  --w-display: 500;
+  --w-head: 500;
+  --w-body: 400;
+  --w-strong: 600;
+  --track-eyebrow: 0;
+  --d-1: var(--d-ui);
+  --d-3: var(--d-ui);
+  --ease: var(--ease-out);
+  --spring: var(--ease-out);
+  --wk-l: 0;
+  --wk-r: 0;
+  --wk-t: 0;
+  --wk-b: 0;
+}
+.hood-board {
+  /* The board draws 4,400-9,000 px tall: its slot holds a screen until it arrives, so the ledger below never jumps out
+     of view when it does (phone CLS 0.144 from that one shift, Nov 11). */
+  min-height: 100svh;
+  /* the Desk's own names, hex for the charts (the site's oklch() ramp, same values), inside the board only */
+  --ink: #0f0f0f;
+  --ink-2: #4d4d4d;
+  --ink-3: #636363;
+  --line: #e4e4e4;
+  --gold: #825b0c;
+  --r-1: 8px;
+  --r-2: 12px;
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+/* the board's cards: quiet raised surfaces with a hairline, never glass */
+.hood-board .dk-glass { background: var(--surface-raised); border: 1px solid var(--line-strong); border-radius: var(--r-4); backdrop-filter: none; box-shadow: none; }
+.hood-board .tb-eye { text-transform: none; letter-spacing: 0; }
+/* The Desk's page frame (its bar, title and footer) is this site's own here: only its sections are kept. */
+.hood-board > .lx { min-height: 0; background: transparent; }
+.hood-board .lx > .gn,
+.hood-board .lx > .lx-foot,
+.hood-board .lx-hero,
+.hood-board .lx-skip,
+.hood-board a[href="#main"] { display: none; }
+.hood-board .lx-main { padding: 0; max-width: none; }
+/* The haggle, How it works and the list draw their own bar and page frame: this site's own are kept. */
+.room .gn,
+.room .dk-nav,
+.room .hg-wrap > .lx-hero { display: none; }
+.room main { padding-inline: 0; margin-inline: 0; max-width: none; }
+/* This site's own h1 is the page's; the Desk page's repeats it. The diagram's box text runs a step smaller in this face. */
+.room .how-head h1,
+.room .hg-title h1,
+.room .xl-wrap h1 { display: none; }
+.room .how-line { font-size: var(--t-xs); }
+/* Sentence case and upright quotes, as everywhere else on this site: the Desk's small tracked capitals and italic quotes are
+   switched off inside its components (names it uses for them vary, so by element, not by class). */
+.hood-board :where(*) { text-transform: none !important; letter-spacing: normal !important; font-style: normal !important; font-variant-caps: normal !important; }

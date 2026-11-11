@@ -1,0 +1,38 @@
+/* W4 (Round 2's design judge): any unknown path wears the landing's shell (web/404.html): the one bar (nav.css), one
+   line in the Desk's display face, the footer's one sentence. Only the Desk's tokens (desk/tokens.css, read only), on
+   <html class="dk" data-palette="v">; the velvet with its fine grain as safe.css and wallet.css bake it. */
+@import "./desk/tokens.css";
+
+html { background: var(--page-solid) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .92 0 0 0 0 .86 0 0 0 .112 -.0385'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: transparent; color: var(--ink); font: var(--t-body)/1.5 var(--face); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+/* The landing's grid: 1200 px, 32 px gutters (16 on a phone); the page ends at the window's foot. */
+.page { display: flex; flex-direction: column; min-height: 100svh; max-width: 1200px; margin: 0 auto; padding: 0 var(--s-4); }
+/* The bar sits flush in the page's column (as index.html's and safe.html's): the column is its gutter. */
+.page > .gn { background: none; }
+.page > .gn .dk-nav-in { max-width: none; padding: 0; }
+.gn-slot { display: contents; }
+/* B-11's lockup in the bar: nav.css places it and "Practice only" at every width now (S1-13, with the lockup swap in
+   every bar: the 44 px link, the caption under its G from 721 to 1279 px and under 360, beside it on a phone). */
+/* Track R: the 404 is the states kit's block (brand.md §10.9: left-aligned, at most 32em, --s-12 above and below, the
+   headline in --t-h3 --display 400, one pill --s-3 below) under the egg still (10.2: 240 px tall at ≥721, 160 at ≤720),
+   at the still's own aspect (600 × 720). No lockup in the body: the bar carries the one lockup. */
+.nh { flex: 1 0 auto; max-width: 32em; padding: var(--s-12) 0; }
+.nh-egg { display: block; height: 240px; width: auto; aspect-ratio: 600 / 720; margin: 0 0 var(--s-3); }
+.nh h1 { margin: 0; font-family: var(--display); font-size: var(--t-h3); font-weight: var(--w-head); line-height: var(--lh-head); letter-spacing: var(--track-head); text-wrap: balance; }
+/* W-5 (DD, Sat Nov 1): the way back is the Desk's hairline pill (desk.css .dk-pill's recipe, read here since this page
+   never loads desk.css): 44 px, --line-2 hairline, --ink-2 on hover with the --surface wash, --t-small 560. */
+.nh-back { margin: var(--s-3) 0 0; }
+.nh-pill { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-1); min-height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-2); border-radius: var(--r-pill); background: none; color: var(--ink); font-size: var(--t-small); font-weight: var(--w-strong); text-decoration: none; white-space: nowrap; transition: border-color var(--d-1), background var(--d-1); }
+.nh-pill:hover { border-color: var(--ink-2); background: var(--surface); }
+.nh-pill:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.gn-footer .gn-foot { margin: 0; padding: var(--s-2) 0 var(--s-4); }
+@media (max-width: 720px) {
+  /* the page ends above the fixed rail (nav.css pads the body by the rail's 56 px), so the footer is never under it */
+  .page { min-height: calc(100svh - 56px - env(safe-area-inset-bottom)); padding: 0 var(--s-2); overflow-x: clip; }
+  /* the menu's box ends at the gutter, never in it (W4, item 3; nav.css pulls a padded bar's button 12 px out) */
+  .page > .gn .dk-menu { margin-right: 0; }
+  .nh { padding: var(--s-8) 0; }
+  .nh-egg { height: 160px; }
+  .nh h1 { font-size: var(--t-lead); } /* --t-h3 at ≤720 is 20 px (§10.9) */
+}

@@ -1,0 +1,280 @@
+/* Desk-J (Fri Oct 30): "See how it keeps you safe" in the Desk's plum velvet, as the classic page now is (run.css).
+   Same five steps, same words; only the skin changed. Loaded after the page's own inline styles (safe.html), so it wins
+   at the same weight. The page has no `.dk` wrapper (its nav, name and headline are static and paint before any
+   script), so <html> itself wears class="dk" data-palette="v" and the page's own variable names point at the
+   Velvet roles (desk/tokens.css, read only). Cream is the action; gold only where code protects you (your limit, code's
+   stamp, the cart that waits for your yes); red stays the threat's own number. No gradients, no masks, no glow. */
+@import "./desk/tokens.css";
+
+:root {
+  /* the page's own names, pointed at the Desk's Velvet roles (tokens.css, on <html class="dk" data-palette="v">) */
+  --ink2: var(--ink-2); --ink3: var(--ink-3); --line2: var(--line-2);
+  --paper: var(--well); --white: var(--card); --bg: var(--page-solid);
+  --teal: var(--ink); --teal-wash: var(--surface-2); --red-wash: color-mix(in srgb, var(--red) 8%, transparent);
+  --gold-mark: var(--gold); --cream: transparent;
+  color-scheme: dark;
+}
+/* the velvet with its fine grain (the Desk's noise at the Desk's .07, baked into the tile), on <html> so it runs the
+   whole page and never needs a fixed layer; the body stays clear over it */
+html { background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .92 0 0 0 0 .86 0 0 0 .112 -.0385'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+body { background: transparent; }
+html, body { color: var(--ink); font-family: var(--face); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+button, input, textarea { font-family: inherit; }
+::selection { background: color-mix(in srgb, var(--gold) 30%, transparent); } /* as desk.css .dk ::selection */
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+a { color: var(--ink); text-decoration-color: var(--line2); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+h1, h2, h3 { font-family: var(--display); }
+q { color: var(--ink2); }
+p, li { text-wrap: pretty; }
+
+/* the Desk's container: content 1136 px wide, its left edge where the Desk's is */
+@media (min-width: 900px) {
+  .page { max-width: 1200px; padding-inline: var(--s-4); }
+}
+
+/* The header: the way back, the egg and the name, the headline light and large. */
+/* the header row as the Desk's nav: the egg and the name on the left, the way back on the right, one hairline under */
+.hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 64px; align-items: center; padding: 0 0 var(--s-6); }
+.hero::after { content: ""; position: absolute; left: 0; right: 0; top: 63px; height: 1px; background: var(--line); }
+.hero > :not(.back, .name) { grid-column: 1 / -1; }
+.hero .back { grid-row: 1; grid-column: 2; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-1); border: 0; border-radius: var(--r-1); color: var(--ink-2); font-weight: var(--w-body); font-size: var(--t-small); text-decoration: none; transition: background var(--d-1), border-color var(--d-1); }
+.hero .back:hover { color: var(--ink); }
+.name { grid-row: 1; grid-column: 1; margin: 0; color: var(--ink); font-family: var(--face); font-size: var(--t-body); font-weight: var(--w-strong); letter-spacing: 0; }
+/* the Desk's own egg (desk/egg.webp, the image its nav wears) stands in for the drawn one */
+.name svg { display: none; }
+.name::before { content: ""; flex: none; width: 18px; height: 22px; background: url("./desk/egg.webp") center / contain no-repeat; }
+.hero h1 { margin-top: var(--s-8); }
+@media (min-width: 900px) {
+  .hero { padding-bottom: var(--s-1); }
+  .hero h1 { margin-top: var(--s-5); }
+  .rail { padding-top: var(--s-4); }
+  #c1 { padding-top: var(--s-4); }
+  /* step 1's card: your locked max, on a card that stays beside the limits while they scroll past */
+  .one > div:last-child { position: sticky; top: calc(24px + var(--bh, 34px)); }
+  .one .panel { min-height: 280px; padding: var(--s-6) var(--s-4); }
+  /* the evidence type one notch up at desktop */
+  .b .who, .tagd, .lg, .rec, .cap, .over, .legend, .kicker { font-size: var(--t-small); }
+  .b .who { flex-wrap: wrap; row-gap: 4px; }
+  .settings .note, .control p, .haiku, .rest, .also { font-size: var(--t-small); line-height: 1.5; }
+  /* step 4: the $10.27 card follows the thread down */
+  .win { position: sticky; top: calc(24px + var(--bh, 34px)); align-self: start; }
+}
+.hero h1 { max-width: 22ch; color: var(--ink); font-size: var(--t-h1, var(--t-h2)); line-height: 1.04; font-weight: var(--w-display); letter-spacing: -.02em; text-wrap: balance; }
+.hero .lede { max-width: 44ch; margin-top: var(--s-3); color: var(--ink2); font-size: var(--t-lead); font-weight: var(--w-body); line-height: 1.45; }
+.hero .lede b { color: var(--ink); font-weight: var(--w-body); }
+
+/* The chapter list: a hairline, the step you're on in full ink behind its own short line. */
+.rail ol { border-left: 1px solid var(--line); }
+.rail li a { margin-left: -1px; border-left: 1px solid transparent; color: var(--ink3); font-weight: var(--w-body); transition: color var(--d-1); }
+.rail li a:hover { color: var(--ink2); }
+.rail li a.on { color: var(--ink); font-weight: var(--w-strong); border-left-color: var(--ink); }
+
+/* The steps: a quiet number, a light heading, words in ink. */
+.ch + .ch, .duo + .ch, .duo { border-top: 1px solid var(--line); }
+.ch { padding-top: var(--s-8); }
+/* W-8: at desktop a step break is the landing's (system.md §3: --s-12 above and below one hairline), so step 1 is the
+   first screen at 1440 x 900 and the next step starts under it, never peeking in. */
+@media (min-width: 900px) { .ch { padding: var(--s-12) 0; } .ch:first-child { padding-top: var(--s-8); } }
+.kicker { color: var(--ink2); font-size: var(--t-small); font-weight: var(--w-body); letter-spacing: 0; margin-bottom: var(--s-1); }
+h2 { color: var(--ink); font-size: var(--t-h2); line-height: 1.1; font-weight: var(--w-display); letter-spacing: -.015em; margin-bottom: var(--s-2); text-wrap: balance; }
+.say { color: var(--ink2); }
+.big { font-family: var(--display); font-weight: var(--w-display); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.wait { border-color: var(--line2); color: var(--ink2); font-weight: var(--w-body); }
+
+/* Bubbles: your words on a card; the AI's on the faint surface; a seller's quoted behind a dashed line (a scam's in the
+   threat's red); code answers on a card with a gold hairline, the one place it protects you. */
+/* A bubble: --r-3 with an --r-1 tail on the speaker's side, as the Desk's .dk-asked. */
+.b { border-radius: var(--r-3); }
+.b .who { color: var(--ink2); font-weight: var(--w-strong); font-size: var(--t-micro); letter-spacing: 0; }
+.b.you { background: var(--white); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line2); border-bottom-right-radius: var(--r-1); font-weight: var(--w-body); }
+.b.ai { background: var(--paper); border-bottom-left-radius: var(--r-1); }
+.b.seller { background: none; border: 1px dashed color-mix(in srgb, var(--ink) 38%, transparent); border-bottom-left-radius: var(--r-1); }
+.b.scam { border-color: color-mix(in srgb, var(--red) 55%, transparent); }
+.b.scam .who { color: var(--red); }
+.b s { text-decoration-thickness: 1px; color: var(--ink3); }
+.tagd { border-color: var(--line2); border-radius: var(--r-1); color: var(--ink2); font-weight: var(--w-strong); letter-spacing: 0; font-size: var(--t-micro); }
+.aside { color: var(--ink2); }
+.over { border: 1px solid var(--gold-line); border-radius: var(--r-1); color: var(--gold); font-weight: var(--w-strong); letter-spacing: 0; text-transform: none; font-size: var(--t-micro); }
+.stamp { border: 1px solid var(--gold-line); border-radius: var(--r-3); background: var(--white); box-shadow: none; }
+.stamp .who { color: var(--gold); font-weight: var(--w-strong); letter-spacing: 0; text-transform: none; font-size: var(--t-micro); }
+.stamp .v { color: var(--gold); font-family: var(--display); font-weight: var(--w-body); letter-spacing: -.005em; }
+.stamp p { color: var(--ink2); }
+.ring { border: 1px solid var(--gold-line); color: var(--gold-mark); }
+.ring svg { stroke-width: 1.8; }
+.label { color: var(--ink2); }
+
+/* Proof: a plain underlined word; the ledger row it opens sits on the faint surface behind a hairline. */
+.proof { color: var(--ink); font-weight: var(--w-strong); text-decoration: underline; text-decoration-color: var(--line2); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.proof:hover { text-decoration-color: var(--ink); }
+/* W a11y (Round 0, axe target-size): the inline "Proof ›" buttons were 46×17. A 14px pad each way makes the tap target 45px tall,
+   and the matching negative margin keeps the line box, so the text doesn't move. */
+button.proof { padding-block: 14px; margin-block: -14px; }
+.proofrow { border-left: 1px solid var(--line2); background: var(--paper); border-radius: 0 var(--r-1) var(--r-1) 0; color: var(--ink2); }
+.proofrow .rid { color: var(--ink); font-weight: var(--w-strong); }
+.proofrow a { font-weight: var(--w-strong); }
+
+/* 1. Your max: your limit on a card, large and light, the protection line under it. */
+/* step 1's promise is the page's thesis: a light display line, as steps 2-5 open */
+.if { margin: var(--s-1) 0 var(--s-3); color: var(--ink); font-family: var(--display); font-size: var(--t-h2); line-height: 1.12; font-weight: var(--w-display); letter-spacing: -.012em; text-wrap: balance; }
+.if .proof { font-family: var(--face); font-size: var(--t-small); letter-spacing: 0; }
+.panel { display: flex; align-items: center; justify-content: center; height: auto; overflow: visible; background: var(--card); border-radius: var(--r-3); box-shadow: inset 0 0 0 1px var(--card-line); }
+.lockchip { position: static; padding: 0; background: none; color: var(--ink); border-radius: 0; box-shadow: none; text-align: center; }
+.lockchip .big { font-family: var(--display); font-size: var(--t-num, var(--t-h2)); line-height: 1; font-weight: var(--w-display); letter-spacing: var(--track-display); font-variant-numeric: tabular-nums; }
+.lockchip .l { justify-content: center; gap: var(--s-1); margin-top: var(--s-2); color: var(--gold); font-size: var(--t-small); font-weight: var(--w-strong); }
+.lockchip .l svg { width: 16px; height: 16px; }
+.settings { border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--white); box-shadow: none; }
+.settings h2 { color: var(--ink); font-family: var(--face); font-weight: var(--w-strong); font-size: var(--t-small); line-height: 1.5; letter-spacing: normal; margin: var(--s-1) 0 2px; text-wrap: wrap; }
+.settings li, .settings .notyet { border-top: 1px solid var(--line); }
+.settings li:first-child { border-top: 0; }
+.settings .k { color: var(--ink); font-weight: var(--w-body); }
+.settings .val { color: var(--ink); font-weight: var(--w-strong); font-variant-numeric: tabular-nums; }
+.settings li:first-child .val { color: var(--gold); }
+.settings .note { color: var(--ink2); }
+/* W-8, show don't explain: each limit is its name and its value; the why under each sits one tap away in "All limits"
+   at every width (the phone already did this in safe.html). Only while that button is there: never a why with no way to it. */
+.settings:not(.all):has(.more) li .note { display: none; }
+/* W-8: each step's name lives once, in the rail (the stepper at every width); the section's kicker would say it twice. */
+main .ch .kicker { display: none; }
+.settings .nx { border: 1px solid var(--line2); border-radius: var(--r-1); color: var(--ink2); font-weight: var(--w-strong); }
+.settings .more { color: var(--ink); font-weight: var(--w-strong); text-decoration: underline; text-decoration-color: var(--line2); text-underline-offset: 4px; }
+.settings .notyet { color: var(--ink2); }
+
+/* 2. You play the seller: your note in the page's one glass field, on a card. */
+.try { background: var(--white); color: var(--ink); border-radius: var(--r-3); box-shadow: inset 0 0 0 1px var(--card-line); padding: var(--s-3); }
+.try label.q { color: var(--ink); font-weight: var(--w-strong); }
+/* .try .field is glass: `.dk-glass` (tokens.css) carries its fill, blur, edge, line and radius. */
+.try .field:focus-within { outline: 0; border-color: var(--ink2); }
+.try .field textarea { color: var(--ink); }
+.try .field textarea::placeholder { color: var(--ink3); }
+.try .field .price { border-radius: var(--r-1); background: var(--paper); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink3); font-weight: var(--w-body); }
+.try .field .price input { color: var(--ink); font-weight: var(--w-strong); font-size: var(--t-small); font-variant-numeric: tabular-nums; }
+.try .chip { border: 1px solid var(--line); border-radius: var(--r-1); background: none; color: var(--ink2); font-style: normal; transition: border-color var(--d-1), color var(--d-1); }
+.try .chip:hover { border-color: var(--line2); color: var(--ink); }
+.try .chip[aria-pressed="true"] { border-color: var(--ink2); background: var(--teal-wash); color: var(--ink); box-shadow: none; }
+.try .seg { border: 1px solid var(--line); border-radius: var(--r-1); background: none; color: var(--ink2); }
+.try .seg button { font-size: var(--t-small); }
+.try .seg button + button { border-left: 1px solid var(--line); }
+.try .seg button[aria-pressed="true"] { background: var(--teal-wash); color: var(--ink); box-shadow: inset 0 -1px 0 var(--ink); }
+.try .seg button[disabled] { background: none; color: var(--ink3); }
+.try .send, .send { border-radius: var(--r-pill); background: var(--ink); color: var(--on-cta) !important; font-weight: var(--w-strong); box-shadow: none; transition: background var(--d-1), transform var(--d-1) var(--ease); }
+.send:hover { background: var(--cta-hover); }
+.send:active { transform: scale(.985) translateY(1px); }
+.try .send[disabled], .send[disabled] { background: var(--teal-wash); color: var(--ink2) !important; box-shadow: none; }
+.try .status { color: var(--ink2); font-weight: var(--w-body); }
+.try .status .dot, .status .dot { width: 6px; height: 6px; background: var(--ink3); }
+.try .status[data-live="up"] .dot { background: var(--ink); }
+.alert { color: var(--red); font-weight: var(--w-strong); }
+.also { color: var(--ink2); }
+.haiku { color: var(--ink2); }
+.haiku b { color: var(--ink); font-weight: var(--w-strong); }
+
+/* 3. The order sent with no guard: a plain card, its number in the threat's red. */
+.control { position: relative; background: var(--white); border-radius: var(--r-3); box-shadow: inset 0 0 0 1px var(--card-line); padding: var(--s-3); }
+.control .tag { background: none; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--red) 50%, transparent); border-radius: var(--r-1); color: var(--red); font-weight: var(--w-strong); }
+.control p { color: var(--ink2); }
+.control p b { color: var(--ink); font-weight: var(--w-strong); }
+.cap { color: var(--ink2); }
+.reply summary { color: var(--ink); font-weight: var(--w-strong); }
+.reply summary:hover { text-decoration: underline; text-decoration-color: var(--line2); text-underline-offset: 4px; }
+.reply p { color: var(--ink2); }
+
+/* 4. The haggle: what code saved you, light and large on a card behind a gold hairline. */
+.win { background: var(--white); border-radius: var(--r-3); box-shadow: inset 0 0 0 1px var(--card-line); }
+.win .big { color: var(--ink); }
+.win b { color: var(--ink); font-family: var(--display); font-weight: var(--w-body); }
+.win p { color: var(--ink2); }
+.legend { color: var(--ink2); }
+.lg { border-radius: var(--r-1); font-weight: var(--w-strong); letter-spacing: 0; font-size: var(--t-micro); }
+.lg.seller { border: 1px dashed var(--line2); background: none; color: var(--ink2); }
+.lg.ai { background: var(--paper); color: var(--ink2); }
+.lg.code { border: 1px solid var(--gold-line); color: var(--gold); text-transform: none; letter-spacing: 0; font-size: var(--t-micro); }
+.rec { border-color: var(--line2); border-radius: var(--r-1); color: var(--ink2); font-weight: var(--w-strong); font-size: var(--t-micro); }
+.rest { color: var(--ink2); }
+
+/* 5. Your yes: the cart waits behind a gold hairline; the approve button's picture is plainly inert (dashed, no fill);
+   replaying the week is the page's one action, in cream. */
+.cart { border: 0; padding: var(--s-3) var(--s-4); border-radius: var(--r-3); background: var(--white); box-shadow: inset 0 0 0 1px var(--gold-line); -webkit-mask: none; mask: none; }
+.cart .from { color: var(--ink2); }
+.cart .check { border-left: 1px solid var(--line); }
+.cart .check p { color: var(--ink2); font-size: var(--t-small); }
+.cart .check code { color: var(--ink); font-weight: var(--w-strong); }
+.approve { border: 1px dashed var(--line2); border-radius: var(--r-2); color: var(--ink); font-weight: var(--w-strong); }
+.approve .a2 { color: var(--ink3); font-weight: var(--w-body); }
+.approve .a3 { border-top: 1px dashed var(--line); color: var(--ink2); font-weight: var(--w-body); }
+.replay, .replay:visited { border-radius: var(--r-pill); background: var(--ink); color: var(--on-cta); box-shadow: none; font-weight: var(--w-strong); transition: background var(--d-1), transform var(--d-1) var(--ease); }
+.replay:hover { background: var(--cta-hover); }
+.replay:active { transform: scale(.985) translateY(1px); }
+.fine { color: var(--ink2); font-weight: var(--w-body); }
+.nopay { color: var(--ink); font-weight: var(--w-strong); }
+.ledger summary { color: var(--ink); font-weight: var(--w-strong); text-decoration: underline; text-decoration-color: var(--line2); text-underline-offset: 4px; }
+.ltable td { border-top: 1px solid var(--line); color: var(--ink2); }
+.ltable td.seq { color: var(--ink3); font-weight: var(--w-body); } .ltable td.who { color: var(--ink); font-weight: var(--w-strong); } .ltable td.amt { color: var(--ink); font-weight: var(--w-strong); }
+.ltable tr.hit td { background: var(--teal-wash); }
+footer { border-top: 1px solid var(--line); color: var(--ink2); }
+/* CLS 0: the static footer waits (hidden, so nothing visible moves) until the story mounts above it. */
+#root:empty ~ footer { visibility: hidden; }
+.lockchip { min-width: 168px; }
+/* Reserved heights, not spacing (as desk.css's .tl-hold): at >= 900 px the limits step holds its filled size while the
+   week's numbers load, so nothing below it moves (CLS 0). Each is the box's filled height at 1440, measured in the
+   browser (getBoundingClientRect().height, DPR 1, W-8's stills at f052bec4): the shopper's bubble .b.you 81 px, the
+   "if" line .if 83 px, and the limits card .settings 131 px with one limit face (FACE = 1 in Safe.tsx; was 318, then
+   255, before W-8 cut it to one fact). No spacing token fits a content height; re-measure when their words change.
+   The card is 131 px at 390 too (DD, Nov 4: Next dropped 30 px under a thumb when the limits came in), so it's reserved
+   at every width; the bubble and the "if" line don't change height on a phone. */
+.one .settings { min-height: 131px; } /* one limit face under "Your limits" and "All limits ›", not "Loading your limits…" */
+@media (min-width: 900px) {
+  .one .b.you { min-height: 81px; }    /* the filled bubble: "Buy me a … Spend at most $…" once the limit is read */
+  .one .if { min-height: 83px; }       /* the filled "if" line: "If a seller asks for more…" and its proof link */
+}
+footer code, main code { color: var(--ink); }
+.motion .landing { animation: rise var(--d-3) var(--ease) both; }
+
+@media (max-width: 899px) {
+  .hero { grid-template-rows: 60px; padding: 0 0 var(--s-2); }
+  .hero::after { top: 59px; }
+  .hero .back { min-height: 44px; padding: 0 var(--s-1); font-size: var(--t-small); }
+  .name { font-size: var(--t-small); }
+  .hero h1 { margin-top: var(--s-4); font-size: var(--t-h2); }
+  .hero .lede { margin-top: var(--s-2); } /* the lede keeps --t-lead: 20 at every width (brand.md §4) */
+  /* the step bar: thin hairline segments, done a step quieter than the one you're on */
+  .rail { background: var(--bg); border-bottom: 1px solid var(--line); }
+  /* each segment is its link's drawing: the link itself is 44 px tall (safe.html; axe measures the box, not an ::after) */
+  .rail ol, .rail li a { border: 0; }
+  .rail li a::before { height: 3px; background: var(--line); }
+  .rail li a.done::before { background: var(--ink3); }
+  .rail li a.on::before { background: var(--ink); }
+  .rail .n { color: var(--ink); font-weight: var(--w-strong); }
+  .rail .all, .settings .more, .ledger summary { display: inline-flex; align-items: center; min-height: 44px; }
+  .rail .all { color: var(--ink); font-weight: var(--w-strong); text-decoration: underline; text-decoration-color: var(--line2); text-underline-offset: 4px; }
+  .ch { padding-top: var(--s-4); }
+  h2 { font-size: var(--t-h3); }
+  .seeall { border: 1px solid var(--line2); border-radius: var(--r-pill); background: none; color: var(--ink); font-weight: var(--w-strong); }
+  /* the one way forward is the action: cream */
+  .next { border: 0; border-radius: var(--r-pill); background: var(--ink); color: var(--on-cta); font-weight: var(--w-strong); }
+  .if { font-size: var(--t-h3); }
+  .lockchip { min-width: 0; }
+  .lockchip .big { font-size: var(--t-h2); }
+  .one .panel { padding: var(--s-4) var(--s-2); }
+  .try { padding: var(--s-2); }
+  .try .seg button + button { border-left: 1px solid var(--line); }
+  .cart { padding: var(--s-3); }
+  .cart .check { border-left: 0; border-top: 1px solid var(--line); }
+}
+@media (max-width: 599px) {
+  .ltable tr { border-top: 1px solid var(--line); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .send, .replay { transition: none; }
+}
+
+/* Slice 7: every wait on the server is a tape ticking under the words, never a spinner and never a number. It says
+   only "working"; under reduced motion the tape lies still. */
+[aria-busy="true"] { position: relative; cursor: progress; }
+/* Busy is not disabled: the words stay at full strength (AA) while the tape runs. */
+button[aria-busy="true"][disabled] { opacity: 1; }
+[aria-busy="true"]::after { content: ""; position: absolute; left: 24%; right: 24%; bottom: 7px; height: 2px; pointer-events: none; opacity: .8;
+  background: repeating-linear-gradient(90deg, currentColor 0 6px, transparent 6px 11px);
+  -webkit-mask: linear-gradient(90deg, #0000, #000 22%, #000 78%, #0000); mask: linear-gradient(90deg, #0000, #000 22%, #000 78%, #0000); }
+.linkish[aria-busy="true"]::after { left: 0; right: 0; bottom: -4px; }
+.motion [aria-busy="true"]::after { animation: tick var(--d-3) steps(5) both; } /* once, never a loop (system §7) */
+@keyframes tick { to { background-position: 11px 0; } }

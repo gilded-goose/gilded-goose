@@ -1,0 +1,118 @@
+/* The judge tour: a Desk page in the velvet, its own chunk (desk.css isn't loaded here, so the few base rules it needs
+   are its own). One glass surface, the list, over the egg's one warm light (static, low, gold). Tokens only. */
+.tr { position: relative; min-height: 100vh; background: var(--page-solid); color: var(--ink); font-family: var(--face); font-size: var(--t-body); line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+.tr :where(h1, h2) { font-family: var(--display); font-weight: var(--w-head); letter-spacing: var(--track-head); text-wrap: balance; }
+.tr p { text-wrap: pretty; }
+/* Inside .tr-wrap, never .tr: the one nav sits in .tr too, and this rule at .tr made its Everything Goose does button 17 px on this page alone. */
+.tr-wrap :where(button) { font: inherit; color: inherit; cursor: pointer; }
+.tr :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: var(--r-1); }
+.tr ::selection { background: rgba(227, 186, 106, .3); }
+.tr .dk-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* The Desk's grid (Joshua, Fri 3:40 PM: the one nav and the same layout grid): the 1200 px column the nav sits on, with
+   the tour's reading width (816 px) at its left edge, under the brand. The nav is web/src/nav. */
+.tr-wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--s-4); box-sizing: border-box; }
+.tr-wrap > * { max-width: 816px; }
+
+.tr-main { padding-top: var(--s-10); padding-bottom: var(--s-8); }
+.tr-eyebrow { margin: 0 0 var(--s-2); font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: var(--track-eyebrow); text-transform: uppercase; color: var(--ink-2); }
+.tr h1 { margin: 0; font-size: clamp(34px, 5.2vw, 56px); line-height: 1.08; max-width: 22ch; }
+.tr-sub { margin: var(--s-3) 0 0; max-width: 46em; color: var(--ink-2); font-size: var(--t-lead); line-height: 1.5; }
+.tr-note { margin: var(--s-1) 0 0; color: var(--ink-3); font-size: var(--t-small); }
+
+/* The stop's one filled button: the page's one primary action (S1-3). */
+.tr-next-go { min-height: 48px; padding: 0 var(--s-4); font-size: var(--t-body); }
+.tr-progress { margin: 0; font-size: var(--t-small); font-weight: var(--w-strong); color: var(--ink-2); text-align: center; }
+.tr-reset { margin-top: var(--s-1); border: 0; background: none; padding: 0 4px; min-height: 44px; font-size: var(--t-small); color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-2); }
+.tr-reset:hover { color: var(--ink); text-decoration-color: currentColor; }
+
+/* the list: the page's one glass surface, on its own case: the velvet and the egg's one warm light, nothing else */
+.tr-case { margin-top: var(--s-6); border-radius: var(--r-3); background: var(--glass-light), var(--page-solid); }
+/* S1-4: the stepper is the glass now: one stop, its one filled button, Back and Next under it. */
+.tr-stage { padding: var(--s-4) var(--s-5); border-radius: var(--r-3); background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-line); box-shadow: var(--glass-edge), var(--glass-shadow); }
+.tr-count { display: flex; align-items: baseline; gap: var(--s-1); margin: 0; font-size: var(--t-small); color: var(--ink-3); }
+.tr-count .tr-n { color: var(--ink); }
+.tr-count .tr-seen { margin-left: var(--s-2); }
+/* The promise this stop proves, above its name (Joshua, Nov 3: each feature is shown as proof of one promise). */
+.tr-proves { margin: var(--s-1) 0 0; font-size: var(--t-small); color: var(--ink-2); }
+.tr-stage h2 { margin: var(--s-1) 0 0; font-size: clamp(24px, 3vw, 32px); line-height: 1.15; }
+/* A heading the tour focuses never rings (the DD, Sat Oct 31 08:40; desk.css's rule): focus moves there so a screen reader
+   reads it, and the ring stays on controls. scripts/tour-moves.ts `headings` holds it on every route. */
+.tr-stage h2:focus, .tr-stage h2:focus-visible { outline: none; }
+.tr-line { margin: var(--s-2) 0 var(--s-4); color: var(--ink-2); font-size: var(--t-body); line-height: 1.55; max-width: 52ch; }
+.tr-chip { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-2); margin: var(--s-3) 0 0; color: var(--ink-2); font-size: var(--t-small); }
+.tr-chip a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: var(--r-1); color: var(--ink-2); text-decoration: none; }
+.tr-chip a:hover { border-color: var(--line-2); color: var(--ink); }
+.tr-stage .tr-building { margin: 0 0 var(--s-4); color: var(--ink-3); font-style: italic; }
+.tr-steps { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s-2); margin-top: var(--s-4); padding-top: var(--s-2); border-top: 1px solid var(--line); }
+.tr-step { min-height: 44px; padding: 0 var(--s-2); border: 0; background: none; color: var(--ink-2); font-size: var(--t-small); font-weight: var(--w-strong); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-2); transition: color var(--d-1), text-decoration-color var(--d-1); }
+.tr-step:hover:not(:disabled) { color: var(--ink); text-decoration-color: currentColor; }
+.tr-step:disabled { color: var(--ink-3); text-decoration: none; cursor: default; opacity: .5; }
+/* Every stop at once, folded behind one line. Not glass: the stepper is the page's one surface. */
+.tr-all { margin-top: var(--s-5); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.tr-all summary { display: flex; align-items: center; justify-content: space-between; min-height: 48px; cursor: pointer; list-style: none; font-weight: var(--w-strong); font-size: var(--t-small); }
+.tr-all summary::-webkit-details-marker { display: none; }
+.tr-all summary i { width: 8px; height: 8px; border-right: 1.5px solid var(--ink-2); border-bottom: 1.5px solid var(--ink-2); transform: rotate(45deg); margin-right: 6px; transition: transform var(--d-2) var(--ease); }
+.tr-all[open] summary i { transform: rotate(225deg); }
+.tr-list { list-style: none; margin: 0; padding: 0 0 var(--s-2); }
+.tr-stop { display: grid; grid-template-columns: 40px 1fr auto; gap: var(--s-3); align-items: start; padding: var(--s-3) 0; border-top: 1px solid var(--line); }
+.tr-stop:first-child { border-top: 0; }
+.tr-n { font-family: var(--display); font-size: 20px; line-height: 1.3; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.tr-next .tr-n { color: var(--ink); }
+.tr-body h4 { margin: 0; font-family: var(--display); font-weight: var(--w-head); font-size: 20px; line-height: 1.3; }
+.tr-body p { margin: 4px 0 0; color: var(--ink-2); font-size: var(--t-small); line-height: 1.55; max-width: 52ch; }
+.tr-body .tr-building { color: var(--ink-3); font-style: italic; }
+.tr-act { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; padding-top: 2px; }
+.tr-go { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 var(--s-3); border-radius: var(--r-pill); border: 1px solid var(--line-2); color: inherit; text-decoration: none; font-size: var(--t-small); font-weight: var(--w-strong); white-space: nowrap; transition: background var(--d-1), border-color var(--d-1); }
+.tr-go:hover { background: var(--well); border-color: var(--ink-2); }
+.tr-go.tr-primary { background: var(--cta); color: var(--on-cta); border-color: var(--cta); }
+.tr-go.tr-primary:hover { background: var(--ink); }
+.tr-seen { display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-micro); color: var(--ink-2); }
+.tr-seen svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tr-done .tr-body h4 { color: var(--ink-2); }
+
+/* S1-6 (Round 2's design judge: the right 40% of a 1440 screen was empty): from 1100 px every stop sits beside the
+   stepper, one 44 px row each, the open one in ink with a 1 px ink rule at its left; a row moves the stepper there, and
+   the stepper's one filled button opens it. The folded list is the phone's (and a narrow window's). */
+.tr-side { display: none; }
+@media (min-width: 1100px) {
+  .tr-wrap > .tr-cols { max-width: none; display: flex; align-items: flex-start; gap: var(--s-8); }
+  .tr-col { flex: 1 1 auto; min-width: 0; max-width: 680px; }
+  /* S1-7 (the DD): the list ends on the 1200 column's right edge, the stepper keeps its left; the space between is theirs. */
+  .tr-side { display: block; flex: 0 0 360px; margin-top: var(--s-6); margin-left: auto; }
+  .tr-all { display: none; }
+}
+/* "All N stops" in the one eyebrow (tokens.css .dk-eyebrow, as the page's own .tr-eyebrow); spelled out here, since
+   `.tr :where(h2)` would set the display face over it. */
+.tr-side h2 { margin: 0; padding-bottom: var(--s-1); font: var(--w-strong) var(--t-micro) / var(--lh-micro) var(--face); text-transform: uppercase; letter-spacing: var(--track-eyebrow); color: var(--ink-2); }
+.tr-side-promise, .tr-all-promise { margin: var(--s-3) 0 var(--s-1); font-family: var(--face); font-size: var(--t-small); font-weight: var(--w-strong); color: var(--ink); }
+.tr-side h2 + section .tr-side-promise { margin-top: var(--s-1); }
+.tr-side ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.tr-side li { border-bottom: 1px solid var(--line); }
+.tr-side button { display: grid; grid-template-columns: var(--s-4) 1fr auto; align-items: center; gap: var(--s-1); width: 100%; min-height: 44px; padding: 0 var(--s-1) 0 var(--s-2); border: 0; background: none; text-align: left; color: var(--ink-2); font-size: var(--t-small); line-height: 1.3; transition: color var(--d-1), box-shadow var(--d-1); }
+.tr-side button:hover, .tr-side button[aria-current] { color: var(--ink); }
+.tr-side button[aria-current] { box-shadow: inset 1px 0 0 var(--ink); }
+.tr-side .tr-n { font-size: var(--t-small); line-height: 1; color: var(--ink-3); }
+.tr-side [aria-current] .tr-n { color: var(--ink); }
+.tr-side .tr-seen svg { width: 14px; height: 14px; }
+
+.tr-also { margin-top: var(--s-6); }
+.tr-also h2 { margin: 0 0 var(--s-2); font-size: 20px; }
+.tr-also ul { list-style: none; margin: 0; padding: 0; }
+.tr-also li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px var(--s-2); }
+.tr-also a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: inherit; font-weight: var(--w-strong); font-size: var(--t-small); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-2); }
+.tr-also a:hover { text-decoration-color: currentColor; }
+.tr-also li span { color: var(--ink-2); font-size: var(--t-small); }
+.tr-foot p { margin: 0; padding: var(--s-4) 0 var(--s-8); color: var(--ink-3); font-size: var(--t-micro); }
+
+@media (max-width: 719px) {
+  .tr-wrap { padding: 0 16px; }
+  .tr-main { padding-top: var(--s-6); }
+  .tr-stage { padding: var(--s-3) var(--s-3) var(--s-2); }
+  .tr-case { margin-top: var(--s-4); }
+  .tr-stage .tr-next-go { width: 100%; justify-content: center; }
+  .tr-stop { grid-template-columns: 28px 1fr; gap: var(--s-1) var(--s-2); }
+  .tr-n { font-size: 16px; }
+  .tr-body h4 { font-size: 18px; }
+  .tr-act { grid-column: 2; flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--s-2); }
+}
+@media (prefers-reduced-motion: reduce) { .tr * { transition: none !important; } }

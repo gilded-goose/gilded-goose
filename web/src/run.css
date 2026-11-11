@@ -1,0 +1,80 @@
+/* Desk-J (Fri Oct 30): the classic page (`?wallet=0`, the judge's "Try to trick Goose") in the Desk's plum velvet, the
+   shop side's design language (joshua-final-design.md). Same page, same words, same flows: only the skin changed.
+   Flat matte velvet with a fine grain; cream text; hairlines, and a light edge or a shadow, never both; one display face
+   (Hanken, light) over the body face (Archivo); tabular money; cream is the action; gold only where code protects you
+   (the limit, the guard's refusal, code's counter) and on the approvable deal; red stays the threat's own number.
+   No gradients, no glow, no stamps, no pulsing.
+
+   Two scopes, because two parts paint at different times:
+   - the static header (index.html's nav, brand row and headline) paints before any script, so it is skinned on
+     `body:not(.wallet-on):not(.desk-on)`, the same scope the old run.css used; this file is in the page's blocking
+     stylesheet, so the first paint is already velvet. Its colors are the velvet tokens' values (desk/tokens.css,
+     .dk[data-palette="v"]), spelled out here because no class can be on <body> before the first paint.
+   - everything React draws sits in `.dk.cv[data-palette="v"]` (App.tsx), so it reads the Desk's tokens directly and
+     maps the page's own variable names onto them. Those rules are run-cv.css, App's own sheet (gate seat 7): this file
+     is in main.css on every route, and no other route draws `.cv`. */
+@import "./desk/tokens.css";
+
+/* ---------- the page and its static header ---------- */
+/* the velvet with its fine grain (the Desk's noise at the Desk's .07, baked into the tile), on <html> so it runs the
+   whole page and never needs a fixed layer; the body stays clear over it */
+html:has(> body:not(.wallet-on):not(.desk-on)) { background: var(--page-solid) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .92 0 0 0 0 .86 0 0 0 .112 -.0385'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); color-scheme: dark; }
+body:not(.wallet-on):not(.desk-on) {
+  background: transparent; color: var(--ink); font: var(--t-body)/1.5 var(--face);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; color-scheme: dark;
+}
+body:not(.wallet-on):not(.desk-on) :is(button, input, select, textarea) { font-family: inherit; }
+body:not(.wallet-on):not(.desk-on) ::selection { background: rgba(227, 186, 106, .3); }
+
+body:not(.wallet-on):not(.desk-on) .page > .brand :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: var(--r-1); }
+
+/* The headline: light display type, left-aligned, the second clause a step quieter; the two lines beside it behind a
+   hairline. Generous room, then the seller lab. */
+body:not(.wallet-on):not(.desk-on) .page > .brand { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--s-3) var(--s-8); align-items: center; padding: var(--s-4) 0 var(--s-3); }
+body:not(.wallet-on):not(.desk-on) .brand h1 { max-width: 22ch; margin: 0; color: var(--ink); font-family: var(--display); font-size: var(--t-h1, var(--t-h2)); line-height: 1.04; font-weight: var(--w-display); letter-spacing: -.016em; text-wrap: balance; }
+body:not(.wallet-on):not(.desk-on) .brand h1 b { font-weight: var(--w-display); color: var(--ink-3); }
+body:not(.wallet-on):not(.desk-on) .brand .lines { padding-left: var(--s-3); border-left: 1px solid var(--line-2); }
+body:not(.wallet-on):not(.desk-on) .brand .lines li { color: var(--ink-2); font-size: var(--t-small); font-weight: var(--w-body); line-height: 1.5; margin: 0 0 var(--s-1); text-wrap: pretty; }
+body:not(.wallet-on):not(.desk-on) .brand .lines li:first-child { color: var(--ink); }
+body:not(.wallet-on):not(.desk-on) .brand .lines li:last-child { margin: 0; }
+body:not(.wallet-on):not(.desk-on) .brand .lines .safe a { color: var(--ink); font-weight: var(--w-strong); text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 5px; transition: text-decoration-color var(--d-1); }
+body:not(.wallet-on):not(.desk-on) .brand .lines .safe a:hover { text-decoration-color: var(--ink); }
+/* SW: the bench's "This is the practice bench" line is gone (surface-words.md: the bar's Shopper view is the way back). */
+
+@media (max-width: 899px) {
+  body:not(.wallet-on):not(.desk-on) .page > .brand { grid-template-columns: minmax(0, 1fr); gap: var(--s-1); padding: var(--s-1) 0 var(--s-1); }
+  body:not(.wallet-on):not(.desk-on) .brand h1 { max-width: none; font-size: var(--t-h2); line-height: 1.08; text-wrap: pretty; }
+  body:not(.wallet-on):not(.desk-on) .brand .lines { padding-left: var(--s-2); }
+  body:not(.wallet-on):not(.desk-on) .brand .lines li { font-size: var(--t-small); margin-bottom: 2px; }
+}
+
+/* Desk-J5: on a phone the two answers stand side by side, so $60.00 and $500.00 share the first screen and read across
+   one line. Each card is a subgrid of the pair's rows: a row per part (the label, the name, what it is, the verdict or
+   "made earlier", the number, its state, a note, the details), so every part sits level with its twin whatever wraps,
+   and the numbers share one baseline, idle and after a send. Opening "How code decided" gives that card the full width
+   (the control under it), since its rows need the room. The same words in the same order; only the boxes move. */
+@media (max-width: 767px) {
+  /* the steps above the answers sit a little closer, so the answers' first lines come up with their numbers */
+  body:not(.wallet-on):not(.desk-on) .page > .brand { padding: var(--s-1) 0 var(--s-1); }
+}
+
+/* Desk-J3: short and common desktop screens (1366x768 and 1440x900 laptops). The proof, the guarded $60.00 beside the $500.00, comes up onto
+   the first screen: the thesis runs in two or three lines instead of four, and the room between the parts tightens.
+   The same words in the same order; only the spacing and the thesis size change. */
+@media (min-width: 900px) and (max-height: 920px) {
+  body:not(.wallet-on):not(.desk-on) .page > .brand { gap: var(--s-2) var(--s-6); padding: var(--s-2) 0 var(--s-1); }
+  body:not(.wallet-on):not(.desk-on) .brand h1 { max-width: none; font-size: var(--t-h2); line-height: 1.08; }
+  body:not(.wallet-on):not(.desk-on) .brand .lines li { font-size: var(--t-small); line-height: 1.4; margin: 0 0 4px; }
+}
+
+/* Slice 7: every wait on the server is a tape ticking under the words, never a spinner and never a number. It says
+   only "working"; under reduced motion the tape lies still. (Shared with safe.css; the Desk turns it off for itself.) */
+[aria-busy="true"] { position: relative; cursor: progress; }
+/* Busy is not disabled: the words stay at full strength (AA) while the tape runs. */
+button[aria-busy="true"][disabled] { opacity: 1; }
+[aria-busy="true"]::after { content: ""; position: absolute; left: 24%; right: 24%; bottom: 7px; height: 2px; pointer-events: none; opacity: .8;
+  background: repeating-linear-gradient(90deg, currentColor 0 6px, transparent 6px 11px);
+  -webkit-mask: linear-gradient(90deg, #0000, #000 22%, #000 78%, #0000); mask: linear-gradient(90deg, #0000, #000 22%, #000 78%, #0000); }
+.linkish[aria-busy="true"]::after { left: 0; right: 0; bottom: -4px; }
+.motion [aria-busy="true"]::after { animation: tick var(--d-3) steps(5) both; } /* once, never a loop (system §7) */
+@keyframes tick { to { background-position: 11px 0; } }

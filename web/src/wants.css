@@ -1,0 +1,8 @@
+/* Your wants' own states (Track SW). brand.md §10.9's state block: what happened at --t-h3, the way to fill it in one
+   --t-body --ink-2 line, one hairline pill (the wallet's .wmute shape). Tokens only; wallet.css (W-8's) is untouched. */
+.wallet .wants .wstate { max-width: 32em; padding: var(--s-2) 0; }
+.wallet .wants .wstate-t { margin: 0; font-family: var(--display); font-size: var(--t-h3); line-height: 1.2; font-weight: var(--w-head); color: var(--ink); }
+.wallet .wants .wstate-l { margin: var(--s-1) 0 0; font-size: var(--t-body); line-height: 1.5; color: var(--ink-2); }
+.wallet .wants .wstate-go { display: inline-flex; align-items: center; min-height: 44px; margin-top: var(--s-3); padding: 0 var(--s-3); border: 1px solid var(--line-2); border-radius: var(--r-pill); background: none; color: var(--ink); font: inherit; font-size: var(--t-small); font-weight: var(--w-strong); cursor: pointer; transition: border-color var(--d-1) var(--ease); }
+.wallet .wants .wstate-go:hover { border-color: var(--ink); }
+.wallet .wants .wstate-go:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }

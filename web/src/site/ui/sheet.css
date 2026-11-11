@@ -1,0 +1,96 @@
+/* The sheet: from the bottom edge on a phone, centred on a laptop. Enters on --ease-drawer; leaves at once. */
+.sheet {
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  overflow: visible;
+}
+.sheet::backdrop {
+  /* The page stays visible behind the glass, dimmed and softened, so the sheet reads as a layer above it. */
+  background: oklch(0.17 0 0 / 0.26);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 1;
+  transition: opacity var(--d-enter) var(--ease-out);
+}
+.sheet-body {
+  max-height: calc(100dvh - var(--s12));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--s2) var(--gutter) calc(var(--s6) + env(safe-area-inset-bottom));
+  border-radius: var(--r-4) var(--r-4) 0 0;
+  /* Thick glass (base.css .glass); the deeper shadow says it is the top layer. */
+  box-shadow: var(--glass-rim), var(--shadow-3);
+  transform: none;
+  transition: transform var(--d-enter) var(--ease-drawer), opacity var(--d-enter) var(--ease-out);
+}
+.sheet[open] .sheet-body {
+  @starting-style { transform: translateY(100%); }
+}
+.sheet[open]::backdrop {
+  @starting-style { opacity: 0; }
+}
+.sheet-grip {
+  width: 40px;
+  height: 4px;
+  margin: 0 auto var(--s2);
+  border-radius: var(--r-pill);
+  background: var(--line-strong);
+}
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  min-height: var(--s12);
+  margin-bottom: var(--s2);
+}
+.sheet-title {
+  font-family: var(--font-sans);
+  font-size: var(--t-md);
+  font-weight: var(--w-medium);
+  letter-spacing: 0;
+}
+.sheet-close {
+  display: inline-grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  margin-right: calc(-1 * var(--s3));
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--ink-2);
+  transition: background-color var(--d-ui) ease, transform var(--d-press) var(--ease-out);
+}
+.sheet-close:active { transform: scale(0.94); }
+@media (hover: hover) and (pointer: fine) {
+  .sheet-close:hover { background: var(--surface-2); color: var(--ink); }
+}
+
+@media (min-width: 761px) {
+  .sheet[data-wide] {
+    width: min(560px, calc(100% - 2 * var(--s8)));
+    margin: auto;
+  }
+  .sheet[data-wide] .sheet-body {
+    max-height: calc(100dvh - var(--s16));
+    padding: var(--s3) var(--s8) var(--s8);
+    border-radius: var(--r-4);
+  }
+  .sheet[data-wide] .sheet-grip { display: none; }
+  .sheet[data-wide][open] .sheet-body {
+    @starting-style { transform: translateY(var(--s4)) scale(0.97); opacity: 0; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-body { transition: none; }
+  .sheet[open] .sheet-body { @starting-style { transform: none; } }
+  .sheet[data-wide][open] .sheet-body { @starting-style { transform: none; } }
+}

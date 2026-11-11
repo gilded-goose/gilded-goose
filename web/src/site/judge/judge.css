@@ -1,0 +1,32 @@
+/* Judge in 60 seconds: a numbered list, because the order is the video's order. Ink rules, big numerals, no chrome. */
+.judge-lede { margin-bottom: var(--s6); color: var(--ink-2); font-size: var(--t-md); }
+.judge-stops { display: grid; margin: 0; padding: 0; list-style: none; }
+.judge-stop {
+  display: grid;
+  grid-template-columns: var(--s10) 1fr var(--s6);
+  align-items: center;
+  gap: var(--s4);
+  min-height: 72px;
+  padding: var(--s4) 0;
+  border-top: 1px solid var(--line-strong);
+  color: var(--ink);
+  text-decoration: none;
+}
+.judge-stops li:last-child .judge-stop { border-bottom: 1px solid var(--line-strong); }
+.judge-n {
+  font-family: var(--font-display);
+  font-size: var(--t-2xl);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1;
+  color: var(--ink);
+}
+.judge-words { display: grid; gap: 2px; } /* control */
+.judge-title { font-family: var(--font-display); font-size: var(--t-md); font-weight: var(--w-strong); line-height: 1.25; }
+.judge-line { color: var(--ink-2); font-size: var(--t-sm); line-height: 1.4; }
+.judge-go { color: var(--ink-3); transition: transform var(--d-ui) var(--ease-out), color var(--d-ui) ease; }
+@media (hover: hover) and (pointer: fine) {
+  .judge-stop:hover .judge-go { transform: translateX(4px); color: var(--ink); }
+  .judge-stop:hover .judge-n { color: var(--stone); }
+}
+@media (prefers-reduced-motion: reduce) { .judge-go { transition: color var(--d-ui) ease; } .judge-stop:hover .judge-go { transform: none; } }

@@ -1,0 +1,72 @@
+{
+  "at": "2026-10-23T06:19:42.552Z",
+  "pass": false,
+  "budgetMs": 1500,
+  "probes": {
+    "haiku thinking=off": {
+      "ok": true,
+      "ms": 1567,
+      "note": "counter"
+    },
+    "haiku thinking=adaptive": {
+      "ok": true,
+      "ms": 1133,
+      "note": "counter"
+    }
+  },
+  "haiku": {
+    "model": "claude-haiku-5-5",
+    "race": 1,
+    "calls": 30,
+    "p50": 1176,
+    "p95": 2551,
+    "max": 3119,
+    "first": 1359,
+    "overBudget": 4,
+    "malformed": 0,
+    "racerErrors": 0,
+    "racerNotes": [],
+    "moves": {
+      "counter": 6,
+      "accept": 24
+    },
+    "adherence": []
+  },
+  "sonnet": {
+    "model": "claude-sonnet-5-5",
+    "calls": 5,
+    "p50": 2142,
+    "max": 2235,
+    "budget": 6000,
+    "notes": [
+      "tool_use",
+      "tool_use",
+      "tool_use",
+      "tool_use",
+      "tool_use"
+    ]
+  },
+  "haggles": [
+    {
+      "seed": 1,
+      "outcome": "cart",
+      "claudeMoves": 1,
+      "fallbacks": 2,
+      "price": "51.04"
+    },
+    {
+      "seed": 2,
+      "outcome": "cart",
+      "claudeMoves": 2,
+      "fallbacks": 0,
+      "price": "49.82"
+    },
+    {
+      "seed": 3,
+      "outcome": "cart",
+      "claudeMoves": 2,
+      "fallbacks": 0,
+      "price": "49.54"
+    }
+  ]
+}

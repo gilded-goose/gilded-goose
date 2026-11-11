@@ -1,0 +1,173 @@
+<!doctype html>
+<!--
+  Spike S8: browser speech in and out, measured (docs/guild/019-voice.md).
+  Served by serve.ts (localhost, so the mic is allowed) or by the hosted server at /voice-test
+  (Render's real HTTPS certificate, for the iPhone test; test-only, linked from nowhere).
+  Each try records: does the API exist, how long from the tap to the first words and to the
+  final words, the transcript, its word error rate against the target, and whether the two
+  words the chips need ("toaster", "kitchen") survived. Speak-back times speak() → audio start.
+  Results stay on the page (Copy). Only serve.ts (port 5199) gets them POSTed to /results; the
+  hosted page sends nothing to our server, no audio and no transcript.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Developer mic test · Gilded Goose</title>
+<style>
+  /* Desk-J3: the Desk's plum velvet palette (desk/tokens.css, .dk[data-palette="v"]), spelled out: a dev tool, so only the colours. */
+  :root { color-scheme: dark; --fg: #f4eadc; --bg: #2c1520; --line: rgba(244, 234, 220, .3); --ok: #f4eadc; --bad: #f0a59a; }
+  body { font: 17px/1.4 system-ui, sans-serif; color: var(--fg); background: var(--bg); margin: 0; padding: 16px; max-width: 640px; }
+  button { font: inherit; font-weight: 600; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--line); margin: 4px 0; width: 100%; background: #371c2a; color: inherit; }
+  select, #typed { font: inherit; padding: 8px; width: 100%; background: #371c2a; color: inherit; border: 1px solid var(--line); border-radius: 8px; }
+  #typed::placeholder { color: #b49f9c; }
+  .row { border-top: 1px solid var(--line); padding: 8px 0; }
+  .ok { color: var(--ok); } .bad { color: var(--bad); }
+  code, pre, #support { font-size: 13px; white-space: pre-wrap; overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<h1>Developer mic test</h1>
+<p>A tool for testing the microphone on a phone. Nothing on the Gilded Goose site links here.</p>
+<p id="support"></p>
+<label>Say this: <select id="phrase">
+  <option>find me a toaster that fits my kitchen</option>
+  <option>hey goose find me a toaster that fits my kitchen</option>
+  <option>not this one</option>
+  <option>undo</option>
+  <option>undo that purchase</option>
+  <option>refund that purchase</option>
+  <option>take it back</option>
+  <option>no</option>
+</select></label>
+<input id="typed" placeholder="Or type it here" style="font:inherit;padding:12px;width:100%;box-sizing:border-box">
+<p id="fallback" hidden>Voice isn't available in this browser. Type it instead.</p>
+<button id="listen">Tap, then say it</button>
+<button id="speak">Speak back</button>
+<p id="live"></p>
+<div id="log"></div>
+<button id="copy">Copy results</button>
+<pre id="out"></pre>
+<script>
+// `?nomic=1` hides the speech API so the typed fallback can be checked in a browser that has one.
+const SR = new URLSearchParams(location.search).has("nomic") ? undefined : (window.SpeechRecognition || window.webkitSpeechRecognition);
+const results = [];
+const $ = (id) => document.getElementById(id);
+const words = (s) => s.toLowerCase().replace(/[^a-z' ]/g, " ").split(/\s+/).filter(Boolean);
+const label = new URLSearchParams(location.search).get("label") || "";
+
+// Word error rate: edit distance over words, divided by the target's word count.
+function wer(target, heard) {
+  const a = words(target), b = words(heard);
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
+    d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  return a.length ? d[a.length][b.length] / a.length : 0;
+}
+function keyWords(target, heard) {
+  const need = words(target).filter((w) => ["toaster", "kitchen", "undo", "not", "no", "refund", "back"].includes(w));
+  const got = new Set(words(heard));
+  return need.every((w) => got.has(w));
+}
+function record(r) {
+  r.ua = navigator.userAgent; r.label = label; r.at = new Date().toISOString();
+  results.push(r);
+  const div = document.createElement("div");
+  div.className = "row";
+  div.innerHTML = `<b>${r.kind}</b> <span class="${r.error ? "bad" : "ok"}">${r.error || "ok"}</span><br><code></code>`;
+  div.querySelector("code").textContent = JSON.stringify(r);
+  $("log").prepend(div);
+  $("out").textContent = results.map((x) => JSON.stringify(x)).join("\n");
+  if (location.port === "5199") fetch("results", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(r) }).catch(() => {});
+}
+
+let localAnswer = null; // SpeechRecognition.available's answer, from the first Listen
+async function support() {
+  const s = { recognition: !!SR, prefixed: !window.SpeechRecognition && !!window.webkitSpeechRecognition, synthesis: "speechSynthesis" in window, secure: window.isSecureContext };
+  // Track V (042, crit-1 #17): Chrome's on-device check (SpeechRecognition.available) killed headless Chromium's page at
+  // load, so it runs on the first Listen instead (onDeviceCheck below), never while the page opens.
+  s.onDevice = localAnswer ?? "checked on the first Listen";
+  s.voices = speechSynthesis ? speechSynthesis.getVoices().length : 0;
+  $("support").textContent = JSON.stringify(s);
+  // Never a dead mic: without the API the button is gone and the typed box says why.
+  $("listen").hidden = !SR;
+  $("fallback").hidden = !!SR;
+  window.__support = s;
+  record({ kind: "support", ...s, error: s.recognition ? null : "no-speech-api", listenShown: !$("listen").hidden, fallbackShown: !$("fallback").hidden, width: innerWidth, overflowX: document.documentElement.scrollWidth > innerWidth });
+  return s;
+}
+support();
+if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = support;
+
+async function onDeviceCheck() {
+  if (localAnswer !== null || !SR || !SR.available) return;
+  try { localAnswer = await SR.available({ langs: ["en-US"], processLocally: true }); } catch (e) { localAnswer = "error: " + e.name; }
+  record({ kind: "on-device", onDevice: localAnswer });
+}
+
+window.__listen = function listen(track) {
+  // `track` (a MediaStreamTrack) is the harness path: Chrome 139+ can recognize a given track;
+  // a person on a phone taps the button and the browser opens its own mic.
+  void onDeviceCheck();
+  return new Promise((resolve) => {
+    const target = $("phrase").value;
+    const t0 = performance.now();
+    const r = { kind: "listen", target, transcript: "", firstWordsMs: null, finalMs: null, endMs: null, speechEndToFinalMs: null, error: null };
+    const rec = new SR();
+    rec.lang = "en-US"; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
+    let speechEnd = null;
+    rec.onstart = () => { r.startMs = Math.round(performance.now() - t0); $("live").textContent = "listening…"; };
+    rec.onspeechend = () => { speechEnd = performance.now(); };
+    rec.onresult = (e) => {
+      const now = performance.now();
+      if (r.firstWordsMs === null) r.firstWordsMs = Math.round(now - t0);
+      let text = "";
+      for (let i = 0; i < e.results.length; i++) text += e.results[i][0].transcript;
+      $("live").textContent = text;
+      const last = e.results[e.results.length - 1];
+      if (last.isFinal) {
+        r.transcript = text.trim(); r.finalMs = Math.round(now - t0);
+        r.confidence = Math.round(last[0].confidence * 100) / 100;
+        if (speechEnd) r.speechEndToFinalMs = Math.round(now - speechEnd);
+      }
+    };
+    rec.onerror = (e) => { r.error = e.error; };
+    rec.onend = () => {
+      r.endMs = Math.round(performance.now() - t0);
+      if (!r.error && !r.transcript) r.error = "no-final-result";
+      r.wer = r.transcript ? Math.round(wer(target, r.transcript) * 100) / 100 : 1;
+      r.keyWordsKept = !!r.transcript && keyWords(target, r.transcript);
+      finish();
+    };
+    let done = false; const finish = () => { if (done) return; done = true; record(r); resolve(r); };
+    record({ kind: "listen-tap", target }); // every tap is logged, even if recognition then hangs (Claude, Oct 26)
+    setTimeout(() => { if (!done) { r.error = r.startMs == null ? "no-start-in-12s" : (r.transcript ? r.error : "no-end-in-12s"); r.endMs = 12000; r.partial = $("live").textContent; try { rec.abort(); } catch {} finish(); } }, 12000);
+    try { track ? rec.start(track) : rec.start(); } catch (e) { r.error = "start-threw: " + e.name; finish(); }
+  });
+};
+
+window.__speak = function speak() {
+  return new Promise((resolve) => {
+    const text = "Found a black toaster, thirty four dollars and twenty cents, to match your kettle. Tap Approve to buy it.";
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US";
+    const t0 = performance.now();
+    const r = { kind: "speak", startMs: null, durationMs: null, error: null, voices: speechSynthesis.getVoices().length };
+    let started = null;
+    u.onstart = () => { started = performance.now(); r.startMs = Math.round(started - t0); };
+    u.onend = () => { r.durationMs = started ? Math.round(performance.now() - started) : null; if (!started) r.error = "ended-without-start"; record(r); resolve(r); };
+    u.onerror = (e) => { r.error = e.error; record(r); resolve(r); };
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+    setTimeout(() => { if (r.startMs === null && !r.error) { r.error = "no-start-in-5s"; record(r); resolve(r); } }, 5000);
+  });
+};
+
+$("listen").onclick = () => window.__listen();
+$("speak").onclick = () => window.__speak();
+$("copy").onclick = () => navigator.clipboard.writeText($("out").textContent);
+</script>
+</body>
+</html>

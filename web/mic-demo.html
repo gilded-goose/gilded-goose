@@ -1,0 +1,10 @@
+<!doctype html>
+<!-- Track V (029): a dev-only stage for the Desk's mic (HoldToTalk), so it can be checked end to end before the Desk
+     uses it. Not a build input (vite.config.ts), so it never reaches web/dist or the live site: `vite` (dev) only. -->
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Mic demo (dev)</title></head>
+<body style="font: 17px system-ui; padding: 16px; max-width: 640px">
+<div id="root"></div>
+<script type="module" src="/src/voice/mic-demo.tsx"></script>
+</body>
+</html>

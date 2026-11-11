@@ -1,0 +1,177 @@
+/* Base: the document, type defaults, focus, the night-pond material and the page's one grain layer. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + var(--s4));
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  line-height: var(--lh-body);
+  font-weight: var(--w-regular);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--w-medium);
+  line-height: var(--lh-head);
+  text-wrap: balance;
+  color: var(--ink);
+}
+/* Tight tracking only on display sizes; h3 and h4 keep the face's own spacing. */
+h1 { font-size: var(--t-3xl); letter-spacing: -0.022em; line-height: var(--lh-tight); }
+h2 { font-size: var(--t-xl); letter-spacing: -0.012em; }
+h3 { font-size: var(--t-lg); }
+@media (min-width: 761px) {
+  h2 { font-size: var(--t-2xl); }
+}
+
+p { margin: 0; text-wrap: pretty; }
+p + p { margin-top: var(--s3); }
+
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
+img, svg, canvas { display: block; max-width: 100%; }
+
+code, kbd, samp, .mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+/* Money and counts: the reading face's own lining figures. Its tabular set reads as a typewriter, so prices stay proportional. */
+.figure { font-variant-numeric: lining-nums proportional-nums; font-feature-settings: "lnum" 1; }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--r-1);
+}
+.stone :focus-visible { outline-color: var(--stone-ink); }
+
+::selection { background: oklch(0.8 0.135 84 / 0.4); }
+
+.vh {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  left: var(--s2);
+  top: var(--s2);
+  z-index: var(--z-toast);
+  padding: var(--s2) var(--s4);
+  border-radius: var(--r-2);
+  background: var(--ink);
+  color: var(--surface);
+  font-weight: var(--w-medium);
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform var(--d-ui) var(--ease-out);
+}
+.skip:focus-visible { transform: none; }
+
+/* The page column */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* A summary under a heading: the one plain paragraph every page and section carries. */
+.lede {
+  max-width: var(--measure);
+  color: var(--ink-2);
+  font-size: var(--t-md);
+  line-height: 1.5;
+}
+
+.page-pending { display: grid; gap: var(--s4); padding-block: var(--s16) var(--s12); }
+
+/*
+ * Glass (tokens.css): a translucent pane for the few things that float over the page. The sheen is a pseudo-element so
+ * the pane's own background stays one flat tint; the rim is light catching the top edge. `data-glass="thick"` is the
+ * sheet. Readability first: the pane is at least 64% white, and reduced transparency makes it solid.
+ */
+.glass {
+  position: relative;
+  isolation: isolate;
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-line);
+  box-shadow: var(--glass-rim), var(--glass-depth);
+}
+.glass[data-glass="thick"] {
+  background: var(--glass-thick);
+  -webkit-backdrop-filter: var(--glass-blur-thick);
+  backdrop-filter: var(--glass-blur-thick);
+}
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--glass-sheen);
+  pointer-events: none;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass[data-glass="thick"] { background: var(--surface-raised); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .glass::before { display: none; }
+}
+@media (prefers-contrast: more) {
+  .glass { background: var(--surface-raised); border-color: var(--line-strong); }
+  .glass::before { display: none; }
+}
+
+/*
+ * The night pond: the one dark material (navy), used for the hero, the test board, the receipt moment and the footer.
+ * Flat colour, no light, no gloss; the page's one riso grain layer (below) prints over it like everything else.
+ */
+.stone {
+  --stamp-clear: var(--gold-stone);
+  --stamp-held: var(--held-stone);
+  --stamp-aside: var(--vermilion-stone);
+  --stamp-over: var(--lead-stone);
+  background-color: var(--stone);
+  color: var(--stone-ink);
+  border-radius: var(--r-3);
+}
+.stone h1, .stone h2, .stone h3 { color: var(--stone-ink); }
+
+
+/* The art's shared filters live in one hidden SVG (ui/ArtDefs.tsx). */
+.art-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* The foil egg's printed limit. */
+.egg-num { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.03em; mix-blend-mode: multiply; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,462 @@
+/* The classic page's React-drawn skin, everything under `.dk.cv` (App.tsx; Ledger.tsx's full-screen portal wears it too, and is only ever loaded from App).
+   Moved out of run.css (gate seat 7, Nov 4): run.css is in main.css on every route, and no other route draws .cv. What
+   paints before any script (the static header, on body:not(.wallet-on):not(.desk-on)) stays in run.css. */
+/* ---------- everything React draws: the Desk's tokens, under the page's own names ---------- */
+.cv {
+  --bg: var(--page-solid); --white: var(--card); --grey: var(--ink-2); --soft: var(--ink-3); --paper: var(--well);
+  --teal: var(--ink); --teal-wash: var(--surface-2); --red-wash: rgba(240, 165, 154, .08); --amber: var(--ink);
+  --cream: transparent; --brass: var(--gold); --brass-hi: var(--gold-hi); --brass-ink: var(--gold-hi); --brass-wash: var(--gold-wash);
+  --desk: var(--page-solid); --on-desk: var(--ink); --on-desk-2: var(--ink-2);
+  color: var(--ink); font-family: var(--face); font-variant-numeric: tabular-nums;
+}
+.cv h2, .cv h3 { font-family: var(--display); font-weight: var(--w-head); letter-spacing: var(--track-head); }
+.cv p, .cv li { text-wrap: pretty; }
+.cv :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.cv .muted { color: var(--ink-2); }
+.cv .refused { color: var(--red); }
+.cv .ok { color: var(--ink); }
+.cv .asked { color: var(--ink); }
+.cv q { color: var(--ink-2); }
+.cv a:not(.btn) { color: var(--ink); text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.cv a:not(.btn):hover { text-decoration-color: var(--ink); }
+.cv .tag { border-radius: var(--r-1); padding: 1px var(--s-1); background: transparent; box-shadow: inset 0 0 0 1px var(--line-2); color: var(--ink-2); font-style: normal; font-size: var(--t-micro); }
+.cv .tag.red { box-shadow: inset 0 0 0 1px rgba(240, 165, 154, .5); color: var(--red); background: transparent; }
+.cv .tag.teal { box-shadow: inset 0 0 0 1px var(--line-2); color: var(--ink); background: transparent; }
+/* the one primary action on any surface: cream on velvet, a precise press */
+.cv :is(.btn, .send) { min-height: 48px; padding: 0 var(--s-4); border-radius: var(--r-pill); background: var(--cta); color: var(--on-cta); font-weight: var(--w-strong); transition: transform var(--d-1) var(--ease), background var(--d-1); }
+.cv :is(.btn, .send):hover { background: var(--cta-hover); }
+.cv :is(.btn, .send):active { transform: scale(.985) translateY(1px); }
+.cv .send[disabled] { background: var(--surface-2); color: var(--ink-2); }
+.cv button[disabled]:not([aria-busy="true"]) { cursor: default; }
+.cv .linkish { color: var(--ink); font-weight: var(--w-strong); text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.cv .linkish:hover { text-decoration-color: var(--ink); }
+/* Desk-J5: a short word ("more", "less") still makes a 44 px target */
+.cv .linkish { min-width: 44px; }
+.cv .quiet { min-height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-2); border-radius: var(--r-pill); background: none; color: var(--ink); font-weight: var(--w-strong); transition: background var(--d-1), border-color var(--d-1); }
+.cv .quiet:hover { background: var(--well); border-color: var(--ink-2); }
+.cv .quiet:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.cv details > summary { color: var(--ink); }
+
+/* ---------- the seller lab (the judge box): your note in the page's one glass field, two answers as cards ---------- */
+.cv .lab { margin: 0; padding: var(--s-3) 0 var(--s-6); border-top: 1px solid var(--line); }
+/* The Desk's trick slot falls back here (#break) when the Challenge can't draw, with the lab's heading still in view above it. */
+.cv .lab .ask { scroll-margin-top: 140px; margin: 0; padding: 0; background: none; border-radius: 0; }
+/* The note is glass: `.dk-glass` (tokens.css) carries its fill, blur, edge, line and radius; only the focus line is ours. */
+.cv .lab .field { position: relative; min-height: 64px; padding: var(--s-1) var(--s-1) var(--s-1) var(--s-3); transition: border-color var(--d-1); }
+.cv .lab .field:focus-within { outline: 0; border-color: var(--ink-2); }
+.cv .lab .field .note { padding: var(--s-2) 0; color: var(--ink); font-size: var(--t-body); line-height: 1.4; }
+.cv .lab .field .note::placeholder { color: var(--ink-3); }
+/* the seller's asking price: a quiet well with its own hairline, money in tabular figures */
+.cv .lab .field .price { min-height: 48px; padding: 0 var(--s-2); border-radius: var(--r-2); background: var(--well); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-3); font-size: var(--t-body); font-weight: var(--w-body); }
+.cv .lab .field .price input { width: 5.4em; min-height: 44px; padding-block: 0; color: var(--ink); font-size: var(--t-body); font-weight: var(--w-head); font-variant-numeric: tabular-nums; }
+.cv .lab .chips { gap: var(--s-1); margin: var(--s-2) 0; }
+.cv .lab .chip { min-height: 44px; padding: 0 var(--s-2); border: 1px solid var(--line); border-radius: var(--r-1); background: none; color: var(--ink-2); font-style: normal; font-size: var(--t-small); transition: border-color var(--d-1), color var(--d-1), background var(--d-1); }
+.cv .lab .chip:hover { border-color: var(--line-2); color: var(--ink); }
+.cv .lab .chip[aria-pressed="true"] { border-color: var(--ink-2); background: var(--surface-2); color: var(--ink); }
+/* who reads your note: two halves of one hairline control */
+.cv .lab .seg { gap: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--r-2); background: none; overflow: hidden; }
+.cv .lab .seg button { min-height: 48px; padding: var(--s-1) var(--s-2); border-radius: 0; background: none; color: var(--ink-2); transition: background var(--d-1), color var(--d-1); }
+.cv .lab .seg button + button { border-left: 1px solid var(--line); }
+.cv .lab .seg button small { margin-top: 2px; color: var(--ink-2); font-size: var(--t-micro); opacity: 1; }
+.cv .lab .seg button[aria-pressed="true"] { background: var(--surface-2); color: var(--ink); box-shadow: inset 0 -2px 0 var(--ink); outline: 1px solid var(--ink-2); outline-offset: -1px; }
+.cv .lab .seg button[aria-pressed="true"] small { color: var(--ink-2); }
+/* Desk-J4: the pressed half's edge follows the toggle's own rounded corners, never a square box over its border */
+.cv .lab .seg button:first-child { border-radius: calc(var(--r-2) - 1px) 0 0 calc(var(--r-2) - 1px); }
+.cv .lab .seg button:last-child { border-radius: 0 calc(var(--r-2) - 1px) calc(var(--r-2) - 1px) 0; }
+/* off on this server is real news, so it stays readable: its words say "off", nothing fades */
+.cv .lab .seg button[disabled] { opacity: 1; background: none; color: var(--ink-3); cursor: default; }
+.cv .lab .ask-foot { gap: var(--s-3); align-items: center; margin-top: var(--s-2); }
+.cv .lab .ask-foot p { color: var(--ink-2); font-size: var(--t-small); max-width: 52ch; }
+/* SW: the reader line under the toggle (claims row c-innov-line), one quiet line; and a label for screen readers only. */
+.cv .lab .careful { margin: var(--s-1) 0 0; color: var(--ink-2); font-size: var(--t-micro); line-height: 1.4; }
+.cv .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.cv .lab .send { min-height: 48px; padding: 0 var(--s-4); font-size: var(--t-body); }
+.cv .lab .notice { font-size: var(--t-small); }
+.cv .lab > .same { margin: var(--s-2) 0 var(--s-1); color: var(--ink-2); font-size: var(--t-small); text-align: left; } .cv .lab > .same + .pair { margin-top: 0; }
+
+/* the two answers: the same card twice. The guarded one holds a gold hairline (code protects you there); the control
+   is plain, its over-the-max number in the threat's red. */
+.cv .lab .pair { gap: var(--s-3); align-items: stretch; margin-top: var(--s-4); } /* SW: the send row and the cards, apart (the "same note" line held this gap) */
+.cv .lab .card { min-height: 0; padding: var(--s-3) var(--s-3) var(--s-3); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); color: var(--ink); } /* SW: after a send, the "same note" line holds the gap */
+.cv .lab .card.empty { border: 1px dashed var(--line-2); background: transparent; color: var(--ink-2); }
+.cv .lab .card[data-card="guard-on"] { border-color: var(--gold-line); }
+/* each card's last line is its foot, under a hairline, so the space above reads as the card's length, not a gap */
+.cv .lab .card:not(.empty) > :last-child:not(:first-child) { margin-top: auto; padding-top: var(--s-2); border-top: 1px solid var(--line); }
+.cv .lab .card:not(.empty) > :nth-last-child(2) { margin-bottom: var(--s-2); }
+.cv .lab .card .who { margin: 0 0 var(--s-2); padding: 0 0 var(--s-1); border-bottom: 1px solid var(--line); color: var(--ink-3); font: 400 13px/1.4 var(--face); letter-spacing: 0; }
+.cv .lab .card .item { font-family: var(--display); font-size: var(--t-lead); font-weight: var(--w-head); letter-spacing: var(--track-head); }
+.cv .lab .card .sub { margin-bottom: var(--s-2); color: var(--ink-2); font-size: var(--t-small); }
+.cv .lab .card .amt { margin: var(--s-2) 0 4px; font-family: var(--display); font-size: var(--t-num, var(--t-h2)); font-weight: var(--w-display); letter-spacing: -.02em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.cv .lab .card .amt.red { color: var(--red); }
+/* the protected number is the page's biggest numeral; the threat beside it stays smaller */
+.cv .lab .card .amt.step { font-size: var(--t-h2); }
+/* the check beside the most any cart can cost: a gold hairline ring, drawn on each answer */
+.cv .lab .ring { width: 30px; height: 30px; border: 1px solid var(--gold-line); background: none; color: var(--gold); box-shadow: none; }
+.cv .lab .ring svg { width: 15px; height: 15px; stroke-width: 1.6; }
+.cv .lab .card .state { color: var(--ink-2); font-size: var(--t-small); }
+.cv .lab .card .state b { color: var(--ink); font-weight: var(--w-strong); }
+.cv .lab .card .state b.ok { color: var(--gold); }
+.cv .lab .card[data-card="guard-off"] .state b { color: var(--ink); }
+.cv .lab .card .small, .cv .lab .card .earlier { font-size: var(--t-micro); }
+.cv .lab .card .earlier .tag { margin: 0 6px 0 0; }
+.cv .lab .card .asked { color: var(--ink-2); }
+/* the guard's answer: words, not a stamp. A refusal is the page's protection moment: gold, with a gold hairline that
+   traces itself under it once. */
+.cv .lab .card .verdict { position: relative; align-self: flex-start; margin: var(--s-2) 0 0; padding: 0 0 6px; border: 0; background: none; box-shadow: none; transform: none; color: var(--ink); font-family: var(--display); font-size: var(--t-h3); font-weight: var(--w-head); letter-spacing: var(--track-head); }
+.cv .lab .card .verdict[data-refused] { color: var(--gold); }
+.cv .lab .card .verdict[data-refused]::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--gold-line); transform-origin: 0 50%; }
+.motion .cv .lab .card .verdict[data-refused] { animation: none; }
+.motion .cv .lab .card .verdict[data-refused]::after { animation: cv-draw var(--d-3) var(--ease) .1s both; }
+.cv .lab .card details.how summary, .cv .lab .card .reply summary { min-height: 44px; color: var(--ink); font-weight: var(--w-strong); font-size: var(--t-small); }
+.cv .lab .card details.how summary:hover, .cv .lab .card .reply summary:hover { text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 4px; }
+.cv .lab .card .reply p { color: var(--ink-2); }
+.cv .lab .rows { border-top: 1px solid var(--line); }
+.cv .lab .rows > div { border-bottom: 1px solid var(--line); }
+.cv .lab .rows .k { color: var(--ink-3); font-size: var(--t-micro); text-transform: none; letter-spacing: 0; }
+.cv .lab .card a, .cv .lab .card summary { color: var(--ink); }
+.motion .cv [data-card="guard-off"][data-state="landed"] { animation: cv-arrive var(--d-3) var(--ease) both; }
+/* the count of tries: the server's numbers, never typed, on a plain line */
+.cv .lab > .tally { display: block; width: auto; margin: var(--s-3) 0 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; color: var(--ink-2); font-size: var(--t-small); font-weight: var(--w-body); text-align: left; }
+.cv .lab > .tally { line-height: 1.5; }
+.cv .lab > .tally:empty { min-height: 3lh; }
+.cv .lab > .tally b { margin: 0 2px 0 4px; color: var(--ink); font-family: var(--display); font-size: var(--t-h2); line-height: 1; font-weight: var(--w-display); font-variant-numeric: tabular-nums; }
+.cv .lab > .tally b.ok { color: var(--gold); }
+.cv .lab > .tally b.refused { color: var(--red); }
+
+/* ---------- Ask Goose ---------- */
+.cv .askg { margin: 0; padding: var(--s-6) 0 var(--s-6); border-top: var(--hair); }
+.cv .askg > h2 { margin: 0 0 var(--s-1); font-size: var(--t-h3); font-weight: var(--w-head); }
+/* The Ask box is glass too: AskGoose's form carries `.dk-glass` (S1); only its padding and focus line are ours. */
+.cv .askrow { padding: var(--s-1) var(--s-1) var(--s-1) var(--s-3); align-items: center; }
+.cv .askrow:focus-within { outline: 0; border-color: var(--ink-2); }
+.cv .askrow textarea { color: var(--ink); font-size: var(--t-body); }
+.cv .askrow textarea::placeholder { color: var(--ink-3); }
+.cv .askrow .btn { min-height: 48px; }
+.cv .askrow .btn[disabled]:not([aria-busy="true"]) { opacity: .6; background: none; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-2); }
+.cv .askrow .snap { min-height: 48px; padding: 0 var(--s-2); background: none; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-2); }
+.cv .askrow .snap:hover { background: var(--well); }
+.cv .askrow .snapin:focus-visible + .snap { outline: 2px solid var(--focus); outline-offset: 3px; }
+.cv .askg .mic { color: var(--ink-2); font-size: var(--t-micro); }
+.cv .saw > p, .cv .saw .muted { color: var(--ink-2); font-size: var(--t-micro); }
+.cv .gchip { min-height: 44px; padding: 4px var(--s-2); border-radius: var(--r-1); background: none; box-shadow: inset 0 0 0 1px var(--line-2); color: var(--ink); font-weight: var(--w-body); }
+.cv .gchip[data-over] { background: none; box-shadow: inset 0 0 0 1px var(--ink-2); color: var(--ink); }
+.cv .gchip .gforget { color: var(--ink-2); }
+.cv .gchips .fict { color: var(--ink-3); }
+.cv .askdone { color: var(--ink); }
+.cv .askdone a { color: var(--ink); }
+.cv .asknote { color: var(--ink-2); }
+/* busy is said in words ("Shopping for…"); the mark beside them holds still */
+.cv .askdot { width: 6px; height: 6px; margin: 0 var(--s-1) 2px 0; background: var(--ink-2); animation: none; }
+.cv details.readby summary { color: var(--ink-2); }
+.cv .saw { margin: var(--s-3) 0 0; padding-top: var(--s-3); border-top: var(--hair); }
+.cv .sawbox { border: 1px solid var(--line-2); border-radius: var(--r-2); background: var(--well); }
+.cv .sawbox:focus-within { outline: 0; border-color: var(--ink); }
+.cv .sawbox input { min-height: 44px; padding-block: 0; color: var(--ink); background: none; font-weight: var(--w-head); font-variant-numeric: tabular-nums; }
+.cv .sawbox input::placeholder { color: var(--ink-3); }
+.cv .sawbox:has(input:placeholder-shown) > span[aria-hidden] { color: var(--ink-3); }
+.cv .sawx { color: var(--ink-2); }
+.cv .sawx:hover { color: var(--ink); }
+.cv .sawpick p { color: var(--ink); }
+.cv .sawpick button { border: 1px solid var(--line-2); border-radius: var(--r-2); background: none; color: var(--ink); font-weight: var(--w-strong); font-variant-numeric: tabular-nums; }
+.cv .sawpick button:hover { background: var(--well); }
+/* the price answer: one card; the sellers the Watcher set aside sit under it, quiet, never red */
+.cv .ladans { padding: var(--s-2) var(--s-3) 4px; border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); }
+.cv .ladder[data-layer="cheaper"] .ladans { background: var(--card); border-color: var(--line-2); }
+.cv .ladder[data-layer="cheaper"] .ladline { color: var(--ink); }
+.cv .ladder[data-layer="over-budget"] .ladans { background: var(--card); border-color: var(--line-2); }
+.cv .ladline { font-family: var(--display); font-weight: var(--w-head); letter-spacing: var(--track-head); }
+.cv .ladno { padding: var(--s-1) var(--s-2); border: 1px dashed var(--line-2); border-radius: var(--r-2); background: none; }
+.cv .ladno .refused { color: var(--ink-2); }
+.cv .ladno b { color: var(--ink); }
+.cv .ladsim { border-left: 1px dashed var(--line-2); }
+
+/* ---------- the agent shopping ---------- */
+.cv .run { margin: 0; padding: var(--s-6) 0 0; border-top: var(--hair); }
+.cv .rdesk { padding: 0; border-radius: 0; background: none; color: var(--ink); }
+.cv .rdesk > h2 { margin: 0 0 6px; font-size: var(--t-h2); line-height: 1.1; font-weight: var(--w-display); letter-spacing: var(--track-display); }
+.cv .rdesk > h2 small { margin-left: var(--s-2); color: var(--ink-3); font-family: var(--face); font-size: var(--t-small); letter-spacing: 0; }
+.cv .rdesk > p, .cv .rdesk > .muted { color: var(--ink-2); }
+.cv .rdesk > p a:not(.btn) { padding: var(--s-2) 0; }
+.cv .rdesk > .refused { color: var(--red); font-weight: var(--w-strong); }
+@media (min-width: 900px) {
+  .cv .rdesk { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-auto-flow: row dense; column-gap: var(--s-3); }
+  .cv .rdesk > * { grid-column: 1 / -1; }
+  .cv .rdesk > .go { grid-column: 1; margin: var(--s-3) 0 var(--s-1); }
+  .cv .rdesk > p { margin-top: 4px; margin-bottom: var(--s-1); }
+  /* the limit code set, level with the order line on the right, behind a gold hairline */
+  .cv .rdesk > p.cap { grid-column: 2; justify-self: end; align-self: center; display: block; max-width: 30ch; margin: var(--s-3) 0 var(--s-1); padding: 4px 0 4px var(--s-2); font-size: var(--t-small); line-height: 1.4; }
+  .cv .rdesk .lane { grid-template-columns: 270px 1fr; }
+}
+/* the order line: the item, your max, your limit, Go */
+.cv .rdesk .go { width: fit-content; max-width: 100%; margin: var(--s-3) 0 var(--s-2); padding: 0; gap: var(--s-2); border-radius: 0; background: none; font-weight: var(--w-strong); }
+.cv .rdesk .go .max { min-height: 48px; border: 1px solid var(--line-2); border-radius: var(--r-2); background: var(--well); color: var(--ink-3); font-weight: var(--w-body); }
+.cv .rdesk .go .max:focus-within { border-color: var(--ink); }
+.cv .rdesk .go .max input { min-height: 44px; padding-block: 0; background: none; color: var(--ink); font-weight: var(--w-head); font-variant-numeric: tabular-nums; }
+.cv .rdesk .go .limit, .cv .rdesk .go .limit b { color: var(--ink-2); font-weight: var(--w-body); }
+.cv .rdesk .go .btn { min-height: 48px; padding: 0 var(--s-4); font-size: var(--t-body); }
+.cv .rdesk .cap { display: inline-block; margin: 2px 0 4px; padding: 4px 0 4px var(--s-2); border: 0; border-left: 1px solid var(--gold-line); border-radius: 0; background: none; box-shadow: none; color: var(--ink-2); font-weight: var(--w-body); }
+.cv .rdesk .cap b { color: var(--gold); font-weight: var(--w-strong); font-variant-numeric: tabular-nums; }
+
+/* before a run: the four parts it will fill in, as plain numbered text over a hairline (no tiles, no icons) */
+.cv .rdesk .empty-run { margin-top: var(--s-5); padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; color: var(--ink-2); text-align: left; }
+.cv .rdesk .empty-run > p { margin: 0 0 var(--s-3); font-size: var(--t-small); }
+.cv .rdesk .empty-run b { color: var(--ink); }
+.cv .rdesk .er-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-3); margin: 0; padding: 0; list-style: none; counter-reset: er; }
+.cv .rdesk .er-steps li { counter-increment: er; display: block; padding: var(--s-2) 0 0; border: 0; border-top: 1px solid var(--line-2); border-radius: 0; }
+.cv .rdesk .er-steps li::before { content: counter(er, decimal-leading-zero); display: block; width: auto; height: auto; margin: 0 0 var(--s-1); box-shadow: none; color: var(--ink-3); font-size: var(--t-micro); font-weight: var(--w-body); font-variant-numeric: tabular-nums; }
+.cv .rdesk .er-steps li::after { content: none; }
+.cv .rdesk .er-steps b { display: block; margin: 0 0 4px; font-family: var(--display); font-size: var(--t-lead); line-height: 1.2; font-weight: var(--w-head); color: var(--ink); }
+.cv .rdesk .er-steps span { display: block; color: var(--ink-2); font-size: var(--t-small); line-height: 1.45; }
+@media (max-width: 899px) { .cv .rdesk .er-steps { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-3) var(--s-2); } }
+
+/* the price board: one lane per seller, your limit a gold rail; the seller set aside quiet (dashed, struck, never gold) */
+.cv .rdesk .lanes { margin-top: var(--s-4); padding: var(--s-3); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); color: var(--ink); color-scheme: dark; }
+.cv .rdesk .lanes h2 { margin: 0 0 var(--s-1); font-size: var(--t-lead); font-weight: var(--w-head); }
+.cv .rdesk .lanes h2 small { margin-left: var(--s-1); color: var(--ink-3); font-family: var(--face); font-size: var(--t-small); letter-spacing: 0; white-space: nowrap; }
+.cv .rdesk .edge em { color: var(--gold); font-weight: var(--w-strong); }
+.cv .rdesk .lane .name { color: var(--ink-2); font-size: var(--t-micro); }
+.cv .rdesk .lane .name b { color: var(--ink); font-weight: var(--w-strong); }
+.cv .rdesk .bar .line { height: 1px; background: var(--line); }
+.cv .rdesk .bar .max { top: -6px; bottom: -6px; width: 2px; margin-left: -1px; border: 0; background: var(--gold); box-shadow: none; }
+.cv .rdesk .bar .fill { height: 4px; margin-top: -2px; background: var(--ink-2); opacity: 1; }
+.cv .rdesk .bar .fill::after { content: ""; position: absolute; right: -4px; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: var(--ink); }
+.cv .rdesk .dot { background: var(--ink-3); opacity: .7; }
+.cv .rdesk .pill { height: 32px; padding: 0 var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--card); color: var(--ink); font-size: var(--t-small); font-weight: var(--w-strong); font-variant-numeric: tabular-nums; }
+.cv .rdesk .pill small { color: var(--ink-3); font-weight: var(--w-body); }
+.cv .rdesk .pill.agent { border-color: var(--ink-2); color: var(--ink); background: var(--card); }
+.cv .rdesk .pill.deal { border-color: var(--gold-line); background: var(--card); color: var(--gold-hi); }
+.cv .rdesk .pill.deal small { color: var(--ink-2); }
+.cv .rdesk .pill.over { border-color: rgba(240, 165, 154, .55); color: var(--red); }
+.cv .rdesk .pill.flag { --tilt: ; height: 32px; padding: 0 var(--s-1); border: 1px dashed var(--line-2); background: var(--card); color: var(--ink-2); font-size: var(--t-small); font-weight: var(--w-body); }
+.cv .rdesk .pill.flag .pv { text-decoration: line-through; text-decoration-thickness: 1px; }
+.cv .rdesk .pill.flag small { display: inline; height: auto; padding: 0; border-radius: 0; background: none; box-shadow: none; color: var(--ink-3); font-size: var(--t-micro); font-weight: var(--w-body); }
+/* the Watcher's line: the protection said once, in gold, under a gold hairline mark */
+.cv .rdesk .flagline { margin: var(--s-2) 0 0; padding: 2px 0 2px var(--s-2); border-left: 1px solid var(--gold); color: var(--gold-hi); font-size: var(--t-small); font-weight: var(--w-body); }
+.cv .rdesk .flagline::before { content: none; }
+.cv .rdesk .holdline { color: var(--ink-2); }
+.cv .rdesk .legend { margin: var(--s-2) 0 0; padding-top: var(--s-1); border-top: 1px solid var(--line); color: var(--ink-2); font-size: var(--t-micro); }
+.cv .lg-moment-line { background: var(--surface-2); color: var(--ink); border-radius: var(--r-2); }
+.cv .lg-moment-line .back-now { border: 1px solid var(--line-2); border-radius: var(--r-2); color: var(--ink); }
+
+/* the haggle log beside the deal */
+.cv .rdesk .trays { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--s-4); align-items: start; margin-top: var(--s-4); }
+.cv .rdesk .trays:not(:has(> .rcard)) { grid-template-columns: minmax(0, 1fr); }
+.cv .rdesk .hlog:empty { display: none; }
+.cv .rdesk .stepsh { margin: 0 0 4px; font-size: var(--t-lead); line-height: 1.2; font-weight: var(--w-head); text-wrap: balance; }
+.cv .rdesk .steps { margin: var(--s-2) 0 0; }
+.cv .rdesk .steps li { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 2px var(--s-2); padding: var(--s-2) 0; border-top: 1px solid var(--line); color: var(--ink-2); font-size: var(--t-small); line-height: 1.45; }
+.cv .rdesk .steps li > :not(.r) { grid-column: 2; }
+.cv .rdesk .steps .r { grid-row: 1 / span 3; color: var(--ink-3); font-size: var(--t-micro); font-weight: var(--w-body); text-transform: none; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.cv .rdesk .steps b { color: var(--ink); font-weight: var(--w-strong); }
+.cv .rdesk .steps .tag { background: none; color: var(--ink-2); }
+.cv .rdesk .steps .muted { color: var(--ink-2); }
+.cv .rdesk .steps .nw { white-space: nowrap; }
+.cv .rdesk .steps .linkish { padding-block: var(--s-2); }
+.cv .rdesk .steps .linkish, .cv .rdesk .more { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+/* code's counter: a protection moment, behind a gold hairline */
+.cv .rdesk .steps .code { margin-top: 6px; padding: 2px 0 2px var(--s-2); border-left: 1px solid var(--gold); color: var(--ink-2); }
+.cv .rdesk .steps .code b.ok { color: var(--gold-hi); font-weight: var(--w-strong); }
+.cv .rdesk .more { display: inline-flex; align-items: center; min-height: 44px; margin: 4px 0 0; padding: 0; }
+
+/* the deal: one card, the price large and light; the approvable cart holds the gold hairline, Approve is cream */
+.cv .rdesk .rcard { margin-top: 0; padding: var(--s-3); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); color: var(--ink); color-scheme: dark; box-shadow: none; }
+.cv .rdesk .rcard[data-outcome="cart"] { border-color: var(--gold-line); }
+.cv .rdesk .rcard p { color: var(--ink-2); }
+.cv .rdesk .rcard p b { color: var(--ink); font-weight: var(--w-strong); }
+.cv .rdesk .rcard > p:first-child b { font-size: var(--t-body); }
+.cv .rdesk .rcard .amt { margin: var(--s-1) 0 4px; font-family: var(--display); font-size: var(--t-num, var(--t-h2)); font-weight: var(--w-display); letter-spacing: -.02em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.cv .rdesk .rcard p.saved { color: var(--ink); font-weight: var(--w-strong); font-size: var(--t-body); }
+.cv .rdesk .rcard p.ok { color: var(--ink); }
+.cv .rdesk .rcard .refused { color: var(--red); }
+.cv .rdesk .rcard .asked { color: var(--ink); }
+.cv .rdesk .rcard code { padding: 1px 6px; border-radius: var(--r-1); background: var(--well); color: var(--ink); }
+.cv .rdesk .rcard .tag { background: none; color: var(--ink-2); }
+.cv .rdesk .rcard[data-outcome="declined"] .amt { color: var(--ink-3); text-decoration-thickness: 1px; }
+.cv .rdesk .rcard #approve { display: flex; width: 100%; min-height: 56px; margin: var(--s-2) 0 6px; padding: 0 var(--s-3); border-radius: var(--r-2); font-size: var(--t-body); box-shadow: none; }
+.cv .rdesk .rcard:focus { outline: 2px solid var(--focus); outline-offset: 3px; }
+.cv .rdesk .rcard:focus #approve { box-shadow: none; }
+.cv .rdesk .rcard #approve:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.cv .rdesk .rcard .btn + .small { color: var(--ink-2); }
+.cv .rdesk .rcard button:not(#approve) { min-height: 44px; }
+/* the run's summary under the moves */
+.cv .rdesk .strip { margin: var(--s-3) 0 0; color: var(--ink-2); border-color: var(--line); font-size: var(--t-small); }
+.cv .rdesk .strip b { color: var(--ink); font-weight: var(--w-strong); }
+.cv .rdesk .trays > .strip { margin-top: 0; }
+@media (min-width: 900px) {
+  .cv .rdesk .trays:has(> .rcard) { grid-template-rows: auto 1fr; row-gap: 0; }
+  .cv .rdesk .trays:has(> .rcard) > .rcard { grid-column: 2; grid-row: 1 / span 2; }
+  .cv .rdesk .trays:has(> .rcard) > .strip { grid-column: 1; grid-row: 2; margin-top: var(--s-3); }
+  .cv .rdesk .trays:has(> .rcard) .hlog { padding-top: 0; }
+}
+/* the deal lands once; nothing rings or pulses after */
+.motion .cv .rdesk .rcard[data-outcome="cart"] { animation: cv-arrive var(--d-3) var(--ease) both; }
+
+.cv .dial { border: 1px solid var(--line); border-radius: var(--r-3); color: var(--ink-2); }
+.cv .dial b { color: var(--ink); }
+.cv .dial .tag { box-shadow: none; padding: 0; color: var(--ink-3); }
+/* ---------- phone ---------- */
+@media (max-width: 767px) {
+  .cv .lab { padding-bottom: var(--s-6); }
+  .cv .lab { padding-top: var(--s-1); }
+  .cv .lab .field { min-height: 0; padding-block: 4px; }
+  .cv .lab .field .note { padding-block: var(--s-1); }
+  .cv .lab .card .sub { margin-bottom: 4px; }
+  .cv .lab .card .amt { margin-top: 6px; }
+  .cv .lab .card .who { margin-bottom: var(--s-1); }
+  .cv .lab .seg button[aria-pressed="true"] { box-shadow: none; }
+  .cv .lab .ask { scroll-margin-top: 110px; }
+  /* Round 1: one control per row on a phone. The note gets the field's whole width; its price is the row under it */
+  .cv .lab .field { flex-wrap: wrap; gap: var(--s-1); padding: 6px 6px 6px var(--s-2); }
+  .cv .lab .field .note { flex: 1 1 100%; min-width: 0; padding: var(--s-1) 0; font-size: var(--t-body); }
+  .cv .lab .field .price { flex: 1 1 100%; padding: 0 var(--s-2); font-size: var(--t-body); }
+  .cv .lab .field .price input { flex: 1 1 auto; width: auto; min-width: 0; font-size: var(--t-body); }
+  /* W4 (Round 2's design judge: the bench's first screen was dense): every example its own row, full width */
+  .cv .lab .chips { display: flex; flex-direction: column; align-items: stretch; }
+  .cv .lab .chip { flex: none; justify-content: flex-start; padding: 0 var(--s-2); font-size: var(--t-small); text-align: left; }
+  /* who reads your note: one choice per row (W4), the open one with its ink edge */
+  .cv .lab .seg { grid-template-columns: minmax(0, 1fr); }
+  .cv .lab .seg button + button { border-left: 0; border-top: 1px solid var(--line); }
+  .cv .lab .seg button:first-child { border-radius: calc(var(--r-2) - 1px) calc(var(--r-2) - 1px) 0 0; }
+  .cv .lab .seg button:last-child { border-radius: 0 0 calc(var(--r-2) - 1px) calc(var(--r-2) - 1px); }
+  .cv .lab .seg button { text-align: left; min-height: 48px; padding: var(--s-1) var(--s-2); font-size: var(--t-small); line-height: 1.3; }
+  .cv .lab .seg button small { font-size: var(--t-micro); line-height: 1.35; text-wrap: pretty; }
+  .cv .lab .send { width: 100%; }
+  /* Desk-J4: the game's steps sit 8 px apart on a phone, so the guarded $60.00 comes up the first screen */
+  .cv .lab .chips { margin: 6px 0; }
+  .cv .lab .ask-foot { margin-top: var(--s-1); }
+  .cv .lab > .same { margin-top: var(--s-4); }
+  .cv .lab .card { min-height: 0; padding: var(--s-2) var(--s-3) var(--s-3); }
+  /* the card's foot line is hidden on a phone (index.html): nothing to hold room for */
+  .cv .lab .card:not(.empty) > :nth-last-child(2) { margin-bottom: 0; }
+  .cv .lab .card .amt { font-size: var(--t-h2); }
+  .cv .lab .card .amt.step { font-size: var(--t-h2); }
+  .cv .lab .card .verdict { font-size: var(--t-lead); }
+  .cv .lab > .tally { font-size: var(--t-small); }
+  .cv .lab > .tally b { font-size: var(--t-h3); }
+  /* the run in numbers: one fact per row, each row its own line under a hairline */
+  .cv .rdesk .strip { display: grid; gap: 0; padding: 4px 0 0; border-top: 1px solid var(--line); font-size: var(--t-micro); line-height: 1.5; }
+  .cv .rdesk .strip > span { padding: var(--s-1) 0; border-bottom: 1px solid var(--line); }
+  .cv .rdesk .strip > span:last-child { border-bottom: 0; }
+  .cv .askg { padding: var(--s-5) 0 var(--s-6); }
+  .cv .askrow { flex-wrap: wrap; padding: 6px; }
+  .cv .askrow textarea { flex: 1 1 100%; font-size: var(--t-body); }
+  /* Ask, then Snap it, each a full-width row of its own */
+  .cv .askrow :is(.btn, .snap) { flex: 1 1 100%; justify-content: center; }
+  /* "I saw it for" is the label's row; its box is the row under it */
+  .cv .sawrow > .sawbox { flex: 1 1 100%; }
+  .cv .sawrow > .sawbox input { flex: 1 1 auto; width: auto; min-width: 0; }
+  .cv .run { padding-top: var(--s-5); }
+  .cv .rdesk { margin: 0; padding: 0; border-radius: 0; border-top: 0; }
+  .cv .rdesk > h2 { font-size: var(--t-h2); }
+  .cv .rdesk > h2 small { display: block; margin: 6px 0 0; }
+  /* the item, its max, its limit, then Go find it: one row each */
+  .cv .rdesk .go { width: 100%; flex-direction: column; align-items: stretch; gap: var(--s-1); }
+  .cv .rdesk .go .max input { flex: 1 1 auto; width: auto; min-width: 0; }
+  .cv .rdesk .go .btn { justify-content: center; }
+  .cv .rdesk > p.cap { display: block; margin: var(--s-2) 0 0; font-size: var(--t-small); line-height: 1.4; }
+  .cv .rdesk .lanes { margin: var(--s-3) 0 0; padding: var(--s-2); }
+  .cv .rdesk .lanes h2 small { display: block; margin: 4px 0 0; }
+  .cv .rdesk .edge { font-size: var(--t-micro); margin-bottom: var(--s-1); }
+  .cv .rdesk .bar .max { top: 0; bottom: 0; }
+  /* a pill or dot near the rail stands in front of it on a ring of the card, so it never reads as touching the line */
+  .cv .rdesk .pill { box-shadow: 0 0 0 3px var(--card); }
+  .cv .rdesk .pill:is(.r, .near):not(.flag, .over) { transform: translate(calc(-100% - 10px), -50%); }
+  .cv .rdesk .dot { box-shadow: 0 0 0 2px var(--card); }
+  /* one rail down the whole board: each lane draws its stretch, the names stop short of it */
+  .cv .rdesk .lane { position: relative; padding: 2px 0; }
+  .cv .rdesk .pill.agent small { display: inline; }
+  .cv .rdesk .pill.agent:not(.l) { transform: translate(calc(-100% - 10px), -50%); }
+  .cv .rdesk .lane::after { content: ""; position: absolute; top: 0; bottom: 0; left: calc(100% * var(--e, .8)); width: 2px; margin-left: -1px; background: var(--gold); pointer-events: none; }
+  .cv .rdesk .lane .bar { z-index: 1; }
+  .cv .rdesk .lane .bar .max { background: none; }
+  .cv .rdesk .lane .name { max-width: calc(100% * var(--e, .8) - 12px); font-size: var(--t-micro); }
+  .cv .rdesk .lane .name b { display: block; margin: 0; }
+  .cv .rdesk .trays { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+  .cv .rdesk .steps li { grid-template-columns: 64px minmax(0, 1fr); gap: 2px var(--s-1); font-size: var(--t-small); }
+  .cv .rdesk .rcard { padding: var(--s-3); }
+  .cv .rdesk .rcard .amt { font-size: var(--t-h2); }
+}
+@media (max-width: 767px) {
+  .cv .lab .pair { display: grid; }
+  .cv .lab .pair > .card { grid-template-rows: subgrid; grid-template-columns: minmax(0, 1fr); align-content: start; border-radius: var(--r-2); }
+  .cv .lab .pair > .card > * { grid-column: 1; min-width: 0; }
+  .cv .lab .pair > .card > .who { grid-row: 1; margin: 0 0 6px; padding: 0 0 6px; font-size: var(--t-micro); line-height: 1.35; }
+  .cv .lab .pair > .card > .item { grid-row: 2; font-size: var(--t-body); line-height: 1.25; }
+  .cv .lab .pair > .card > .sub { grid-row: 3; margin: 1px 0 0; font-size: var(--t-micro); line-height: 1.35; }
+  .cv .lab .pair > .card > :is(.verdict, .earlier) { grid-row: 4; align-self: start; margin: 6px 0 0; }
+  .cv .lab .pair > .card > .verdict { padding-bottom: 4px; font-size: var(--t-body); line-height: 1.2; }
+  .cv .lab .pair > .card > .earlier .tag { margin: 0; }
+  .cv .lab .pair > .card > .amt { grid-row: 5; align-self: end; gap: 6px; margin: var(--s-1) 0 2px; font-size: var(--t-h2); line-height: 1.05; white-space: nowrap; }
+  .cv .lab .pair > .card > .amt.step { font-size: var(--t-h3); padding-bottom: 1px; }
+  .cv .lab .pair .ring { width: 22px; height: 22px; } .cv .lab .pair .ring svg { width: 12px; height: 12px; }
+  .cv .lab .pair > .card > .state { grid-row: 6; font-size: var(--t-micro); line-height: 1.4; }
+  .cv .lab .pair > .card > p.asked { grid-row: 7; margin: 6px 0 0; font-size: var(--t-micro); line-height: 1.4; }
+  .cv .lab .pair > .card > p.asked + p.asked { grid-row: 8; }
+  .cv .lab .pair > .card > details { grid-row: 9; align-self: end; }
+  .cv .lab .pair > .card > p.small.muted { display: none; }
+  /* each card's foot (its details, or the idle guard's "Locked" line) under one hairline, level with its twin's */
+  .cv .lab .pair > .card:not(.empty) > :last-child:not(:first-child) { margin-top: var(--s-1); padding-top: 4px; }
+  /* before a send, the guarded card's "Locked by code" line reads right under its $60.00, level with the control's state */
+  .cv .lab .pair > .card:not(.empty) > .state:last-child { grid-row: 6; align-self: start; margin: 0; padding: 0 0 var(--s-1); border-top: 0; }
+  .cv .lab .pair > .card:not(.empty) > details:nth-last-child(2) { margin-top: var(--s-1); padding-top: 4px; border-top: 1px solid var(--line); }
+  .cv .lab .pair > .card details summary { display: flex; align-items: center; min-height: 44px; font-size: var(--t-micro); }
+  .cv .lab .pair > .card.empty { grid-template-rows: subgrid; align-content: center; padding: var(--s-2); text-align: left; align-items: start; }
+  .cv .lab .pair > .card.empty > :not(.who) { grid-row: 2 / span 4; font-size: var(--t-micro); }
+  /* open, "How code decided" takes the full width, the control under it */
+  .cv .lab .pair:has(details.how[open]) { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; gap: var(--s-1); }
+  .cv .lab .pair:has(details.how[open]) > .card { grid-row: auto; grid-template-rows: none; }
+  .cv .lab .pair:has(details.how[open]) > .card > * { grid-row: auto; }
+  .cv .lab .pair details.how .rows { margin-top: 4px; }
+  /* W4 (Round 2's design judge): one answer per row on a phone, the guarded card, then the control under it. The cards
+     lay out as columns of their own lines (flex), so the twin-row grid above no longer places them. */
+  .cv .lab .pair { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; gap: var(--s-2); }
+  .cv .lab .pair > .card { display: flex; flex-direction: column; grid-row: auto; padding: var(--s-2); }
+  .cv .lab .pair > .card.empty { display: flex; }
+  .cv .lab .pair { margin-top: var(--s-1); }
+}
+@media (min-width: 900px) and (max-height: 920px) {
+  .cv .lab { padding-top: var(--s-2); }
+  .cv .lab .field { min-height: 56px; padding-top: 4px; padding-bottom: 4px; }
+  .cv .lab .field .note { padding: var(--s-1) 0; }
+  .cv .lab .chips { margin: var(--s-1) 0; }
+  .cv .lab .seg button { min-height: 44px; padding-top: 4px; padding-bottom: 4px; }
+  .cv .lab .ask-foot { margin-top: var(--s-1); }
+  .cv .lab > .same { margin: var(--s-1) 0; }
+  .cv .lab .card { padding-top: var(--s-2); }
+  .cv .lab .card .who { margin-bottom: 6px; padding-bottom: 6px; }
+  .cv .lab .card .sub { margin-bottom: 4px; }
+  .cv .lab .card .amt { margin-top: 4px; }
+}
+
+/* Desk-J4: the two answers read across one line. What sits between a card's name and its number (the guard's verdict,
+   or "made earlier") takes the same height in both cards, and the control's smaller number drops to the guarded one's
+   baseline (the display face sits 0.875 em down its 1.05 line), so $60.00 and $500.00 compare on one line, idle and after
+   a send. 32 px is "made earlier" (12 px above a 20 px line); 58 px the verdict (16 px above a 42 px line). */
+@media (min-width: 900px) {
+  .cv .lab .pair { --meta: 0px; --big: clamp(56px, 5vw, 72px); }
+  .cv .lab .pair:has(> .card > .earlier) { --meta: var(--s-4); }
+  .cv .lab .pair:has(> .card > .verdict) { --meta: 58px; }
+  .cv .lab .pair > .card:not(.empty):not(:has(> .earlier, > .verdict)) > .sub::after { content: ""; display: block; height: var(--meta); }
+  .cv .lab .pair:has(> .card > .verdict) > .card > .earlier { min-height: calc(var(--meta) - 12px); }
+  .cv .lab .pair > .card[data-card="guard-off"] > .amt { padding-top: calc((var(--big) - 52px) * .875); }
+  .cv .lab .pair > .card[data-card="guard-off"] > .amt.step { padding-top: calc((var(--big) - 36px) * .875); }
+}
+/* Desk-J5: on a wide desktop the note's presets and "who reads your note" share one row (the presets on the left, the
+   toggle filling the rest), so the two answers end above a 1440x900 fold. Same controls, same order. */
+@media (min-width: 1200px) {
+  .cv .lab .ask { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--s-3); align-items: center; }
+  .cv .lab .ask > * { grid-column: 1 / -1; }
+  .cv .lab .ask > .chips { grid-column: 1; flex-wrap: nowrap; align-self: stretch; align-items: stretch; margin: var(--s-2) 0 0; }
+  .cv .lab .ask > .seg { grid-column: 2; margin: var(--s-2) 0 0; }
+}
+/* Narrower desktops: "made earlier" is one line (SW cut what was sent: the card's own head says it), the same 32 px as wider. */
+@media (min-width: 900px) and (max-width: 1199px) {
+  .cv .lab .pair:has(> .card > .earlier) { --meta: var(--s-4); }
+  .cv .lab .pair:has(> .card > .verdict) { --meta: 58px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cv *, .cv *::before, .cv *::after { animation: none !important; transition: none !important; }
+}
+@keyframes cv-draw { from { transform: scaleX(0); } }
+@keyframes cv-arrive { from { opacity: 0; transform: translateY(8px); } }

@@ -1,0 +1,40 @@
+/* The Christmas list (Track X): one total, then the gifts. Tokens only; the page paints its own room, as How it works does. */
+.xl { min-height: 100vh; background: var(--page-solid); color: var(--ink); font-family: var(--face); font-size: var(--t-body); line-height: var(--lh-body); }
+.xl-wrap { box-sizing: border-box; max-width: var(--w-page); margin: 0 auto; padding: var(--s-6) var(--gutter); }
+.xl h1 { margin: 0 0 var(--s-4); font: var(--w-display) var(--t-h1) / var(--lh-display) var(--display); letter-spacing: var(--track-display); }
+.xl h2 { margin: 0 0 var(--s-2); font: var(--w-head) var(--t-h3) / var(--lh-head) var(--display); letter-spacing: var(--track-head); }
+.xl-note { margin: var(--s-1) 0 0; color: var(--ink-2); }
+.xl-err { margin: var(--s-2) 0 0; color: var(--ink); font-weight: var(--w-strong); }
+.xl-total { padding: var(--s-3); background: var(--card); border: 1px solid var(--card-line); border-radius: var(--r-card, 16px); }
+.xl-big { margin: 0; font: var(--w-head) var(--t-h2) / var(--lh-head) var(--display); color: var(--ink-2); }
+.xl-big b { color: var(--ink); font-weight: inherit; }
+.xl-bar { height: 8px; margin-top: var(--s-2); background: var(--line-2); border-radius: var(--r-pill); overflow: hidden; }
+.xl-bar i { display: block; height: 100%; background: var(--ink); }
+.xl-pick { display: inline-flex; flex-direction: column; gap: 2px; font-size: var(--t-micro); color: var(--ink-2); }
+/* The Desk's own controls (`.dk-pick select`, desk.css): no browser chevron or date field on any gift (Round 5, B3). */
+.xl-pick :is(select, input) { appearance: none; min-height: 46px; padding: 0 var(--s-5) 0 var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--well) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1.5 5 5 5-5' fill='none' stroke='%23f4eadc' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center; color: var(--ink); font: inherit; font-size: var(--t-body); color-scheme: dark; cursor: pointer; }
+.xl-pick [type=date] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M2.5 3.5h11v10h-11zM2.5 6.5h11M5.5 1.5v3M10.5 1.5v3' fill='none' stroke='%23f4eadc' stroke-width='1.25'/%3E%3C/svg%3E"); background-position: right 12px center; }
+.xl-pick [type=date]::-webkit-calendar-picker-indicator { opacity: 0; width: 28px; height: 28px; margin: 0; }
+.xl-pick [type=date]::-webkit-date-and-time-value { text-align: left; }
+.xl-pick :is(select, input):hover:not(:disabled) { border-color: var(--ink-2); }
+.xl-pick option { background: var(--sheet); color: var(--ink); }
+.xl-total .xl-pick { margin-top: var(--s-2); }
+.xl-gifts { list-style: none; margin: var(--s-4) 0 0; padding: 0; display: grid; gap: var(--s-2); }
+.xl-gift { padding: var(--s-3); background: var(--card); border: 1px solid var(--card-line); border-radius: var(--r-card, 16px); }
+.xl .gr { margin-bottom: var(--s-2); }
+/* The list arrives after first paint; the footer starts below the fold, so it never jumps when it does. */
+.xl main { min-height: 100vh; }
+.xl-fields { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--s-2); }
+.xl-add { margin-top: var(--s-3); }
+.xl-link { min-height: 44px; padding: 0 var(--s-1); background: none; border: 0; color: var(--ink-2); font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.xl-go { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-3); background: none; border: 1px solid var(--line-2); border-radius: var(--r-pill); color: var(--ink); font: inherit; cursor: pointer; }
+.xl-go:hover, .xl-link:hover { color: var(--ink); border-color: var(--ink); }
+.xl :is(select, input, button):focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.xl-empty { margin-top: var(--s-4); }
+.xl-empty-t { margin: 0 0 var(--s-2); font: var(--w-head) var(--t-h3) / var(--lh-head) var(--display); }
+.xl-foot { padding-top: 0; color: var(--ink-3); font-size: var(--t-micro); }
+/* The file's empty list waits hidden until the head's early answer says the list is empty (LIST_EARLY), then paints with the
+   file and React fills the same elements; any other list keeps "Reading" until React draws it. No box of its own. */
+.xl-body { display: contents; }
+html:not([data-list-empty]) .xl-body[data-list-first] { display: none; }
+html[data-list-empty] .xl-reading { display: none; }

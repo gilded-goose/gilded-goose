@@ -1,0 +1,66 @@
+/* The recommendation (Recommendation.tsx): one raised card on the stone, the egg as your protected limit, the price as the
+   largest thing on the page, and a single action. Only transform and opacity animate; reduced motion shows it settled. */
+
+.rec {
+  display: grid;
+  gap: var(--s5);
+  padding: var(--s5);
+  /* Glass (base.css .glass); the hairline is the egg's gold, faint: this is the money that matters. */
+  border-color: oklch(0.5 0.1 78 / 0.4);
+  border-radius: var(--r-4);
+}
+@media (min-width: 761px) { .rec { gap: var(--s6); padding: var(--s8); } }
+
+.rec-main { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--s4); }
+@media (min-width: 761px) { .rec-main { gap: var(--s8); } }
+.rec-egg { position: relative; }
+.rec-egg::after { content: ""; position: absolute; inset: var(--s2); border: 2px solid var(--gold-ink); /* control */ border-radius: 50%; opacity: 0; pointer-events: none; }
+.rec-egg .egg { width: 88px; }
+@media (min-width: 761px) { .rec-egg .egg { width: 128px; } }
+.rec-copy { display: grid; gap: var(--s1); min-width: 0; }
+.rec-k { color: var(--gold-deep); font-size: var(--t-sm); font-weight: var(--w-strong); }
+.rec-name { font-size: var(--t-xl); font-weight: var(--w-medium); letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.rec-fiction { font-size: var(--t-sm); font-weight: var(--w-regular); color: var(--ink-3); letter-spacing: 0; }
+.rec-price { font-family: var(--font-display); font-size: var(--t-3xl); font-weight: var(--w-medium); line-height: 1; letter-spacing: -0.03em; font-variation-settings: "wdth" 100; }
+@media (min-width: 761px) { .rec-price { font-size: 4.5rem; } }
+
+.rec-facts { display: grid; gap: var(--s2); margin: 0; padding: var(--s5) 0 0; list-style: none; border-top: 1px solid var(--line); color: var(--ink-2); font-size: var(--t-base); line-height: var(--lh-body); }
+.rec-facts b { color: var(--ink); font-weight: var(--w-strong); }
+.rec-aside b { color: var(--vermilion-ink); }
+
+.rec-act { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--s3) var(--s4); padding-top: var(--s5); border-top: 1px solid var(--line); }
+.rec-goose { display: block; width: auto; height: 80px; user-select: none; transform-origin: 50% 100%; }
+.rec-act-copy { display: grid; gap: var(--s1); min-width: 0; }
+.rec-wait { font-family: var(--font-display); font-size: var(--t-lg); font-weight: var(--w-medium); }
+.rec-wait-sub { color: var(--ink-3); font-size: var(--t-sm); }
+.rec-act .btn { grid-column: 1 / -1; min-height: 56px; font-size: var(--t-md); }
+@media (min-width: 761px) {
+  .rec-act { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .rec-act .btn { grid-column: auto; padding-inline: var(--s6); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rec { animation: rec-in var(--d-reveal) var(--ease-out) both; }
+  .rec-egg::after { animation: rec-ring 760ms var(--ease-out) 420ms both; }
+  .rec-goose { animation: rec-nod 720ms var(--ease-out) 480ms both; }
+  .rec-facts li { animation: rec-in var(--d-enter) var(--ease-out) both; }
+  .rec-facts li:nth-child(2) { animation-delay: 80ms; }
+  .rec-facts li:nth-child(3) { animation-delay: 160ms; }
+}
+@keyframes rec-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes rec-nod { 0% { transform: rotate(0deg); } 35% { transform: translateY(-8px) rotate(-2deg); } 70% { transform: rotate(4deg); } 100% { transform: rotate(2deg); } }
+
+/* When the run lands on a pick, the stone and its heading give way: the card is the page. */
+.discover[data-rec] > .step-head { display: none; }
+.discover[data-rec] .discover-stone { padding: 0; background: none; border: 0; box-shadow: none; }
+.discover[data-rec] .discover-top { order: 2; padding-top: var(--s2); }
+.discover[data-rec] .discover-stone { display: grid; gap: var(--s4); }
+.discover[data-rec] .discover-more, .discover[data-rec] .discover-made { order: 3; }
+
+/* The ledger is a drawer on request, so the run sits in the middle and the Under the hood tab waits at the edge. */
+@media (min-width: 1100px) {
+  .shop[data-hood="closed"] .shop-grid { grid-template-columns: minmax(0, 1fr); position: relative; }
+  .shop[data-hood="closed"] .shop-run { margin-inline: auto; width: 100%; max-width: 760px; }
+  .shop[data-hood="closed"] .hood-closed { position: absolute; top: 0; right: 0; }
+}
+@keyframes rec-ring { from { opacity: 0.7; transform: scale(0.8); } to { opacity: 0; transform: scale(1.5); } }

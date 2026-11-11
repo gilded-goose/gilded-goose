@@ -1,0 +1,631 @@
+{
+  "about": "The Nov 4 blind set (Track S's sealed_8), Wed Nov 4 2026: a fresh Claude Sonnet writer who never opened the repo wrote 39 scam notes of any kind, 20 plainly worded ones and 30 fair notes. Scored on the rules alone, with no AI, on the rules as merged at dc886ce6, once, before anything was tuned on it. This file is that result, kept as it was: 21 of 59 scam notes clear, 29 hold, 9 refuse; 30 fair notes 21 clear, 9 hold, 0 refuse. Then, the same day, the AI reader's first and only run on it, also before any tuning: 0 of 59 scam notes clear, 24 hold, 35 refuse; 30 fair notes 15 clear, 11 hold, 4 refuse. Re-scored note by note on 874ea170 with the same verdicts. A later rule change does not change this record: a first run happens once. One writer, one set: a bounded test, not a rate, and now that it is in the repo it is used up as a blind set.",
+  "written": "Wed Nov 4 2026",
+  "rulesAt": "dc886ce6",
+  "withReader": "claude-haiku-5-5 with a 3 second limit, on the rules at 874ea170, Wed Nov 4 2026: Track S's first and only run, 89 of 89 calls answered, no tuning. Each row's withReader is its final verdict. A later fix gets its own label; it does not change this record.",
+  "rows": [
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Selling bc im being deployed monday. Car is at my shipping company's yard, buyer pays $400 refundable deposit to the agent (Dale Morrow, ph 555-0142) and they deliver in 3 days, you inspect then they release money to me. Email me at brightfalls.dale@mailbox.test",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Hi, PS5 still available. Text me only on 555-0187, I dont check the app. Send $30 so I can hold it, I get lots of timewasters.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "this is my late husbands camera gear, i dont know anything about it. my nephew handles shipping, pay him by gift cards and he sends tracking",
+      "code": "refuse",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "I will send you a code to your phone, just read it back to me so I know you're a real buyer. Too many bots on here.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Price firm. Buyer pays through the Safe-Hold link I will mail you, item ships after funds clear. Fee is 6%, paid by buyer.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Puppy is free to good home just pay shipping crate $220 to the transport lady, she brings him tomorrow. Vet papers included. Name is Biscuit",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Sofa $60. Im out of the country for work so my sister Nomvula will do pickup, she will give you the key but first you transfer to my account so I can see it hit.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Ive got a cheque for you thats more than the asking price, my boss insisted. Deposit it and wire me back the difference by Friday, ok?",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Apartment 2br near the station $500/mo, utilities incl. Landlord is abroad. Send first month plus a viewing fee and keys come by courier. No visits sorry",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Concert tickets x2 row F. Screenshot attached. Transfer to my friend's account (name differs, he's covering it) and I forward the ticket pdf after.",
+      "code": "refuse",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "bike is $90 but u have to verify ur account first at velo-verify.example/ok otherwise the sale wont show as paid on ur side",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Laptop in sealed box, below market cos my company is clearing stock. Pay first, I ship from the warehouse, tracking in 24h. No meetups.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Hello dear. I am interested in your item also please send me ur full name address and a photo of ur ID so my courier can book pickup. God bless",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "iPhone 14 $150, only because screen has a tiny crack. Message me on Telegram @marek_trades_77 for faster reply",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Watch is authentic, will ship after you buy it from the website I send, same item cheaper there and I get commission. Trust me",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Selling my drum kit. Buyer must pay import clearance of $85 in vouchers on arrival, courier will phone you. I refund it with the payment.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Wallet with phone number on bank sms, you need to confirm via the link I sent otherwise the money is held. Ur payment is waiting",
+      "code": "refuse",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Please do not use the app payment, it takes 14 days. Zelle-like transfer to my cousin is quicker, same price just no buyer protection obviously lol",
+      "code": "refuse",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "moving sale!! everything must go, will hold for 24h if you wire $50 to my storage unit manager, he will meet you",
+      "code": "refuse",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "hi sorry i cant meet, im on a rig offshore. Your payment will be accepted by my assistant who is a very honest person. Please sending 250 first",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "I sent you payment but it says you must upgrade your seller account first, pay $40 to unlock funds. Check your email from the marketplace team",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Guitar $200. If you really want it, I need $20 for the courier insurance upfront which is added back to the total. I have 5 stars",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "I'll buy it right now at your price, no need to haggle. My driver will collect. Just give me your address and your bank's last digits so I can send the transfer to the right account",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Printer toner bundle. Mailing a prepaid label that you must activate by paying $4.99 on the page, then I send it free",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Free kittens, pedigree. Adoption fee refundable after arrival. Pay the vet clearance first, 180. Lucia will send the pics",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Hi I want your listing. Can you give me the 6 digit code that was just texted to you. That is my number linking so I can pay",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Antique clock, valued at 3k, Im selling for 400 as I'm a bit desperate after my divorce. Money to a holding account only, no cash",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Vintage sneakers, size 10. Message me on whatsapp +1 555 0199 and I'll send the photos of the real pair, these ones on here are stock",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "your item sold!! to receive your payment click and confirm bank sort code on holdfunds-pay.example. Offer expires in 2 days",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Camper van for sale, owner is a nurse stuck in Poland. Agent handles the paperwork, buyer pays the registration transfer fee to the agent first",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "I can only accept payment by crypto because of my account issues, I will send my wallet after you say yes. BTC or USDT either",
+      "code": "refuse",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "tickets to the football are sold out but I have a season holder friend, send a deposit and I'll get yours. Dont tell the others haha",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "pls buy through my other listing, this one is not working. link in my profile, the price there is $20 more but includes everything",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Selling a gaming PC. I need you to confirm you have the money, pls send me a screenshot of your online banking balance",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "car 2012 civic 1.2k obo. i will not meet until the payment is in escrow at autosafe-hold.example, it is my lawyer's company, they require 10% from you",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Brand new tools, got scammed on the delivery before, so this time you pay half and I ship, you pay the other half when you get it. Fair?",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Stroller $80. Buyer I sent a 'payment request' is a test, accept it by entering your card number in the form so I can send the 80 back to you",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Hi again. Do you still have the baby crib? My husband will bring a money order for more than the cost, you give him the change in cash",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "any_scam",
+      "note": "Selling a Spanish villa timeshare week at huge discount, need $1,500 legal registration deposit, 100% refundable at handover. Documents can be emailed.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Hello, the dresser is available. I'm travelling for work so my brother will meet you and you can give him the money first and he hands you the key to the storage unit. Thanks and have a lovely day.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Lovely little table, in great shape. I'd just ask that you pay in full before I post it, as I've had a few people not turn up before. I'll send the tracking number as soon as I'm able.",
+      "code": "hold",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Hi! I'm moving house so I can't meet anyone. A friend of mine takes the items to the courier for me, you just need to pay the courier directly when you decide. Hope that's ok.",
+      "code": "refuse",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Camera is mint, I got it as a gift. Rather than the app's checkout, can you pay my sister directly? She's helping me with the paperwork. I'll message you her details.",
+      "code": "refuse",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "The bike is yours if you want it. Could you send half now, and I will post it tomorrow morning? I'd rather not waste a trip to the post office if you change your mind.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Thanks for the interest. I'm away at the moment, but I'm happy to have the item delivered by a trusted company I use. They'll contact you for the delivery cost, and I'll pass the item to them once paid.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Very good price because I need it gone quickly. I'm overseas for a few weeks so can't show it in person, but I can send more pictures. Happy to send it once you've paid.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Nice and friendly sale! Can you tell me your full name, address and date of birth so I can fill in the form for the courier? Thank you so much.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "I've included a bit extra in my payment by mistake, so could you send back the difference once you receive it? I'm sure we'll sort it out nicely.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Hi, I really like this one. I can pay more than you're asking if you can ship quickly and keep it off the listing page for me. I'll sort the rest after you reply.",
+      "code": "refuse",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Sofa is in lovely condition. I'm not able to meet, so I've booked a collection van, you only need to reimburse the booking charge when they arrive.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "The washing machine runs well. I just ask that the deposit is paid in advance and held by my friend, who helps me with the sale, and then you can come and see it.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Happy to sell. My nephew has the item, he's quite young, so can you pay him a small amount first so he knows you're genuine, then he'll bring it round.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Very rare book, I know what it's worth. I'd be glad to sell it directly if you give me your email and phone and we continue there, the site fees are quite high.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "It's only $40 and I'd like to keep it simple, so just send the money and I'll post it Monday. I'm usually quite quick at replying!",
+      "code": "hold",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Lovely old watch, belonged to my grandfather. A valuer will check it on your side before shipping, please send the valuation fee to him first and we'll settle the rest after.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Item is brand new. Small request: please buy the postage label from the shop I recommend, it is cheaper. I'll send you the link when you tell me the address.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Great item! I'm happy to let you have it at that lower price if you confirm by sending me the code you get from the shop's text, it's just to prove you're not a bot.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Selling due to illness so I can't leave the house. Please pay up front so I can arrange someone to bring it. I'd appreciate your understanding.",
+      "code": "hold",
+      "withReader": "hold"
+    },
+    {
+      "set": "asks",
+      "group": "plain_scam",
+      "note": "Lovely tent, used twice. I have another buyer but you can have first dibs if you transfer something to hold it. I'll let you know about the rest after.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Cash on collection only please, sorry, no deliveries. I'm home most evenings after 6. Message first and I'll send the postcode.",
+      "code": "hold",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Posting costs £6.40 tracked, I'll show you the receipt. Happy to wait till the weekend if you want to think about it.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Beware: someone messaged me asking me to read out a code from a text, that's a scam. I won't ask for anything like that. Meet in town, pay in cash, simple.",
+      "code": "hold",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Sorry for my english, i am not native. Sofa is good, no smoke, no pets. You come take it, I help carry down. Price is not so flexible but we talk.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Console works perfectly, comes with 2 controllers and the original box. I'll let you test it at my place before you pay. Bank transfer fine too once you've seen it.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Deposit of $20 to hold until Saturday, which I'll take off the price when you come. Totally fine if you'd rather just message again on Saturday morning instead.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Tickets are paper, I'll hand over in person at the gate. Face value only, I'm not making money on these. If you want to check the seat, link to the venue map: stadium-map.example/blockC",
+      "code": "hold",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Because of the weight (48kg) I can only do pickup. If you need a courier you'll have to book one yourself; I can have it wrapped and ready. Cost is on you.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Heads up: I will not use PayPal friends and family, and please don't ask me to. Goods and services only so we both are protected. Thanks!",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Free to a good home, just come get it. No fees, no catch. I will ask for a text to confirm you're coming so I don't wait around.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Selling my late dad's tools. Not sure of prices so open to offers. Listing has 14 photos, ask if you want more. Cash or bank transfer in person.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Please pay by the marketplace's checkout, not bank direct; I don't give out my account number on listings. Item ships in 2 working days, Royal Mail.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Fee for the shop is 5% and it is built into the price. No other charges. I was surprised too lol.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Phone is unlocked, IMEI 000000000000000 (example) in photo. I wiped it. Do check it yourself, I don't mind and will wait.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Reserved for Priya until Friday. If it doesn't work out I'll re-list. Thank you for being patient.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "dont be scammed, check the serial number against the maker's site: lensregister.example/check. Mine is clear and I got a receipt, will email a scan.",
+      "code": "hold",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "I can drop it off locally for gas money, $10. Otherwise pickup from Ashford. Cash please, I've no change so bring small notes.",
+      "code": "hold",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Selling a rental deposit-free room? No, this is a bike lock. Sorry for the odd title. Key and 2 spares included. 15 euro.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Item is as seen, sold as is, no returns. If it arrives broken tell me with photos in 48h and I'll refund the postage and item. I have shipped 30+ items here.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "I will accept PayPal but you cover the fees (3.4%) - makes it 51.70 instead of 50. Cash is 50 even. Your call.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Contact me on the app only please. I don't give out my number till we've agreed a time. Safer for both.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Bought for a gift and it was the wrong size. Tags still on, receipt in bag. Happy to bring to a coffee shop if you'd like to pay in person.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Hi, the code on the box is for a $10 off for your first order from the brand - not a scam lol, it's just on the leaflet. Take it free with the stove.",
+      "code": "clear",
+      "withReader": "hold"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Not gonna hold it without payment. If you can pick up today at 5pm it's yours, otherwise first come first served. Sorry!",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Cheque not accepted, sorry. Cash or instant bank transfer shown on my phone before you take the item.",
+      "code": "hold",
+      "withReader": "refuse"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Pls do not send money before you see the item. I am a real seller and happy to video call to show it working. My neighbour can also vouch lol.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "We are a small family business, you can see our reviews on our shop page. Parcel sent with signature, tracking number emailed on dispatch, usually within a day.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Selling a 2005 Corolla, MOT till March. V5 in my name, you'll see it when you come. Taking no deposits. Test drive ok if you bring licence and insurance. Cash on the day.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "Dog crate, large. Will deliver within 5 miles free. Also happy to meet at the vet car park, it is well lit and has cameras.",
+      "code": "clear",
+      "withReader": "clear"
+    },
+    {
+      "set": "fair",
+      "group": "fair",
+      "note": "I get a lot of messages asking me to pay a 'shipping agent' or 'verify' - ignore those. I only do in-person sales. Price is $120, I'll have a receipt for you and serial no.",
+      "code": "clear",
+      "withReader": "clear"
+    }
+  ]
+}

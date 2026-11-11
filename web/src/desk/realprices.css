@@ -1,0 +1,84 @@
+/* Track C3: "Real prices right now" (RealPrices.tsx), its own lazy chunk. Tokens only (dd/system.md §0): a quiet card
+   under the run, never gold (gold is protection and the deal), never red, no image, no logo, no button. On a wide screen
+   it spans the run under the sellers and the deal, the three prices side by side; on a phone, one under another. */
+.c3 { padding: var(--s-3); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); color: var(--ink); animation: c3-in var(--d-3) var(--spring) both; }
+.dk-live-grid > .c3 { grid-column: 1 / -1; }
+@keyframes c3-in { from { opacity: 0; transform: translateY(8px); } }
+
+.c3-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--s-2); }
+/* The heading is the one shared eyebrow, .dk-eyebrow (Track B, tokens.css); it sits flush in the head row, so no margin. */
+.c3-when { margin: 0; font: var(--w-body) var(--t-micro)/1.4 var(--face); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+/* The label leads under the heading (visual review r1): what these are is read before any price. */
+.c3-label { margin: var(--s-1) 0 0; max-width: 62ch; font: var(--w-body) var(--t-small)/1.5 var(--face); color: var(--ink-2); }
+.c3-for { margin: var(--s-1) 0 0; max-width: 62ch; font: var(--w-body) var(--t-micro)/1.4 var(--face); color: var(--ink-3); }
+/* A range's dash, drawn here so screen readers hear its alternative text, "to" (RealPrices.tsx); the first line is for a
+   browser without alternative text, which drops the whole second declaration and still draws the dash. */
+.c3-span { white-space: nowrap; }
+.c3-to::before { content: "\2013"; content: "\2013" / " to "; }
+.c3-none { margin: var(--s-2) 0 0; font: var(--w-body) var(--t-small)/1.5 var(--face); color: var(--ink-2); }
+
+.c3-list { list-style: none; margin: var(--s-2) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.c3-it { display: grid; grid-template-rows: auto auto auto 1fr; align-content: start; padding: var(--s-2) var(--s-3) 0 0; }
+.c3-it + .c3-it { padding-left: var(--s-3); border-left: 1px solid var(--line); }
+/* Fixed rows across the three items (DD nit): name, price and store share the list's rows, so a wrapped title never
+   pushes one price lower than the others and the three numbers read as one line. Without subgrid, the old per-item rows. */
+@supports (grid-template-rows: subgrid) {
+  .c3-list { grid-template-rows: auto auto auto auto; }
+  .c3-it { grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; }
+}
+.c3-name { font: var(--w-body) var(--t-small)/1.5 var(--face); color: var(--ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 3em; }
+/* A reference, not an offer: quieter than the sellers' buyable prices (visual review r1). */
+.c3-price { margin-top: var(--s-1); font: var(--w-body) var(--t-body)/1.4 var(--display); font-variant-numeric: tabular-nums; color: var(--ink-2); }
+/* The store's name, plain text: no link, as a recorded price can't be confirmed at the click (RealPrices.tsx). */
+.c3-store { justify-self: start; align-self: end; padding: var(--s-1) 0 var(--s-2); font: var(--w-body) var(--t-micro)/1.4 var(--face); color: var(--ink-2); }
+.c3-flag-at .c3-store { padding: 0; }
+/* Other stores in the same Channel3 entry: quieter than the reference. */
+.c3-also { font: var(--w-body) var(--t-micro)/1.4 var(--face); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.c3-also-at { display: block; color: var(--ink-2); }
+/* Flagged listings: under a hairline with the reason first after the name. A plain ink rule, never red: a flag is a prompt
+   to compare, not a verdict on a real store. */
+.c3-flags { margin-top: var(--s-2); padding-top: var(--s-2); border-top: 1px solid var(--line); }
+.c3-flag-h { margin: 0; font: var(--w-strong) var(--t-small)/1.5 var(--face); color: var(--ink); }
+.c3-flag-list { list-style: none; margin: var(--s-1) 0 0; padding: 0; }
+.c3-flag { display: grid; gap: var(--s-1); padding: var(--s-1) 0 var(--s-1) var(--s-2); border-left: 2px solid var(--ink-3); }
+.c3-flag .c3-name { min-height: 0; }
+.c3-reason { font: var(--w-body) var(--t-small)/1.5 var(--face); color: var(--ink); }
+.c3-flag-at { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s-2); }
+.c3-flag-at .c3-price { margin-top: 0; }
+
+@media (max-width: 720px) {
+  .c3 { padding: var(--s-2); }
+  .c3-list { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .c3-it { grid-row: auto; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: var(--s-2); padding: var(--s-2) 0 0; }
+  .c3-it + .c3-it { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+  .c3-name { grid-column: 1; grid-row: 1; min-height: 0; }
+  .c3-price { grid-column: 2; grid-row: 1; margin-top: 0; }
+  .c3-store { grid-column: 1 / -1; grid-row: 2; }
+  .c3-also { grid-column: 1 / -1; grid-row: 3; }
+}
+
+/* The landing's head (RealPrices.tsx, a fresh DD, Nov 6): on the page, not in the card, the headline at the demo moment's
+   size (story.css .ds-moment-h), the live or recorded line under it, then the bridge at the lede's size. On a wide screen
+   the label takes the row's right half, set to the bridge's foot, so the head row isn't half empty. */
+.c3-land { animation: c3-in var(--d-3) var(--spring) both; }
+.c3-land > .c3 { margin-top: var(--s-4); animation: none; }
+.ds .c3-h { font-size: var(--t-h2); }
+.c3-top .c3-when { margin-top: var(--s-2); font-size: var(--t-small); color: var(--ink-2); }
+.c3-top .c3-bridge { margin-top: var(--s-3); }
+.c3-top .c3-label { margin-top: var(--s-3); }
+/* The card's first line is its refusal, so it reads a step up from the footnotes (the Sonnet re-check, Nov 6). */
+.c3-land .c3-for-land { margin: 0; font-size: var(--t-small); color: var(--ink-2); }
+.c3-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-6); }
+.c3-top > :not(.c3-label) { grid-column: 1; }
+.c3-top .c3-label { grid-column: 2; grid-row: 1 / span 3; align-self: end; margin: 0; font-size: var(--t-body); }
+@media (max-width: 720px) {
+  .c3-top { display: block; }
+  .c3-top .c3-label { margin-top: var(--s-3); font-size: var(--t-small); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .c3, .c3-land { animation: none; }
+}
+
+/* The landing's room for this panel (story.css `.ds-real`), shut when no answer came: the Pages mirror has no server. Here, in the panel's own chunk, because the desk's bytes are full. */
+.ds-real.ds-real:has(.c3-none) { min-height: 0; }

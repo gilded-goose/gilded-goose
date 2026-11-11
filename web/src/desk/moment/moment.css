@@ -1,0 +1,22 @@
+/* Track SM: the sealed case under a set-aside seller's row (dd/system.md section 6 ruling, Sat Oct 31: glass by its lit
+   edge and hairline, no backdrop-filter and no deep shadow, since the row has no light behind it and the run page is at
+   the three-glass limit with the menu open). Tokens only. The figure spans the row's three columns, so the row grows to
+   its final height at once (layout before the reveal) and only the case fades and lifts: the one motion, --d-3 --spring.
+   The words are the lit thing inside the case (--ink; the row around them is --ink-2), the engraving under them is the
+   one eyebrow style; the 6px dot is the set-aside marker, the page's only red. Space: the row's own grid gap (--s-2) above,
+   --s-1 plus the row's padding below. */
+.sm-case { grid-column: 1 / -1; margin: 0 0 var(--s-1); padding: var(--s-2); border: 1px solid var(--glass-line); border-radius: var(--r-3); box-shadow: var(--glass-edge); background: none; animation: arrive var(--d-3) var(--spring) both; } /* `arrive` is the Desk's own enter (desk.css) */
+.sm-case blockquote { margin: 0; max-width: 62ch; color: var(--ink); font: var(--w-body) var(--t-body) / var(--lh-body) var(--face); text-wrap: balance; overflow-wrap: anywhere; }
+.sm-label { display: flex; align-items: center; gap: var(--s-1); margin-top: var(--s-2); padding-top: var(--s-1); border-top: var(--hair); color: var(--ink-2); }
+.sm-label i { width: 6px; height: 6px; border-radius: 50%; background: var(--red); flex: none; }
+.dk-live-grid .sm-case { animation-delay: -24ms; } /* SM-6: its rise starts in the verdict's own frame (one frame in), the frame of the list already under it */
+.sm-case[data-wait] { visibility: hidden; animation: none; } /* SM-6: held in its row until the verdict (its place kept, out of the a11y tree); the enter starts when it is drawn */
+.sm-case:focus-visible { border-radius: var(--r-3); } /* the Desk's own ring (desk.css `.dk :focus-visible`) draws; only the corners are kept */
+/* The Why sheet's way back to the evidence: inline after the sentence on a wide screen, its own 44px line on a phone. */
+/* The phone's pinned money line lives in desk.css (SM-3): its slot is drawn from the run's first frame, before this
+   chunk may have landed. */
+@media (max-width: 720px) {
+  .sm-case blockquote { font-size: var(--t-small); }
+  .sm-again { display: block; margin: 0; padding-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .sm-case { animation: none; } }

@@ -1,0 +1,49 @@
+/* S1-4: what PayPal and code did with one cart (Trail.tsx), on the deal card after Approve and the card PayPal's return
+   lands on. A quiet record inside the card: a hairline above, an eyebrow, label/value rows; no glass, no gold (gold is
+   the deal card's edge alone), no motion. Tokens only (dd/system.md); its own chunk with Trail.tsx. */
+.tl { width: 100%; margin: var(--s-3) 0 0; padding-top: var(--s-3); border-top: 1px solid var(--line); text-align: left; }
+.tl-h { margin: 0 0 var(--s-2); font: var(--w-strong) var(--t-micro) / var(--lh-micro, 1.4) var(--face); text-transform: uppercase; letter-spacing: var(--track-eyebrow); color: var(--ink-2); }
+.tl-rows { margin: 0; display: grid; gap: var(--s-2); }
+.tl-row { display: grid; grid-template-columns: 8rem 1fr; gap: var(--s-2); align-items: baseline; }
+.tl-row dt { font-size: var(--t-micro); color: var(--ink-3); }
+.tl-row dd { margin: 0; min-width: 0; font-size: var(--t-small); line-height: 1.5; color: var(--ink); }
+.tl-mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: var(--t-micro); letter-spacing: .02em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+/* The webhook row under the sentence: "Signed", the event and its id on their own line (session 5: the sentence no longer
+   ends on a lone "signed."). The event name and its id each stay whole and the line breaks only between them (at 390:
+   "Signed · PAYMENT.CAPTURE.COMPLETED", then "· WH-…"; never "WH-" on one line and its digits on the next). */
+.tl-ev { display: block; font-size: var(--t-micro); color: var(--ink-2); }
+.tl-ev .tl-mono, .tl-ev .tl-nb { white-space: nowrap; overflow-wrap: normal; } /* the "·" travels with the id */
+.tl-order { display: flex; align-items: center; flex-wrap: wrap; column-gap: var(--s-2); margin-block: calc(-1 * var(--s-1)) !important; }
+.tl-order .tl-mono { font-size: var(--t-small); }
+/* Secondary action (system.md §5): text with a --line-2 underline that turns ink on hover; 44 px tall to tap. */
+.tl-copy { min-height: 44px; padding: 0; border: 0; background: none; color: var(--ink-2); font: inherit; font-size: var(--t-micro); font-weight: var(--w-strong); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-2); cursor: pointer; transition: color var(--d-1) var(--ease), text-decoration-color var(--d-1) var(--ease); }
+.tl-copy:hover { color: var(--ink); text-decoration-color: currentColor; }
+.tl-copy:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+/* The steps (S1-10, the DD's ruling in system.md §5 Rings, replacing S1-6's rings: "○ Held — ○ Re-checked — ○ Captured"
+   read as radio buttons): drawn exactly like the stage header (`.dk-steps`, desk.css): the words joined by its hairline
+   connector (16 px of --line-2, 8 px either side; --ink once the step after it is reached, as the header's `.dk-on`), a
+   step not yet reached at --ink-3, the current or done step at --ink in the header's current weight, and a done step
+   alone with the 6 px --ink marker dot before its word. No ring, no tick, no typed dash. */
+.tl-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; row-gap: var(--s-1); }
+.tl-step { display: inline-flex; align-items: center; font-size: var(--t-small); white-space: nowrap; }
+.tl-step + .tl-step::before { content: ""; flex: none; width: var(--s-2); height: 1px; margin: 0 var(--s-1); background: var(--line-2); }
+.tl-step:is(.tl-done, .tl-stopped) + .tl-step:is(.tl-done, .tl-stopped)::before { background: var(--ink); }
+.tl-dot { flex: none; width: 6px; height: 6px; margin-right: var(--s-1); border-radius: 50%; background: var(--ink); }
+.tl-done, .tl-stopped { color: var(--ink); font-weight: var(--w-strong); }
+.tl-next { color: var(--ink-3); }
+.tl-why { margin: var(--s-1) 0 0; font-size: var(--t-micro); line-height: 1.4; color: var(--ink-2); max-width: 44ch; }
+.tl-ahead .tl-why { margin-top: var(--s-2); }
+/* On the deal card: under "Before you approve" (its own hairline above), labels over values, space before Approve. */
+.dk-deal2 .tl { margin: var(--s-2) 0 var(--s-3); padding-top: 0; border-top: 0; }
+.dk-deal2 .tl-row { grid-template-columns: 1fr; gap: 0; }
+/* The steps still ahead, on the card: one quiet line at 390, joined by the stage header's connector (`.dk-steps .dk-dot`:
+   a 16 px --line-2 hairline with 8 px either side; S1-7, the DD: the short 8 px rules read as typed dashes). */
+.dk-deal2 .tl-step { font-size: var(--t-micro); }
+.dk-deal2 .tl-step + .tl-step::before { width: var(--s-2); margin: 0 var(--s-1); }
+@media (max-width: 480px) {
+  .tl-row { grid-template-columns: 1fr; gap: 0; }
+}
+/* DK (the DD, check 2): before the tap the steps ahead are a chevron row drawn like "Before you approve" (desk.css
+   .dk-before), open, sitting right under it: one hairline between the two rows, the steps inside. */
+.dk-deal2 .tl.tl-fold { margin: 0 0 var(--s-3); border-top: 0; }
+.tl-fold .tl-rows { padding: 0 0 var(--s-2); }

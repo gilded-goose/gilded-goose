@@ -1,0 +1,124 @@
+/* The ledger's rules on the classic page. They live with the ledger, not in the first sheet every page loads, because
+   only Ledger.tsx renders these classes and classic loads it lazily. Imported before ledger.css, so they keep their old
+   place ahead of it. */
+/* ---------- "Every decision": the ledger, on the same velvet (its own file keeps its rules for the wallet) ---------- */
+.cv .run > details.ledger { margin-top: var(--s-6); padding: 0; border: 0; border-top: var(--hair); border-radius: 0; background: none; color: var(--ink); }
+.cv .run:has(> details.ledger) > .rdesk { border-radius: 0; padding-bottom: 0; }
+.cv .run > details.ledger > summary { padding: var(--s-3) 0 var(--s-1); }
+.cv .run > details.ledger :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.cv .run > details.ledger > summary b { color: var(--ink); font-family: var(--display); font-size: var(--t-h3); font-weight: var(--w-display); letter-spacing: var(--track-display); }
+.cv .run > details.ledger > summary b span { color: var(--ink-2); }
+.cv .run > details.ledger > summary > span { color: var(--ink-3); font-size: var(--t-small); }
+.cv .run > details.ledger .lg-bar .muted, .cv .run > details.ledger .lg-count { color: var(--ink-2); }
+.cv .run > details.ledger .lg-bar .linkish { color: var(--ink); font-weight: var(--w-strong); text-decoration-color: var(--line-2); text-decoration-thickness: 1px; }
+.cv .lg-k { color: var(--ink-3); font-size: var(--t-micro); font-weight: var(--w-body); text-transform: none; letter-spacing: 0; }
+.cv .run > details.ledger .lg-k { width: 6.4em; }
+.cv .lg-chip { border: 1px solid var(--line); border-radius: var(--r-1); background: none; color: var(--ink-2); font-weight: var(--w-body); }
+.cv .lg-chip small { color: var(--ink-3); }
+.cv .lg-chip:hover:not(:disabled) { border-color: var(--line-2); color: var(--ink); }
+.cv .lg-chip[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--on-cta); }
+.cv .lg-chip[aria-pressed="true"] small { color: var(--on-cta); opacity: .8; }
+.cv .lg-chip:disabled { border-style: dashed; color: var(--ink-3); opacity: 1; }
+.cv .run > details.ledger .lg-search input, .cv .lg-search input { border: 1px solid var(--line-2); border-radius: var(--r-2); background: var(--well); color: var(--ink); }
+.cv .run > details.ledger .lg-search input::placeholder, .cv .lg-search input::placeholder { color: var(--ink-3); }
+.cv .lg-search input:focus { outline: 0; border-color: var(--ink); }
+.cv .lg-filters { border-color: var(--line); }
+.cv .lg-filters summary { color: var(--ink); font-weight: var(--w-strong); }
+/* a disclosure reads as one: the Desk's chevron, turning when open */
+.cv .lg-filters summary::after { content: "›"; margin-left: auto; color: var(--ink-2); font-size: var(--t-lead); line-height: 1; transition: transform var(--d-1) var(--ease); }
+.cv .lg-filters[open] summary::after { transform: rotate(90deg); }
+.cv .lg-filters summary span { color: var(--ink-2); }
+.cv .lg-empty { border-color: var(--line-2); color: var(--ink-2); }
+/* the table: one card with hairline rows, no torn paper, no shadow */
+.cv .lg-receipt { margin: var(--s-1) 0 var(--s-2); filter: none; }
+.cv .lg-paper {
+  --rp: var(--card); --white: var(--card); --grey: var(--ink-2); --soft: var(--ink-3); --line: rgba(244, 234, 220, .1); --paper: var(--surface);
+  --teal: var(--ink); --teal-wash: var(--surface-2); --red-wash: rgba(240, 165, 154, .07); --amber: var(--ink-2); --bg: var(--card);
+  --brass-ink: var(--gold-hi); --brass-wash: transparent;
+  padding: var(--s-2) var(--s-3) var(--s-3); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); color: var(--ink); color-scheme: dark; mask: none; -webkit-mask: none;
+}
+.cv .lg-paper :focus-visible { outline-color: var(--focus); }
+.cv .lg-paper .lg-grid .ag-header { border-bottom: 1px solid var(--line-2); }
+.cv .lg-paper .lg-grid .ag-header-cell-text { color: var(--ink-3); font: 400 13px var(--face); letter-spacing: 0; }
+.cv .lg-paper .lg-grid .ag-row { border-bottom: 1px solid var(--line); }
+.cv .lg-paper .lg-grid .ag-row-hover:not(.lg-refused) { box-shadow: inset 2px 0 0 var(--ink-2); }
+.cv .lg-paper .lg-grid .ag-cell[col-id="seq"], .cv .lg-paper .lg-grid .ag-cell[col-id="price"] { font-family: var(--face); font-size: var(--t-small); font-variant-numeric: tabular-nums; }
+.cv .lg-paper .lg-grid .ag-cell[col-id="price"] { font-weight: var(--w-strong); }
+/* the check tags, inline and full screen alike (the full-screen grid has no receipt round it): hairline, never filled */
+.cv .tag.layer:is(.l1, .l2, .l3, .l5, .lhaggle) { box-shadow: inset 0 0 0 1px var(--line-2); color: var(--ink-2); background: none; font-weight: var(--w-body); }
+.cv .tag.layer.l4 { box-shadow: inset 0 0 0 1px var(--gold-line); color: var(--gold-hi); background: none; font-weight: var(--w-body); }
+.cv :is(.lg-paper, .spine-table) .tag.red { box-shadow: inset 0 0 0 1px var(--gold-line); color: var(--gold-hi); background: none; }
+.cv .lg-paper .tag { font-size: var(--t-micro); color: var(--ink-2); }
+/* the Rule column: the rule's name in the body face, small, on a quiet well (no till type), so a 112 px column holds it */
+.cv code.rule { padding: 1px 6px; border-color: var(--line); background: var(--surface); color: var(--ink-2); font: var(--w-body) var(--t-micro)/1.5 var(--face); letter-spacing: .01em; }
+.cv .lg-paper .ltable tr { border-top: 1px solid var(--line); }
+.cv .lg-paper .ltable tr:first-child { border-top: 0; }
+/* the Watcher's refusal row is a protection moment: a gold edge and gold words; the scam seller's own rows stay quiet */
+.cv .lg-grid .ag-row.lg-refused, .cv .lg-paper .ltable tr.refused { background: var(--gold-wash); }
+.cv .lg-grid .ag-row.lg-refused .ag-cell { color: var(--ink); }
+.cv .lg-grid .ag-row.lg-refused .ag-cell:first-child, .cv .ltable tr.refused { box-shadow: inset 2px 0 0 var(--gold); }
+.cv .ltable tr.refused td { color: var(--ink); }
+.cv .lg-grid .ag-row.lg-scam .ag-cell:first-child, .cv .ltable tr.scam { box-shadow: inset 2px 0 0 var(--ink-3); }
+.cv .lg-grid .ag-row.lg-asked .ag-cell:first-child, .cv .lg-grid .ag-row.lg-unmatched .ag-cell:first-child { box-shadow: inset 2px 0 0 var(--ink-2); }
+.cv .lg-grid .ag-row.ag-row-selected .ag-cell:first-child { box-shadow: inset 2px 0 0 var(--ink); }
+.cv .lg-grid .ag-row.ag-row-selected:not(.lg-refused) { background: var(--surface-2); }
+.cv .lg-grid .ag-row-focus { outline-color: var(--focus); }
+.motion .cv .lg-grid .ag-row.lg-fresh { animation: cv-row .9s var(--ease); }
+@keyframes cv-row { from { background: var(--surface-2); } }
+.cv .lg-did i { background: var(--ink-2); }
+.cv .lg-did.refused { color: var(--gold-hi); }
+.cv .lg-did.refused i { background: var(--gold); }
+.cv .lg-did.asked i, .cv .lg-did.flagged i { background: none; box-shadow: inset 0 0 0 1px var(--ink-2); }
+/* "Set aside by the Watcher": words in gold behind a gold hairline, level, never a tilted stamp */
+.cv .lg-stamp { padding: 4px var(--s-1) 5px; border: 1px solid var(--gold-line); border-radius: var(--r-1); background: none; box-shadow: none; color: var(--gold-hi); transform: none; }
+.cv .lg-stamp b { font-family: var(--display); font-size: var(--t-body); font-weight: var(--w-head); letter-spacing: 0; }
+.cv .lg-stamp small { font-size: var(--t-micro); font-weight: var(--w-body); color: var(--ink-2); }
+.cv .lg-did.lg-stamp { color: var(--gold-hi); }
+.cv .ltable td.amt .lg-stamp { transform: none; }
+.motion .cv .lg-grid .ag-row.lg-fresh .lg-stamp, .motion .cv .lg-grid .ag-row.lg-refused.lg-fresh { animation: cv-fade var(--d-3) var(--ease) both; }
+@keyframes cv-fade { from { opacity: 0; } }
+.cv .lg-struck { color: var(--ink-2); text-decoration-thickness: 1px; }
+.cv .lg-seq { color: var(--ink-3); }
+.cv .lg-rhead { border-bottom: 1px solid var(--line); text-align: left; }
+.cv .lg-store { font-family: var(--display); font-size: var(--t-lead); font-weight: var(--w-head); }
+.cv .lg-run { font: 13px/1.45 var(--face); color: var(--ink-3); }
+.cv .lg-rfoot { border-top: 1px solid var(--line-2); }
+.cv .lg-rfoot > p { font: 13px/1.5 var(--face); color: var(--ink-3); }
+.cv .lg-tally { font: 14px/1.6 var(--face); font-variant-numeric: tabular-nums; }
+.cv .lg-tally dt { color: var(--ink-2); }
+.cv .lg-tally dt::after { border-bottom: 1px dotted var(--line-2); }
+.cv .lg-tally dd { color: var(--ink); font-weight: var(--w-strong); }
+.cv .lg-tally .refused { border-top: 1px solid var(--line); font-size: var(--t-small); }
+.cv .lg-tally .refused :is(dt, dd) { color: var(--gold-hi); font-weight: var(--w-strong); }
+.cv .lg-pick { color: var(--ink); }
+.cv .lg-pick[aria-pressed="true"] { background: var(--ink); color: var(--on-cta); }
+/* full screen ("Full screen ›"): the same velvet, edge to edge */
+/* Desk-J3: the spine is portalled to <body>, outside the page's wrapper, so it wears `dk cv` itself (Ledger.tsx); it
+   stays a fixed sheet over the page even if the Desk's own `.dk` rule (desk.css) is ever on the page. */
+.cv.spine { position: fixed; min-height: 0; background: var(--page-solid); color: var(--ink); }
+.cv .spine { background: var(--page-solid); color: var(--ink); }
+.cv .spine-head h2 { font-size: var(--t-h3); font-weight: var(--w-display); }
+.cv .spine-head h2 small { color: var(--ink-3); font-family: var(--face); }
+/* the refusal count is protection, so gold, as the inline ledger's tally says it */
+.cv.spine b.refused { color: var(--gold-hi); }
+.cv .spine-close { border: 1px solid var(--line-2); border-radius: var(--r-2); background: none; color: var(--ink); }
+/* the sheet opens with focus on Close (keyboard users land there); its ring is a quiet one, so Go find it stays the action */
+.cv .spine-close:focus-visible { outline: 2px solid var(--ink-2); outline-offset: -1px; }
+.cv .moment { border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); }
+.cv .moment-k { color: var(--ink-3); font-size: var(--t-micro); font-weight: var(--w-body); text-transform: none; letter-spacing: 0; }
+.cv .moment h3 { font-family: var(--display); font-weight: var(--w-head); }
+.cv .moment h3.refused { color: var(--gold-hi); }
+.cv .moment-row.refused { border-color: var(--gold); }
+.cv .moment-lanes li.refused :is(span, b, small) { color: var(--ink-2); }
+.cv .moment-lanes li.deal :is(b, small) { color: var(--gold-hi); }
+.cv .moment-nav .lg-chip.now { border-color: var(--cta); background: var(--cta); color: var(--on-cta); }
+
+@media (max-width: 767px) {
+  /* Desk-J3: every card row keeps the refused and scam rows' 10 px inset, so the numbers line up under their rule */
+  .cv .ltable tr { padding-left: var(--s-1); }
+  .cv .run > details.ledger { margin: var(--s-5) 0 0; padding: 0; }
+  .cv .run > details.ledger > summary b { font-size: var(--t-h3); }
+  .cv .run > details.ledger > summary > span { display: block; margin: 2px 0 0; }
+  .cv .lg-paper { padding: var(--s-2) var(--s-2) var(--s-2); }
+  .cv .lg-chip { min-height: 44px; }
+}
