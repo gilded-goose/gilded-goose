@@ -1,0 +1,331 @@
+/* Behind the scenes, laid out (Desk-B-4; Track L). Colours only from midnight.css; the face from Desk-A's tokens. An 8 px
+   grid, radii of 8 to 12 px, a hairline edge or a shadow (never both, except glass, whose token set is both by design),
+   no glow, no pulsing. Glass only on the ledger panel and its side sheet. Motion is only for real activity: a row
+   arriving (the grid's own row animation and gold flash), the hover's lift, and the sheet. */
+
+body:has(.lx) { background: var(--lx-page); }
+.lx { position: relative; min-height: 100vh; background: var(--lx-page); color: var(--lx-ink); font-family: var(--lx-face); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+.lx::before { content: ""; position: fixed; inset: 0; background-image: var(--lx-grain); opacity: 0.05; pointer-events: none; z-index: 0; }
+.lx > * { position: relative; z-index: 1; }
+.lx a:not(.lx-btn) { color: inherit; }
+.lx :focus-visible { outline: 2px solid var(--lx-ink); outline-offset: 2px; }
+.lx-num { font-variant-numeric: tabular-nums; }
+.lx-dim { color: var(--lx-ink-3); }
+
+/* ---------- The page's width (the header is the back room's own, backroom.css) ---------- */
+.lx-main, .lx-foot { max-width: var(--w-page); margin: 0 auto; padding-left: var(--s-4); padding-right: var(--s-4); box-sizing: border-box; } /* the nav's grid: a 1200 column, 32 gutters inside it (system §3), so the content lines up with the nav's brand */
+/* NITS-1 (L): the footer starts below the window's foot from the first paint, so the panel arriving under the hero never
+   moves it in view (B-6 measured CLS 0.154–0.179: the footer drawn under the hero, then pushed down by the panel). The
+   section is the page's content: the panel, the week and the charts fill it as soon as the stream answers. One window
+   tall, so the page scrolls (and a classic scrollbar is drawn) from the first frame, and nothing beside it moves either. */
+.lx-sl { min-height: 100svh; }
+
+/* ---------- The title, its one line, and the stream's status ---------- */
+.lx-hero { padding: var(--s-8) 0 var(--s-5); }
+.lx-hero h1 { margin: 0; font-family: var(--display); font-size: var(--t-h1); line-height: 1.04; font-weight: 300; letter-spacing: -.012em; } /* system §2: --t-h1 (until tokens.css has it, its value) */
+.lx-lede { margin: var(--s-2) 0 0; max-width: 58ch; font-size: 17px; line-height: 1.5; color: var(--lx-ink-2); }
+/* Track F: out of flow, in the gap the hero already leaves, so the board under it never moves when the line goes (a stopped stream) or changes. */
+.lx-status { position: absolute; margin: var(--s-2) 0 0; font-size: 13px; color: var(--lx-ink-3); }
+.lx-status.live { color: var(--lx-ink-2); }
+.lx-status a { color: var(--lx-ink); text-underline-offset: 3px; } /* Track J: the empty status line's way to the Desk */
+
+.lx-thesis { margin: var(--s-3) 0 0; max-width: 44ch; font-size: 24px; line-height: 1.35; font-weight: 400; color: var(--lx-ink); text-wrap: balance; }
+.lx-thesis + .lx-lede { margin-top: var(--s-2); font-size: 16px; }
+.lx-lede a { color: var(--lx-ink); text-underline-offset: 3px; }
+
+/* The stream's way on: "Ask Goose ›" when there is no session yet, "Try again" when the server didn't answer (AS-15). */
+
+/* ---------- An empty session: the recorded week's story leads (AS-15: no caption above it; the story is the lead) ---------- */
+.lx-lead { margin: var(--s-1) 0 0; border-top: 1px solid var(--lx-edge); }
+.lx-lead .lx-story { margin-top: var(--s-5); }
+
+/* ---------- Explanations one tap away (AS-15), and text alternatives kept for screen readers only ---------- */
+.lx-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.lx-how { margin: 0; font-size: var(--t-small, 15px); line-height: 1.5; color: var(--lx-ink-2); }
+.lx-how > summary { display: inline-flex; align-items: center; min-height: 44px; list-style: none; cursor: pointer; color: var(--lx-ink-2); text-decoration: underline; text-decoration-color: var(--lx-edge-2); text-underline-offset: 3px; transition: color var(--d-1, 200ms) var(--ease, ease), text-decoration-color var(--d-1, 200ms) var(--ease, ease); }
+.lx-how > summary::-webkit-details-marker { display: none; }
+.lx-how > summary::after { content: "›"; margin-left: var(--s-1); text-decoration: none; display: inline-block; transition: transform var(--d-1, 200ms) var(--ease, ease); }
+.lx-how[open] > summary::after { transform: rotate(90deg); }
+.lx-how > summary:hover { color: var(--lx-ink); text-decoration-color: var(--lx-ink); }
+.lx-how-in { padding: 0 0 var(--s-1); max-width: 62ch; font-variant-numeric: tabular-nums; text-wrap: pretty; }
+.lx-how-in p { margin: 0; }
+.lx-how-in p + p { margin-top: var(--s-1); }
+@media (prefers-reduced-motion: reduce) { .lx-how > summary, .lx-how > summary::after { transition: none; } }
+
+/* ---------- Three charts, three questions: a light edge each, no shadow, nothing nested ---------- */
+.lx-charts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); margin: var(--s-8) 0 0; align-items: stretch; }
+.lx-charts-two { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* AS-15: nothing paid, so no money card; the two count charts share the row */
+.lx-charts-how { grid-column: 1 / -1; margin-top: calc(-1 * var(--s-1)); }
+.lx-chart { margin: 0; padding: var(--s-3); border-radius: var(--r-3); border: 1px solid var(--lx-edge); background: var(--lx-raised); display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; }
+.lx-chart h3 { margin: 0; font-size: var(--t-h3); line-height: 1.3; font-weight: 400; } /* the same size as the spend widget's title, its sibling */
+.lx-chart-canvas { min-width: 0; }
+.lx-chart figcaption { margin-top: auto; font-size: 13px; line-height: 1.5; color: var(--lx-ink-3); font-variant-numeric: tabular-nums; text-wrap: pretty; }
+.lx-chart-empty figcaption { margin-top: 0; font-size: var(--t-small, 15px); color: var(--lx-ink-2); }
+.lx-sec-h { grid-column: 1 / -1; margin: 0 0 4px; font-size: 24px; line-height: 1.25; font-weight: 400; }
+.lx-sec-sub { grid-column: 1 / -1; margin: -12px 0 4px; font-size: var(--t-small, 15px); color: var(--lx-ink-3); }
+
+/* ---------- The week's story (Desk-B-5): one chart and three facts beside it ---------- */
+.lx-story { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--s-2); margin: var(--s-8) 0 0; align-items: stretch; }
+.lx-story-fig { margin: 0; padding: var(--s-3); border-radius: var(--r-3); border: 1px solid var(--lx-edge); background: var(--lx-raised); display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; }
+.lx-story-head h2 { margin: 0; font-size: 24px; line-height: 1.25; font-weight: 400; }
+.lx-story-head p { margin: var(--s-1) 0 0; font-size: var(--t-small, 15px); color: var(--lx-ink-3); }
+.lx-story-key { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-3); margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--lx-ink-2); }
+.lx-story-key li { display: inline-flex; align-items: center; gap: var(--s-1); }
+.lx-story-key i { display: inline-block; width: 18px; height: 0; border-top: 2px solid var(--lx-ink); }
+.lx-story-key .k-other { border-top: 1.5px solid var(--lx-ink-3); }
+.lx-story-key .k-scam { border-top: 1.5px dashed var(--lx-mark); }
+.lx-story-key .k-limit { border-top: 1.5px dashed var(--lx-gold); }
+.lx-story-facts { display: flex; flex-direction: column; gap: var(--s-2); align-self: start; }
+.lx-fact { padding: var(--s-3); border-radius: var(--r-3); border: 1px solid var(--lx-edge); background: var(--lx-raised); }
+.lx-fact p { margin: 0; font-size: var(--t-small, 15px); line-height: 1.55; color: var(--lx-ink-2); text-wrap: pretty; }
+.lx-fact p + p { margin-top: var(--s-1); }
+.lx-fact-k { font-size: 13px !important; color: var(--lx-ink-3) !important; }
+.lx-fact-v { font-size: 40px !important; line-height: 1.1 !important; font-weight: 300; color: var(--lx-ink) !important; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.lx-fact-h { font-size: 15px !important; font-weight: 560; color: var(--lx-ink) !important; display: flex; align-items: center; gap: var(--s-1); }
+.lx-fact-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lx-mark); flex: none; }
+
+/* ---------- The header strip: five numbers from the session's own rows (only once it has some) ---------- */
+.lx-strip { display: grid; grid-template-columns: 160px minmax(0, 1fr); align-items: start; border-top: 1px solid var(--lx-edge); border-bottom: 1px solid var(--lx-edge); padding: var(--s-3) 0; margin-bottom: var(--s-5); }
+.lx-strip-h { margin: var(--s-1) 0 0; font-size: 13px; color: var(--lx-ink-2); }
+.lx-strip dl { margin: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.lx-strip dl > div { display: flex; flex-direction: column-reverse; gap: 4px; padding: 0 var(--s-3); border-left: 1px solid var(--lx-edge); }
+.lx-strip dt { font-size: 13px; color: var(--lx-ink-2); }
+.lx-strip dd { margin: 0; font-size: 40px; line-height: 1.1; font-weight: 300; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+/* ---------- The ledger panel: glass over the page's one light ---------- */
+.lx-panel { margin: var(--s-8) 0 0; padding: var(--s-4); border-radius: var(--r-3); }
+.lx-strip + .lx-panel { margin-top: 0; }
+/* The DD gate (06:11 PDT, AS-15 slice 2 (1)): a stopped stream's kit block (Empty, error, 429) sits at its natural
+   height, --s-6 under the hero's lede (the hero pads --s-5 below itself) and --s-6 above the story's hairline. The kit's
+   own 96 px of air above and below made a 144 px band, over brand.md's one --s-12. Nothing is reserved: the block is
+   drawn once the reason is known, with the story, so nothing below it moves after. */
+.st-note.lx-state { padding: 0 0 var(--s-6); margin-top: calc(var(--s-6) - var(--s-5)); }
+/* The visit's own record, under a board with rows of its own: a hairline says this is a different list. */
+.st-note.lx-state-visit { padding-top: var(--s-5); border-top: 1px solid var(--lx-edge); }
+.lx-panel-head h2 { margin: 0; font-size: 24px; line-height: 1.25; font-weight: 400; }
+.lx-panel-head p { margin: var(--s-1) 0 0; max-width: 92ch; font-size: var(--t-small, 15px); line-height: 1.55; color: var(--lx-ink-2); text-wrap: pretty; }
+
+/* Where to look: four rows of the recorded run, each a button that opens its sheet. */
+.lx-look { margin: var(--s-3) 0 0; }
+.lx-look-h { margin: 0 0 var(--s-1); font-size: 13px; color: var(--lx-ink-3); }
+.lx-look ol { display: flex; flex-wrap: wrap; gap: var(--s-1); margin: 0; padding: 0; list-style: none; }
+.lx-look button { display: inline-flex; gap: var(--s-1); min-height: 44px; padding: 0 var(--s-2); border-radius: var(--r-1); border: 1px solid var(--lx-edge-2); background: transparent; color: var(--lx-ink); font: inherit; font-size: var(--t-small, 15px); cursor: pointer; text-align: left; transition: background-color var(--d-1) var(--spring), border-color var(--d-1) var(--spring); }
+.lx-look button { align-items: center; }
+.lx-look button:hover { background: var(--lx-hover-glass); border-color: var(--lx-ink-3); }
+.lx-look-n { flex: none; white-space: nowrap; font-size: 12px; color: var(--lx-ink-3); } /* "Row 5" on one line beside a wrapping label (DD, B-7) */
+
+/* One filter row: search, the Filter menu, the count, the download. */
+.lx-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-2); margin: var(--s-3) 0 var(--s-2); }
+.lx-search { position: relative; display: inline-flex; align-items: center; flex: 0 1 360px; min-width: 340px; } /* the placeholder is its example: it wraps the row before it loses those words */
+.lx-search svg { position: absolute; left: 12px; width: 16px; height: 16px; color: var(--lx-ink-3); pointer-events: none; }
+.lx-search input { width: 100%; min-height: 44px; padding: 0 12px 0 var(--s-5); border-radius: var(--r-1); border: 1px solid var(--lx-edge-2); background: transparent; color: var(--lx-ink); font: inherit; font-size: var(--t-small, 15px); box-sizing: border-box; }
+.lx-search input::placeholder { color: var(--lx-ink-3); opacity: 1; }
+.lx-count { order: 5; flex: 1 1 100%; margin: 0; font-size: 13px; color: var(--lx-ink-3); font-variant-numeric: tabular-nums; white-space: nowrap; } /* its own line under the tools: the two downloads keep theirs */
+.lx-dl-shown { margin-left: auto; }
+.lx-btn { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; padding: 0 var(--s-2); border-radius: var(--r-1); border: 0; background: var(--lx-ink); color: var(--lx-page); font: inherit; font-size: var(--t-small, 15px); font-weight: 560; text-decoration: none; cursor: pointer; white-space: nowrap; transition: transform var(--d-1) var(--spring); }
+.lx-btn:active { transform: translateY(1px); }
+.lx-btn svg { width: 16px; height: 16px; }
+.lx-btn-quiet { background: transparent; color: var(--lx-ink); border: 1px solid var(--lx-edge-2); font-weight: 400; }
+.lx-btn-quiet:hover:not(:disabled) { border-color: var(--lx-ink-3); }
+/* A dashed ring means set aside and nothing else (system.md §5, Rings): a disabled control keeps its solid hairline at reduced opacity. */
+.lx-btn:disabled { background: transparent; border: 1px solid color-mix(in srgb, var(--lx-edge-2) 50%, transparent); color: var(--lx-ink-3); cursor: default; transform: none; }
+
+/* The Filter menu: a solid popover (the glass budget is spent on the panel and the sheet). */
+.lx-fm { position: relative; }
+.lx-filter-btn { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; padding: 0 var(--s-2); border-radius: var(--r-1); border: 1px solid var(--lx-edge-2); background: transparent; color: var(--lx-ink); font: inherit; font-size: var(--t-small, 15px); cursor: pointer; }
+.lx-filter-btn svg { width: 16px; height: 16px; color: var(--lx-ink-2); }
+.lx-filter-btn:hover, .lx-filter-btn[aria-expanded="true"] { border-color: var(--lx-ink-3); }
+.lx-filter-on { padding: 0 var(--s-1); border-radius: var(--r-1); background: var(--lx-ink); color: var(--lx-page); font-size: 12px; line-height: 20px; font-variant-numeric: tabular-nums; }
+.lx-fm-panel { position: absolute; z-index: 20; top: calc(100% + 8px); left: 0; width: 264px; padding: var(--s-1); border-radius: var(--r-3); background: var(--lx-raised-2); box-shadow: var(--lx-shadow), inset 0 1px 0 color-mix(in srgb, var(--lx-ink) 8%, transparent); }
+.lx-fm-panel[hidden] { display: none; }
+@media (max-width: 720px) { .lx-fm-panel { scroll-margin-bottom: calc(57px + env(safe-area-inset-bottom, 0px) + var(--s-2)); } } /* the rail (56 px links + its hairline, nav.css) and --s-2: FilterMenu.tsx scrolls the open panel into view (DD, CD-1) */
+.lx-fm-h { margin: 4px var(--s-1) var(--s-1); font-size: 12px; color: var(--lx-ink-3); }
+.lx-fm-item { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 0 var(--s-1); border: 0; border-radius: var(--r-1); background: transparent; color: var(--lx-ink); font: inherit; font-size: var(--t-small, 15px); text-align: left; cursor: pointer; }
+.lx-fm-item:hover:not(:disabled) { background: var(--lx-hover-glass); }
+.lx-fm-item:disabled { color: var(--lx-ink-3); cursor: default; }
+.lx-fm-item:disabled .lx-fm-box { border-width: 1px; border-color: color-mix(in srgb, var(--lx-ink-3) 50%, transparent); } /* solid hairline, reduced opacity: never the set-aside dash */
+.lx-fm-box { width: 16px; height: 16px; flex: none; border-radius: calc(var(--r-1) / 2); border: 1.5px solid var(--lx-ink-3); box-sizing: border-box; display: grid; place-items: center; }
+.lx-fm-item[aria-pressed="true"] .lx-fm-box { background: var(--lx-ink); border-color: var(--lx-ink); }
+.lx-fm-item[aria-pressed="true"] .lx-fm-box::after { content: ""; width: 8px; height: 4px; border-left: 1.5px solid var(--lx-page); border-bottom: 1.5px solid var(--lx-page); transform: translateY(-1px) rotate(-45deg); }
+.lx-fm-label { flex: 1; }
+.lx-fm-n { color: var(--lx-ink-3); font-size: 13px; }
+.lx-fm-clear { width: 100%; min-height: 44px; margin-top: 4px; border: 0; border-top: 1px solid var(--lx-edge); border-radius: 0 0 var(--r-1) var(--r-1); background: transparent; color: var(--lx-ink-2); font: inherit; font-size: var(--t-small, 15px); cursor: pointer; }
+.lx-fm-clear:disabled { color: var(--lx-ink-3); cursor: default; }
+
+/* ---------- The grid, calmed ---------- */
+.lx-grid { --lx-head: 44px; --lx-row: 72px; --lx-row-lh: 21px; /* gridTheme.ts's headerHeight / rowHeight (numbers AG Grid lays rows out by) and two lines of --t-small; the shell table reads the same three (B-7) */ height: 628px; /* header 44 + its filter row 44 + 7.5 rows of 72: a half row at the foot says the table scrolls */ margin: 0 -32px -32px; border-top: 1px solid var(--lx-edge); border-radius: 0 0 var(--r-3) var(--r-3); overflow: hidden; font-variant-numeric: tabular-nums; }
+.lx-grid .ag-root-wrapper { border: 0; border-radius: 0; background: transparent; }
+.lx-grid .ag-tooltip, .tb-grid .ag-tooltip { max-width: 22rem; font-size: var(--t-small); line-height: 1.5; }
+.lx-grid.lx-grid-fit { height: auto; }
+/* A quiet header: small capitals, spaced, a step down in colour. */
+.lx-grid .ag-header-cell-text { font-size: var(--t-micro, 13px); color: var(--lx-ink-2); }
+/* The first displayed column (AG Grid marks it ag-column-first): :first-child followed DOM order, which streaming rows reshuffle, so the 32 px indent hopped between Time and Who and the totals row looked indented past the rows above (DD). Now every row, the header and the totals line start where their columns do. */
+.lx-grid .ag-header-cell.ag-column-first { padding-left: var(--s-4); }
+.lx-grid .ag-cell.ag-column-first { padding-left: calc(var(--s-4) - 1px); } /* + the cell's 1 px border: Who's words start under WHO, at 32 (they sat 1 px right of their header and of the shell) */
+/* The totals row's label runs into the empty What column instead of wrapping. */
+.lx-grid .ag-row-group .ag-group-value { font-weight: var(--w-strong); }
+.lx-grid .ag-row-pinned .ag-cell, .lx-grid .ag-row-pinned .ag-cell * { overflow: visible; white-space: nowrap; text-overflow: clip; }
+/* Every cell reads from the same top line, so a two-line reason and a one-line amount start level. */
+.lx-grid .ag-row:not(.ag-row-pinned) .ag-cell { display: flex; align-items: flex-start; padding-top: calc(var(--s-2) - 1px); line-height: var(--lx-row-lh); } /* + AG Grid's 1 px transparent cell border = --s-2, as the shell's cells */
+/* AG Grid draws its cells with subpixel smoothing (.ag-cell), the rest of the site (and the shell) antialiased: on a Mac the
+   grid's words read a weight heavier ("Skipped seller" looked 560 beside the shell's 400; DD, B-6). One smoothing. */
+.lx-grid .ag-cell { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.lx-grid .ag-row-pinned .ag-cell { display: flex; align-items: center; }
+.lx-grid .ag-cell.ag-right-aligned-cell { justify-content: flex-end; }
+.lx-grid .ag-cell-wrapper { width: 100%; }
+/* Two lines, then the sheet: Who, Did and Why never grow a row. */
+.lx-clamp { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; white-space: normal; overflow-wrap: anywhere; }
+.lx-grid .ag-row { cursor: pointer; transition: background-color var(--d-1) var(--ease), box-shadow var(--d-1) var(--ease); }
+/* The soft hover lift: a step lighter, a lit top edge and a short shadow under the row. */
+.lx-grid .ag-row-hover:not(.ag-row-pinned) { z-index: 2; box-shadow: inset 0 1px 0 color-mix(in srgb, var(--lx-ink) 6%, transparent), 0 10px 24px -14px rgba(0, 0, 0, 0.85); } /* raw-ok: a drop shadow's darkness under the lifted row, not a surface */
+.lx-grid .ag-row.lx-week { color: var(--lx-ink-2); }
+.lx-grid .ag-row.lx-week-first { box-shadow: inset 0 1px 0 var(--lx-edge-2); }
+.lx-grid .ag-row-pinned { cursor: default; }
+/* The totals row is pinned below the rows: opaque, with a hairline on top, so no row ever shows through it (DD, slice 5). */
+.lx-grid .ag-row-pinned.sl-totals { background: var(--card); }
+/* The row is the action: focus shows on the whole row, not as a spreadsheet cell box. */
+.lx-grid .ag-cell-focus:not(.ag-cell-range-selected):focus-within { border-color: transparent; }
+.lx-grid .ag-row-focus { box-shadow: inset 0 0 0 2px var(--lx-ink); }
+.lx-none { color: var(--lx-ink-2); font-family: var(--lx-face); }
+.lx-tot, .lx-tot-label { font-weight: 560; color: var(--lx-ink); }
+/* AS-15 slice 2: with the columns narrowed to fit their card (rows.ts COL_W), the totals ran into each other on one
+   line. Each now wraps in its own column; the label still runs on into the empty What column beside it (Desk-B-5),
+   up to that column's end (144 + 120: COL_W.who + COL_W.kind, less their padding). */
+.lx-grid .ag-row-pinned .ag-cell .lx-tot, .lx-shell-t tfoot .lx-tot { white-space: normal; line-height: 1.3; }
+.lx-grid .ag-row-pinned .ag-cell .lx-tot-label, .lx-shell-t tfoot .lx-tot-label { display: block; flex: none; width: max-content; max-width: calc(144px + 120px - 2 * var(--s-2)); white-space: normal; line-height: 1.3; }
+.lx-who { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; }
+.lx-kind { display: inline-flex; align-items: center; gap: var(--s-1); color: var(--lx-ink-2); }
+.lx-skip { color: var(--lx-ink); }
+.lx-skip i { width: 6px; height: 6px; border-radius: 50%; background: var(--lx-mark); flex: none; }
+.lx-did { color: var(--lx-ink); }
+.ag-row.lx-week .lx-did { color: var(--lx-ink-2); }
+.lx-amt { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lx-amt.out, .lx-amt.back { color: var(--lx-ink); font-weight: 560; }
+.lx-pp { display: inline-flex; align-items: center; gap: 4px; padding: 1px var(--s-1); border-radius: var(--r-1); border: 1px solid var(--lx-edge-2); font-size: 12px; line-height: 20px; color: var(--lx-ink); white-space: nowrap; }
+.lx-pp svg { width: 10px; height: 10px; }
+.lx-from { color: var(--lx-ink-2); font-size: var(--t-micro, 13px); }
+.sl-quoted { color: var(--lx-ink-3); font-style: normal; }
+/* The expand: a quiet chevron at the row's end; the whole row opens the side sheet. */
+.lx-open-cell { justify-content: center; }
+/* The chevron column is named "Open" for a screen reader; the header shows nothing. */
+.lx-grid .lx-sr-head .ag-header-cell-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.lx-open { display: block; width: 8px; height: 8px; margin-top: var(--s-1); border-right: 1.5px solid var(--lx-ink-3); border-top: 1.5px solid var(--lx-ink-3); transform: rotate(45deg); transition: border-color var(--d-1) var(--spring), transform var(--d-1) var(--spring); }
+.lx-grid .ag-row-hover .lx-open { border-color: var(--lx-ink); transform: translateX(2px) rotate(45deg); }
+
+/* ---------- The side sheet: glass, over a lighter scrim so the page's light still reaches it ---------- */
+.lx-sheet { position: fixed; inset: 0 0 0 auto; margin: 0; width: min(480px, 100vw); height: 100%; max-height: 100%; max-width: 100vw; padding: 0; border: 0; border-left: 1px solid var(--glass-line); background: var(--glass-bg-read); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-edge), var(--glass-shadow); color: var(--lx-ink); font-family: var(--lx-face); overflow-y: auto; overscroll-behavior: contain; box-sizing: border-box; }
+.lx-sheet::backdrop { background: color-mix(in srgb, var(--lx-scrim) 64%, transparent); }
+.lx-sheet-in { padding: var(--s-3) var(--s-4) var(--s-5); }
+.lx-sheet-top { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); }
+.lx-sheet-kind { margin: 0; font-size: 13px; color: var(--lx-ink-2); }
+.lx-x { display: grid; place-items: center; width: 44px; height: 44px; margin-right: -10px; border: 0; border-radius: var(--r-1); background: transparent; color: var(--lx-ink-2); cursor: pointer; }
+.lx-x:hover { background: var(--lx-hover-glass); color: var(--lx-ink); }
+.lx-x svg { width: 16px; height: 16px; }
+.lx-sheet h2 { margin: var(--s-2) 0 4px; font-size: 28px; line-height: 1.2; font-weight: 400; letter-spacing: -0.005em; }
+.lx-sheet-did { margin: 0 0 var(--s-2); color: var(--lx-ink-2); font-size: 15px; }
+.lx-protect { margin: var(--s-3) 0 0; padding: 4px 0 4px var(--s-2); border-left: 2px solid var(--lx-gold); color: var(--lx-ink); }
+.lx-facts { margin: var(--s-3) 0 0; }
+.lx-facts > div { padding: var(--s-2) 0; border-top: 1px solid var(--lx-edge); }
+.lx-facts dt { font-size: 13px; color: var(--lx-ink-3); margin: 0 0 4px; }
+.lx-facts dd { margin: 0; font-size: 15px; line-height: 1.6; }
+.lx-facts .lx-why dd { font-size: 16px; }
+.lx-facts q { color: var(--lx-ink-2); }
+.lx-mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .lx-sheet[open] { transition: transform var(--d-2) var(--spring), opacity var(--d-2) var(--spring); }
+  @starting-style { .lx-sheet[open] { transform: translateX(40px); opacity: 0; } }
+  .lx-sheet[open]::backdrop { transition: background-color var(--d-2) var(--spring); }
+  @starting-style { .lx-sheet[open]::backdrop { background-color: transparent; } }
+  .lx-new > button { animation: lx-arrive var(--d-3) var(--ease) both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lx-grid .ag-row, .lx-open, .lx-look button { transition: none; }
+  .lx-grid .ag-row-hover .lx-open { transform: rotate(45deg); }
+}
+@keyframes lx-arrive { from { background-color: var(--lx-gold-wash); } to { background-color: transparent; } }
+
+/* ---------- Footer ---------- */
+.lx-foot { padding-top: var(--s-6); padding-bottom: var(--s-8); font-size: 13px; color: var(--lx-ink-3); }
+
+/* ---------- Phone: the same rows as a readable list in the panel, the same filter, search and sheet ---------- */
+.lx-cards { display: flex; flex-direction: column; margin: 0 -16px -16px; }
+.lx-list-h { margin: var(--s-2) var(--s-2) 4px; font-size: 13px; font-weight: 560; color: var(--lx-ink-3); font-variant-caps: all-small-caps; letter-spacing: 0.08em; }
+.lx-card-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.lx-card { border-top: 1px solid var(--lx-edge); }
+.lx-card > button { position: relative; display: grid; gap: var(--s-1); width: 100%; padding: var(--s-2) var(--s-5) var(--s-2) var(--s-2); border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.lx-card > button:active { background: var(--lx-hover-glass); }
+/* The row opens its full story: a quiet chevron says so. */
+.lx-card > button::after { content: ""; position: absolute; right: 18px; top: 50%; width: 8px; height: 8px; border-right: 1.5px solid var(--lx-ink-3); border-top: 1.5px solid var(--lx-ink-3); transform: translateY(-50%) rotate(45deg); }
+.lx-card-top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-2); }
+.lx-card-who { font-size: 15px; font-weight: 560; min-width: 0; overflow-wrap: anywhere; }
+.lx-card-week .lx-card-who { font-weight: 400; }
+.lx-card-mid { display: flex; flex-wrap: wrap; align-items: center; gap: 4px var(--s-2); font-size: 13px; color: var(--lx-ink-2); }
+.lx-card-t { margin-left: auto; color: var(--lx-ink-3); font-variant-numeric: tabular-nums; }
+.lx-card-why { font-size: var(--t-small, 15px); line-height: 1.5; color: var(--lx-ink-2); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.lx-card .lx-pp { justify-self: start; }
+.lx-card-totals { margin: var(--s-1) var(--s-2); padding: var(--s-2); border-radius: var(--r-2); background: var(--lx-hover-glass); }
+.lx-card-totals p { margin: 0; }
+.lx-card-totals p:first-child { font-size: 13px; color: var(--lx-ink-2); margin-bottom: 4px; }
+.lx-card-totals p:last-child { display: flex; flex-wrap: wrap; gap: 4px var(--s-2); font-variant-numeric: tabular-nums; font-weight: 560; }
+.lx-week-sub { margin: 0 var(--s-2) var(--s-2); font-size: var(--t-micro, 13px); color: var(--lx-ink-3); }
+
+@media (max-width: 1080px) {
+  .lx-strip { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+  .lx-strip dl > div:first-child { border-left: 0; padding-left: 0; }
+  .lx-charts { grid-template-columns: minmax(0, 1fr); }
+  .lx-story { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 767px) {
+  .lx-main, .lx-foot { padding-left: var(--s-2); padding-right: var(--s-2); }
+  /* The top is the room stop 10's landing has to move with the heading whole: it can't be less than the board's tallest control (tour-pill, TOUR_ONLY=real). */
+  .lx-hero { padding: var(--s-6) 0 var(--s-3); }
+  .st-note.lx-state { margin-top: calc(var(--s-6) - var(--s-3)); }
+  .lx-hero h1 { font-size: 36px; }
+  .lx-thesis { font-size: 20px; margin-top: var(--s-2); }
+  .lx-lede, .lx-thesis + .lx-lede { font-size: 15px; }
+  .lx-lead .lx-story { margin-top: var(--s-4); }
+  .lx-charts { margin-top: var(--s-3); gap: var(--s-2); }
+  .lx-chart { padding: var(--s-2); }
+  .lx-story { margin-top: var(--s-4); gap: var(--s-2); }
+  .lx-story-fig { padding: var(--s-2); gap: var(--s-2); }
+  .lx-story-head h2, .lx-sec-h, .lx-panel-head h2 { font-size: 20px; }
+  .lx-fact { padding: var(--s-2); }
+  .lx-fact-v { font-size: 32px !important; }
+  .lx-story-key { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-1) var(--s-2); }
+  .lx-story-key li { align-items: flex-start; }
+  .lx-story-key i { flex: none; margin-top: 0.7em; }
+  .lx-strip { padding: var(--s-2) 0; margin-bottom: var(--s-3); }
+  .lx-strip dl { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--s-2); }
+  .lx-strip dl > div { padding: 0 var(--s-2); }
+  .lx-strip dl > div:nth-child(odd) { border-left: 0; padding-left: 0; }
+  /* Five numbers in two columns: the last spans both, so the strip ends square. */
+  .lx-strip dl > div:last-child:nth-child(odd) { grid-column: 1 / -1; border-top: 1px solid var(--lx-edge); padding-top: var(--s-2); }
+  .lx-strip dd { font-size: 28px; }
+  .lx-panel { margin: var(--s-4) -8px 0; padding: var(--s-2); border-radius: var(--r-3); }
+  .lx-look ol { flex-direction: column; }
+  .lx-look button { width: 100%; min-height: 44px; }
+  .lx-tools { flex-wrap: wrap; gap: var(--s-1); margin: var(--s-2) 0 var(--s-1); }
+  .lx-search { flex: 1 1 100%; min-width: 0; }
+  .lx-filter-btn, .lx-search input, .lx-btn { min-height: 44px; }
+  .lx-count { order: 0; flex: 1 1 100%; margin-left: 4px; white-space: normal; } /* the session's three parts run past a phone's width */
+  .lx-dl { order: 4; width: 100%; justify-content: center; }
+  .lx-dl-shown { margin-left: 0; }
+  /* The empty state's ways on (Ask Goose, See the proof): 44 px tall to a thumb. */
+  /* S1-6 (Round 2: padding made them 38-40 px, since an inline box is its font's height plus padding): a 44 px box whose
+     margin box is one line tall, so the target is 44 px and the line height stays the paragraph's. */
+  .lx-status a, .lx-lede a { display: inline-flex; align-items: center; min-height: 44px; margin-block: -12px; margin-block: calc((1lh - 44px) / 2); }
+  .lx-sheet { inset: auto 0 0 0; width: 100%; height: auto; max-height: 88vh; border-left: 0; border-top: 1px solid var(--glass-line); border-radius: var(--r-3) var(--r-3) 0 0; }
+  .lx-sheet-in { padding: var(--s-2) var(--s-2) var(--s-4); }
+  .lx-sheet h2 { font-size: 24px; }
+}
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  @starting-style { .lx-sheet[open] { transform: translateY(40px); opacity: 0; } }
+}
+
+/* The PayPal rows of this row's visit (Studio's audit log), each one a press away. */
+.lx-sheet-pp { list-style: none; margin: var(--s-1) 0 0; padding: 0; display: grid; gap: var(--s-1); }
+.lx-sheet-pp button { all: unset; box-sizing: border-box; display: block; width: 100%; min-height: 44px; padding: var(--s-1) 0; cursor: pointer; font-size: var(--t-small); border-top: 1px solid var(--lx-edge); }
+.lx-sheet-pp button:focus-visible { outline: 2px solid var(--lx-ink); outline-offset: 2px; border-radius: var(--r-1); }
+.lx-sheet-pp b { font-weight: var(--w-strong); }
+.lx-sheet-pp span { color: var(--lx-ink-2); }

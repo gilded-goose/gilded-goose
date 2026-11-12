@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" class="dk" data-palette="v">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Nothing here · Gilded Goose</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <!-- B-11 (brand.md §10.8): the share card. Link scrapers run no script, so every address shares this one card
+         (web/src/brand/meta.ts; core/test/brand.test.ts holds this copy to it). -->
+    <meta name="description" content="Goose can't be fooled into paying, can't overspend and can't hide anything. Practice only: no real money." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Gilded Goose" />
+    <meta property="og:description" content="Goose can't be fooled into paying, can't overspend and can't hide anything. Practice only: no real money." />
+    <meta property="og:image" content="https://gilded-goose.onrender.com/og/share.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A gold egg beside the words: Nothing is paid until you tap." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#2c1520" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- B-11 (brand.md §10.1): the lockup's sheet, web/src/brand/lockup.css verbatim, so a bar drawn here wears it before any script -->
+<style data-gg>
+/* The lockup "Gilded G◯ose" (brand.md §10.1): Hanken 400, -.02em (the bar .05em), the vector egg as the first o of Goose. Each HTML entry's <head> carries this file verbatim (core/test/brand.test.ts), so a bar painted before any script wears it. */
+.gg { display: inline-flex; align-items: baseline; font-family: var(--mark-face, var(--display)); font-weight: var(--mark-w, 400); letter-spacing: var(--mark-track, -.02em); line-height: 1; color: var(--ink, #f4eadc); white-space: nowrap; font-kerning: normal; text-decoration: none; }
+.gg .sp { display: inline-block; width: .24em; }
+.gg .o { display: inline-block; width: .5em; height: .62em; margin: 0 .035em 0 .025em; transform: translateY(.012em); }
+.gg .o svg { display: block; width: 100%; height: 100%; overflow: visible; }
+/* The name in the visible text too (WCAG 2.5.3, axe label-content-name-mismatch): a real space in .sp and a real "o" under the egg, so the link reads "Gilded Goose" to voice control and to copy. The o is out of flow (absolute at its static place, so the egg's box and baseline are as before) and transparent; forced colours would repaint it, so it keeps its own colour there. Its letter-spacing is 0: the bar's .05em tracking would make the absolute o wider than .o's fixed box, so .o would hold more than it shows (a3b-screens, Nov 6); the egg's spacing is .o's own margins. scripts/lockup-name.ts diffs the pixels and measures that spill. */
+.gg .oc { position: absolute; color: transparent; letter-spacing: 0; }
+@media (forced-colors: active) { .gg .oc { forced-color-adjust: none; } }
+.gg-bar { --mark-track: .05em; font-size: 22px; }
+.gg-bar .o { width: .55em; height: .68em; margin: 0 .03em 0 .02em; }
+.gg-share { font-size: 40px; }
+.gg-end { --mark-w: 300; --mark-track: -.03em; font-size: 96px; }
+@media (max-width: 720px) { .gg-bar { font-size: 20px; } }
+</style>
+    <!-- W4 (Round 2's design judge: "/nothing-here is a bare 404 Not Found"): any unknown path wears the landing's shell,
+         the one bar, "Nothing here." with one pill back to Goose (W-5: the DD's wording; the bar and rail call the room
+         Shopper, so no "Desk" here), and the footer. The server sends it with status 404
+         (server/src/main.ts). Links are absolute (%BASE_URL%), since this page answers at any depth. Its styles are
+         404.css (the Desk's tokens); 404-main.tsx puts the real menu in the bar. -->
+  </head>
+  <body>
+    <!-- B-11 (brand.md §10.1): the vector egg every lockup's o uses (web/src/brand/egg.ts EGG_SYMBOL) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><radialGradient id="ggG" cx="38%" cy="30%" r="78%"><stop offset="0" stop-color="#fff3c4"/><stop offset=".34" stop-color="#f0cb62"/><stop offset=".74" stop-color="#b98a1c"/><stop offset="1" stop-color="#6e4f06"/></radialGradient><symbol id="ggEgg" viewBox="4.4 2.2 15.2 18.8"><path d="M12 2.2c-4.2 0-7.6 6.3-7.6 11.2a7.6 7.6 0 0 0 15.2 0C19.6 8.5 16.2 2.2 12 2.2Z" fill="url(#ggG)"/></symbol></defs></svg>
+    <div class="page">
+      <!-- The one nav every page wears (S1; web/src/nav): the same markup as index.html's and safe.html's. -->
+      <header class="gn dk-nav">
+        <a class="gn-skip" href="#main">Skip to content</a><!-- the first Tab stop (src/skip.ts), as index.html's and safe.html's -->
+        <div class="dk-nav-in">
+          <a class="gg gg-bar" href="%BASE_URL%?desk=1" aria-label="Gilded Goose">Gilded<span class="sp"> </span>G<span class="o"><span class="oc">o</span><svg aria-hidden="true"><use href="#ggEgg"/></svg></span>ose</a>
+          <span class="dk-practice-ph">Practice only</span>
+          <div class="dk-grow"></div>
+          <span class="gn-slot" data-gn-menu><button type="button" class="gm-btn dk-menu" aria-haspopup="dialog" aria-expanded="false"><span class="gm-w">Everything Goose does <svg viewBox="0 0 12 8" aria-hidden="true"><path d="m1 1.5 5 5 5-5" /></svg></span><span class="gm-ph">Menu</span></button></span>
+          <div class="dk-layer" role="group" aria-label="View"><a href="%BASE_URL%?desk=1">Shopper</a><a href="%BASE_URL%?desk=ledger">Behind the scenes</a></div>
+          <a class="dk-judge" href="%BASE_URL%?desk=tour"><span>Judge<span class="dk-jl">? Start here</span></span><span class="dk-jt"> tour</span> <span class="dk-arr" aria-hidden="true">›</span></a>
+        </div>
+      </header>
+      <main id="main" class="nh">
+        <!-- Track R: the 404 is brand.md §10.9's block under the egg still (10.2): the egg, "Nothing here." and the way
+             home, 5 words (budget 8). The still is B-11's gold egg (web/public/brand, 1x and 2x); the lockup lives only in
+             the bar. Decorative: the line says it all. No lockup in the body. -->
+        <img class="nh-egg" src="/brand/egg-600.webp" srcset="/brand/egg-600.webp 1x, /brand/egg-1200.webp 2x" alt="" width="600" height="720" decoding="async" fetchpriority="high" />
+        <h1>Nothing here.</h1>
+        <p class="nh-back"><a class="nh-pill" href="%BASE_URL%">Back to Goose <span aria-hidden="true">›</span></a></p>
+      </main>
+      <footer class="gn-footer"><p class="gn-foot">Fictional sellers. PayPal sandbox. Practice only: no real money.</p></footer>
+    </div>
+    <script type="module" src="/src/404-main.tsx"></script>
+  </body>
+</html>

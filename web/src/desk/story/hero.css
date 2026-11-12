@@ -1,0 +1,109 @@
+/* The landing's hero (Track S2): moved out of desk.css as it was, so the landing lives in story/. It is on the first
+   screen, so it loads with the Desk (story/index.tsx imports it); everything under the hero is the lazy story chunk.
+   It loads before desk.css, so the opening's rules there (html.dk-opening .dk-sub, …) still win, as they did. The Ask
+   box inside the hero is the app's (desk.css). */
+
+/* hero: asymmetric. The promises across the whole width, one line each; under them the words and the Ask field on the
+   left, the egg alone on the right, its foot on the chips' line. */
+.dk-hero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-6); align-items: center; padding: var(--s-10) 0 var(--section-y); } /* natural height (DK part 4): the chips end --section-y above the next hairline, never more */
+.dk-hero-copy, .dk-hero-egg { will-change: transform; }
+.dk-hero-copy { grid-column: 1 / -1; grid-row: 1; }
+.dk-hero-copy > :not(h1) { max-width: calc((100% - var(--s-6)) * 7 / 12); }
+.dk-hero-egg { grid-column: 2; grid-row: 1; align-self: end; margin-bottom: calc(-1 * var(--s-4)); }
+/* Capped so each promise keeps its one line on a wide screen, and the Ask box sits high. */
+.dk-hero h1 { font-size: var(--t-hero); line-height: 1.04; font-weight: var(--w-display); letter-spacing: var(--track-display); margin: 0; }
+.dk-sub { font-size: var(--t-lead); line-height: 1.5; color: var(--ink-2); margin: var(--s-5) 0; max-width: 33em; }
+.dk-see { display: none; margin: 0 0 var(--s-1); }
+[data-st] .dk-see { display: block; }
+[data-st] .dk-sub { margin-bottom: 0; }
+.dk-see a { display: inline-flex; align-items: center; gap: .3em; min-height: 44px; color: inherit; font-weight: var(--w-body); }
+/* One fade for the whole first screen, no stagger (Round 0's design judge): the Ask box is usable by about 0.9 s.
+   On the children, not the column, so Track B's opening still pauses them while it plays. */
+.dk-hero-copy > *, .dk-hero-egg { animation: fade var(--d-3) var(--ease) both; }
+/* The egg at the frame's right edge on a wide screen, apart from the words (the DD, Nov 5); centred on a phone. */
+.dk-hero-egg { display: grid; justify-items: end; }
+
+.dk-chips { display: flex; gap: var(--s-1); margin-top: var(--s-2); }
+.dk-try { font-size: var(--t-micro); color: var(--ink-3); margin-right: 4px; }
+/* S1-11: "Try" is its own column, centred on the first row of chips (44 px tall); the chips wrap inside their own row. */
+.dk-chips { flex-wrap: nowrap; align-items: flex-start; }
+.dk-try { flex: none; line-height: 44px; }
+.dk-chip-row { display: flex; flex-wrap: wrap; gap: var(--s-1); min-width: 0; }
+.dk-chips button { border: 1px solid var(--line); background: none; color: var(--ink-2); border-radius: var(--r-1); padding: 0 12px; min-height: 44px; font-size: var(--t-small); transition: border-color var(--d-1), color var(--d-1); }
+/* The price in each chip in ink, the number the ask is about (the DD, §2d change 3). Not tabular: one price per chip,
+   never a column, and the 33 B it cost didn't fit the desk line. */
+.dk-chips b { font: inherit; color: var(--ink); }
+.dk-chips button:hover { border-color: var(--line-2); color: var(--ink); }
+.dk-chips button:active { transform: translateY(1px); }
+
+@media (max-width: 720px) {
+  .dk-hero { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); padding: var(--s-1) 0 var(--section-y); min-height: 0; }
+  .dk-hero-copy, .dk-hero-egg { grid-column: 1; grid-row: auto; }
+  .dk-hero-copy > :not(h1) { max-width: none; }
+  .dk-hero-egg { order: -1; align-self: auto; margin-bottom: 0; }
+  .dk-hero-egg { justify-items: center; } /* centred on a phone; the wide screen's end is above */
+  /* A promise can wrap to two lines here: a small gap keeps the three apart. */
+  .dk-hero h1 > .dk-mask + .dk-mask { margin-top: .2em; }
+  .dk-hero h1 { font-size: var(--t-h1); }
+  .dk-sub { margin: var(--s-2) 0 var(--s-3); }
+  /* S1-6 (Round 2's consumer at 390: "A kettle unde…" under the edge fade still read as cut, with no cue to scroll):
+     the chips wrap, every chip whole on the screen and no word cut. At 390 that is two rows (Try and the Marsh Lights
+     chip, then the kettle and the shoes), ending ~70 px above the rail on the first screen. */
+  .dk-chips { row-gap: var(--s-1); flex-wrap: wrap; align-items: center; }
+  .dk-try { line-height: inherit; }
+  .dk-chip-row { display: contents; }
+  .dk-chips button { white-space: nowrap; flex: none; max-width: 100%; }
+}
+
+/* Joshua (Wed Nov 4, 3d): "on a phone the three promises fill the first screen". On the scale at 30 px (the DD, Round 5: 24.1
+   was off it, and dragged the section heads to 20, under their own counter). Under about 385 px it steps down with the width, so the two short promises keep one line each. The longest wraps, and the Ask box and the
+   start of the Challenge stay on the first screen (scripts/phone-first-screen.ts, 390x844 and 390x667, about what Safari
+   leaves of a real iPhone). */
+@media (max-width: 430px) {
+  .dk-hero h1 { font-size: min(var(--t-h2), 7.8vw); line-height: 1.1; text-wrap: balance; }
+  .dk-hero h1 > .dk-mask + .dk-mask { margin-top: 0; }
+  .dk-hero { padding-bottom: var(--s-2); }
+  .dk-sub { font-size: var(--t-body); margin: var(--s-1) 0 var(--s-2); }
+}
+
+/* The Challenge's start (Joshua, Wed Nov 4, 3d): at a phone's size it stands on the first screen, so the first paint has
+   to draw it, and the first paint has only this sheet. These are the story's and the Challenge's own rules, moved here
+   and not copied, so the first paint's box and the finished one's are one box and nothing jumps when the story lands. */
+.ds { position: relative; --ds-gap: calc(var(--section-y) * 2); --ds-draw: 700ms; --ds-rule: 600ms; --ds-head: var(--s-8);
+  /* The ticket a size up (brand.md 10.7) keeps its 1440 width when the moment stacks (the DD, gate on e785023d). */
+  --ds-ticket-w: 536px; }
+.ds-sec { padding: calc(var(--ds-gap) / 2) 0; border-top: var(--hair); }
+/* The numbered sections (Joshua, Thu Nov 5 6:20 PM): each label of the six carries .ds-n and the page counts them, so no
+   number is typed and a moved section renumbers itself. Here, not in story.css: the first paint draws 01 with this sheet. */
+.ds { counter-reset: ds-n; }
+.ds .ds-n { counter-increment: ds-n; }
+.ds .ds-n::before { content: counter(ds-n, decimal-leading-zero); margin-right: var(--s-2); font-variant-numeric: tabular-nums; color: var(--ink-3); }
+.ds-h2 { font-family: var(--display); font-weight: var(--w-display); font-size: var(--t-h1); line-height: 1.06; letter-spacing: var(--track-display); margin: 0; color: var(--ink); }
+/* Two classes: in this sheet it now comes before desk.css's .dk-eyebrow, on the same element, and order no longer settles it. */
+.ds .ds-eyebrow { margin: 0 0 var(--s-3); }
+.ds-lede { margin: var(--s-4) 0 0; max-width: 31em; font-size: var(--t-lead); line-height: 1.6; color: var(--ink-2); text-wrap: pretty; }
+.ds-mask { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
+.ds-mask > span { display: block; }
+.ds-ch { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); column-gap: var(--s-8); align-items: start; scroll-margin-top: var(--nav-h); }
+.ds-ch-side { position: sticky; top: calc(var(--nav-h) + var(--s-4)); }
+@media (max-width: 960px) {
+  .ds-ch { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-5); }
+  .ds-ch-side { display: contents; }
+}
+@media (max-width: 720px) { .ds-h2 { font-size: var(--t-h2); } }
+@media (max-width: 430px) { .ds-h2 { font-size: var(--t-sec); } }
+/* The challenge right under the ask (decision 1a; the DD on Option B, Fri Nov 6): on a wide screen ~200 px of air sat
+   between the chips and "01 The challenge" and the fold cut its heading, so the hero ends --s-6 under the chips (its
+   egg dips --s-4, so it still clears the hairline) and the section starts --s-2 under it. Its heading is one step down
+   from the hero's lines (--t-h2), so the hero stays the page's biggest words. Here, so the first paint has it too. */
+@media (min-width: 721px) {
+  .dk-hero { padding-bottom: var(--s-6); }
+  .ds-ch { padding-top: var(--s-2); }
+  .ds-ch .ds-h2 { font-size: var(--t-h2); }
+}
+@media (max-width: 720px) { .ds-lede { font-size: var(--t-body); } }
+/* Less air above it on a phone, so its start shows. */
+@media (max-width: 430px) { .ds-ch { padding-top: var(--s-2); } .ds-ch .ds-eyebrow { margin-bottom: var(--s-1); } }
+/* And the note right under "Write anything" (the DD on Option B, Nov 6: no gap before the field); the tally and feed
+   below keep their own rules and padding. */
+@media (max-width: 430px) { .ds-ch { row-gap: var(--s-2); } .ds-ch .ds-lede { margin-top: var(--s-2); } }

@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wallet · Gilded Goose (A3 mockup)</title>
+<!-- A3 wallet home mockup, round 3 (Joshua's round-2 decisions, 2026-10-25; phone fix round after guild-visual). States: ?state=home (a deal waiting, the
+     default), empty (nothing waiting: Ask is the hero), asking (chips, then Go haggles), settings.
+     Static and self-contained. Tokens are the Safe page's (web/safe.html), so it reads as the same product.
+     Screens and checks: node scripts/a3-screens.ts · motion: node scripts/motion.ts --a3 -->
+<!-- claims: every number on this page comes from the #a3-data block at the bottom, which is the engine's output, never
+     typed. Print it: node scripts/a3-ticks.ts · rewrite the block: node scripts/a3-ticks.ts --write. The screens script
+     fails if the block drifts from the engine, or if any price is typed into the markup.
+     Source of the run: docs/fixtures/tape-seed-1.json (Claude Haiku 5.5's recorded moves, week 1) replayed through
+     today's guard by recordedWeek (core/src/view/week.ts), the same read web/src/offline.ts storyWeek makes for the
+     shipped "See how it keeps you safe" page (W38). Row numbers are that run's ledger seq; row 0 is the seeded week.
+     - "$47.73" the deal, Reedbank Outfitters (fictional) ... the bound cart's total (run.bound.total), accepted in row 19, waiting in row 20
+     - "$58.00" their opening ask ...... row 3, belowOpening(laneModel(events)) (core/src/view/lanes.ts)
+     - "$10.27 below" ................. belowOpening(...).below
+     - ticks $58.00 · $49.50 · $47.73 · $47.73 · $47.73 ... rows 3, 8, 12, 17 (Reedbank's ask, rounds 1–4) and 19 (the
+       accept); each waits the tape's recorded dtMs of the buyer move before it (1096, 1059, 1134, 1017 ms)
+     - "Goose offers $45.00" (round 2) ... the buyer's counter, row 10. "Goose offers $47.73" (round 3) ... code's counter,
+       row 15, after Goose proposed $49.50 in row 14 (over their ask, so code bid the ask). Round 1's counter (row 6)
+       went to Pondside, so Reedbank's round 1 has no bid; round 4 ends in the accept, row 19.
+     - "From the ledger ›" shows each price's row and the recording's label; the rows are the same seqs in data-seq
+     - "expires in 15 minutes" ........ approvalMinutes(safeStory(events), bound), i.e. APPROVAL_TTL_MS (core/src/trust/guard.ts)
+     - "recorded · Claude Haiku 5.5 · 2026-10-23 · kept 1 of 3 recordings" ... buyerLabel(events) + the tape's meta.tries
+     - "$54.00" black Goldfeather Kettle, Pondside Goods (fictional), "earlier this week" ... SEEDED_PURCHASE
+       (core/src/scenario.ts), row 0, dated inside the demo week that ends at DEMO_T0
+     - "$20.30" QuickQuack Deals (fictional), refused ... its ask in row 4; the Watcher's refusal in row 5, said in plain
+       words from that row's rule ids (data.rule "instructs-agent,gift-card"; the words table is in scripts/a3-ticks.ts)
+     - "1 you paid · 1 to approve · 1 refused" ... rows 0, 20 and 5; with nothing waiting (?state=empty), the seeded week alone: 1 · 0 · 0
+     - "$60.00" kitchen · "$100.00" any one purchase · "$200.00" each week ... demoPolicy() categoryLimit, perPurchaseCap, weeklyLimit
+     - "Asks first" for kitchen ........ dialFor(demoPolicy(), "kitchen") = "ask-first" (the guard's row 20 says the same)
+     - "Five steps" .................... web/src/Safe.tsx STEPS (checked by the screens script)
+     - chips: "kettle" is the catalog entry id (DEMO_ENTRY); "black (from your week)" is SEEDED_PURCHASE.color. Not built
+       yet: validateChips refuses a color chip on today's demo catalog (the kettle entry has no color words), so A2 adds
+       them before "Checked by code" can be true for "black". -->
+<style>
+  :root { --ink: #14171f; --ink2: #2b303b; --hint: #596070; --line: #dfe2e8; --paper: #f4f5f7; --white: #fff; --bg: #fff; --teal: #0b6b63; --teal-wash: #e7f2f0; --red: #b42318; --red-wash: #fbecea; --gold: #7a5800; --gold-mark: #c9971c; --cream: #fbf4e2; --kbody: #23262e; --kline: #0e1015; --kshine: #3b404c; --safe-bg: #14171f; --safe-ink: #fff; color-scheme: light; }
+  @media (prefers-color-scheme: dark) { :root { --ink: #eef0f4; --ink2: #d9dce3; --hint: #a7adba; --line: #2c303a; --paper: #1b1e25; --white: #14161c; --bg: #0e1015; --teal: #5cc9bd; --teal-wash: #12302d; --red: #ff8a7a; --red-wash: #3a1916; --gold: #e8c160; --gold-mark: #e3b84a; --cream: #2e2716; --kbody: #2f333d; --kline: #e3b84a; --kshine: #5a6170; --safe-bg: #1d2129; --safe-ink: #eef0f4; color-scheme: dark; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-variant-numeric: tabular-nums; }
+  button, input, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  a { color: var(--teal); }
+  :focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+  svg.defs { position: absolute; width: 0; height: 0; }
+  [hidden] { display: none !important; }
+
+  /* Honesty banner: the same words the video keeps on screen. */
+  .banner { background: #14171f; color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .03em; padding: 9px 32px; line-height: 18px; border-bottom: 1px solid #2c303a; }
+  .banner span { white-space: nowrap; } .banner .soft { font-weight: 500; letter-spacing: 0; }
+
+  /* Header */
+  .top { max-width: 1200px; margin: 0 auto; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brandrow { display: flex; align-items: center; gap: 14px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); text-decoration: none; min-height: 44px; }
+  .brand svg { width: 26px; height: 32px; flex: none; }
+  /* A status, not a control: no hover, no pill button shape, a live dot. */
+  .status { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; cursor: default; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 3px var(--teal-wash); }
+  nav { display: flex; gap: 4px; }
+  nav a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border-radius: 999px; font-weight: 700; color: var(--ink); text-decoration: none; }
+  nav a[aria-current="page"] { background: var(--paper); }
+  nav a svg { width: 18px; height: 18px; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 6px 32px 40px; }
+  .view { display: none; }
+  body:not([data-state="settings"]) .v-home, body[data-state="settings"] .v-settings { display: grid; }
+
+  /* Home: the doing on the left (the deal, then Ask), the looking back on the right (your week). */
+  .v-home { grid-template-columns: minmax(0, 1.28fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+  .col { display: grid; gap: 20px; min-width: 0; align-content: start; }
+
+  .kicker { font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); margin: 0; }
+  h1, .h1 { font-size: 42px; line-height: 1.06; letter-spacing: -.035em; margin: 6px 0 18px; font-weight: 800; }
+  h2 { font-size: 24px; line-height: 1.15; letter-spacing: -.02em; margin: 0; font-weight: 800; }
+
+  /* The hero: a deal already waiting. One price, one reason it's good, one action. */
+  .hero { background: var(--paper); border-radius: 28px; padding: 26px 28px 24px; }
+  body:not([data-state="home"]) .hero { display: none; }
+  .hgrid { display: grid; grid-template-columns: minmax(0, 1fr) 176px; gap: 20px; align-items: center; }
+  .hero h1 { font-size: 34px; margin: 6px 0 2px; letter-spacing: -.025em; }
+  .from { margin: 0; font-size: 18px; font-weight: 600; }
+  .price { font-size: 88px; font-weight: 800; letter-spacing: -.045em; line-height: 1; margin: 16px 0 6px; }
+  .below { margin: 0; font-size: 20px; font-weight: 700; }
+  .below b { color: var(--teal); font-weight: 800; }
+  .nw { white-space: nowrap; }
+  .hpanel { align-self: stretch; border-radius: 22px; background: var(--cream); display: flex; align-items: center; justify-content: center; min-height: 150px; }
+  .hpanel svg { width: 136px; height: 105px; }
+  .kc-body { fill: #f7f1e3; stroke: #5c4a1e; stroke-width: 3; stroke-linejoin: round; }
+  .kc-spout { fill: #e9dcc0; stroke: #5c4a1e; stroke-width: 3; stroke-linejoin: round; }
+
+  /* The approve: a recorded cart has no order behind it, so this is the button's picture, never a button (5b, W38).
+     The one real action is the replay under it. */
+  .acts { margin-top: 20px; }
+  .approve { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 64px; padding: 12px 20px 14px; border-radius: 22px; border: 2px dashed var(--teal); color: var(--teal); font-weight: 800; font-size: 21px; line-height: 1.25; cursor: default; user-select: none; background: var(--white); }
+  .approve .a1 { display: inline-flex; align-items: center; gap: 8px; }
+  .approve .a1 svg { width: 19px; height: 23px; }
+  .approve .a2 { font-size: 14px; font-weight: 700; color: var(--ink2); }
+  .approve .a3 { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); font-size: 15px; font-weight: 600; color: var(--ink); text-align: center; }
+  .approve .a3 span { white-space: nowrap; }
+  .replay { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 56px; margin-top: 12px; border-radius: 999px; background: var(--teal); color: #fff; font-weight: 800; font-size: 18px; text-decoration: none; text-align: center; padding: 0 18px; }
+  .replay svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  @media (prefers-color-scheme: dark) { .replay { color: #0e1015; } }
+  /* The one safety line, said once per screen. */
+  .only { display: flex; align-items: center; gap: 8px; margin: 14px 2px 0; font-size: 17px; font-weight: 700; }
+  .only svg { width: 18px; height: 22px; flex: none; }
+
+  /* Ask Goose: the hero when nothing waits; a quieter card under the deal when one does. */
+  .ask { background: var(--paper); border-radius: 28px; padding: 28px 28px 24px; }
+  body[data-state="home"] .ask { background: var(--white); border: 1px solid var(--line); padding: 20px 22px; border-radius: 24px; }
+  body[data-state="home"] .ask .h1 { font-size: 24px; letter-spacing: -.02em; margin: 2px 0 12px; }
+  body[data-state="home"] .ask > .only { display: none; }
+  .field { display: flex; gap: 8px; align-items: center; background: var(--white); border: 2px solid var(--ink); border-radius: 20px; padding: 6px 6px 6px 20px; }
+  .field:focus-within { outline: 3px solid var(--teal); outline-offset: 2px; }
+  .field textarea { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 21px; font-weight: 600; line-height: 1.3; padding: 14px 0; min-height: 56px; resize: none; overflow: hidden; field-sizing: content; }
+  body[data-state="home"] .field textarea { font-size: 18px; padding: 11px 0; min-height: 48px; }
+  .field textarea::placeholder { color: var(--hint); font-weight: 500; opacity: 1; }
+  .askbtn { align-self: stretch; min-height: 52px; min-width: 56px; padding: 0 24px; border-radius: 15px; border: 0; background: var(--teal); color: #fff; font-weight: 800; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; }
+  .askbtn svg { display: none; width: 22px; height: 22px; }
+  .clear { min-height: 48px; min-width: 48px; border-radius: 14px; border: 0; background: transparent; font-size: 22px; font-weight: 700; display: none; }
+  body[data-state="asking"] .askbtn { display: none; }
+  body[data-state="asking"] .clear { display: inline-flex; align-items: center; justify-content: center; }
+  body[data-state="asking"] .ask > .only { display: none; }
+  @media (prefers-color-scheme: dark) { .go { color: #0e1015; } .askbtn { background: transparent; color: var(--teal); box-shadow: inset 0 0 0 2px var(--teal); } }
+
+  /* Asking: the AI's read is a soft bubble with chips; code's check is a stamped card. */
+  .reply { display: none; margin-top: 16px; }
+  body[data-state="asking"] .reply { display: block; }
+  .bubble { background: var(--white); border-radius: 22px; border-top-left-radius: 6px; padding: 14px 16px 12px; box-shadow: 0 1px 0 var(--line); }
+  .who { display: block; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .bubble p { margin: 0; font-size: 17px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 8px; padding: 0; list-style: none; }
+  .chip { display: inline-flex; align-items: center; min-height: 44px; border-radius: 999px; background: var(--ink); color: var(--bg); font-weight: 700; font-size: 16px; padding: 0 0 0 16px; }
+  .chip small { font-weight: 600; font-size: 14px; margin-left: 6px; }
+  .chip button { min-width: 44px; min-height: 44px; border: 0; background: transparent; color: inherit; font-size: 20px; line-height: 1; padding: 0; }
+  .catalog { margin: 0; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .catalog svg { width: 15px; height: 15px; flex: none; }
+  .checked { margin-top: 12px; border: 2px solid var(--teal); border-radius: 18px; padding: 12px 16px; background: linear-gradient(var(--teal-wash), var(--white) 90px); }
+  .checked .who { color: var(--teal); display: inline-flex; gap: 6px; align-items: center; }
+  .checked .who svg { width: 14px; height: 14px; }
+  .checked p { margin: 2px 0 0; font-size: 16px; font-weight: 600; }
+  .go { display: flex; width: 100%; align-items: center; justify-content: center; gap: 10px; min-height: 58px; margin-top: 14px; border-radius: 18px; border: 0; background: var(--teal); color: #fff; font-weight: 800; font-size: 19px; }
+  .go svg { width: 20px; height: 20px; }
+  /* After Go, the read has done its job: the chips stay as a reminder, the haggle takes the room. */
+  body.going .catalog, body.going .checked, body.going .go, body.going .bubble > p:first-of-type, body.going .bubble .who { display: none; }
+  body.going .bubble { padding: 8px 12px 6px; }
+  body.going .chips { margin: 4px 0; }
+
+  /* The haggle: their ask, ticking down one ledger row at a time. */
+  .haggle { margin-top: 14px; background: var(--white); border-radius: 24px; padding: 18px 20px 20px; border: 2px solid var(--ink); }
+  .hwho { margin: 0; font-size: 18px; font-weight: 800; }
+  .tick { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin: 10px 0 4px; }
+  .cur { font-size: 72px; font-weight: 800; letter-spacing: -.045em; line-height: 1; }
+  .tround { font-size: 17px; font-weight: 700; }
+  .trows { list-style: none; margin: 12px 0 0; padding: 0; }
+  .trows li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); font-size: 16px; font-weight: 600; }
+  /* The round, as a numbered dot (like the 5b steps), so the row stays one line on a phone. */
+  .trows .rd1 svg { width: 26px; height: 26px; }
+  .trows .rd1 { width: 26px; height: 26px; border-radius: 50%; background: var(--paper); color: var(--ink); font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
+  .trows li.acc .rd1 { background: none; color: var(--teal); }
+  .trows li b { font-size: 18px; font-weight: 800; }
+  .trows .gs { display: block; font-size: 14px; font-weight: 600; line-height: 1.3; }
+  .trows .gs b { font-size: inherit; }
+  /* Row numbers and the recording's label sit behind one "From the ledger" disclosure, in dark text. */
+  .rn { display: none; font-size: 13px; font-weight: 700; }
+  .haggle.ledger .rn { display: inline; }
+  .ledgerbtn { display: flex; align-items: center; gap: 6px; width: 100%; min-height: 44px; margin-top: 4px; padding: 0; border: 0; background: none; font-weight: 800; font-size: 15px; color: var(--ink); }
+  .ledgerinfo { margin: 0 0 4px; font-size: 14px; font-weight: 600; }
+  .ledgerinfo p { margin: 2px 0; }
+  .trows li.acc { font-weight: 800; color: var(--teal); }
+  .dealend .below { margin-top: 14px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .tick.bump .cur { animation: bump 240ms ease-out; }
+    .trows li.new { animation: rowin 240ms ease-out; }
+    @keyframes bump { from { transform: translateY(-6px); opacity: .4; } to { transform: none; opacity: 1; } }
+    @keyframes rowin { from { transform: translateY(-4px); opacity: 0; } to { transform: none; opacity: 1; } }
+  }
+
+  /* See how it keeps you safe: one tap. Dark in both themes; a raised surface in dark mode, never a white slab. */
+  /* How Goose keeps you safe: a quiet white card, a link, never the loudest block on the page. */
+  .safe { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 12px 18px; border-radius: 20px; background: var(--white); color: var(--ink); text-decoration: none; border: 1px solid var(--line); }
+  .safe svg.egg { width: 22px; height: 27px; flex: none; }
+  .safe b { display: block; font-size: 17px; }
+  .safe span { display: block; font-size: 15px; font-weight: 500; }
+
+  /* Your week */
+  .week { border: 1px solid var(--line); border-radius: 24px; padding: 20px 20px 18px; background: var(--white); display: flex; flex-direction: column; }
+  .whead { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .tag { font-size: 12px; font-weight: 800; letter-spacing: .04em; border: 1.5px dashed var(--ink2); border-radius: 999px; padding: 1px 10px; white-space: nowrap; }
+  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .tile { background: var(--paper); border-radius: 16px; padding: 10px 14px 12px; border-top: 4px solid var(--teal); }
+  .tile.yes { border-top-color: var(--gold-mark); } .tile.no { border-top-color: var(--red); }
+  .tile .n { font-size: 34px; font-weight: 800; line-height: 1.05; letter-spacing: -.02em; color: var(--teal); }
+  .tile.yes .n { color: var(--gold); } .tile.no .n { color: var(--red); }
+  .tile .t { font-size: 14px; font-weight: 800; line-height: 1.25; white-space: nowrap; }
+  .refline { display: none; margin: 12px 0 0; font-size: 16px; font-weight: 700; }
+  body[data-done] .refline { display: block; }
+  .rows { list-style: none; margin: 12px 0 0; padding: 0; }
+  .rows li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 0; border-top: 1px solid var(--line); }
+  .rows li:first-child { border-top: 0; }
+  .ico { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: var(--cream); }
+  .ico svg { width: 34px; height: 30px; }
+  .ico.no { background: var(--red-wash); color: var(--red); }
+  .ico.no svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; }
+  .rows .it { font-weight: 700; font-size: 16px; line-height: 1.3; }
+  .rows .sub { font-size: 14px; line-height: 1.35; font-weight: 500; }
+  .rows .r { text-align: right; font-size: 14px; font-weight: 700; }
+  .rows .r .p { display: block; font-size: 17px; font-weight: 800; }
+  .rows .r.no { color: var(--red); }
+  .rows .r.yes { color: var(--gold); }
+  .rows .r.yes .p { color: var(--ink); }
+  body[data-state="asking"] .rows li.used { margin: 0 -10px; padding: 11px 10px; border-radius: 16px; outline: 2px solid var(--teal); background: var(--teal-wash); border-top-color: transparent; }
+  body[data-state="asking"] .rows li.used + li { border-top-color: transparent; }
+  .usedtag { display: none; font-size: 12px; font-weight: 800; color: var(--teal); letter-spacing: .02em; }
+  body[data-state="asking"] .usedtag { display: block; }
+  .showrows { display: none; }
+
+  footer { max-width: 1200px; margin: 0 auto; padding: 0 32px 32px; font-size: 14px; font-weight: 500; }
+
+  /* Settings */
+  .v-settings { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .shead { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; }
+  .shead h1 { margin: 0; font-size: 40px; }
+  .back { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 10px 12px; margin-left: -12px; border-radius: 12px; font-weight: 800; text-decoration: none; }
+  .card { border: 1px solid var(--line); border-radius: 24px; padding: 20px 22px; background: var(--white); }
+  .card > p { margin: 6px 0 0; font-size: 16px; }
+  .agent { display: flex; align-items: center; gap: 16px; }
+  .agent h2 { font-size: 22px; }
+  .agent p { margin: 4px 0 0; font-size: 16px; }
+  .onstate { margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; min-width: 44px; padding: 0; border: 0; background: none; font-weight: 800; font-size: 18px; }
+  .onstate .track { width: 52px; height: 30px; border-radius: 999px; background: var(--line); position: relative; transition: background .15s; }
+  .onstate .track::after { content: ""; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--white); box-shadow: 0 1px 3px rgb(0 0 0 / .3); transition: left .15s; }
+  .onstate[aria-checked="true"] .track { background: var(--teal); }
+  .onstate[aria-checked="true"] .track::after { left: 25px; }
+  .seal { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
+  .seal svg { width: 15px; height: 18px; }
+  .limits { border: 2px solid var(--gold-mark); }
+  .lrows { list-style: none; margin: 10px 0 0; padding: 0; }
+  .lrows li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+  .lrows .k { font-weight: 700; } .lrows .k span { display: block; font-size: 14px; font-weight: 500; }
+  .lrows .v { font-size: 26px; font-weight: 800; letter-spacing: -.02em; display: inline-flex; align-items: center; gap: 8px; }
+  .lrows .v svg { width: 15px; height: 15px; color: var(--gold); }
+  .lrows li.main .v { font-size: 40px; }
+  .lockline { display: flex; gap: 8px; align-items: flex-start; margin: 10px 0 0; font-size: 15px; font-weight: 600; }
+  .lockline svg { width: 15px; height: 18px; flex: none; margin-top: 2px; }
+  .cat { display: flex; align-items: baseline; gap: 8px; font-weight: 800; font-size: 18px; margin: 14px 0 8px; }
+  .cat small { font-size: 14px; font-weight: 600; }
+  .radios { display: grid; gap: 8px; }
+  .radios button { display: flex; align-items: flex-start; gap: 12px; text-align: left; min-height: 56px; padding: 12px 14px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--white); }
+  .radios button[aria-checked="true"] { border: 2px solid var(--ink); background: var(--paper); }
+  .radios .rd { flex: none; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%; border: 2px solid var(--ink2); }
+  .radios button[aria-checked="true"] .rd { border: 7px solid var(--ink); }
+  .radios b { display: block; font-size: 16px; }
+  .radios small { display: block; font-size: 14px; font-weight: 500; }
+  .others { list-style: none; margin: 14px 0 0; padding: 0; }
+  .others li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-weight: 600; }
+  .others li span:last-child { font-weight: 800; text-align: right; }
+  .undo { border: 2px solid var(--teal); }
+  .undorow { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; margin-top: 14px; padding: 12px; border-radius: 16px; background: var(--paper); }
+  .undorow .it { font-weight: 700; } .undorow .sub { font-size: 14px; }
+  .steps { margin: 12px 0 0; padding: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; display: flex; gap: 10px; align-items: baseline; padding: 4px 0; font-weight: 600; }
+  .steps li::before { content: counter(s); flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--teal-wash); color: var(--teal); font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; justify-content: center; }
+  .k-body { fill: var(--kbody); stroke: var(--kline); stroke-width: 3; stroke-linejoin: round; }
+  .k-shine { fill: none; stroke: var(--kshine); stroke-width: 3; stroke-linecap: round; }
+  .k-gold { fill: #d4a62a; stroke: #6b5214; stroke-width: 3; }
+  .k-handle { fill: none; stroke: #a8790c; stroke-width: 9; stroke-linecap: round; }
+
+  /* Phone: one column, 16 px gutter. Order: the deal (or Ask), then Ask, your week, then the safety story. */
+  @media (max-width: 899px) {
+    .banner { padding: 8px 16px; font-size: 12px; }
+    .top { padding: 8px 16px; }
+    .brand { font-size: 18px; } .brand svg { width: 22px; height: 27px; }
+    nav a.home-link { display: none; }
+    nav a { padding: 0 12px; }
+    .wrap { padding: 2px 16px 28px; }
+    .v-home, .v-settings { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    .v-home .col { display: contents; }
+    .hero { order: 1; } .ask { order: 2; } .week { order: 3; } .safe { order: 4; }
+    .hero { padding: 18px 16px 18px; border-radius: 24px; }
+    .hgrid { grid-template-columns: minmax(0, 1fr) 92px; gap: 12px; align-items: start; }
+    .hero h1 { font-size: 26px; }
+    .from { font-size: 16px; }
+    .hpanel { min-height: 84px; align-self: start; border-radius: 18px; }
+    .hpanel svg { width: 74px; height: 58px; }
+    .price { font-size: 64px; margin: 10px 0 4px; }
+    .below { font-size: 17px; }
+    .acts { margin-top: 14px; }
+    .approve { font-size: 19px; padding: 10px 14px 12px; }
+    .approve .a3 { font-size: 14px; }
+    /* The replay's words on one line at 390 px: the icon steps aside, the words stay whole. */
+    .replay { font-size: 15px; min-height: 52px; padding: 0 12px; } .replay svg { display: none; }
+    .only { font-size: 16px; margin-top: 12px; }
+    h1, .h1 { font-size: 30px; margin: 4px 0 14px; }
+    body[data-state="asking"] .ask .h1 { display: none; }
+    body[data-state="asking"] .ask .kicker { margin-bottom: 8px; }
+    .ask { padding: 20px 14px 18px; border-radius: 24px; }
+    body[data-state="home"] .ask { padding: 16px 14px; }
+    body[data-state="home"] .ask .h1 { font-size: 21px; margin-bottom: 10px; }
+    .field { padding-left: 12px; gap: 4px; border-radius: 18px; }
+    .field textarea, body[data-state="home"] .field textarea { font-size: 17px; min-height: 52px; padding: 13px 0; }
+    .askbtn { min-height: 52px; width: 52px; padding: 0; border-radius: 13px; }
+    .askbtn .t { display: none; } .askbtn svg { display: block; }
+    .clear { min-width: 44px; }
+    .bubble p { font-size: 16px; }
+    .chip { font-size: 15px; padding-left: 14px; line-height: 1.15; }
+    /* "from your week" goes under "black", so "kettle" and "black" share one row at 390 px. */
+    .chip small { display: block; font-size: 12px; margin-left: 0; } .chip .pp { display: none; }
+    .chip .cw { display: flex; flex-direction: column; padding: 4px 0; }
+    .checked p { font-size: 15px; }
+    .go { margin-top: 10px; min-height: 54px; }
+    .chips { gap: 6px; margin: 8px 0 4px; }
+    .reply { margin-top: 12px; }
+    .haggle { padding: 14px 14px 16px; border-radius: 20px; }
+    .hwho { font-size: 16px; }
+    .cur { font-size: 52px; }
+    .tround { font-size: 15px; }
+    .trows li { font-size: 15px; padding: 5px 0; gap: 8px; }
+    .haggle { margin: 12px -6px 0; padding: 14px 12px 16px; }
+    .haggle .approve { padding-left: 4px; padding-right: 4px; } .haggle .approve .a3 { font-size: 13.5px; }
+    .trows { margin-top: 8px; }
+    .dealend .below { margin-top: 10px; }
+    .trows li b { font-size: 16px; }
+    body[data-state="asking"] .rows li.used { margin: 0; }
+    body[data-state="asking"] .whead { margin-bottom: 10px; }
+    .safe { padding: 12px 16px; }
+    .safe span { font-size: 14px; }
+    .week { padding: 16px 16px 14px; }
+    h2 { font-size: 22px; }
+    .whead { margin-bottom: 10px; }
+    /* Counts as one inline row, no wrapping labels. */
+    /* Each count keeps 12 px clear of the next divider. */
+    .tiles { display: flex; gap: 12px; background: var(--paper); border-radius: 14px; padding: 4px 8px 4px 4px; }
+    .tile { flex: 1 1 auto; background: none; border-top: 0; padding: 6px 0 6px 8px; display: flex; align-items: baseline; gap: 5px; border-left: 3px solid var(--teal); border-radius: 0; }
+    .tile.yes { border-left-color: var(--gold-mark); } .tile.no { border-left-color: var(--red); }
+    .tile .n { font-size: 22px; }
+    .tile .t { font-size: 13px; }
+    .tile .t .long { display: none; }
+    .showrows { order: 3; display: flex; align-items: center; gap: 6px; align-self: stretch; width: 100%; min-height: 44px; margin-top: 6px; border: 0; background: none; padding: 0 2px; color: var(--teal); font-weight: 800; }
+    .rows { order: 4; display: none; margin-top: 4px; }
+    .week.open .rows, body[data-state="asking"] .week .rows { display: block; }
+    body[data-state="asking"] .showrows { display: none; }
+    body[data-state="asking"] .rows li:not(.used) { display: none; }
+    .rows li { grid-template-columns: 44px minmax(0, 1fr); }
+    .rows .r { grid-column: 2; text-align: left; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .rows .r .p { display: inline; font-size: 16px; }
+    .shead h1 { font-size: 30px; }
+    .card { padding: 16px; border-radius: 20px; }
+    .lrows .v { font-size: 22px; } .lrows li.main .v { font-size: 32px; }
+    footer { padding: 0 16px 28px; }
+  }
+  @media (min-width: 900px) { .tile .t .short { display: none; } }
+</style>
+</head>
+<body data-state="home">
+<svg class="defs" aria-hidden="true">
+  <defs>
+    <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6dc86" /><stop offset=".55" stop-color="#d4a62a" /><stop offset="1" stop-color="#9c7412" /></linearGradient>
+    <symbol id="egg" viewBox="0 0 40 48"><path d="M20 2C10 2 3 18 3 29a17 17 0 0 0 34 0C37 18 30 2 20 2Z" fill="url(#gg)" /><ellipse cx="12.5" cy="17" rx="2.6" ry="5" fill="#fff" opacity=".4" transform="rotate(22 12.5 17)" /><path d="M12.5 28.5l5.5 5.5 10-12" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+    <symbol id="lock" viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7" rx="2" fill="currentColor" /><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" stroke-width="1.8" /></symbol>
+    <symbol id="check" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="currentColor" /><path d="M5.8 10.4l2.8 2.8 5.6-6" fill="none" stroke="var(--bg)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+    <symbol id="replay" viewBox="0 0 16 16"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.5v2.8h2.8" /></symbol>
+    <!-- Your black kettle (the seeded week's color). -->
+    <symbol id="kettle" viewBox="0 0 220 170">
+      <path class="k-handle" d="M76 52 C76 16 144 16 144 52" />
+      <path class="k-body" d="M166 92 L204 62 L208 70 L174 108 Z" />
+      <path class="k-body" d="M54 156 Q42 156 44 143 L62 66 Q65 54 78 54 L142 54 Q155 54 158 66 L176 143 Q178 156 166 156 Z" />
+      <path class="k-shine" d="M72 74 L60 128" />
+      <path d="M60 138 L160 138" stroke="#a8790c" stroke-width="3" />
+      <ellipse class="k-gold" cx="110" cy="55" rx="36" ry="7" />
+      <circle class="k-gold" cx="110" cy="43" r="7" />
+      <path d="M96 118 C96 96 112 82 130 78 C126 96 114 112 96 118 Z M96 118 L120 88" fill="#e7c35a" stroke="#a8790c" stroke-width="2.5" stroke-linejoin="round" />
+    </symbol>
+    <!-- The deal's kettle, drawn the 5b page's way: the seller's rows name no color, so the drawing doesn't either. -->
+    <symbol id="kettle-deal" viewBox="0 0 220 170">
+      <path d="M76 52 C76 16 144 16 144 52" fill="none" stroke="#a8790c" stroke-width="9" stroke-linecap="round" />
+      <path class="kc-spout" d="M166 92 L204 62 L208 70 L174 108 Z" />
+      <path class="kc-body" d="M54 156 Q42 156 44 143 L62 66 Q65 54 78 54 L142 54 Q155 54 158 66 L176 143 Q178 156 166 156 Z" />
+      <path d="M60 136 L160 136" stroke="#d9c79c" stroke-width="3" />
+      <ellipse cx="110" cy="55" rx="36" ry="7" fill="#d4a62a" stroke="#5c4a1e" stroke-width="3" />
+      <circle cx="110" cy="43" r="7" fill="#d4a62a" stroke="#5c4a1e" stroke-width="3" />
+      <path d="M96 118 C96 96 112 82 130 78 C126 96 114 112 96 118 Z M96 118 L120 88" fill="#e7c35a" stroke="#a8790c" stroke-width="2.5" stroke-linejoin="round" />
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Each phrase keeps its dot, so a wrapped line never starts with "·" (5b's fix). -->
+<div class="banner" role="note"><span>SIMULATED MARKET ·</span> <span>fictional sellers ·</span> <span>PayPal sandbox ·</span> <span class="soft">no real money</span></div>
+
+<header class="top">
+  <div class="brandrow">
+    <a class="brand" href="?state=home" aria-label="Gilded Goose, home"><svg aria-hidden="true" viewBox="0 0 40 48"><use href="#egg" /></svg>Gilded Goose</a>
+  </div>
+  <nav aria-label="Main">
+    <a class="home-link" href="?state=home" id="navHome">Home</a>
+    <a href="?state=settings" id="navSettings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" /><circle cx="16" cy="7" r="2.5" /><circle cx="10" cy="17" r="2.5" /></svg>Settings</a>
+  </nav>
+</header>
+
+<!-- The deal's actions, used by the hero and by the end of a haggle: the recorded Approve is a picture, the replay is
+     the real action, and the one safety line closes it. Prices are filled from #a3-data. -->
+<template id="dealActs">
+  <div class="acts">
+    <div class="approve" role="img" data-label><span class="a1"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M20 2C10 2 3 18 3 29a17 17 0 0 0 34 0C37 18 30 2 20 2Z" fill="currentColor" opacity=".25" /><path d="M12.5 28.5l5.5 5.5 10-12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /></svg>Approve · <span data-v="deal.total"></span></span><span class="a2">recorded, can’t be paid</span><span class="a3" aria-hidden="true"><span>This exact cart only ·</span> <span>expires in <span data-v="deal.minutes"></span> minutes</span></span></div>
+    <!-- 5b's wording when live mode answers; while it doesn't, the built page says "Replay this week" (Safe.tsx). -->
+    <a class="replay" href="../../web/index.html?seed=1"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#replay" /></svg>Replay this week to approve it yourself</a>
+    <p class="only"><svg aria-hidden="true" viewBox="0 0 40 48"><use href="#egg" /></svg>Goose can’t pay. Only your tap in PayPal does.</p>
+  </div>
+</template>
+
+<main class="wrap">
+  <!-- HOME, EMPTY and ASKING -->
+  <div class="view v-home">
+    <div class="col l">
+      <section class="hero" aria-labelledby="heroLabel">
+        <p class="kicker">Waiting for your tap</p>
+        <div class="hgrid">
+          <div>
+            <h1 id="heroLabel" data-v="item"></h1>
+            <p class="from">from <span data-v="seller"></span></p>
+            <div class="price" data-v="deal.total"></div>
+            <p class="below"><span class="nw"><b><span data-v="deal.below"></span> below</b> their</span> <span class="nw"><span data-v="deal.opening"></span> ask</span></p>
+          </div>
+          <div class="hpanel" role="img" aria-label="The kettle, drawn"><svg aria-hidden="true" viewBox="0 0 220 170"><use href="#kettle-deal" /></svg></div>
+        </div>
+        <div data-acts></div>
+      </section>
+
+      <section class="ask" aria-labelledby="askLabel">
+        <p class="kicker"><label id="askLabel" for="want">Ask Goose</label></p>
+        <div class="h1" role="heading" aria-level="1" id="askHead">What should Goose find?</div>
+        <form class="field" id="askForm" autocomplete="off">
+          <textarea id="want" name="want" rows="1" placeholder="e.g. a kettle like mine" enterkeyhint="go"></textarea>
+          <button type="button" class="clear" id="clear" aria-label="Clear">×</button>
+          <button type="submit" class="askbtn" aria-label="Ask"><span class="t">Ask</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" /></svg></button>
+        </form>
+        <p class="only"><svg aria-hidden="true" viewBox="0 0 40 48"><use href="#egg" /></svg>Goose can’t pay. Only your tap in PayPal does.</p>
+
+        <div class="reply" aria-live="polite">
+          <div class="bubble">
+            <span class="who">Goose · AI</span>
+            <p>Here’s what I’ll look for:</p>
+            <ul class="chips" id="chips">
+              <li class="chip">kettle<button type="button" aria-label="Drop the chip: kettle">×</button></li>
+              <li class="chip"><span class="cw">black <small><span class="pp">(</span>from your week<span class="pp">)</span></small></span><button type="button" aria-label="Drop the chip: black">×</button></li>
+              <li class="chip">under your limit<button type="button" aria-label="Drop the chip: under your limit">×</button></li>
+            </ul>
+            <p class="catalog"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>from a fictional catalog</p>
+          </div>
+          <div class="checked" role="status">
+            <span class="who"><svg aria-hidden="true" viewBox="0 0 20 20"><use href="#check" /></svg>Checked by code</span>
+            <p>Kettles are on the catalog. Black comes from your own week, not a seller.</p>
+          </div>
+          <button type="button" class="go" id="go">Go: find it and haggle <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" /></svg></button>
+
+          <!-- After Go: their ask, one ledger row per tick, at the recording's pace (#a3-data ticks). -->
+          <section class="haggle" id="haggle" hidden aria-labelledby="hwho">
+            <p class="hwho" id="hwho">Haggling with <span data-v="seller"></span></p>
+            <div class="tick" data-tick aria-live="polite"><span class="cur"></span><span class="tround"></span></div>
+            <ol class="trows" id="trows" aria-label="Each round: their ask, then Goose's bid"></ol>
+            <button type="button" class="ledgerbtn" id="ledgerbtn" aria-expanded="false" aria-controls="ledgerinfo">From the ledger <span aria-hidden="true">›</span></button>
+            <div class="ledgerinfo" id="ledgerinfo" hidden><p data-v="label"></p><p id="clamp"></p></div>
+            <div class="dealend" id="dealend" hidden>
+              <p class="below"><span class="nw"><b><span data-v="deal.below"></span> below</b> their</span> <span class="nw"><span data-v="deal.opening"></span> ask</span></p>
+              <div data-acts></div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+
+    <div class="col r">
+      <section class="week" aria-labelledby="weekLabel">
+        <div class="whead"><h2 id="weekLabel">Your week</h2><span class="tag">demo week</span></div>
+        <ul class="tiles">
+          <li class="tile"><div class="n" data-count="paid"></div><div class="t">you paid</div></li>
+          <li class="tile yes"><div class="n" data-count="waiting"></div><div class="t">to approve</div></li>
+          <li class="tile no"><div class="n" data-count="refused"></div><div class="t">refused</div></li>
+        </ul>
+        <p class="refline" id="refline" role="status"></p>
+        <button type="button" class="showrows" id="showrows" aria-expanded="false" aria-controls="weekRows"><span>See the week</span> <span aria-hidden="true">›</span></button>
+        <ul class="rows" id="weekRows"></ul>
+      </section>
+
+      <!-- "Five steps": web/src/Safe.tsx STEPS has 5 entries (checked by the screens script). -->
+      <a class="safe" href="../../web/safe.html">
+        <svg class="egg" aria-hidden="true" viewBox="0 0 40 48"><use href="#egg" /></svg>
+        <div><b>How Goose keeps you safe ›</b><span>Five steps from one recorded week. Try to trick it yourself.</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- SETTINGS: the limits, the lock and the dial live here, off the home (Joshua, round 2). -->
+  <div class="view v-settings">
+    <div class="shead"><a class="back" href="?state=home" aria-label="Back to home">‹ Home</a><h1>Settings</h1></div>
+    <div class="col">
+      <section class="card agent" aria-labelledby="agentLabel">
+        <div><h2 id="agentLabel">Goose</h2><p>Goose can find, ask and haggle. It can’t pay; only your tap in PayPal does.</p></div>
+        <button type="button" class="onstate" role="switch" aria-checked="true" id="onoff" aria-label="Goose"><span class="track" aria-hidden="true"></span><span class="lbl">On</span></button>
+      </section>
+
+      <section class="card limits" aria-labelledby="limitsLabel">
+        <span class="seal"><svg aria-hidden="true" viewBox="0 0 40 48"><use href="#egg" /></svg>Locked by code</span>
+        <h2 id="limitsLabel" style="margin-top:4px">Your limits</h2>
+        <ul class="lrows">
+          <li class="main"><div class="k">Kitchen<span>every offer Goose takes in this category</span></div><div class="v"><svg aria-hidden="true" viewBox="0 0 16 16"><use href="#lock" /></svg><span data-v="limits.kitchen"></span></div></li>
+          <li><div class="k">Any one purchase<span>every category</span></div><div class="v"><svg aria-hidden="true" viewBox="0 0 16 16"><use href="#lock" /></svg><span data-v="limits.perPurchase"></span></div></li>
+          <li><div class="k">Each week<span>everything together</span></div><div class="v"><svg aria-hidden="true" viewBox="0 0 16 16"><use href="#lock" /></svg><span data-v="limits.weekly"></span></div></li>
+        </ul>
+        <p class="lockline"><svg aria-hidden="true" viewBox="0 0 40 48"><use href="#egg" /></svg>Only you change these, here. Goose can’t, and neither can a seller’s note. If a seller asks for more, nothing is bought.</p>
+      </section>
+    </div>
+
+    <div class="col">
+      <section class="card" aria-labelledby="dialLabel">
+        <h2 id="dialLabel">Which categories ask first</h2>
+        <p>Either way, paying is one tap in PayPal.</p>
+        <div class="cat">Kitchen</div>
+        <!-- Checked from the Policy the guard enforces: dialFor(demoPolicy(), "kitchen") ("ask-first", the starting setting). -->
+        <div class="radios" role="radiogroup" aria-label="Kitchen" id="dial">
+          <button type="button" role="radio" data-dial="ask-first" aria-checked="false"><span class="rd" aria-hidden="true"></span><span><b>Asks first</b><small>The starting setting. Goose checks the details with you before it haggles.</small></span></button>
+          <button type="button" role="radio" data-dial="within-limits" aria-checked="false"><span class="rd" aria-hidden="true"></span><span><b>Ready without questions, still one tap</b><small>Straight to the haggle. You still approve in PayPal.</small></span></button>
+        </div>
+        <ul class="others">
+          <li><span>Every other category</span><span>Asks first</span></li>
+          <li><span>Subscriptions and Pay Later</span><span>Always asks</span></li>
+        </ul>
+      </section>
+
+      <section class="card undo" aria-labelledby="undoLabel">
+        <h2 id="undoLabel">Undo refunds it</h2>
+        <p>Changed your mind about your last purchase? One tap:</p>
+        <ol class="steps"><li>Refunds it in the PayPal sandbox.</li><li>Turns that category back to “Asks first”.</li></ol>
+        <div class="undorow">
+          <span class="ico"><svg aria-hidden="true" viewBox="0 0 220 170"><use href="#kettle" /></svg></span>
+          <div><div class="it"><span data-v="paid.item"></span> · <span data-v="paid.price"></span></div><div class="sub">Undo shows on your last purchase while its window is open.</div></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer>Gilded Goose is an independent student project, not affiliated with PayPal. Fictional sellers and products; PayPal sandbox, no real money.</footer>
+
+<!-- The engine's numbers (node scripts/a3-ticks.ts --write). Never edit by hand: the screens script fails on drift. -->
+<script type="application/json" id="a3-data">
+{
+ "from": "docs/fixtures/tape-seed-1.json through recordedWeek (core/src/view/week.ts), as web/src/offline.ts storyWeek",
+ "label": "recorded · Claude Haiku 5.5 · 2026-10-23 · kept 1 of 3 recordings",
+ "item": "Goldfeather Kettle",
+ "seller": "Reedbank Outfitters (fictional)",
+ "ticks": [
+  {"seq":3,"round":1,"price":"58.00","waitMs":0,"kind":"ask"},
+  {"seq":8,"round":2,"price":"49.50","waitMs":1096,"kind":"ask","goose":{"seq":10,"price":"45.00"}},
+  {"seq":12,"round":3,"price":"47.73","waitMs":1059,"kind":"ask","goose":{"seq":15,"price":"47.73","proposed":{"seq":14,"price":"49.50","ai":true}}},
+  {"seq":17,"round":4,"price":"47.73","waitMs":1134,"kind":"ask"},
+  {"seq":19,"round":4,"price":"47.73","waitMs":1017,"kind":"accept"}
+ ],
+ "deal": {"seq":20,"total":"47.73","opening":"58.00","openingSeq":3,"below":"10.27","minutes":15},
+ "week": [
+  {"seq":20,"kind":"waiting","item":"Goldfeather Kettle","merchant":"Reedbank Outfitters (fictional)","price":"47.73","note":"waiting for your tap"},
+  {"seq":5,"kind":"refused","item":"QuickQuack Deals (fictional)","merchant":"QuickQuack Deals (fictional)","price":"20.30","note":"Asked to be paid by gift card, and its note tried to give Goose orders"},
+  {"seq":0,"kind":"paid","item":"Goldfeather Kettle, black","merchant":"Pondside Goods (fictional)","price":"54.00","note":"earlier this week"}
+ ],
+ "empty": [
+  {"seq":0,"kind":"paid","item":"Goldfeather Kettle, black","merchant":"Pondside Goods (fictional)","price":"54.00","note":"earlier this week"}
+ ],
+ "limits": {"kitchen":"60.00","perPurchase":"100.00","weekly":"200.00","kitchenDial":"ask-first"}
+}
+</script>
+
+<script>
+  const D = JSON.parse(document.getElementById("a3-data").textContent);
+  const usd = (p) => `$${p}`;
+  const paid = D.week.find((r) => r.kind === "paid");
+  // Every [data-v] reads one field of the engine's data; prices get their dollar sign here, nowhere else.
+  const values = { item: D.item, seller: D.seller, label: D.label, "deal.total": usd(D.deal.total), "deal.below": usd(D.deal.below), "deal.opening": usd(D.deal.opening), "deal.minutes": String(D.deal.minutes),
+    "limits.kitchen": usd(D.limits.kitchen), "limits.perPurchase": usd(D.limits.perPurchase), "limits.weekly": usd(D.limits.weekly), "paid.item": paid.item, "paid.price": usd(paid.price) };
+  const acts = document.getElementById("dealActs");
+  document.querySelectorAll("[data-acts]").forEach((el) => el.replaceWith(acts.content.cloneNode(true)));
+  function fill(root) { root.querySelectorAll("[data-v]").forEach((el) => { el.textContent = values[el.dataset.v]; }); }
+  fill(document);
+  document.querySelectorAll(".approve[data-label]").forEach((el) => el.setAttribute("aria-label", `A picture of the approve button, ${D.deal.total} dollars: recorded, it can't be paid. This exact cart only, expires in ${D.deal.minutes} minutes.`));
+  document.querySelectorAll("#dial [data-dial]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.dial === D.limits.kitchenDial)));
+
+  // Your week, from its ledger rows: the full week on home; the seeded week alone when nothing waits.
+  const kettle = (id) => `<svg aria-hidden="true" viewBox="0 0 220 170"><use href="#${id}" /></svg>`;
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  // The counts read every row; the list leaves out the row that waits, because the deal above already shows it.
+  function renderWeek(rows) {
+    for (const k of ["paid", "waiting", "refused"]) document.querySelector(`[data-count="${k}"]`).textContent = rows.filter((r) => r.kind === k).length;
+    const no = rows.find((r) => r.kind === "refused");
+    document.getElementById("refline").textContent = no ? `${no.item} ${no.note[0].toLowerCase()}${no.note.slice(1)}. Refused.` : "";
+    rows = rows.filter((r) => r.kind !== "waiting");
+    document.getElementById("weekRows").innerHTML = rows.map((r) => r.kind === "paid"
+      ? `<li class="used" data-seq="${r.seq}"><span class="ico">${kettle("kettle")}</span><div><span class="usedtag">Goose used this for “black”</span><div class="it">${esc(r.item)}</div><div class="sub">${esc(r.merchant)} · ${esc(r.note)}</div></div><div class="r"><span class="p">${usd(r.price)}</span>you paid · one tap</div></li>`
+      : r.kind === "waiting"
+      ? `<li data-seq="${r.seq}"><span class="ico">${kettle("kettle-deal")}</span><div><div class="it">${esc(r.item)}</div><div class="sub">${esc(r.merchant)} · ${esc(r.note)}</div></div><div class="r yes"><span class="p">${usd(r.price)}</span>to approve</div></li>`
+      : `<li data-seq="${r.seq}"><span class="ico no"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" /></svg></span><div><div class="it">${esc(r.item)}</div><div class="sub">${esc(r.note)}</div></div><div class="r no"><span class="p">${usd(r.price)}</span>Refused</div></li>`).join("");
+    const n = rows.length;
+    document.querySelector("#showrows span").textContent = n === 1 ? "See it" : n === 2 ? "See both" : `See all ${["", "one", "two", "three", "four", "five"][n] ?? n}`;
+  }
+
+  const states = ["home", "empty", "asking", "settings"];
+  const want = document.getElementById("want");
+  const fit = () => { if (!CSS.supports("field-sizing", "content")) { want.style.height = "auto"; want.style.height = want.scrollHeight + "px"; } };
+  let base = "home";
+  function show(state) {
+    document.body.dataset.state = state;
+    if (state === "home" || state === "empty") base = state;
+    document.getElementById("navHome").removeAttribute("aria-current");
+    document.getElementById("navSettings").removeAttribute("aria-current");
+    document.getElementById(state === "settings" ? "navSettings" : "navHome").setAttribute("aria-current", "page");
+    const head = document.getElementById("askHead");
+    head.textContent = state === "home" ? "Want something else?" : "What should Goose find?";
+    head.setAttribute("aria-level", state === "home" ? "2" : "1");
+    if (state === "asking" && !want.value) want.value = "a kettle like mine, for my sister";
+    if (state === "home" || state === "empty") want.value = "";
+    // Asking starts from an empty week (the deal isn't found yet); it fills when the haggle ends.
+    renderWeek(state === "home" ? D.week : D.empty);
+    fit();
+  }
+  const s = new URLSearchParams(location.search).get("state");
+  show(states.includes(s) ? s : "home");
+
+  // Typing is the whole interface: after a pause (or Enter), Goose shows its read as chips.
+  let t;
+  want.addEventListener("input", () => { fit(); clearTimeout(t); if (want.value.trim().length > 2) t = setTimeout(() => show("asking"), 700); else if (!document.body.classList.contains("going")) show(base); });
+  want.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); document.getElementById("askForm").requestSubmit(); } });
+  document.getElementById("askForm").addEventListener("submit", (e) => { e.preventDefault(); if (want.value.trim()) show("asking"); else want.focus(); });
+  document.getElementById("clear").addEventListener("click", () => location.replace(`?state=${base}`));
+  document.getElementById("chips").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) b.closest("li").remove(); });
+  document.getElementById("showrows").addEventListener("click", (e) => {
+    const week = e.currentTarget.closest(".week"), open = week.classList.toggle("open");
+    e.currentTarget.setAttribute("aria-expanded", String(open));
+    if (!open) renderWeek(document.body.dataset.state === "home" ? D.week : D.empty);
+    else e.currentTarget.querySelector("span").textContent = "Hide the week";
+  });
+  document.getElementById("onoff").addEventListener("click", (e) => {
+    const b = e.currentTarget, on = b.getAttribute("aria-checked") !== "true";
+    b.setAttribute("aria-checked", String(on)); b.querySelector(".lbl").textContent = on ? "On" : "Off";
+  });
+  document.getElementById("ledgerbtn").addEventListener("click", (e) => {
+    const open = e.currentTarget.getAttribute("aria-expanded") !== "true";
+    e.currentTarget.setAttribute("aria-expanded", String(open));
+    document.getElementById("ledgerinfo").hidden = !open;
+    document.getElementById("haggle").classList.toggle("ledger", open);
+  });
+  document.querySelectorAll(".radios").forEach((g) => g.addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    g.querySelectorAll("button").forEach((x) => x.setAttribute("aria-checked", String(x === b)));
+  }));
+
+  // Go: their ask ticks down, one ledger row per tick, each after the recorded wait of the buyer's move before it.
+  // Nothing runs before Go, and nothing after the last row. With reduced motion, the last price and every row at once.
+  const tick = document.querySelector("[data-tick]"), trows = document.getElementById("trows");
+  const lowered = D.ticks.find((k) => k.goose?.proposed);
+  if (lowered) document.getElementById("clamp").textContent = `Round ${lowered.round}: Goose proposed ${usd(lowered.goose.proposed.price)} (row ${lowered.goose.proposed.seq}), more than their ask, so code bid ${usd(lowered.goose.price)} (row ${lowered.goose.seq}).`;
+  const seller = D.seller.replace(" (fictional)", "").split(" ")[0];
+  function row(k, fresh) {
+    const li = document.createElement("li");
+    li.dataset.seq = k.seq;
+    if (k.kind === "accept") li.className = "acc";
+    if (fresh) li.classList.add("new");
+    // A round: their ask (this row), then Goose's own bid that round (its row in data-goose). The accept gets a check.
+    const g = k.goose ? `<span class="gs" data-goose="${k.goose.seq}">Goose offers <b>${usd(k.goose.price)}</b> <span class="rn">row ${k.goose.seq}</span></span>` : "";
+    li.innerHTML = k.kind === "accept"
+      ? `<span class="rd1" aria-label="Deal"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#check" /></svg></span><span>Goose accepts</span><span><b class="ap">${usd(k.price)}</b> <span class="rn">row ${k.seq}</span></span>`
+      : `<span class="rd1" aria-label="Round ${k.round}">${k.round}</span><span>${esc(seller)} asks${g}</span><span><b class="ap">${usd(k.price)}</b> <span class="rn">row ${k.seq}</span></span>`;
+    trows.append(li);
+  }
+  function land(k, fresh) {
+    tick.querySelector(".cur").textContent = usd(k.price);
+    tick.querySelector(".tround").textContent = k.kind === "accept" ? "Goose accepts" : `Round ${k.round}, their ask`;
+    tick.dataset.seq = k.seq;
+    if (fresh) { tick.classList.remove("bump"); void tick.offsetWidth; tick.classList.add("bump"); }
+  }
+  function done() {
+    document.getElementById("dealend").hidden = false;
+    document.body.dataset.done = "";
+    renderWeek(D.week);
+  }
+  document.getElementById("go").addEventListener("click", () => {
+    document.body.classList.add("going");
+    document.getElementById("haggle").hidden = false;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      D.ticks.forEach((k) => row(k, false));
+      land(D.ticks.at(-1), false);
+      return done();
+    }
+    let i = 0;
+    const next = () => {
+      const k = D.ticks[i++];
+      land(k, true); row(k, true);
+      if (i < D.ticks.length) setTimeout(next, D.ticks[i].waitMs); else done();
+    };
+    next();
+  });
+</script>
+</body>
+</html>

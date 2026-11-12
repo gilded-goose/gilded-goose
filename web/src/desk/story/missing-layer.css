@@ -1,0 +1,37 @@
+/* "The missing layer": one body on the landing and on Proof, so its colours are read from whichever page it sits on.
+   Its text rules are two classes deep: Proof's own `.pf p { margin: 0 }` and `.pf a { color: inherit }` outrank one. */
+.ds-layer { --ml-ink: var(--ink); --ml-ink-2: var(--ink-2); --ml-line: var(--line); --ml-line-2: var(--line-2); --ml-face: var(--display); --ml-weight: var(--w-head); }
+.pf-group-layer { --ml-ink: var(--lx-ink); --ml-ink-2: var(--lx-ink-2); --ml-line: var(--lx-edge); --ml-line-2: var(--lx-edge-2); --ml-face: var(--lx-face); --ml-weight: 400; }
+
+.ml { margin-top: var(--s-6); color: var(--ml-ink-2); }
+.pf-group-layer .ml { margin-top: 0; }
+.ml-leads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6); }
+.ml-lead { margin: 0; min-width: 0; }
+.ml-lead blockquote { margin: 0; font-family: var(--ml-face); font-weight: var(--ml-weight); font-size: var(--t-lead); line-height: 1.3; color: var(--ml-ink); text-wrap: pretty; }
+.ml-lead figcaption { margin-top: var(--s-2); line-height: 1.55; text-wrap: pretty; }
+.ml .ml-link { color: var(--ml-ink); text-decoration: underline; text-decoration-color: var(--ml-line-2); text-decoration-thickness: 1px; text-underline-offset: .2em; overflow-wrap: anywhere; }
+.ml .ml-link:hover { text-decoration-color: currentColor; }
+.ml-link:focus-visible, .ml-fold > summary:focus-visible { outline: 2px solid var(--ml-ink); outline-offset: 3px; border-radius: 2px; }
+.ml .ml-goose { margin: var(--s-5) 0 0; max-width: 44em; color: var(--ml-ink); line-height: 1.55; text-wrap: pretty; }
+/* The big idea at the lead quotes' size, its own line in the same paragraph, so a screen reader hears one sentence after the other. */
+.ml .ml-goose-head { display: block; margin-bottom: var(--s-2); font-family: var(--ml-face); font-weight: var(--ml-weight); font-size: var(--t-lead); line-height: 1.3; text-wrap: balance; }
+
+.ml-fold { margin-top: var(--s-3); }
+.ml-fold > summary { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; cursor: pointer; list-style: none; font-size: var(--t-small); color: var(--ml-ink); text-decoration: underline; text-decoration-color: var(--ml-line-2); text-underline-offset: .2em; }
+.ml-fold > summary::-webkit-details-marker { display: none; }
+.ml-fold > summary:hover { text-decoration-color: currentColor; }
+.ml-fold > summary span { transition: transform var(--d-1) var(--ease); }
+.ml-fold[open] > summary span { transform: rotate(90deg); }
+.ml .ml-caveat { margin: var(--s-2) 0 0; max-width: 44em; font-size: var(--t-small); line-height: 1.55; text-wrap: pretty; }
+.ml-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6); margin-top: var(--s-5); }
+.ml-groups h3 { margin: 0; font-size: var(--t-small); font-weight: var(--w-strong); color: var(--ml-ink); }
+.ml-groups ul { list-style: none; margin: var(--s-2) 0 0; padding: 0; }
+.ml-groups li { padding: var(--s-3) 0; border-top: 1px solid var(--ml-line); font-size: var(--t-small); line-height: 1.5; min-width: 0; }
+.ml-groups q { display: block; margin-top: var(--s-1); color: var(--ml-ink); font-style: normal; }
+.ml .ml-groups p { margin: var(--s-1) 0 0; }
+.ml-groups .ml-link { display: inline-block; padding: 6px 0; }
+
+@media (max-width: 860px) {
+  .ml-leads, .ml-groups { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+}
+@media (prefers-reduced-motion: reduce) { .ml-fold > summary span { transition: none; } }

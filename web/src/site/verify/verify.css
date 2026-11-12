@@ -1,0 +1,45 @@
+/* Verify an order: one field, then a record read top to bottom. The verdict is the only coloured thing on the page. */
+.vf { display: grid; gap: var(--s8); padding-bottom: var(--s24); }
+.vf > * { min-width: 0; }
+.vf-head { display: grid; gap: var(--s3); }
+.vf h2 { font-family: var(--font-display); font-size: var(--t-lg); font-weight: var(--w-medium); letter-spacing: -0.01em; }
+.vf-fine { max-width: var(--measure); color: var(--ink-3); font-size: var(--t-sm); }
+.vf code { font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.9em; overflow-wrap: anywhere; }
+.vf a { color: var(--ink); }
+
+.vf-form { display: grid; gap: var(--s2); max-width: 36rem; }
+.vf-form label { font-weight: var(--w-medium); }
+.vf-ask { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.vf-ask input {
+  flex: 1 1 14rem; min-width: 0; min-height: var(--tap); padding: 0 var(--s3);
+  font: inherit; font-family: var(--font-mono, ui-monospace, monospace); letter-spacing: 0.02em;
+  color: var(--ink); background: var(--surface-raised); border: 1px solid var(--line-strong); border-radius: var(--r-2);
+}
+.vf-ask input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; } /* control */
+
+.vf-examples { display: grid; gap: var(--s3); }
+.vf-result { display: grid; gap: var(--s4); }
+.vf-result:empty { display: none; }
+.vf-card, .vf-verdict { display: grid; gap: var(--s3); padding: var(--s5); background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--r-3); }
+.vf-card p, .vf-verdict p { max-width: var(--measure); }
+.vf-verdict { border-width: 2px; } /* control */
+.vf-verdict h2 { font-size: var(--t-xl); line-height: var(--lh-head); letter-spacing: -0.02em; }
+.vf-verdict[data-verdict="match"] { border-color: var(--signal); }
+.vf-verdict[data-verdict="mismatch"] { border-color: var(--vermilion-ink); }
+.vf-verdict[data-verdict="mismatch"] h2 { color: var(--vermilion-ink); }
+.vf-label { justify-self: start; padding: 0 var(--s2); color: var(--ink-2); font-size: var(--t-sm); border: 1px solid var(--line-strong); border-radius: var(--r-pill); }
+
+.vf-facts { display: grid; gap: 0; margin: 0; border-top: 1px solid var(--line); }
+.vf-facts div { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); gap: var(--s1) var(--s4); padding: var(--s3) 0; border-bottom: 1px solid var(--line); }
+@media (max-width: 560px) { .vf-facts div { grid-template-columns: minmax(0, 1fr); } }
+.vf-facts dt { color: var(--ink-3); font-size: var(--t-sm); }
+.vf-facts dd { margin: 0; overflow-wrap: anywhere; }
+
+.vf-events { display: flex; flex-wrap: wrap; gap: var(--s2); margin: 0; padding: 0; list-style: none; }
+.vf-events li { min-width: 0; max-width: 100%; padding: 0 var(--s2); border: 1px solid var(--line-strong); border-radius: var(--r-1); }
+.vf-events span { color: var(--ink-3); font-size: var(--t-sm); }
+
+.vf-rows { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; counter-reset: vf; border-top: 1px solid var(--line); }
+.vf-rows li { display: grid; gap: var(--s1); padding: var(--s3) 0 var(--s3) var(--s8); border-bottom: 1px solid var(--line); position: relative; counter-increment: vf; }
+.vf-rows li::before { content: counter(vf); position: absolute; left: 0; top: var(--s3); color: var(--ink-3); font-size: var(--t-sm); font-variant-numeric: tabular-nums; }
+.vf-rows li[data-verdict="refused"] > p:first-child { color: var(--vermilion-ink); }

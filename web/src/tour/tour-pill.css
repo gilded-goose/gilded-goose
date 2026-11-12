@@ -1,0 +1,78 @@
+/* The judge tour's stepper on a stop's page (TourPill.tsx, S1-6). One hairline pill on the page's own solid colour (no
+   glass: the bar and the menu are the page's glass). S1-7 (the DD's hold on S1-6: under the bar at 1440 it covered the
+   lit egg on stop 1, the Day 5 card's title and the trick page's column): it sits at the window's foot at every width,
+   --s-4 above the bottom and centred on the 1200 px column on a wide screen, a full-width solid strip on the bottom
+   edge on a phone (S1-13); while it shows the page ends its height + --s-4 higher, so it never sits over the page's last line. 44 px
+   targets. Tokens with the velvet values as fallbacks, as the bar's (nav.css), since it sits on pages that draw the bar
+   as markup too. */
+div.tp-slot, .hg > div.tp-slot { position: static; z-index: auto; }
+/* The heading the pill focuses on arrival (TourPill.tsx, a stop's `focus`): a heading focused by script never rings
+   (the DD, 08:40); controls keep the one ring. Important because each page's own ring rule is scoped deeper than this
+   sheet can know (run.css's bench ring is (0,5,1)), and this attribute is set only on a heading, only by the pill. */
+[data-tp-head]:focus, [data-tp-head]:focus-visible { outline: none !important; }
+.tp { position: fixed; z-index: 25; bottom: calc(var(--s-4, 32px) + var(--tp-rise, 0px) + var(--tp-lift, 0px)); left: 50%; transform: translateX(-50%); max-width: calc(100vw - 2 * var(--s-4, 32px));
+  display: flex; align-items: center; height: var(--tp-h); padding: 0 var(--s-1, 8px) 0 0; box-sizing: border-box; border: 1px solid var(--line-2, rgba(244, 234, 220, .3)); border-radius: var(--r-pill, 999px);
+  background: var(--page-solid, #2c1520); color: var(--ink-2, #cdb9b5); font-family: var(--face, "Archivo Goose", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif); font-size: var(--t-small, 15px); line-height: 1; white-space: nowrap; }
+.tp[data-room="back"] { --ink: var(--lx-ink); --ink-2: var(--lx-ink-2); --ink-3: var(--lx-ink-3); --line-2: var(--lx-edge-2, var(--lx-edge)); --page-solid: var(--lx-page); --focus: var(--lx-ink); }
+.tp a, .tp button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; color: inherit; text-decoration: none; font: inherit; border: 0; background: none; cursor: pointer; transition: color var(--d-1, 200ms); }
+.tp a:hover, .tp button:hover { color: var(--ink, #f4eadc); }
+.tp :focus-visible { outline: 2px solid var(--focus, #f4eadc); outline-offset: -2px; border-radius: var(--r-pill, 999px); }
+.tp .tp-back { min-width: 44px; padding: 0; font-size: var(--t-body, 17px); }
+span.tp-back { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; color: var(--ink-3, #b49f9c); opacity: .5; }
+.tp .tp-home { gap: 0; padding: 0 var(--s-1, 8px) 0 0; }
+.tp-k { font-weight: var(--w-strong, 560); color: var(--ink, #f4eadc); }
+.tp-dot { margin: 0 var(--s-1, 8px); color: var(--ink-3, #b49f9c); }
+.tp-n { color: var(--ink, #f4eadc); font-variant-numeric: tabular-nums; }
+/* S1-9: the stop's name beside its number (Round 3's consumer: "02 · The Watcher"), in ink like the number. */
+.tp-name { color: var(--ink, #f4eadc); }
+/* S1-9 (Round 3's design judge: the 1440 pill covered card captions): when a stop lands with text under the centre, the
+   pill sits on the column's left or right edge instead, whichever is clear (TourPill.tsx `place`). No motion: it is
+   placed while the stop lands, never while the visitor reads. */
+.tp[data-slot="start"] { left: calc(max(0px, (100vw - var(--w-page, 1200px)) / 2) + var(--gutter, 32px)); transform: none; }
+.tp[data-slot="end"] { left: auto; right: calc(max(0px, (100vw - var(--w-page, 1200px)) / 2) + var(--gutter, 32px)); transform: none; }
+.tp .tp-next { padding: 0 var(--s-2, 16px); margin-left: var(--s-1, 8px); border-left: 1px solid var(--line, rgba(244, 234, 220, .12)); border-radius: 0; color: var(--ink, #f4eadc); font-weight: var(--w-strong, 560); gap: 6px; }
+.tp .tp-end { min-width: 44px; padding: 0; color: var(--ink-3, #b49f9c); }
+.tp .tp-end:hover { color: var(--ink, #f4eadc); }
+.tp-end svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.tp-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* The pill's height, said once (S1-8, the DD's token nit): 44 px targets and its hairlines. The pill is that tall at every
+   width, and the page's foot clears it by --s-4 (the phone's also by the rail). Set on the body, so the pill (a
+   descendant) and both paddings read the one value. */
+body:has(.tp) { --tp-h: 46px; padding-bottom: calc(var(--tp-h) + var(--s-4, 32px)); }
+/* A focused control is never under the pill at any width (WCAG 2.4.11; Round 4's a11y fix 4: at 1440 the pill half-covered
+   the landing's "Held, then voided" and five ledger cells): its height, its foot, its rise (≤ --s-2) and --s-1 to spare. */
+html:has(.tp) { scroll-padding-bottom: calc(46px + var(--s-4, 32px) + var(--s-2, 16px) + var(--s-1, 8px)); }
+/* S1-12: on a side page (safe.html) the stop's link says where it goes, "Back to 06 · Approve in PayPal". */
+.tp-ret { margin-right: var(--s-1, 8px); color: var(--ink-2, #cdb9b5); }
+/* S1-12 (the DD at S1-11, system.md §4: a sheet's own controls are never under the strip): while a Desk sheet is open
+   the pill yields, at every width (on a phone the sheet's "Got it" sat under the strip; on a wide screen the pill sat on
+   the modal's scrim, clickable behind an aria-modal dialog). It comes back as the sheet closes, and the sheet's close
+   returns focus to the row or link that opened it (Desk.tsx closeSheet). Pure CSS: nothing to time, no flash. */
+body:has(.dk-sheet[role="dialog"]) .tp { display: none; }
+/* S1-13 (the DD's 06:25 ruling): the page-wide state line (Track R's .st-strip, at the foot) and the pill never cover
+   each other. On a wide screen the pill rises by the line's height (--tp-lift, TourPill.tsx); on a phone the line sits
+   on the strip instead (states.css). */
+/* The phone's names after the visible words (WCAG 2.5.3, Round 4's a11y fix 3): drawn only on a phone, for a screen reader. */
+.tp .tp-tail { display: none; }
+@media (max-width: 720px) {
+  /* S1-13 (brand.md §10.4: the bottom rail is gone): a full-width solid strip on the window's bottom edge, its 46 px
+     row above the home indicator's inset (12 px at least). No fade above it: a fade let lines show half-read through
+     it, and the straddle rule (system.md §4) already lands every line wholly above its edge or wholly under it. Over
+     the page, under the menu's sheet (60). */
+  .tp { z-index: 31; left: 0; right: 0; bottom: 0; height: calc(var(--tp-h) + max(12px, env(safe-area-inset-bottom))); transform: none; max-width: none; justify-content: center; padding: 0 var(--s-1, 8px) max(12px, env(safe-area-inset-bottom)); border: 0; border-top: 1px solid var(--line, rgba(244, 234, 220, .12)); border-radius: 0; }
+  body:has(.tp) { padding-bottom: calc(var(--tp-h) + max(12px, env(safe-area-inset-bottom)) + var(--s-4, 32px)); }
+  /* A focused control is never under the strip (WCAG 2.4.11; Round 3's a11y fix 2): the strip and --s-2 to spare. */
+  html:has(.tp) { scroll-padding-bottom: calc(46px + max(12px, env(safe-area-inset-bottom)) + var(--s-2, 16px)); }
+  /* The strip names the stop by number and name; "Judge tour" and "of N" stay for a screen reader, after them. */
+  /* Round 4's a11y fix 3: they leave the name too (display: none), so the name starts with the strip's visible words
+     ("02 · The Watcher"); .tp-tail says them after. */
+  .tp .tp-k, .tp .tp-of { display: none; }
+  .tp .tp-tail { display: inline; position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .tp .tp-name { max-width: 40vw; overflow: hidden; text-overflow: ellipsis; }
+}
+@media (prefers-reduced-motion: reduce) { .tp a, .tp button { transition: none; } }
+/* Round 5's shopper seat, B3: the link her first Tab lands on (TourPill). Out of sight until it holds focus; fixed, so where it sits in the page's order moves nothing on screen. */
+.tp-jump { position: fixed; z-index: 70; top: calc(var(--nav-h, 64px) + var(--s-1, 8px)); bottom: auto; inset-inline: var(--s-2, 16px); width: fit-content; height: fit-content; margin: 0 auto; border: 0; display: flex; align-items: center; min-height: 44px; padding: var(--s-1, 8px) var(--s-3, 24px); border-radius: var(--r-pill, 999px); background: var(--page-solid, #2c1520); color: var(--ink, #f4eadc); font: inherit; text-align: center; text-decoration: none; }
+.tp-jump:not(:focus) { clip-path: inset(50%); }
+.tp-jump:focus-visible { outline: 2px solid var(--focus, #f4eadc); outline-offset: 2px; }

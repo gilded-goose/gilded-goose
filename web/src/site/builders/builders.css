@@ -1,0 +1,37 @@
+/* Everything in the repo: quiet rows on one white card per section; name, one line, and where it runs in mono. */
+.bd { display: grid; gap: var(--s16); padding-block: var(--s16) var(--s24); }
+.bd-head { display: grid; gap: var(--s4); max-width: 720px; }
+.bd-sec { display: grid; gap: var(--s4); }
+.bd-h { font-size: var(--t-lg); font-weight: 500; letter-spacing: -0.01em; }
+.bd-list {
+  margin: 0;
+  padding: 0 var(--s6);
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: var(--r-4);
+  background: var(--surface-raised);
+}
+.bd-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s1);
+  padding-block: var(--s4);
+  border-top: 1px solid var(--line);
+}
+.bd-row:first-child { border-top: 0; }
+.bd-name { font-weight: 500; color: var(--ink); }
+.bd-line { color: var(--ink-2); line-height: var(--lh-body); text-wrap: pretty; }
+.bd-where { justify-self: start; font-family: var(--font-mono); font-size: var(--t-sm); color: var(--ink-3); }
+a.bd-where { min-height: var(--tap); display: inline-flex; align-items: center; color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) {
+  a.bd-where:hover { text-decoration-color: var(--ink); }
+}
+@media (min-width: 900px) {
+  .bd-row { grid-template-columns: 200px minmax(0, 1fr) 200px; gap: var(--s6); align-items: baseline; }
+  .bd-where { justify-self: end; text-align: right; }
+  a.bd-where { min-height: 0; }
+}
+.bd-not { display: grid; gap: var(--s2); margin: 0; padding: 0 0 0 var(--s5); color: var(--ink-2); max-width: 720px; }
+/* Try the guard: the room its lazy part takes while it's still empty, so what's below barely moves when the part lands
+   (a phone's is taller). The page's one bare div; a class would be bytes on this page's first load. */
+.bd > :empty { min-height: 560px; }

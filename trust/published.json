@@ -1,0 +1,15 @@
+{
+  "name": "@gilded-goose/trust",
+  "version": "0.1.0",
+  "tarball": "https://registry.npmjs.org/@gilded-goose/trust/-/trust-0.1.0.tgz",
+  "integrity": "sha512-JBXlFpahRqtuvrPsP6BtjFib1MsfQxU68LTL6cHMWTO0H+93N7QVbsKIPeyBeLB++fnaWvG1IX5OCiNxeme/ig==",
+  "entry": "seller",
+  "files": {
+    "dist/asks.js": "890f1f34bbb981c0daf85b74577cc881e319d0f4dc768303b9b867031029095d",
+    "dist/fence.js": "64809add885a0ab3ae66be8117d3fb861f652ef3969cf32382cd31827cd8a1eb",
+    "dist/notes.js": "6b317f9f43cf17038d29cd8229917e977b4c2ee670593a5145a3ec411b590989",
+    "dist/reader.js": "3f4c93e06a0746dbfe979912078448241a0692651abc3b2ebc0a20de3ae4f4a6",
+    "dist/seller.js": "d67961c0867cc08ac7eb760c52e667b58a6928650bdeeed74eeb7914bd608db0",
+    "dist/watch.js": "80c106cddcfaee86de6c3e13edb4691af3ecdc312f7eefe18ec7a6e798e57699"
+  }
+}

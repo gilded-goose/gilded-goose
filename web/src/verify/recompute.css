@@ -1,0 +1,48 @@
+/* "Recompute it yourself" (Recompute.tsx): the fields on one side, the text and the two fingerprints on the other; one
+   column on a phone. Only this site's tokens (site/tokens.css): no colour, size or radius of its own. */
+
+.fp { display: grid; gap: var(--s5); min-width: 0; }
+.fp-lede { max-width: var(--measure); color: var(--ink-2); }
+.fp-note { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2) var(--s3); max-width: var(--measure); color: var(--ink-2); font-size: var(--t-sm); }
+.fp-note > span:last-child { flex: 1 1 28ch; }
+
+.fp-cols { display: grid; gap: var(--s6); min-width: 0; padding: var(--s5); background: var(--surface-raised); border: 1px solid var(--line-strong); border-radius: var(--r-3); }
+.fp-col { display: grid; gap: var(--s3); align-content: start; min-width: 0; }
+.fp-h { font-size: var(--t-sm); font-weight: var(--w-strong); color: var(--ink-2); }
+
+.fp-fields { display: grid; gap: var(--s2); margin: 0; padding: 0; list-style: none; counter-reset: fp; }
+.fp-field { display: grid; grid-template-columns: 2ch minmax(0, 1fr); column-gap: var(--s3); row-gap: var(--s1); align-items: baseline; counter-increment: fp; }
+.fp-field::before { content: counter(fp); grid-row: 1 / span 2; font-family: var(--font-mono); font-size: var(--t-xs); color: var(--ink-3); text-align: right; }
+.fp-name { grid-column: 2; font-size: var(--t-xs); color: var(--ink-2); }
+.fp-box,
+.fp-fixed { grid-column: 2; min-width: 0; font-family: var(--font-mono); font-size: var(--t-sm); color: var(--ink); }
+.fp-box { width: 100%; min-height: var(--tap); padding: 0 var(--s3); background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--r-2); }
+.fp-box[aria-invalid="true"] { border-color: var(--vermilion-ink); }
+.fp-fixed { padding-block: var(--s1); overflow-wrap: anywhere; }
+.fp-quiet { color: var(--ink-3); }
+
+.fp-try { color: var(--ink-2); font-size: var(--t-sm); }
+.fp-acts { display: flex; flex-wrap: wrap; gap: var(--s2); }
+
+/* One long line of text: it wraps anywhere, and each continuation hangs under the line's start. */
+.fp-text { margin: 0; padding: var(--s3) var(--s3) var(--s3) calc(var(--s3) + 2ch); text-indent: -2ch; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: var(--t-xs); line-height: var(--lh-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-2); }
+.fp-fine { max-width: var(--measure); color: var(--ink-2); font-size: var(--t-sm); }
+.fp-fine a { color: var(--ink); text-decoration: underline; text-underline-offset: 0.18em; }
+
+.fp-pair { display: grid; gap: var(--s3); margin: 0; }
+.fp-pair dt { font-size: var(--t-xs); color: var(--ink-2); }
+.fp-hash { margin: 0; min-height: calc(var(--t-sm) * var(--lh-body)); font-family: var(--font-mono); font-size: var(--t-sm); overflow-wrap: anywhere; color: var(--ink); }
+
+.fp-said { display: flex; align-items: center; gap: var(--s2); min-height: var(--tap); padding: var(--s2) var(--s3); font-weight: var(--w-medium); color: var(--ink-2); border: 1px solid var(--line-strong); border-radius: var(--r-2); }
+.fp-mark { flex: none; width: var(--s5); height: var(--s5); }
+.fp[data-state="match"] .fp-said { color: var(--signal); border-color: var(--signal); }
+.fp[data-state="differ"] .fp-said,
+.fp[data-state="none"] .fp-said,
+.fp[data-state="cant"] .fp-said { color: var(--vermilion-ink); border-color: var(--vermilion-ink); }
+.fp[data-state="differ"] .fp-pair > div:first-child .fp-hash { color: var(--vermilion-ink); }
+
+.fp-key { max-width: var(--measure); padding-left: var(--s4); border-left: 2px solid var(--ink); color: var(--ink); }
+
+@media (min-width: 900px) {
+  .fp-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: var(--s6); }
+}

@@ -1,0 +1,35 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+build/
+.venv/
+__pycache__/
+*.log
+.DS_Store
+.goose/
+
+# Local Claude Code settings (paths to the private vault); never in the public repo
+.claude/settings.json
+
+# Reference screenshots of other companies' public pages, for design study only (trademarks never go in the public repo)
+docs/design/reference/
+
+# Arthur's prediction notes about Joshua; never in the public repo (scripts/check-private.sh enforces it)
+docs/private/
+
+# Spike S8 generated audio (regenerate with node spikes/s8-voice/make-audio.ts)
+spikes/s8-voice/audio/
+spikes/s8-voice/.cert/
+spikes/s8-voice/results/iphone*.jsonl
+spikes/s8-voice/results/manual*.jsonl
+
+# Video takes (scripts/video-takes.ts, `pnpm video:takes`): re-shot after any merge, never committed
+docs/video/takes/
+# A track's recordings for Joshua (Track M: the menu), sent before a merge, never committed
+docs/video/track-*/
+trust/.pack/
+
+# A designer's debug probes and renders (web/.probe/): local only, never committed
+web/.probe/

@@ -1,0 +1,17 @@
+/* The mark beside the name: the goose, about two cap heights tall so its beak and feet stay legible. */
+.gz-mark { display: block; width: auto; height: 40px; flex: none; user-select: none; }
+
+/* The loading screen (the box the loading egg had: its art was 64px wide at 200 / 240, so 76.8px tall; the same gap and padding). A loop only while something loads. */
+.gz-load { display: grid; place-items: center; align-content: center; gap: var(--s4); padding-block: var(--s12); color: var(--ink-3); font-size: var(--t-sm); }
+.gz-load[data-fill] { min-height: calc(100svh - var(--header-h) - var(--s16)); }
+.gz-load .gz-mark { height: calc(64px * 1.2); }
+/* The walk: a waddle about the feet, so each tilt lifts the other foot, with a small bob at each step. Transform only.
+   Reduced motion never starts it: the goose stands. */
+.gz-walk { transform-origin: 50% 100%; }
+@media (prefers-reduced-motion: no-preference) {
+  .gz-walk { animation: gz-walk 640ms ease-in-out infinite; }
+}
+@keyframes gz-walk {
+  25% { transform: translateY(-4%) rotate(-5deg); }
+  75% { transform: translateY(-4%) rotate(5deg); }
+}

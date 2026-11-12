@@ -1,0 +1,52 @@
+/* How it works (Track SYS): one diagram on the room's own velvet. Tokens only; gold only on the steps that are code. */
+
+/* The page paints its own room from the tokens: it loads no desk.css, so nothing else gives .dk its fill or its ink
+   (without this the words sat on the browser's white for axe, and on whatever the html behind happened to be). */
+.how { min-height: 100vh; background: var(--page-solid); color: var(--ink); font-family: var(--face); font-size: var(--t-body); line-height: var(--lh-body); -webkit-font-smoothing: antialiased; }
+/* The bar's own frame (.dk-wrap): 1200 with the gutters inside, so the heading lines up under the brand. */
+.how-wrap { box-sizing: border-box; max-width: var(--w-page); margin: 0 auto; padding: 0 var(--gutter); }
+.how-main { padding-top: var(--s-8); padding-bottom: var(--s-8); }
+.how-head { max-width: 720px; margin-bottom: var(--s-6); }
+.how-head h1 { margin: 0 0 var(--s-2); font: var(--w-display) var(--t-h1) / var(--lh-display) var(--display); letter-spacing: var(--track-display); }
+.how-lead { margin: 0; font-size: var(--t-lead); line-height: var(--lh-body); color: var(--ink-2); }
+
+.how-fig { margin: 0; }
+.how-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.how-tall { display: none; max-width: 520px; margin: 0 auto; }
+
+.how-box { fill: var(--card); stroke: var(--card-line); stroke-width: 1; }
+.how-arrow, .how-tap { fill: none; stroke: var(--ink-3); stroke-width: 1.5; }
+.how-tap { stroke: var(--ink-2); }
+.how-tip { fill: var(--ink-2); }
+.how-tap-label { fill: var(--ink-2); font: var(--w-strong) var(--t-micro) var(--face); letter-spacing: .01em; }
+
+.how-in { box-sizing: border-box; height: 100%; padding: var(--s-2); display: flex; flex-direction: column; gap: var(--s-1); color: var(--ink); font-family: var(--face); }
+.how-kind { align-self: flex-start; padding: 0 var(--s-1); border: 1px solid var(--line-2); border-radius: var(--r-pill); font: var(--w-strong) var(--t-micro) / var(--lh-micro) var(--face); color: var(--ink-2); }
+.how-kind[data-code] { border-color: var(--gold-line); color: var(--gold); }
+.how-name { font: var(--w-head) var(--t-h3) / var(--lh-head) var(--display); letter-spacing: var(--track-head); }
+.how-line { font-size: var(--t-small); line-height: 1.45; color: var(--ink-2); }
+.how-files { margin-top: auto; display: grid; gap: 0; }
+.how-files code { font: var(--t-micro) / 1.35 ui-monospace, "SF Mono", Menlo, monospace; color: var(--ink-3); }
+
+/* The DD (Oct 31): --s-10 from the diagram's last line to the link's words. The wide SVG ends 2 units under the tap line,
+   and the link's 44 px target sets its words ~14 px down, so --s-8 here reads as 80 px of ink gap at 1440 and 390. */
+.how-next { margin: var(--s-8) 0 0; }
+.how-next a { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; color: var(--ink); text-underline-offset: 4px; }
+.how :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: var(--r-1); }
+
+.how-foot { padding-bottom: var(--s-6); color: var(--ink-3); font-size: var(--t-micro); }
+.how-foot p { margin: 0; padding-top: var(--s-2); border-top: var(--hair); }
+
+.how-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Five across needs the whole 1136 px; below that the steps stack. */
+@media (max-width: 1199px) {
+  .how-wide { display: none; }
+  .how-tall { display: block; }
+}
+@media (max-width: 720px) {
+  .how-wrap { padding: 0 var(--s-2); }
+  .how-main { padding-top: var(--s-5); }
+  .how-head { margin-bottom: var(--s-4); }
+  .how-foot { padding-bottom: calc(var(--s-10) + env(safe-area-inset-bottom)); }
+}

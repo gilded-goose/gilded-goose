@@ -1,0 +1,105 @@
+/* The Challenge (Joshua's Tier 2a), the landing's centerpiece. Colors, type, space and motion come only from tokens.css.
+   Two columns at width: the words and the counter hold still while the note and its answer grow beside them. One glass
+   surface, the note's own, the story's third and last; the case is the moment's own (moment.css). The verdict is the only
+   big line. Red appears only if a try ever gets Goose to pay. */
+.ds-ch-count { margin-top: var(--s-5); padding-top: var(--s-3); border-top: var(--hair); max-width: 31rem; }
+.ds-ch-line { margin: 0; color: var(--ink); font-size: var(--t-lead); font-weight: var(--w-strong); line-height: 1.4; text-wrap: pretty; }
+.ds-ch-outcome { display: block; }
+.ds-ch-cut { margin: var(--s-1) 0 0; color: var(--ink-2); }
+.ds-ch-next { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-3); margin: 0; }
+/* Joshua, Nov 4: the Watcher is the weakest layer and we show it, so what holds anyway reads at least as clearly as what it
+   caught. The second line carries both; it and "places no order" are body type, in ink. */
+.ds-ch .ds-ch-second { margin: var(--s-1) 0 0; color: var(--ink); font-size: var(--t-body); line-height: 1.5; text-wrap: pretty; }
+.ds-ch-full { margin: var(--s-1) 0 0; color: var(--ink-2); }
+.ds-ch-count[data-alarm] .ds-ch-line { color: var(--red); }
+.ds-ch .ds-ch-noorder { margin: var(--s-2) 0 0; max-width: 31rem; color: var(--ink); font-size: var(--t-body); line-height: 1.5; text-wrap: pretty; }
+
+/* Under the counter: the latest tries, or the three layers. Quiet: the verdict across the page is the only big line. */
+.ds-ch-feed { margin-top: var(--s-5); padding-top: var(--s-3); border-top: var(--hair); max-width: 31rem; }
+.ds-ch .ds-ch-feed-h { margin: 0 0 var(--s-2); color: var(--ink); font-size: var(--t-small); font-weight: var(--w-strong); line-height: 1.5; }
+.ds-ch-layers, .ds-ch-tries { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.ds-ch-layers li { color: var(--ink-2); font-size: var(--t-small); line-height: 1.5; text-wrap: pretty; }
+.ds-ch-layer-name { display: block; color: var(--ink); font-weight: var(--w-strong); }
+.ds-ch-tries li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 var(--s-2); font-size: var(--t-small); line-height: 1.5; }
+.ds-ch-tries li[data-new] { animation: arrive var(--d-3) var(--spring) both; }
+.ds-ch-try-verdict { color: var(--ink); font-weight: var(--w-strong); }
+.ds-ch-tries li[data-verdict="paid"] .ds-ch-try-verdict { color: var(--red); }
+.ds-ch-try-when { color: var(--ink-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ds-ch-try-what { grid-column: 1 / -1; color: var(--ink-2); overflow-wrap: anywhere; }
+.ds-ch .ds-ch-feed-note { margin: var(--s-2) 0 0; color: var(--ink-3); text-wrap: pretty; }
+
+.ds-ch-form { display: grid; gap: var(--s-2); padding: var(--s-4); border-radius: var(--r-3); background: var(--glass-light), var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-line); box-shadow: var(--glass-edge), var(--glass-shadow); }
+.ds-ch-label { display: block; color: var(--ink-2); font-size: var(--t-small); }
+.ds-ch-note, .ds-ch-money { width: 100%; box-sizing: border-box; border: 1px solid var(--line-2); border-radius: var(--r-2); background: none; color: var(--ink); font: inherit; font-size: var(--t-body); transition: border-color var(--d-1); }
+.ds-ch-note { display: block; min-height: 112px; padding: var(--s-2); line-height: 1.5; resize: vertical; overflow-wrap: anywhere; }
+.ds-ch-note::placeholder { color: var(--ink-3); opacity: 1; }
+.ds-ch-note:hover, .ds-ch-money:hover { border-color: var(--ink-3); }
+.ds-ch-row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s-2); }
+.ds-ch-price { display: grid; gap: var(--s-1); width: 136px; }
+.ds-ch-money { display: flex; align-items: center; gap: var(--s-1); min-height: 52px; padding: 0 var(--s-2); }
+.ds-ch-money:focus-within { outline: 2px solid var(--focus); outline-offset: 3px; }
+.ds-ch-money input { flex: 1; min-width: 0; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; }
+.ds-ch-money input:focus-visible { outline: none; } /* the field around it draws the ring */
+.ds-ch-send { flex: 1 1 auto; max-width: 280px; cursor: pointer; }
+.ds-ch-send:disabled { opacity: .5; cursor: default; }
+.ds-ch-send[data-busy] { cursor: progress; }
+.ds-ch-chips { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1); margin-top: var(--s-1); }
+.ds-ch-chips .ds-small { flex-basis: 100%; }
+.ds-ch-chip { min-height: 44px; padding: 0 var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-pill); background: none; color: var(--ink-2); font: inherit; font-size: var(--t-small); cursor: pointer; transition: color var(--d-1), border-color var(--d-1); }
+.ds-ch-chip:hover, .ds-ch-chip[aria-pressed="true"] { color: var(--ink); border-color: var(--ink-3); }
+.ds-ch-chip-layer { color: var(--ink-3); font-size: var(--t-micro); white-space: nowrap; }
+.ds-ch-error { margin: 0; scroll-margin-top: calc(var(--nav-h) + var(--s-3)); color: var(--red); font-size: var(--t-small); line-height: 1.5; }
+.ds-ch-away { color: var(--ink-2); }
+
+.ds-ch-ai { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-3); margin-top: var(--s-3); padding: 0 var(--s-4); }
+.ds-ch-ai-h { margin: 0; color: var(--ink); font-size: var(--t-body); font-weight: var(--w-strong); line-height: 1.4; }
+.ds-ch .ds-ch-ai-h, .ds-ch .ds-ch-line { text-wrap: balance; } /* two classes: .dk p would win over one */
+.ds-ch-ai-p { margin-top: var(--s-1); color: var(--ink-2); max-width: 36em; text-wrap: pretty; }
+.ds-ch-ai-go { min-height: 52px; padding: 0 var(--s-3); border: 1px solid var(--ink-3); border-radius: var(--r-pill); background: none; color: var(--ink); font: inherit; font-size: var(--t-small); font-weight: var(--w-strong); white-space: nowrap; cursor: pointer; transition: border-color var(--d-1), background-color var(--d-1); }
+.ds-ch-ai-go:hover { border-color: var(--ink); }
+.ds-ch-ai-go:disabled { opacity: .5; cursor: default; }
+.ds-ch-ai-go[data-busy] { cursor: progress; }
+.ds-ch-who { color: var(--ink-2); font-size: var(--t-small); line-height: 1.5; text-wrap: pretty; }
+
+.ds-ch-result:not(:empty) { margin-top: var(--s-5); }
+.ds-ch-verdict { display: grid; gap: var(--s-2); scroll-margin-top: calc(var(--nav-h) + var(--s-3)); animation: arrive var(--d-3) var(--spring) both; }
+.ds-ch-verdict:focus { outline: none; } /* moved here by code, for a screen reader: nothing on it to press */
+.ds-ch-verdict > * { margin: 0; }
+.ds-ch-title { color: var(--ink); font-family: var(--display); font-weight: var(--w-display); font-size: var(--t-h2); line-height: 1.1; letter-spacing: var(--track-display); }
+.ds-ch-title[data-paid] { color: var(--red); }
+.ds-ch-say { color: var(--ink-2); font-size: var(--t-body); line-height: 1.55; text-wrap: pretty; }
+.ds-ch-facts { display: grid; gap: var(--s-1); }
+.ds-ch-facts > div, .ds-ch-how dl > div { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: var(--s-2); }
+.ds-ch-facts dt, .ds-ch-how dt { color: var(--ink-3); font-size: var(--t-small); }
+.ds-ch-facts dd, .ds-ch-how dd { margin: 0; color: var(--ink); font-size: var(--t-small); line-height: 1.5; overflow-wrap: anywhere; }
+.ds-ch-case .sm-case { margin: 0; }
+.ds-ch-counted { color: var(--ink-2); }
+.ds-ch-how summary, .ds-ch-fold summary { display: flex; align-items: center; gap: var(--s-1); width: fit-content; min-height: 44px; color: var(--ink); font-size: var(--t-small); font-weight: var(--w-strong); cursor: pointer; }
+.ds-ch-how summary::-webkit-details-marker, .ds-ch-fold summary::-webkit-details-marker { display: none; }
+.ds-ch-how summary span, .ds-ch-fold summary span { display: inline-block; color: var(--ink-2); font-size: var(--t-body); line-height: 1; transition: transform var(--d-1) var(--ease); }
+.ds-ch-how[open] summary span, .ds-ch-fold[open] summary span { transform: rotate(90deg); }
+.ds-ch-how dl { display: grid; gap: var(--s-1); margin: 0 0 var(--s-2); }
+.ds-ch-fold { margin-top: var(--s-4); padding-top: var(--s-1); border-top: var(--hair); }
+.ds-ch-fold p { margin: 0 0 var(--s-2); max-width: 44em; color: var(--ink-2); font-size: var(--t-small); line-height: 1.55; }
+
+@media (prefers-reduced-motion: reduce) { .ds-ch-verdict, .ds-ch-tries li[data-new] { animation: none; } .ds-ch-how summary span, .ds-ch-fold summary span { transition: none; } }
+
+@media (min-width: 961px) { .ds-ch-facts > div { grid-template-columns: 160px minmax(0, 1fr); } }
+
+@media (max-width: 960px) {
+  /* One column: the note and Send come right under the lines, then the tally, then the feed (the DD on Option B, Nov 6:
+     the counter above an unseen field read as an empty state). The tally's rule now parts it from the form. */
+  .ds-ch-copy { order: 1; }
+  .ds-ch-work { order: 2; }
+  .ds-ch-tally { order: 3; }
+  .ds-ch-tally .ds-ch-count { margin-top: 0; }
+  .ds-ch-feed { order: 4; margin-top: 0; }
+}
+@media (max-width: 720px) {
+  .ds-ch-form { padding: var(--s-3); }
+  .ds-ch-ai { grid-template-columns: minmax(0, 1fr); padding: 0 var(--s-3); }
+  .ds-ch-ai-go { width: 100%; white-space: normal; }
+  .ds-ch-send { max-width: none; }
+  .ds-ch-price { width: 100%; }
+  .ds-ch-facts > div, .ds-ch-how dl > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}

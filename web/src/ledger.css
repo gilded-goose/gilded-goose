@@ -1,0 +1,319 @@
+/* "Every decision" (Track C). Loaded with the ledger's own chunk, never in the first paint. Colors are the page's
+   tokens (index.html :root), so light and dark follow the page. */
+.lg-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 16px; }
+/* W74: full screen on a phone too, with a thumb-sized target */
+.lg-bar .linkish { min-height: 44px; }
+.lg-bar p { margin: 0 0 8px; }
+.lg-moment-line { margin: 0 0 8px; padding: 8px 12px; border-radius: 10px; background: var(--teal-wash); color: var(--ink); font-size: var(--t-small, 15px); }
+/* Outlined: the cart card's place holds the filled "Back to now"; this one is the same way back, one step quieter. */
+.lg-moment-line .back-now { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; margin-left: 6px; border-radius: 999px; border: 1.5px solid var(--teal); background: transparent; color: var(--teal); font-size: var(--t-small, 15px); font-weight: 560; }
+@media (max-width: 767px) { .lg-moment-line .back-now { display: flex; width: fit-content; margin: 8px 0 0; } }
+.rcard.past .btn { margin-top: 8px; }
+.lg-tools { margin: 4px 0 12px; }
+.lg-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 8px; }
+.lg-k { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--grey); width: 3.6em; font-weight: 560; }
+.lg-chip { min-height: 36px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: var(--ink); font-size: 13px; font-weight: 560; }
+.lg-chip small { color: var(--grey); font-size: 12px; margin-left: 2px; }
+.lg-chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.lg-chip[aria-pressed="true"] small { color: inherit; opacity: .8; }
+.lg-chip:focus-visible, .lg-pick:focus-visible, .spine-close:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.lg-search { margin-left: auto; display: flex; }
+.lg-search input { min-height: 36px; width: 300px; max-width: 100%; border: 1px solid var(--line); border-radius: 999px; padding: 4px 14px; background: var(--white); font-size: var(--t-small, 15px); }
+.lg-search input:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+.lg-count { margin: 0; }
+.lg-empty { padding: 24px; text-align: center; color: var(--grey); border: 1px dashed var(--line); border-radius: 12px; }
+
+.lg-filters { margin: 4px 0 12px; border: 1px solid var(--line); border-radius: 12px; padding: 0 12px; }
+.lg-filters summary { min-height: 44px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 560; color: var(--teal); list-style: none; }
+.lg-filters summary::-webkit-details-marker { display: none; }
+.lg-filters summary span { color: var(--grey); font-weight: 400; font-size: var(--t-micro, 13px); }
+.lg-filters[open] { padding-bottom: 4px; }
+
+/* tags in rows */
+.tag.layer { font-style: normal; white-space: nowrap; }
+.tag.layer.lhaggle { background: var(--paper); color: var(--grey); }
+.tag.layer.l1, .tag.layer.l2, .tag.layer.l3, .tag.layer.l5 { background: var(--teal-wash); color: var(--teal); font-weight: 560; }
+.tag.layer.l4 { background: var(--red-wash); color: var(--red); font-weight: 560; }
+code.rule { font: 600 11.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; color: var(--ink); white-space: nowrap; }
+.none { color: var(--soft); font-size: 13px; }
+.lg-why { line-height: 1.45; display: block; padding: 10px 0; }
+.lg-why.clamp { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; padding: 0; line-height: 1.4; font-size: var(--t-micro, 13px); }
+.lg-why.clamp.long, .ag-row-selected .lg-why.clamp { -webkit-line-clamp: 6; line-clamp: 6; }
+.lg-grid .lg-clamp, .lg-grid .ag-cell[col-id="why"], .lg-grid .ag-cell[col-id="did"] { white-space: normal; line-height: 1.3; }
+.lg-grid .ag-cell[col-id="why"] { overflow: hidden; }
+.lg-grid .ag-cell[col-id="why"] > *, .lg-grid .ag-cell[col-id="why"] .lg-why { min-width: 0; max-width: 100%; }
+.rules { display: flex; flex-wrap: wrap; gap: 3px; }
+.lg-did i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; background: var(--teal); }
+.lg-did.refused i { background: var(--red); } .lg-did.asked i { background: var(--amber); } .lg-did.flagged i { background: var(--amber); }
+.lg-did.refused { color: var(--red); font-weight: 560; }
+.lg-seq { color: var(--grey); font-variant-numeric: tabular-nums; }
+
+/* the grid */
+.lg-grid { width: 100%; }
+.lg-grid .ag-cell { line-height: 1.45; display: flex; align-items: center; }
+.lg-grid .ag-cell-wrap-text { word-break: normal; overflow-wrap: anywhere; }
+.lg-grid .ag-row { cursor: pointer; }
+.lg-grid .ag-row.lg-refused { background: var(--red-wash); }
+.lg-grid .ag-row.lg-refused .ag-cell { color: var(--red); }
+.lg-grid .ag-row.lg-refused .ag-cell:first-child { box-shadow: inset 4px 0 0 var(--red); }
+/* PayPal additions 3: PayPal's report differs from this ledger. Red like a refusal, but no verdict: it moves no count. */
+.lg-grid .ag-row.lg-differs { background: var(--red-wash); }
+.lg-grid .ag-row.lg-differs .ag-cell { color: var(--red); }
+.lg-grid .ag-row.lg-differs .ag-cell:first-child { box-shadow: inset 4px 0 0 var(--red); }
+.lg-grid .ag-row.lg-scam .ag-cell:first-child { box-shadow: inset 4px 0 0 var(--red); }
+.lg-grid .ag-row.lg-asked .ag-cell:first-child { box-shadow: inset 4px 0 0 var(--amber); }
+.lg-grid .ag-row.lg-unmatched .ag-cell:first-child { box-shadow: inset 4px 0 0 var(--amber); }
+.lg-grid .ag-row.ag-row-selected .ag-cell:first-child { box-shadow: inset 4px 0 0 var(--teal); }
+/* the theme's selection colour is off; picked rows are teal here, except the refusal, which stays red (the bar says "picked") */
+.lg-grid .ag-row.ag-row-selected:not(.lg-refused) { background: var(--teal-wash); }
+.lg-grid .ag-row.lg-refused { --ag-internal-row-overlay-color: transparent !important; }
+/* the row is the action, so focus shows on the row, not as a spreadsheet cell box */
+.lg-grid .ag-cell-focus:not(.ag-cell-range-selected):focus-within { border-color: transparent; }
+.lg-grid .ag-row-focus { outline: 2px solid var(--teal); outline-offset: -2px; }
+.motion .lg-grid .ag-row.lg-fresh { animation: lg-in var(--d-3, 400ms) var(--ease, ease-out); }
+@keyframes lg-in { from { background: var(--teal-wash); } }
+
+/* cards under 768 px (the table turns into cards; index.html's .ltable rules) */
+.ltable tr.picked { background: var(--teal-wash); }
+.ltable tr.refused td { color: var(--red); }
+.ltable tr.scam, .ltable tr.refused { box-shadow: inset 3px 0 0 var(--red); }
+.ltable tr[data-seq] { cursor: pointer; }
+.lg-pick { min-width: 44px; min-height: 44px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); font-weight: 560; font-variant-numeric: tabular-nums; }
+.lg-pick[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.ltable td.who .lg-did { color: var(--grey); }
+.lg-tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 2px 0 0; }
+.ltable .lg-why { padding: 4px 0 0; }
+@media (max-width: 767px) {
+  .ltable, .ltable tbody { display: block; }
+  .ltable tr { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 10px; padding: 10px 0; border-top: 1px solid var(--line); align-items: center; }
+  .ltable tr.scam, .ltable tr.refused { padding-left: 10px; }
+  .ltable td { border: 0; padding: 0; width: auto !important; }
+  .ltable td.amt { padding-right: 0; }
+  .ltable td.why { grid-column: 1 / -1; }
+  .lg-search { margin-left: 0; width: 100%; } .lg-search input { width: 100%; min-height: 44px; }
+  .lg-chip { min-height: 44px; }
+  .lg-k { width: 100%; }
+}
+
+/* full screen: the spine, filmable (≥ 15 s in the video) */
+html.spine-open { overflow: hidden; }
+.spine { position: fixed; inset: 0; z-index: 50; background: var(--bg); display: flex; flex-direction: column; padding: 20px 24px; gap: 4px; }
+.spine-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.spine-head h2 { font-size: 26px; letter-spacing: -0.015em; margin: 0; }
+.spine-head h2 small { font-size: var(--t-micro, 13px); color: var(--grey); font-weight: 400; margin-left: 12px; letter-spacing: 0; }
+.spine-head p { margin: 4px 0 8px; }
+.spine-actions { display: flex; gap: 10px; align-items: center; flex: none; }
+.spine-close { min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: var(--ink); font-weight: 560; }
+.spine-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 312px; gap: 20px; }
+.spine-table { min-height: 0; display: flex; flex-direction: column; }
+.lg-grid.full { flex: 1; min-height: 0; height: 100%; }
+.moment { border: 1px solid var(--line); border-radius: 12px; padding: 18px; overflow: auto; background: var(--white); }
+.moment-k { margin: 0 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--grey); font-weight: 560; }
+.moment h3 { margin: 0 0 12px; font-size: 20px; line-height: 1.25; letter-spacing: -0.01em; }
+.moment h3.refused { color: var(--red); } .moment h3.ok { color: var(--teal); }
+.moment-row { border-left: 3px solid var(--line); padding: 2px 0 2px 12px; margin: 0 0 14px; }
+.moment-row.refused { border-color: var(--red); } .moment-row.asked { border-color: var(--amber); }
+.moment-row p { margin: 6px 0 0; color: var(--grey); font-size: var(--t-small, 15px); }
+.moment-cap { font-size: var(--t-micro, 13px); color: var(--grey); margin: 0 0 8px; } .moment-cap b { color: var(--ink); }
+.moment-lanes { list-style: none; margin: 0 0 14px; padding: 0; }
+.moment-lanes li { display: grid; grid-template-columns: 1fr auto; gap: 0 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+.moment-lanes li b { font-size: 17px; text-align: right; }
+.moment-lanes li small { grid-column: 1 / -1; color: var(--grey); font-size: 13px; }
+.moment-lanes li.refused span, .moment-lanes li.refused b, .moment-lanes li.refused small { color: var(--red); }
+.moment-lanes li.refused small { font-weight: 560; }
+.moment-lanes li.deal b, .moment-lanes li.deal small { color: var(--teal); font-weight: 560; }
+.moment-lanes li.agent span { color: var(--teal); font-weight: 560; }
+.moment-nav { display: flex; gap: 8px; flex-wrap: wrap; }
+/* "Back to now" is the way back to the cart card, so it reads as the action, not as another row chip. */
+.moment-nav .lg-chip.now { min-height: 44px; background: var(--cta); border-color: var(--cta); color: var(--on-cta); font-weight: 560; }
+.moment.compact h3 { margin: 0 0 4px; font-size: 18px; }
+.moment.compact p { margin: 0; color: var(--grey); font-size: var(--t-small, 15px); }
+@media (max-width: 767px) {
+  .spine { padding: 16px; overflow: auto; }
+  .spine-head { flex-direction: column; gap: 8px; } .spine-head h2 small { display: block; margin: 4px 0 0; }
+  /* the body takes its content's height and the spine scrolls: a fixed-height column-reverse box spills upward over the header */
+  .spine-body { display: flex; flex-direction: column-reverse; flex: none; }
+  .spine-body .moment, .spine-table { flex: none; overflow: visible; }
+}
+
+/* Design B, slice 3: the ledger is the lower half of the run's desk, and its rows are a printed receipt on it (torn
+   top and bottom, its own paper in both schemes, dashed rules like a till's). The refusal is stamped in gilt, as on
+   the wallet's card: red stays the threat, gold the protection. Scoped to the run page's inline ledger; the full
+   screen keeps the page's tokens. */
+.run:has(> details.ledger) > .rdesk { border-radius: 24px 24px 0 0; padding-bottom: 12px; }
+.run > details.ledger { background: var(--desk); color: var(--on-desk); border-radius: 0 0 24px 24px; padding: 6px 32px 32px; border-top: 1px dashed rgba(238, 243, 239, .18); }
+.run > details.ledger > summary { padding: 18px 0 10px; }
+.run > details.ledger > summary b { color: var(--on-desk); font-size: 26px; font-weight: 560; font-stretch: 112%; letter-spacing: -.01em; }
+.run > details.ledger > summary b span { color: var(--brass-hi); }
+.run > details.ledger > summary > span { color: var(--on-desk-2); font-size: var(--t-micro, 13px); }
+.run > details.ledger :focus-visible { outline: 3px solid var(--brass-hi); outline-offset: 2px; }
+.run > details.ledger .lg-bar .muted, .run > details.ledger .lg-count { color: var(--on-desk-2); }
+.run > details.ledger .lg-bar .linkish { color: var(--on-desk); font-weight: 560; text-decoration: underline; text-decoration-color: var(--brass-hi); text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+.run > details.ledger .lg-k { width: 6.4em; color: var(--on-desk-2); font-size: 13px; text-transform: none; letter-spacing: 0; }
+.run > details.ledger .lg-chip { border: 1px solid rgba(238, 243, 239, .28); background: transparent; color: var(--on-desk); }
+.run > details.ledger .lg-chip small { color: var(--on-desk-2); }
+.run > details.ledger .lg-chip[aria-pressed="true"] { background: var(--on-desk); border-color: var(--on-desk); color: var(--desk); }
+.run > details.ledger .lg-chip[aria-pressed="true"] small { color: var(--desk); }
+/* T-4: an empty filter reads as empty by its dashed edge, its words still AA on the desk (on-desk-2, 6.9:1), never faded. */
+.run > details.ledger .lg-chip:disabled { border-style: dashed; color: var(--on-desk-2); }
+.run > details.ledger .lg-search input { border: 0; background: var(--well); color: var(--ink); }
+.run > details.ledger .lg-search input::placeholder { color: var(--ink-3); }
+.run > details.ledger .lg-filters { border-color: rgba(238, 243, 239, .22); }
+.run > details.ledger .lg-filters summary { color: var(--on-desk); }
+.run > details.ledger .lg-filters summary span { color: var(--on-desk-2); }
+.run > details.ledger .dial { border-color: rgba(238, 243, 239, .18); color: var(--on-desk-2); }
+.run > details.ledger .dial b { color: var(--on-desk); }
+
+/* The receipt is one card with hairline rows on the Desk's roles (no torn paper, no light set, no shadow), the same
+   wherever it renders: the run page (run.css's `.cv` remap says the same) and /safe.html, which has no `.cv`. Its own
+   names point at the palette's roles; --ink and --line are the palette's own. */
+.lg-receipt { margin: 6px 0 4px; }
+.lg-paper {
+  --rp: var(--card); --white: var(--card); --grey: var(--ink-2); --soft: var(--ink-3); --paper: var(--surface);
+  --teal: var(--ink); --teal-wash: var(--surface-2); --red-wash: var(--well); --amber: var(--ink-2); --bg: var(--card);
+  --brass-ink: var(--gold-hi); --brass-wash: transparent;
+  padding: var(--s-2) var(--s-3) var(--s-3); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); color: var(--ink);
+}
+.lg-paper :focus-visible { outline-color: var(--teal); }
+.lg-paper .lg-grid .ag-root-wrapper { border: 0; border-radius: 0; background: var(--rp); }
+.lg-paper .lg-grid :is(.ag-header, .ag-header .ag-grid-scrolling-cells) { background: var(--rp); }
+.lg-paper .lg-grid .ag-header { border-bottom: 3px double var(--ink); }
+.lg-paper .lg-grid .ag-header-cell-text { color: var(--ink); font: 700 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .02em; }
+.lg-paper .lg-grid .ag-row { cursor: pointer; }
+.lg-paper .lg-grid .ag-row-hover:not(.lg-refused) { box-shadow: inset 3px 0 0 var(--teal); }
+/* The check tags print like a till's: ink on the paper with a thin rule round them, in the layer's colour. */
+.lg-paper .tag.layer { background: transparent; box-shadow: inset 0 0 0 1px currentColor; }
+.lg-paper .tag.layer.lhaggle { color: var(--grey); }
+.lg-paper .lg-grid .ag-row { border-bottom: 1px dashed var(--line); }
+.lg-paper .lg-grid .ag-cell[col-id="seq"], .lg-paper .lg-grid .ag-cell[col-id="price"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--t-micro, 13px); font-variant-numeric: tabular-nums; }
+.lg-paper .lg-grid .ag-cell[col-id="price"] { font-weight: 560; }
+.lg-paper .ltable tr { border-top: 1px dashed var(--line); }
+.lg-paper .ltable tr:first-child { border-top: 0; }
+.lg-paper .ltable tr.refused { background: var(--red-wash); }
+@media (max-width: 767px) {
+  .lg-paper .ltable tr.refused { padding: 12px 10px 14px; margin-bottom: 4px; }
+  /* The stamp takes its own line under the name, so the name keeps the card's width. */
+  .lg-paper .ltable tr td.amt:has(.lg-stamp) { grid-column: 2 / -1; grid-row: 2; justify-self: start; padding: 4px 0 6px; }
+  .lg-paper .ltable tr:has(td.amt .lg-stamp) td.why { grid-row: 3; }
+  .lg-paper .ltable td.amt .lg-stamp { margin: 0; transform: rotate(-4deg); }
+}
+
+/* The receipt's head (the store, then the run line in the till's type) and its foot (the tally, refused in red). */
+.lg-rhead { text-align: center; padding: 6px 0 14px; margin: 0 0 6px; border-bottom: 1px dashed var(--line); }
+.lg-store { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: 21px; font-weight: 560; font-stretch: 112%; color: var(--ink); }
+.lg-store .lg-mark { width: 18px; height: 22px; object-fit: contain; }
+.lg-run { margin: 4px 0 0; font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--grey); }
+.lg-rfoot { display: flex; align-items: end; justify-content: space-between; gap: 16px 40px; flex-wrap: wrap; margin: 10px 0 0; padding: 12px 0 2px; border-top: 3px double var(--ink); }
+.lg-rfoot > p { margin: 0; font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--grey); }
+.lg-tally { width: min(100%, 380px); margin: 0; font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.lg-tally div { display: flex; align-items: baseline; }
+.lg-tally dt { flex: 1; display: flex; align-items: baseline; color: var(--grey); }
+.lg-tally dt::after { content: ""; flex: 1; margin: 0 8px; border-bottom: 2px dotted var(--line); }
+.lg-tally dd { margin: 0; font-weight: 560; color: var(--ink); }
+.lg-tally .refused { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); font-size: 16px; }
+.lg-tally .refused :is(dt, dd) { color: var(--red); font-weight: 560; }
+
+/* The stamp: tilted, a gilt double ring, the verdict in the wallet's wide face. */
+.lg-stamp { position: relative; z-index: 1; display: inline-flex; flex-direction: column; align-items: center; gap: 1px; padding: 4px var(--s-1) 5px; border: 1px solid var(--gold-line); border-radius: var(--r-1); background: none; color: var(--gold-hi); line-height: 1.05; white-space: nowrap; }
+.lg-stamp b { font-size: 23px; font-weight: 560; font-stretch: 112%; letter-spacing: .01em; }
+.lg-stamp b::first-letter { text-transform: uppercase; }
+.lg-stamp small { font-size: var(--t-micro, 13px); font-weight: 560; }
+.lg-did.lg-stamp { color: var(--brass-ink); }
+.lg-grid .lg-stamp { margin-left: -6px; }
+.lg-grid .ag-row.lg-refused .ag-cell[col-id="did"] { overflow: visible; }
+.lg-struck { color: var(--red); text-decoration-thickness: 2px; }
+.lg-struck .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.ltable td.amt .lg-stamp { margin: 0 2px 0 8px; transform: rotate(-6deg) scale(.86); }
+/* A refusal that streams in lands like the wallet's stamp; reduced motion: no .motion class, so it is simply there. */
+.motion .lg-grid .ag-row.lg-fresh .lg-stamp { animation: lg-stamp var(--d-3, 400ms) var(--ease, ease-out) both; }
+@keyframes lg-stamp { from { opacity: 0; transform: scale(1.06); } to { opacity: 1; transform: none; } }
+.motion .lg-grid .ag-row.lg-refused.lg-fresh { animation: lg-wash var(--d-3, 400ms) var(--ease, ease-out) both; }
+@keyframes lg-wash { from { background: var(--rp); } }
+
+@media (max-width: 767px) {
+  .run:has(> details.ledger) > .rdesk { padding-bottom: 8px; }
+  .run > details.ledger { margin: 0 -16px; padding: 0 16px 24px; border-radius: 0; }
+  .run > details.ledger > summary b { font-size: 22px; }
+  .run > details.ledger > summary > span { display: block; margin: 2px 0 0; }
+  .lg-paper { padding: var(--s-2); }
+  .lg-rhead { padding: 4px 0 10px; }
+  .lg-store { font-size: 19px; }
+  .lg-tally { width: 100%; }
+  .lg-rfoot { flex-direction: column-reverse; align-items: stretch; }
+  .run > details.ledger .lg-bar .linkish { min-height: 44px; display: inline-flex; align-items: center; }
+}
+
+/* ---------- Track L: Every decision, full screen, on Midnight (Joshua, Fri Oct 30: "all Midnight, same light") ----------
+   The spine is portalled out of the classic page and wears the Desk's role names (`dk cv`, run.css's remap); it takes
+   Track B's Midnight palette (data-palette="midnight", desk/tokens.css), palette and glass both. Two roles differ here
+   on purpose: the refused row's wash is a step quieter on a full-height grid, and the marker dot is ink, not red (red
+   stays a small marker on the Watcher's tag). The same fixed gold light as the back room, glass on the grid and the
+   moment panel (two surfaces), small-caps headers, tabular numbers, and tags only where they explain a decision. */
+.spine.lx-every[data-palette] {
+  --gold-wash: rgba(226, 184, 102, .07); --red-dot: var(--ink-3);
+  --ex-light: radial-gradient(46% 56% at 80% 16%, rgba(226, 184, 102, .13), rgba(226, 184, 102, 0) 72%);
+  --ex-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .95 0 0 0 0 .9 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background: var(--page-solid);
+}
+/* The grain, then the light, fixed under everything; the content sits above them. */
+.spine.lx-every::before { content: ""; position: fixed; inset: 0; background-image: var(--ex-grain); opacity: .05; pointer-events: none; z-index: 0; }
+.spine.lx-every::after { content: ""; position: fixed; inset: 0; background: var(--ex-light); pointer-events: none; z-index: 0; }
+.spine.lx-every > * { position: relative; z-index: 1; }
+.spine.lx-every { padding: 24px 32px; gap: 8px; }
+.spine.lx-every .spine-head h2 { font-family: var(--display); font-weight: 300; letter-spacing: -.008em; }
+.spine.lx-every .spine-head h2 small b.refused { font-weight: 560; }
+/* Glass: the grid's panel and the moment panel. */
+.spine.lx-every .spine-table .ag-root-wrapper,
+.spine.lx-every .moment { background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-line); box-shadow: var(--glass-edge), var(--glass-shadow); border-radius: var(--r-3); }
+.spine.lx-every .spine-table .ag-root-wrapper { --ag-background-color: transparent; --ag-header-background-color: transparent; --ag-odd-row-background-color: transparent; --ag-wrapper-border: none; }
+/* A quiet header: sentence case, a step down; tabular numbers throughout. */
+.spine.lx-every .lg-grid { font-variant-numeric: tabular-nums; }
+.spine.lx-every .lg-grid .ag-header { border-bottom: 1px solid var(--line-2); }
+.spine.lx-every .lg-grid .ag-header-cell-text { color: var(--ink-3); font-weight: 560; font-size: var(--t-micro, 13px); }
+.spine.lx-every .lg-grid .ag-row { border-color: var(--line); transition: background-color var(--d-1) var(--ease); }
+.spine.lx-every .lg-grid .ag-row-hover:not(.lg-refused) { background: rgba(242, 233, 220, .045); }
+/* Tags: the check's name as plain words; only the Watcher's refusal and a mismatch keep an edge, since they explain a decision. */
+.spine.lx-every .tag, .spine.lx-every .tag.layer:is(.l1, .l2, .l3, .l5, .lhaggle) { box-shadow: none; padding: 0; background: none; color: var(--ink-3); font-size: 13px; }
+.spine.lx-every .tag.layer.l4 { box-shadow: none; padding: 0; color: var(--gold-hi); font-weight: 560; }
+.spine.lx-every .spine-table .tag.red { padding: 1px 8px; box-shadow: inset 0 0 0 1px var(--gold-line); color: var(--gold-hi); }
+.spine.lx-every code.rule { border: 0; background: none; padding: 0; color: var(--ink-2); }
+/* The controls: chips and search are hairline with 8 px corners (the system's chip); the two buttons are the Desk's
+   (system §5): "Go find it" the one primary, a cream pill; "Close" a hairline outline pill. */
+.spine.lx-every :is(.lg-chip, .lg-search input) { border-radius: var(--r-1); }
+.spine.lx-every .spine-actions { gap: var(--s-1); }
+.spine.lx-every .spine-actions :is(.btn, .spine-close) {
+  min-height: 48px; padding: 0 var(--s-4); border-radius: var(--r-pill); font: inherit; font-size: var(--t-body); font-weight: var(--w-strong);
+  box-shadow: none; transition: background-color var(--d-1) var(--ease), border-color var(--d-1) var(--ease), color var(--d-1) var(--ease);
+}
+.spine.lx-every .spine-actions .btn { background: var(--cta); color: var(--on-cta); border: 1px solid var(--cta); }
+.spine.lx-every .spine-actions .btn:active { transform: translateY(1px); }
+.spine.lx-every .spine-actions .spine-close { background: transparent; color: var(--ink); border: 1px solid var(--line-2); }
+.spine.lx-every .spine-actions .spine-close:hover { border-color: var(--ink); }
+/* One ring, never two: at rest a hairline; keyboard focus draws over it instead of around it. The dialog opens on its
+   title, so Close shows no ring until someone tabs to it. */
+.spine.lx-every #spine-title:focus { outline: none; }
+.spine.lx-every .spine-actions :is(.btn, .spine-close):focus-visible { outline: 2px solid var(--focus); outline-offset: -1px; }
+/* One filter row (full screen, wide): search, a Filter disclosure holding the chips, the count. */
+/* The toolbar sits above the grid (the grid's glass panel is its own stacking context), so the Filter menu opens over
+   the rows, not under them. */
+.spine.lx-every .lg-tools.lg-one { position: relative; z-index: 20; }
+.spine.lx-every .lg-one-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.spine.lx-every .lg-one .lg-search { margin-left: 0; order: 0; }
+.spine.lx-every .lg-one .lg-search input { width: 320px; min-height: 44px; }
+.spine.lx-every .lg-more { order: 1; }
+.spine.lx-every .lg-more > summary { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2); border: 1px solid var(--line-2); border-radius: var(--r-1); color: var(--ink); font-size: var(--t-small); cursor: pointer; list-style: none; }
+.spine.lx-every .lg-more > summary::-webkit-details-marker { display: none; }
+.spine.lx-every .lg-more > summary::after { content: ""; width: 6px; height: 6px; margin-left: var(--s-1); border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.spine.lx-every .lg-more[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+.spine.lx-every .lg-more > summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.spine.lx-every .lg-on { color: var(--ink-2); }
+.spine.lx-every .lg-one .lg-count { order: 2; margin-left: auto; }
+/* Open, the chips sit in a solid panel under the button, over the table, so the row itself never moves. */
+.spine.lx-every .lg-more { position: relative; }
+.spine.lx-every .lg-more > .lg-more-in { position: absolute; top: calc(100% + var(--s-1)); left: 0; z-index: 5; width: max-content; max-width: min(760px, calc(100vw - 2 * var(--s-4))); padding: var(--s-2) var(--s-3) var(--s-1); background: var(--sheet); border: 1px solid var(--line-2); border-radius: var(--r-3); box-shadow: 0 24px 48px -16px rgba(5, 3, 4, .72); }
+.spine.lx-every .moment { padding: 20px 24px; }
+@media (prefers-reduced-motion: reduce) { .spine.lx-every .lg-grid .ag-row, .spine.lx-every .spine-actions :is(.btn, .spine-close) { transition: none; } }
+@media (max-width: 767px) {
+  .spine.lx-every { padding: 16px; }
+  .spine.lx-every .moment { border-radius: var(--r-3); padding: 16px; }
+}

@@ -1,0 +1,168 @@
+/* Desk-J2 (Fri Oct 30): the market (`?market=1`, PayPal additions 5) in the Desk's plum velvet, as the wallet and the
+   classic page wear it. Same page, same words, same flow: search, cart, complete_payment.
+   The page around it (the velvet with its grain, the practice line, the nav row with "‹ Your wallet" and "‹ Home") is
+   Desk-J's run.css, which already skins every page that is neither the wallet nor the Desk. This sheet only draws the
+   market itself, in `.ssm.dk[data-palette="v"]` (the Desk's tokens, desk/tokens.css, read only).
+   Velvet cards with one hairline edge; light display headings; tabular money; cream is the one filled action; gold only
+   where code protects you (a hold waiting for your yes, the cart code checked, the guard's refusal); red only for the
+   threat's own price and the Watcher's refusal. No gradients, no stamps, no rotation. */
+/* No tokens.css here (Track F, tokens stage 2): it is main.css's (run.css), ahead of this sheet on every page that loads the market. */
+
+/* The classic page's pitch steps aside: the market's own header is the one under the name. */
+body:has(.ssm) .page > .brand { display: none; }
+
+.ssm.dk {
+  margin: 0; color: var(--ink); font-family: var(--face); font-size: var(--t-body); line-height: 1.5; font-variant-numeric: tabular-nums;
+}
+.ssm :is(button, input) { font-family: inherit; font-size: var(--t-body); }
+.ssm :is(h1, h2, h3) { font-family: var(--display); letter-spacing: var(--track-head); }
+.ssm p, .ssm li { text-wrap: pretty; }
+.ssm-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ssm :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+/* ---------- the header: what this page is, in light display type, then its three steps ---------- */
+.ssm-band { padding: var(--s-5) 0 var(--s-4); }
+.ssm-eyebrow { margin: 0 0 var(--s-2); color: var(--ink-2); font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: var(--track-eyebrow); text-transform: uppercase; }
+.ssm-band h1 { max-width: 18ch; margin: 0; color: var(--ink); font-size: var(--t-h1, var(--t-h2)); line-height: 1.04; font-weight: var(--w-display); letter-spacing: var(--track-display); text-wrap: balance; }
+/* the honest line about what this is modeled on: quiet, behind a hairline */
+.ssm-claim { max-width: 60ch; margin: var(--s-3) 0 0; padding-left: var(--s-2); border-left: 1px solid var(--line-2); color: var(--ink-2); font-size: var(--t-small); line-height: 1.5; }
+/* the steps as numbered text over a hairline; the current one drawn in cream */
+.ssm-steps { display: grid; grid-template-columns: repeat(3, minmax(0, max-content)); gap: 0 var(--s-4); margin: var(--s-4) 0 0; padding: 0; list-style: none; }
+.ssm-steps li { position: relative; display: flex; align-items: baseline; gap: var(--s-1); padding: var(--s-2) 0 0; border-top: 1px solid var(--line); color: var(--ink-3); font-size: var(--t-small); }
+.ssm-steps li b { color: var(--ink-3); font-size: var(--t-micro); font-weight: var(--w-body); font-variant-numeric: tabular-nums; }
+.ssm-steps li b::before { content: "0"; }
+.ssm-steps span { font-size: var(--t-small); }
+.ssm-steps li.done { color: var(--ink-2); }
+.ssm-steps li.on { color: var(--ink); }
+.ssm-steps li.on::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--ink); }
+.ssm-steps li.on b { color: var(--ink); }
+
+/* ---------- the desk: the search, the listings, the cart ---------- */
+.ssm-desk { padding: 0 0 var(--s-8); }
+.ssm-status:empty { display: none; }
+.ssm-status { margin: 0 0 var(--s-2); padding: var(--s-2) var(--s-2); border: 1px solid var(--red); border-radius: var(--r-2); color: var(--red); font-weight: var(--w-strong); }
+
+/* the search: one velvet card, the field a well, Search the one filled button */
+.ssm-search { max-width: 760px; margin: 0 0 var(--s-3); padding: var(--s-3); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); }
+.ssm-search label { display: block; margin: 0 0 var(--s-2); font-family: var(--display); font-size: var(--t-h3); line-height: 1.15; font-weight: var(--w-head); letter-spacing: var(--track-head); }
+.ssm-search > div { display: flex; gap: var(--s-1); padding: 6px 6px 6px var(--s-2); border: 1px solid var(--line); border-radius: var(--r-3); background: var(--well); }
+.ssm-search > div:focus-within { border-color: var(--ink-2); }
+.ssm-search input { flex: 1; min-width: 0; min-height: 44px; padding: 0; border: 0; background: none; color: var(--ink); font-size: var(--t-body); }
+.ssm-search input:focus-visible { outline: 0; }
+.ssm-search > div:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+.ssm-act { min-height: 48px; padding: 0 var(--s-4); border: 0; border-radius: var(--r-pill); background: var(--cta); color: var(--on-cta); font-weight: var(--w-strong); cursor: pointer; transition: transform var(--d-1) var(--ease), background var(--d-1); }
+.ssm-act:hover { background: var(--cta-hover); }
+.ssm-act:active { transform: scale(.985) translateY(1px); }
+.ssm-act:disabled { opacity: .6; cursor: progress; }
+.ssm-act[aria-busy="true"] { opacity: 1; }
+.ssm-act.ghost { min-height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-2); background: none; color: var(--ink); }
+.ssm-act.ghost:hover { border-color: var(--ink); }
+.ssm-fine { margin: var(--s-2) 0 0; color: var(--ink-3); font-size: var(--t-micro); line-height: 1.45; }
+.ssm-practice { margin: var(--s-2) 0 0; font-size: var(--t-small); }
+/* brand.md §10.9's state block (SW): what happened at --t-h3, the cause in one --t-body --ink-2 line, one outline pill.
+   No card, no box, no icon; left-aligned in the column where the missing content would go. */
+.ssm-state { max-width: 32em; padding: var(--s-6) 0; }
+.ssm-state-t { margin: 0; font-family: var(--display); font-size: var(--t-h3); line-height: 1.2; font-weight: var(--w-body); color: var(--ink); }
+.ssm-state-l { margin: var(--s-1) 0 0; font-size: var(--t-body); line-height: 1.5; color: var(--ink-2); }
+.ssm-state .ssm-act { margin-top: var(--s-3); }
+
+/* the listings: a velvet card per seller; the Watcher's verdict in words under the seller's own */
+.ssm-results { display: grid; gap: var(--s-2); margin: 0 0 var(--s-3); padding: 0; list-style: none; }
+.ssm-slip { display: flex; flex-direction: column; align-items: flex-start; padding: var(--s-3) var(--s-3); border: 1px solid var(--card-line); border-radius: var(--r-3); background: var(--card); }
+.ssm-slip > * { align-self: stretch; }
+.ssm-slip > .ssm-act { align-self: flex-start; }
+.ssm-slip h2, .ssm-slip h3 { margin: 0; font-size: var(--t-lead); line-height: 1.25; font-weight: var(--w-head); text-wrap: balance; }
+.ssm-row { display: flex; justify-content: space-between; gap: var(--s-2); align-items: flex-start; }
+.ssm-item { margin: 2px 0 0; color: var(--ink-2); font-size: var(--t-small); }
+.ssm-price { margin: 0; font-family: var(--display); font-size: var(--t-num, var(--t-h2)); line-height: 1; font-weight: var(--w-display); letter-spacing: var(--track-display); font-variant-numeric: tabular-nums; }
+.ssm-slip blockquote { margin: var(--s-2) 0 var(--s-2); padding: var(--s-1) var(--s-2); border-radius: var(--r-2); background: var(--well); color: var(--ink-2); font-size: var(--t-small); line-height: 1.5; overflow-wrap: anywhere; }
+.ssm-watch { margin: 0 0 var(--s-2); padding: 0 0 0 var(--s-2); border-left: 1px solid var(--line-2); color: var(--ink-2); font-size: var(--t-small); line-height: 1.5; }
+.ssm-watch b { font-weight: var(--w-strong); }
+/* refused: the Watcher protected you, so its verdict line is gold; the threat's own price is struck in red */
+.ssm-watch.w-refuse { border-left: 2px solid var(--gold); color: var(--ink); }
+.ssm-watch.w-refuse b { color: var(--gold); }
+.ssm-watch.w-hold { border-left: 2px solid var(--gold); color: var(--ink); }
+.ssm-watch.w-hold b { color: var(--gold); }
+.ssm-watch.w-clear { padding-left: 0; border: 0; color: var(--ink-3); }
+.ssm-slip.v-refuse .ssm-price { color: var(--ink-3); text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 1.5px; }
+
+/* the cart: code checked this exact cart, so a gold hairline; complete_payment is the one filled button */
+.ssm-cart { max-width: 760px; margin: 0 0 var(--s-3); padding: var(--s-3); border-color: var(--gold-line); outline: none; }
+.ssm-cart h2 { margin: 0 0 var(--s-1); font-family: var(--display); font-size: var(--t-h3); font-weight: var(--w-display); letter-spacing: var(--track-display); }
+.ssm-cart p { margin: 0 0 var(--s-2); }
+.ssm-cart > .ssm-act { margin-top: 4px; }
+.ssm-cart .ssm-fine { margin: var(--s-2) 0 0; }
+/* refused at the cart: a quiet card (the set-aside seller is never gold-edged); the guard's words, level, in gold,
+   inside one hairline; never a rotated stamp */
+.ssm-cart.refused { border-color: var(--card-line); }
+.ssm-cart .ssm-watch.w-hold { padding-left: 0; border-left: 0; }
+.ssm-cart .ssm-watch.w-hold b { color: var(--ink); }
+.ssm-stamp { display: inline-flex; align-self: flex-start; align-items: center; margin: 0 0 var(--s-2) !important; padding: 0; color: var(--gold); font-family: var(--display); font-size: var(--t-body); font-weight: var(--w-head); }
+/* back from PayPal */
+.ssm-slip:is(.paid, .closed) { max-width: 760px; margin-bottom: var(--s-3); padding: var(--s-3); }
+.ssm-slip.paid { border-color: var(--line-2); }
+.ssm-slip:is(.paid, .closed) h2 { margin: 0 0 var(--s-1); font-size: var(--t-h2); font-weight: var(--w-display); letter-spacing: var(--track-display); color: var(--ink); }
+.ssm-slip:is(.paid, .closed) p { margin: 0 0 var(--s-1); color: var(--ink-2); }
+.ssm-mono { color: var(--ink); font-size: var(--t-small); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.ssm-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font-weight: var(--w-strong); text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.ssm-link:hover { text-decoration-color: var(--ink); }
+
+/* Before a search, the search card sits beside the headline: one composition, then the page is a column again. */
+@media (min-width: 900px) {
+  .ssm:has(.ssm-search):not(:has(.ssm-results, .ssm-cart, .ssm-empty)) { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); column-gap: var(--s-8); align-items: start; align-content: center; min-height: calc(100svh - 2 * var(--s-8) - var(--s-3)); padding: var(--s-3) 0 var(--s-8); } /* the first fold holds the composition, centred under the nav (64), so no half-screen of velvet sits under it */
+  .ssm:has(.ssm-search):not(:has(.ssm-results, .ssm-cart, .ssm-empty)) .ssm-desk { padding: 0; }
+  .ssm:has(.ssm-search):not(:has(.ssm-results, .ssm-cart, .ssm-empty)) .ssm-search { margin: var(--s-5) 0 0; padding: var(--s-4); } /* its top on the eyebrow's line, past the band's 40 px */
+}
+/* On a wide desk the listings fill it, two to a row; the search and the cart keep the reading width. */
+/* Two zones once there are listings: on the left the steps, the search and your cart (or the guard's answer), held in
+   view while you scroll; on the right the sellers, one column. The cart answers beside the seller you just tapped. */
+@media (min-width: 1100px) {
+  .ssm:has(.ssm-results) { display: grid; grid-template-columns: 400px minmax(0, 1fr); column-gap: var(--s-6); align-items: start; }
+  .ssm:has(.ssm-results) > .ssm-desk { display: contents; }
+  .ssm:has(.ssm-results) :is(.ssm-band, .ssm-status, .ssm-search, .ssm-cart) { grid-column: 1; max-width: none; }
+  .ssm:has(.ssm-results) .ssm-band h1 { font-size: var(--t-h2); }
+  .ssm:has(.ssm-results) .ssm-steps { gap: 0 var(--s-3); }
+  .ssm:has(.ssm-results) .ssm-search { margin: 0 0 var(--s-2); }
+  /* with no cart yet, the search follows you down the sellers */
+  .ssm:has(.ssm-results):not(:has(.ssm-cart)) .ssm-search { position: sticky; top: 24px; }
+  .ssm:has(.ssm-results) .ssm-results { grid-column: 2; grid-row: 1 / span 6; margin: var(--s-5) 0 var(--s-8); }
+  .ssm:has(.ssm-results) .ssm-cart { position: sticky; top: 24px; margin: 0 0 var(--s-8); }
+  .ssm:has(.ssm-results) .ssm-status { margin: 0 0 var(--s-2); }
+  .ssm:has(.ssm-results) .ssm-cart > .ssm-act { width: 100%; padding: var(--s-1) var(--s-3); line-height: 1.3; }
+  .ssm:has(.ssm-empty) .ssm-desk > * { max-width: 760px; }
+}
+
+/* the phone: one column, the 16 px gutter is the page's */
+@media (max-width: 899px) {
+  .ssm-band { padding: var(--s-3) 0 var(--s-3); }
+  .ssm-band h1 { font-size: var(--t-h2); }
+  .ssm-claim { margin-top: var(--s-2); font-size: var(--t-micro); }
+  .ssm-steps { grid-template-columns: auto auto minmax(0, 1fr); gap: 0 var(--s-3); margin-top: var(--s-2); }
+  .ssm-steps li { flex-direction: column; gap: 0; font-size: var(--t-small); }
+  .ssm-steps span { font-size: var(--t-small); white-space: nowrap; }
+  .ssm-cart > .ssm-act { width: 100%; padding: var(--s-1) var(--s-3); line-height: 1.3; }
+  .ssm-search { padding: var(--s-2) var(--s-2); }
+  .ssm-search label { font-size: var(--t-lead); }
+  .ssm-slip { padding: var(--s-2); }
+  .ssm-cart, .ssm-slip:is(.paid, .closed) { padding: var(--s-2) var(--s-2); }
+  .ssm-cart h2 { font-size: var(--t-h3); }
+  .ssm-price { font-size: var(--t-h3); }
+}
+@media (max-width: 480px) {
+  /* the field and its button as two siblings, not one inside the other's border */
+  .ssm-search > div { flex-direction: column; gap: var(--s-1); padding: 0; border: 0; background: none; }
+  .ssm-search > div:has(input:focus-visible) { outline: 0; }
+  .ssm-search input { min-height: 48px; padding: 0 var(--s-2); border: 1px solid var(--line); border-radius: var(--r-2); background: var(--well); }
+  .ssm-search input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  /* the seller's name and price on one row; what it sells and its record on the full width under them */
+  .ssm-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--s-2); align-items: baseline; }
+  .ssm-row > div { display: contents; }
+  .ssm-row h3 { grid-column: 1; grid-row: 1; }
+  .ssm-row .ssm-price { grid-column: 2; grid-row: 1; }
+  .ssm-row .ssm-item { grid-column: 1 / -1; grid-row: 2; }
+  .ssm-row h3 { font-size: var(--t-lead); }
+}
+/* the page's shared `.refused` colour is the wallet's word colour; on the market the guard's cart reads in the page's ink */
+.ssm-cart.refused { color: var(--ink); }
+.ssm-cart.refused p:not(.ssm-stamp) { color: var(--ink-2); }

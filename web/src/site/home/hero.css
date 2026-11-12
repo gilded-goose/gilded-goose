@@ -1,0 +1,266 @@
+/* Home part 1 (Nov 7 reset): a quiet page; the promise, one sentence and the Ask on the left; the product on a phone,
+   set on fine blueprint lines, with Goose beside it on the right. */
+.hx { padding-top: var(--s16); }
+.hx-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s12);
+  align-items: center;
+}
+@media (min-width: 1000px) {
+  .hx { padding-top: var(--s12); }
+  .hx-grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--s16); min-height: calc(100svh - var(--header-h) - var(--s12)); }
+}
+
+/* ── The promise ── */
+.hx-copy { display: grid; gap: var(--s6); align-content: center; max-width: 600px; }
+.hx-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 1.6rem + 3vw, 4rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.hx-line { display: block; }
+.hx-line + .hx-line { color: var(--ink-2); }
+/* The O of Only is the golden egg itself: an O's width, a little taller than the caps, standing on the baseline with its
+   own shadow. The h1's aria-label still reads "Only". It drops into place once; light crosses it once (Egg.tsx). */
+.hx-o { display: inline-block; width: 0.72em; height: 0.88em; margin-inline: -0.01em 0.02em; vertical-align: -0.075em; }
+.hx-o svg { display: block; width: 100%; height: 100%; overflow: visible; transform-origin: 50% 94%; filter: drop-shadow(0 0.07em 0.05em oklch(0.17 0.01 70 / 0.2)) drop-shadow(0 0.015em 0.01em oklch(0.17 0.01 70 / 0.16)); }
+@media (prefers-reduced-motion: no-preference) {
+  .hx-o svg { animation: hx-egg-in 760ms var(--ease-out) 160ms both; }
+  @keyframes hx-egg-in {
+    0% { opacity: 0; transform: translateY(-0.35em) scale(0.94); }
+    60% { opacity: 1; transform: translateY(0) scale(1.02, 0.97); }
+    100% { transform: none; }
+  }
+}
+.hx-lede { max-width: 46ch; font-size: var(--t-md); line-height: var(--lh-body); color: var(--ink-2); text-wrap: pretty; }
+.hx-ask { padding-top: var(--s2); }
+.hx-fine { font-size: var(--t-sm); color: var(--ink-3); }
+
+/* ── The tale scene: a soft grey stage, the golden egg with your limit on it, and the story's three props ── */
+.tl {
+  position: relative;
+  display: grid;
+  gap: var(--s4);
+  padding: var(--s6);
+  border-radius: 32px;
+  background: radial-gradient(120% 80% at 50% 38%, oklch(0.995 0 0), var(--surface-2) 70%);
+  overflow: hidden;
+}
+.tl-fable { text-wrap: balance; max-width: 60ch; font-size: var(--t-sm); line-height: var(--lh-body); color: var(--ink-3); }
+.tl-stage { position: relative; aspect-ratio: 520 / 460; container-type: inline-size; }
+/* Until GSAP has loaded and built the timeline (gsap-lazy.ts), the stage holds its space unseen. */
+.tl[data-arm] .tl-stage { opacity: 0; }
+
+/* The egg: the rendered gold egg, the limit set into its face like an engraving. */
+.tl-egg { position: absolute; left: 26%; bottom: 16%; width: 48%; }
+.tl-goose { position: absolute; left: 4%; bottom: 16%; width: 21%; height: auto; user-select: none; transform-origin: 50% 100%; }
+.tl[data-beat="2"] .tl-goose { transform: rotate(4deg); }
+.tl[data-beat="4"] .tl-goose { transform: rotate(2deg); }
+@media (prefers-reduced-motion: no-preference) { .tl-goose { transition: transform 420ms var(--ease-out); } }
+.tl-egg img { display: block; width: 100%; height: auto; user-select: none; }
+.tl-limit {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 10cqi;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: oklch(0.34 0.06 70 / 0.82);
+  text-shadow: 0 1px 0 oklch(0.95 0.06 90 / 0.55);
+  mix-blend-mode: multiply;
+}
+
+/* QuickQuack's note: drops in, is stamped Set aside, slides away. */
+.tl-note {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 52%;
+  display: grid;
+  gap: var(--s1);
+  padding: var(--s3) var(--s4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  background: var(--surface-raised);
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.04), 0 12px 32px -12px oklch(0 0 0 / 0.14);
+  font-size: max(11px, 2.5cqi);
+  line-height: 1.4;
+  transform: rotate(-2deg);
+}
+/* Reduced motion lands here directly: the note stays, set aside. */
+.tl-note[data-done] { opacity: 0.62; transform: rotate(-4deg) scale(0.96); }
+.tl-note[data-done] .tl-aside { opacity: 1; }
+.tl-note-head { display: flex; justify-content: space-between; gap: var(--s2); color: var(--ink); }
+.tl-note-head b { font-weight: 500; }
+.tl-note-quote { color: var(--ink-3); }
+.tl-aside {
+  justify-self: start;
+  margin-top: var(--s1);
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r-1);
+  background: oklch(0.52 0.19 32 / 0.1);
+  color: var(--vermilion-ink);
+  font-weight: 500;
+  opacity: 0;
+}
+
+/* Reedbank's price tag: overlaps the egg's shoulder, ticks from $58.00 down to $47.73. */
+.tl-tag {
+  position: absolute;
+  right: 0;
+  top: 30%;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto;
+  justify-items: end;
+  gap: var(--s1);
+  padding: var(--s3) var(--s4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  background: oklch(1 0 0 / 0.86);
+  backdrop-filter: blur(12px) saturate(1.3);
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.04), 0 12px 32px -12px oklch(0 0 0 / 0.16);
+  font-size: max(11px, 2.5cqi);
+  color: var(--ink-2);
+}
+.tl-tag-name { justify-self: start; }
+.tl-tag-price { font-size: max(18px, 5cqi); font-weight: 500; letter-spacing: -0.02em; color: var(--ink); }
+.tl-tag s { color: var(--ink-3); opacity: 0; transition: opacity var(--d-ui) ease; }
+.tl-tag s[data-on] { opacity: 1; }
+
+/* Approve in PayPal: rises last, waiting. */
+.tl-approve { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: var(--s4); }
+.tl-approve-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-height: 44px;
+  padding: 0 var(--s6);
+  border-radius: var(--r-pill);
+  background: var(--paypal);
+  color: #fff;
+  font-size: max(14px, 3cqi);
+  font-weight: 500;
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.12);
+}
+.tl-approve-btn .pp-mark { width: 1.1em; height: 1.1em; }
+.tl-approve-note { font-size: var(--t-sm); color: var(--ink-3); }
+
+.tl-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); min-height: var(--tap); }
+.tl-caption { font-size: var(--t-base); color: var(--ink); }
+.tl-caption span { display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  .tl-caption span { animation: tl-caption 520ms var(--ease-out) both; }
+}
+@keyframes tl-caption { from { opacity: 0; filter: blur(4px); transform: translateY(6px); } to { opacity: 1; filter: none; transform: none; } }
+.tl-replay {
+  flex: none;
+  min-height: var(--tap);
+  padding: 0 var(--s4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface-raised);
+  font: inherit;
+  font-size: var(--t-sm);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform var(--d-press) var(--ease-out), background-color var(--d-ui) ease;
+}
+.tl-replay:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .tl-replay:hover { background: var(--surface); }
+}
+@media (max-width: 480px) {
+  .tl { padding: var(--s4); border-radius: var(--r-4); }
+}
+
+@media (max-width: 999px) {
+  .hx-copy { max-width: none; }
+}
+@media (max-width: 480px) {
+  .hx { padding-top: var(--s8); }
+}
+
+/* ── The purchase, replayed ── */
+.hx-story { display: grid; gap: var(--s8); padding-block: var(--s24) calc(var(--section-gap) / 2); }
+.hx-story-head { display: grid; gap: var(--s3); }
+@media (min-width: 900px) { .hx-story-head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; column-gap: var(--s12); } }
+.hx-story-title { font-size: var(--t-3xl); font-weight: 500; line-height: 1.05; letter-spacing: -0.03em; }
+.hx-story-note { max-width: 52ch; color: var(--ink-2); }
+
+/* ── Ask box: label, pill input, ink button, outline chips that wrap in a row ── */
+.ask { display: grid; gap: var(--s3); }
+.ask-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); min-height: 24px; }
+.ask-label { font-size: var(--t-base); font-weight: 500; color: var(--ink); }
+.ask-away { font-size: var(--t-xs); color: var(--ink-3); }
+
+.ask-field {
+  display: flex;
+  gap: var(--s1);
+  padding: var(--s1);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-4);
+  background: var(--surface-raised);
+  box-shadow: 0 1px 2px oklch(0.2 0.01 70 / 0.05), 0 8px 24px -12px oklch(0.2 0.01 70 / 0.18);
+  transition: box-shadow var(--d-ui) ease, border-color var(--d-ui) ease;
+}
+.ask-field:focus-within { border-color: var(--ink-3); box-shadow: 0 0 0 4px oklch(0.8 0.12 82 / 0.35), 0 8px 24px -12px oklch(0.2 0.01 70 / 0.18); }
+.ask-field[data-empty] { border-color: var(--vermilion-ink); }
+.ask-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 var(--s4);
+  border: 0;
+  background: transparent;
+  font-size: var(--t-md);
+  color: var(--ink);
+  outline: none;
+}
+.ask-input::placeholder { color: var(--ink-3); opacity: 1; }
+.ask-go { flex: none; min-height: 48px; border-radius: var(--r-3); }
+.ask-hint { font-size: var(--t-sm); color: var(--vermilion-ink); }
+
+.ask-try { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s3); }
+.ask-try-label { font-size: var(--t-sm); color: var(--ink-2); }
+.ask-chips { display: flex; flex-wrap: wrap; gap: var(--s2); margin: 0; padding: 0; list-style: none; }
+.ask-chip {
+  min-height: var(--tap);
+  padding: 0 var(--s4);
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  font-size: var(--t-base);
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform var(--d-press) var(--ease-out), border-color var(--d-ui) ease, background-color var(--d-ui) ease;
+}
+.ask-chip:active { transform: scale(0.97); }
+.ask-chip[aria-pressed="true"] { border-color: var(--ink); background: var(--surface-raised); }
+@media (hover: hover) and (pointer: fine) {
+  .ask-chip:hover { background: oklch(0.93 0.004 80); }
+}
+@media (max-width: 480px) {
+  .ask-field { flex-wrap: wrap; }
+  .ask-input { flex: 1 0 100%; }
+  .ask-go { flex: 1; }
+  .ask-input { font-size: var(--t-base); }
+  .ask-chip { padding: 0 var(--s2); font-size: var(--t-sm); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ask-chip { transition: background-color var(--d-ui) ease, border-color var(--d-ui) ease; }
+  .ask-chip:active { transform: none; }
+}

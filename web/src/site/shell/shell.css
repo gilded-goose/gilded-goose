@@ -1,0 +1,311 @@
+/* Header, menu and footer. */
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  /* The bar floats: a glass capsule (base.css .glass) a little below the top edge, the page scrolling under it. */
+  padding: var(--s2) var(--s2) 0;
+  pointer-events: none;
+  color: var(--stone-ink);
+}
+/* The scroll edge: the page fades out behind the capsule instead of showing cut lines of text above it. */
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(100% + var(--s3));
+  z-index: -1;
+  background: linear-gradient(var(--surface) 40%, transparent);
+  pointer-events: none;
+}
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  height: var(--header-h);
+  padding-inline: var(--s3) var(--s1);
+  border-radius: var(--r-pill);
+  pointer-events: auto;
+}
+@media (min-width: 761px) {
+  .header { padding: var(--s3) var(--gutter) 0; }
+  .header-row { padding-inline: var(--s5) var(--s2); }
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--tap);
+  margin-left: calc(-1 * var(--s1));
+  padding: 0 var(--s1);
+  border-radius: var(--r-2);
+  color: var(--stone-ink);
+  text-decoration: none;
+  flex: none;
+}
+.wordmark-name {
+  font-family: var(--font-display);
+  font-size: var(--t-md);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.header-nav { display: none; flex: 1; }
+.header-end {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-left: auto;
+  min-width: 0;
+}
+/* Judge in 60 seconds: an outlined cream pill on the pond, filled on hover. */
+.header .judge-btn {
+  flex: none;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--stone-ink);
+  white-space: nowrap;
+}
+@media (hover: hover) and (pointer: fine) {
+  .header .judge-btn:hover:not(:disabled) { background: var(--stone-ink); color: var(--stone); border-color: var(--stone-ink); }
+}
+
+.menu-btn {
+  display: inline-grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border: 0;
+  border-radius: var(--r-2);
+  background: transparent;
+  color: var(--stone-ink);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--d-ui) ease, transform var(--d-press) var(--ease-out);
+}
+.menu-btn:active { transform: scale(0.94); }
+@media (hover: hover) and (pointer: fine) {
+  .menu-btn:hover { background: var(--stone-2); }
+}
+
+/* Phones: the bar holds the wordmark, the dot, Judge in 60 seconds and Menu, tight but never touching. */
+@media (max-width: 760px) {
+  .header-row { gap: var(--s2); }
+  .header-end { gap: 0; }
+  .header-end .status { min-width: var(--s4); gap: 0; }
+  .header .judge-btn { padding: 0 var(--s3); font-size: var(--t-sm); }
+  .wordmark-name { font-size: var(--t-base); }
+}
+/* Phones say Judge tour (same button, same tour); under 340px the name gives way to the egg mark alone. */
+.judge-short { display: none; }
+@media (max-width: 480px) {
+  .header .judge-long { display: none; }
+  .header .judge-short { display: inline; }
+}
+@media (max-width: 339px) {
+  .header .wordmark-name { display: none; }
+}
+
+@media (min-width: 761px) {
+  .wordmark-name { font-size: var(--t-lg); }
+  .header-row { gap: var(--s6); }
+  .header-end { gap: var(--s3); }
+}
+
+@media (min-width: 1080px) {
+  .header-nav { display: block; }
+  .menu-btn { display: none; }
+  .header-end { margin-inline: 0; }
+  .status[data-compact] { gap: var(--s2); }
+  .status[data-compact] .vh {
+    position: static !important;
+    width: auto; height: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+    white-space: nowrap;
+  }
+}
+
+/* ── Nav ───────────────────────────────────────────────────────────────── */
+.nav { margin: 0; padding: 0; list-style: none; }
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s1);
+}
+.nav-bar .nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 var(--s3);
+  border-radius: var(--r-2);
+  color: var(--stone-ink-2);
+  font-size: var(--t-base);
+  font-weight: var(--w-regular);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--d-ui) ease, background-color var(--d-ui) ease;
+}
+.nav-bar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: var(--s3);
+  right: var(--s3);
+  bottom: var(--s2);
+  height: 2px; /* control */
+  border-radius: var(--r-pill);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--d-ui) var(--ease-out);
+}
+.nav-bar .nav-link[aria-current="page"] { color: var(--stone-ink); }
+.nav-bar .nav-link[aria-current="page"]::after { transform: scaleX(1); }
+@media (hover: hover) and (pointer: fine) {
+  .nav-bar .nav-link:hover { color: var(--stone-ink); }
+  .nav-bar .nav-link:hover::after { transform: scaleX(1); }
+}
+
+.nav-sheet { display: grid; }
+.nav-sheet .nav-link {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--t-lg);
+  font-weight: var(--w-medium);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.nav-sheet .nav-link[aria-current="page"] { color: var(--gold-ink); }
+.sheet-status { padding-top: var(--s5); }
+
+/* ── Status ────────────────────────────────────────────────────────────── */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-width: var(--s6);
+  min-height: var(--s6);
+  justify-content: center;
+  color: var(--stone-ink-2);
+  font-size: var(--t-sm);
+  white-space: nowrap;
+}
+.sheet-status .status { color: var(--ink-2); }
+.status-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  flex: none;
+}
+.status[data-state="live"] .status-dot { background: var(--signal); }
+.status[data-state="away"] .status-dot { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lead); }
+.status[data-state="checking"] .status-dot { animation: status-wait 1.2s ease-in-out infinite; }
+.status[data-state="live"] .status-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--signal);
+  opacity: 0;
+  animation: status-live 2.4s var(--ease-out) 1;
+}
+@keyframes status-wait { 50% { opacity: 0.35; } }
+@keyframes status-live { 0% { opacity: 0.8; transform: scale(0.5); } 100% { opacity: 0; transform: scale(1.4); } }
+
+/* The page takes focus on a route change for screen readers; it is not a control, so it draws no ring. */
+.main:focus { outline: none; }
+/* A page that fills in after it loads (Shop's market, a lazy chunk) used to pull the footer down through the first screen
+   (layout shift 0.096 to 0.123 on Shop at 1440). The page is at least one screen tall, so the footer starts below the fold. */
+.main { min-height: 100vh; min-height: 100svh; }
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+.footer {
+  margin-top: var(--section-gap);
+  padding-top: var(--s12);
+  background: var(--stone);
+  color: var(--stone-ink-2);
+  font-size: var(--t-sm);
+}
+.footer :focus-visible { outline-color: var(--stone-ink); }
+.footer-grid {
+  display: grid;
+  gap: var(--s8);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+.footer-brand { display: grid; gap: var(--s3); justify-items: start; align-content: start; max-width: 36ch; }
+.footer-brand .wordmark-name { font-size: var(--t-lg); }
+.footer-line { color: var(--stone-ink-2); font-size: var(--t-base); line-height: 1.5; }
+.footer-col { display: grid; align-content: start; gap: var(--s2); }
+.footer-h {
+  margin-bottom: var(--s1);
+  font-family: var(--font-sans);
+  font-size: var(--t-sm);
+  font-weight: var(--w-medium);
+  letter-spacing: 0;
+  color: var(--stone-ink);
+}
+.footer .nav-sheet .nav-link,
+.footer-judge {
+  min-height: var(--tap);
+  border-bottom: 0;
+  font-family: var(--font-sans);
+  font-size: var(--t-sm);
+  font-weight: var(--w-regular);
+  color: var(--stone-ink-2);
+  letter-spacing: 0;
+  text-decoration: none;
+}
+.footer-judge {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+@media (hover: hover) and (pointer: fine) {
+  .footer .nav-sheet .nav-link:hover, .footer-judge:hover { color: var(--stone-ink); text-decoration: underline; text-underline-offset: 0.3em; }
+}
+/* A mouse needs no 44px rows; a finger does. */
+@media (hover: hover) and (pointer: fine) {
+  .footer .nav-sheet .nav-link, .footer-judge { min-height: var(--s8); }
+}
+.footer-list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; line-height: 1.45; }
+.footer-list li { display: flex; align-items: center; min-height: var(--s8); padding-block: var(--s1); }
+.footer-list a { color: var(--stone-ink); }
+.footer-base {
+  margin-top: var(--s12);
+  padding-block: var(--s6) calc(var(--s6) + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--stone-line);
+  color: var(--stone-ink-2);
+  font-size: var(--t-xs);
+}
+
+@media (min-width: 761px) {
+  .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .footer-brand { grid-column: 1 / -1; }
+}
+@media (min-width: 1080px) {
+  .footer-grid { grid-template-columns: 1.6fr 1fr 1fr 1fr; column-gap: var(--s10); }
+  .footer-brand { grid-column: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot, .status-dot::after { animation: none !important; }
+  .nav-bar .nav-link::after { transition: none; }
+}

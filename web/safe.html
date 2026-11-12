@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en" class="dk" data-palette="v">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>See how it keeps you safe · Gilded Goose</title>
+    <!-- W76: the gold egg (first-paint.tsx EGG); the .ico answers browsers that ask for /favicon.ico directly -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <!-- B-11 (brand.md §10.8): the share card. Link scrapers run no script, so every address shares this one card
+         (web/src/brand/meta.ts; core/test/brand.test.ts holds this copy to it). -->
+    <meta name="description" content="Goose can't be fooled into paying, can't overspend and can't hide anything. Practice only: no real money." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Gilded Goose" />
+    <meta property="og:description" content="Goose can't be fooled into paying, can't overspend and can't hide anything. Practice only: no real money." />
+    <meta property="og:image" content="https://gilded-goose.onrender.com/og/share.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A gold egg beside the words: Nothing is paid until you tap." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#2c1520" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- B-11 (brand.md §10.1): the lockup's sheet, web/src/brand/lockup.css verbatim, so a bar drawn here wears it before any script -->
+<style data-gg>
+/* The lockup "Gilded G◯ose" (brand.md §10.1): Hanken 400, -.02em (the bar .05em), the vector egg as the first o of Goose. Each HTML entry's <head> carries this file verbatim (core/test/brand.test.ts), so a bar painted before any script wears it. */
+.gg { display: inline-flex; align-items: baseline; font-family: var(--mark-face, var(--display)); font-weight: var(--mark-w, 400); letter-spacing: var(--mark-track, -.02em); line-height: 1; color: var(--ink, #f4eadc); white-space: nowrap; font-kerning: normal; text-decoration: none; }
+.gg .sp { display: inline-block; width: .24em; }
+.gg .o { display: inline-block; width: .5em; height: .62em; margin: 0 .035em 0 .025em; transform: translateY(.012em); }
+.gg .o svg { display: block; width: 100%; height: 100%; overflow: visible; }
+/* The name in the visible text too (WCAG 2.5.3, axe label-content-name-mismatch): a real space in .sp and a real "o" under the egg, so the link reads "Gilded Goose" to voice control and to copy. The o is out of flow (absolute at its static place, so the egg's box and baseline are as before) and transparent; forced colours would repaint it, so it keeps its own colour there. Its letter-spacing is 0: the bar's .05em tracking would make the absolute o wider than .o's fixed box, so .o would hold more than it shows (a3b-screens, Nov 6); the egg's spacing is .o's own margins. scripts/lockup-name.ts diffs the pixels and measures that spill. */
+.gg .oc { position: absolute; color: transparent; letter-spacing: 0; }
+@media (forced-colors: active) { .gg .oc { forced-color-adjust: none; } }
+.gg-bar { --mark-track: .05em; font-size: 22px; }
+.gg-bar .o { width: .55em; height: .68em; margin: 0 .03em 0 .02em; }
+.gg-share { font-size: 40px; }
+.gg-end { --mark-w: 300; --mark-track: -.03em; font-size: 96px; }
+@media (max-width: 720px) { .gg-bar { font-size: 20px; } }
+</style>
+    <!-- 5b as "See how it keeps you safe" (018 N20, at the bar). Five steps from
+         one recorded week's ledger: your max, the trick, the $500, the haggle, your yes. The nav, the name and the
+         headline are static so they paint before any script runs. Body text is ink, never grey (5b review). -->
+    <style>
+      /* Track W: the page wears the Desk's tokens (class="dk" data-palette="v" on <html>, desk/tokens.css through safe.css,
+         a blocking stylesheet); safe.css points the page's own names at the Velvet roles. No second palette here. */
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-variant-numeric: tabular-nums; }
+      /* W6 (Round 4's a11y fix 4): no page-wide smooth scroll. It made every Tab glide, so a focused control (the ledger's
+         summary at 390, with the tour's pill) crossed under the pill's strip for a beat before it settled; focus now lands
+         at once, clear of the pill (scroll-padding-bottom, tour-pill.css). The page's own jumps still glide (Safe.tsx
+         `glide`), never under reduced motion. */
+      button { font: inherit; cursor: pointer; color: inherit; }
+      a { color: var(--teal); }
+      q { font-style: italic; } q::before { content: "“"; } q::after { content: "”"; }
+      /* S1b: no practice strip above the nav ("Practice only" is in the nav's slot; the sentence, every word, is the
+         footer's first line). --bh is what sits over the sticky step panels: the bar itself, sticky at the window's top at
+         every width like every route's (nav.css, S1-13), 56 px on a phone and 64 from 721 (Round 5, B4: at 0 the phone's step rail ghosted through it). */
+      :root { --bh: 56px; } @media (min-width: 721px) { :root { --bh: 64px; } }
+      .page { max-width: 1120px; margin: 0 auto; padding: 0 var(--s-3) var(--s-8); display: grid; grid-template-columns: 190px minmax(0, 1fr); grid-template-areas: "nav nav" "hero hero" "rail main" ". foot"; gap: 0 var(--s-6); }
+      .hero { grid-area: hero; padding: var(--s-3) 0 var(--s-1); }
+      .rail { grid-area: rail; } main { grid-area: main; min-width: 0; } footer { grid-area: foot; }
+      .back { display: inline-flex; align-items: center; min-height: 44px; font-weight: var(--w-strong); text-decoration: none; }
+      .name { display: flex; align-items: center; gap: var(--s-1); font-size: var(--t-lead); font-weight: var(--w-strong); letter-spacing: -.01em; margin: 6px 0 var(--s-2); }
+      .name svg { width: 28px; height: 34px; flex: none; }
+      h1 { font-size: var(--t-h1, var(--t-h2)); line-height: 1.04; letter-spacing: -.035em; margin: 0; font-weight: var(--w-strong); }
+      .lede { font-size: var(--t-lead); margin: var(--s-2) 0 0; font-weight: var(--w-strong); max-width: 46ch; } .lede b { color: var(--teal); }
+
+      /* The chapter list: left and sticky on desktop, a progress rail on a phone. */
+      .rail { position: sticky; top: calc(24px + var(--bh, 34px)); align-self: start; padding-top: var(--s-6); }
+      .rail ol { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--line); }
+      .rail li a { display: flex; align-items: center; min-height: 44px; padding: 0 0 0 var(--s-2); margin-left: -2px; border-left: 2px solid transparent; color: var(--ink2); text-decoration: none; font-weight: var(--w-strong); font-size: var(--t-small); }
+      .rail li a.on { color: var(--ink); font-weight: var(--w-strong); border-left-color: var(--teal); }
+      .rail .n { display: none; }
+
+      .ch { padding: var(--s-5) 0 var(--s-1); scroll-margin-top: calc(24px + var(--bh, 34px)); }
+      .ch + .ch, .duo + .ch, .duo { border-top: 1px solid var(--line); }
+      .kicker { font-size: var(--t-small); font-weight: var(--w-strong); color: var(--teal); letter-spacing: .02em; margin: 0 0 6px; }
+      h2 { font-size: var(--t-h2); line-height: 1.12; letter-spacing: -.02em; margin: 0 0 var(--s-1); font-weight: var(--w-strong); }
+      .say { font-size: var(--t-body); margin: 0 0 var(--s-2); max-width: 44ch; }
+      .big { font-size: var(--t-num, var(--t-h2)); font-weight: var(--w-strong); letter-spacing: -.03em; line-height: 1; }
+      .big.red { color: var(--red); }
+      .next { display: none; }
+      .wait { border: 1px dashed var(--line); border-radius: var(--r-3); padding: var(--s-3); font-weight: var(--w-strong); }
+
+      /* Bubbles: your words dark and right; the AI's soft and left; a seller's dashed and quoted; code answers with a stamp. */
+      .bubbles { display: flex; flex-direction: column; gap: var(--s-1); margin: 0 0 var(--s-2); }
+      .b { max-width: min(38ch, 90%); padding: var(--s-2) var(--s-2); border-radius: var(--r-3); font-size: var(--t-body); }
+      .b .who { display: block; font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: .03em; margin-bottom: 2px; }
+      .b.you { align-self: flex-end; background: var(--ink); color: var(--bg); border-bottom-right-radius: 6px; font-weight: var(--w-strong); font-size: var(--t-lead); }
+      .b.ai { align-self: flex-start; background: var(--paper); border-bottom-left-radius: 6px; }
+      .b.seller { align-self: flex-start; background: var(--white); border: 1px solid var(--ink2); border-bottom-left-radius: 6px; }
+      .tagd { display: inline-block; margin-left: var(--s-1); font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: .04em; border: 1px solid var(--ink2); border-radius: var(--r-pill); padding: 0 7px; vertical-align: 1px; }
+      .aside { margin: 0; padding: 0 4px; font-size: var(--t-small); font-style: italic; }
+      .b.seller q { display: block; margin-top: 2px; }
+      .b.scam { border-color: var(--red); }
+      .b.scam .who { color: var(--red); }
+      .b s { text-decoration-thickness: 2px; }
+      .over { display: inline-block; margin-left: 6px; font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: .06em; text-transform: uppercase; color: var(--teal); border: 1.5px solid var(--teal); border-radius: var(--r-pill); padding: 0 7px; vertical-align: 1px; }
+      .stamp { border: 2px solid var(--teal); border-radius: var(--r-3); padding: var(--s-2) var(--s-2); background: linear-gradient(var(--teal-wash), var(--white) 120px); }
+      .stamp .who { display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: .08em; color: var(--teal); text-transform: uppercase; }
+      .stamp .who svg { width: 14px; height: 14px; }
+      .stamp .v { font-size: var(--t-h3); font-weight: var(--w-strong); letter-spacing: -.01em; color: var(--teal); margin: 4px 0 0; }
+      .stamp p { margin: 4px 0 0; font-size: var(--t-body); }
+      .stamp .amtrow { display: flex; align-items: center; gap: var(--s-2); margin-top: var(--s-1); }
+      .stamp .amtrow .big { font-size: var(--t-h2); }
+      .ring { width: 30px; height: 30px; border-radius: 50%; border: 2.5px solid var(--gold-mark); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+      .ring svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+      .label { font-size: var(--t-small); margin: var(--s-1) 0 0; }
+
+      /* Proof: opens the real ledger row in place. */
+      /* The look stays an inline word; an invisible ::after makes the tap target at least 44 px tall and wide. */
+      .proof { position: relative; z-index: 1; background: none; border: 0; padding: 0; margin: 0; vertical-align: baseline; display: inline; color: var(--teal); font-weight: var(--w-strong); font-size: var(--t-small); line-height: inherit; }
+      .proof, .proofrow a { white-space: nowrap; }
+      .proof::after, .proofrow a::after { content: ""; position: absolute; left: -6px; right: -6px; top: 50%; height: 44px; transform: translateY(-50%); min-width: 44px; }
+      .proofrow { margin: 4px 0 var(--s-1); padding: var(--s-1) var(--s-2); border-left: 3px solid var(--teal); background: var(--paper); border-radius: 0 10px 10px 0; font-size: var(--t-small); }
+      .proofrow .rid { font-weight: var(--w-strong); }
+      .proofrow a { position: relative; z-index: 1; font-weight: var(--w-strong); }
+
+      /* 1. Your max */
+      .one { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 0 var(--s-4); align-items: start; }
+      .one .bubbles .b.you { align-self: flex-start; }
+      .panel { position: relative; background: var(--cream); border-radius: var(--r-3); height: 250px; overflow: hidden; }
+      .panel svg.kettle { position: absolute; left: 50%; bottom: 20px; width: 230px; transform: translateX(-66%); }
+      .lockchip { position: absolute; right: 20px; top: 22px; background: var(--white); border-radius: var(--r-3); padding: var(--s-2) var(--s-2); box-shadow: 0 8px 24px rgb(80 60 10 / .16); }
+      .lockchip .big { font-size: var(--t-h2); }
+      .lockchip .l { display: flex; align-items: center; gap: 6px; font-size: var(--t-small); font-weight: var(--w-strong); color: var(--gold); margin-top: 4px; }
+      .lockchip .l svg { width: 16px; height: 16px; }
+      .if { font-size: var(--t-lead); font-weight: var(--w-strong); margin: 4px 0 0; }
+      .settings { margin: 0; border: 1px solid var(--line); border-radius: var(--r-3); padding: 6px var(--s-2); }
+      .settings h2 { font-size: var(--t-small); font-weight: var(--w-strong); margin: var(--s-1) 0 2px; }
+      .settings ul { list-style: none; margin: 0; padding: 0; }
+      .settings li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 var(--s-2); padding: 9px 0; border-top: 1px solid var(--line); font-size: var(--t-small); }
+      .settings li:first-child { border-top: 0; }
+      .settings .k { font-weight: var(--w-strong); }
+      .settings .val { font-weight: var(--w-strong); color: var(--teal); text-align: right; }
+      .settings .nx { font-size: var(--t-micro); font-weight: var(--w-strong); border: 1.5px solid var(--ink2); border-radius: var(--r-pill); padding: 1px 9px; justify-self: end; align-self: center; }
+      .settings .note { grid-column: 1 / -1; font-size: var(--t-small); }
+      .settings li.extra { display: none; } .settings.all li.extra { display: grid; }
+      .settings .more { display: flex; min-height: 44px; align-items: center; background: none; border: 0; padding: 0; color: var(--teal); font-weight: var(--w-strong); }
+      .settings .notyet { font-size: var(--t-small); margin: 0; padding: 9px 0 var(--s-1); border-top: 1px solid var(--line); }
+
+      /* 2 and 3: the desktop pair */
+      .duo { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); gap: 0 var(--s-4); align-items: start; }
+      .duo > .ch + .ch { border-top: 0; }
+      .try { background: var(--paper); border-radius: var(--r-3); padding: var(--s-2); }
+      .try label.q { display: block; font-weight: var(--w-strong); margin: 0 0 var(--s-1); }
+      .field { display: flex; gap: var(--s-1); align-items: center; background: var(--white); border: 1px solid var(--line); border-radius: var(--r-3); padding: 6px 6px 6px var(--s-2); }
+      .field:focus-within { outline: 2px solid var(--teal); outline-offset: 1px; }
+      .field textarea { flex: 1; border: 0; outline: 0; min-width: 0; min-height: 44px; padding: var(--s-1) 0; resize: none; background: transparent; color: var(--ink); font: inherit; font-size: var(--t-body); line-height: 1.4; field-sizing: content; }
+      .field .price { flex: none; display: inline-flex; align-items: center; gap: 2px; border-radius: var(--r-pill); background: var(--paper); padding: 0 12px; min-height: 44px; font-weight: var(--w-strong); }
+      .field .price input { width: 4.4em; min-height: 44px; padding: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font: inherit; font-weight: var(--w-strong); }
+      .chips { display: flex; flex-wrap: wrap; gap: var(--s-1); margin: var(--s-2) 0; }
+      .chip { min-height: 44px; padding: 6px var(--s-2); border-radius: var(--r-pill); background: var(--white); border: 1px solid var(--line); font-style: italic; font-size: var(--t-small); }
+      .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+      .row { display: flex; gap: var(--s-1); align-items: center; flex-wrap: wrap; }
+      .seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r-pill); background: var(--white); overflow: hidden; font-size: var(--t-small); }
+      .seg button { border: 0; background: transparent; padding: 0 var(--s-2); min-height: 44px; }
+      .seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+      .seg button[disabled] { cursor: default; color: var(--ink2); background: var(--paper); display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+      .seg .lock { width: 13px; height: 13px; flex: none; }
+      .send { margin-left: auto; min-height: 48px; padding: 0 26px; border-radius: var(--r-pill); background: var(--teal); color: #fff; border: 0; font-weight: var(--w-strong); }
+      @media (prefers-color-scheme: dark) { .send { color: #0e1015 !important; } }
+      /* Live mode's state, said once, beside the AI toggle (round 2). */
+      .row .seg { order: 1; } .row .send { order: 2; }
+      .status { order: 3; flex-basis: 100%; display: flex; align-items: center; gap: 7px; font-size: var(--t-micro); font-weight: var(--w-strong); color: var(--ink2); margin-top: -2px; }
+      .status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold-mark); flex: none; }
+      .status[data-live="up"] .dot { background: var(--ink2); }
+      .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      .send[disabled] { background: var(--line); color: var(--ink); cursor: default; }
+      .answer { margin-top: var(--s-2); }
+      .alert { margin: var(--s-1) 0 0; font-weight: var(--w-strong); color: var(--red); }
+      .also { font-size: var(--t-small); margin: var(--s-2) 0 0; }
+      .control { background: var(--red-wash); border-radius: var(--r-3); padding: var(--s-3); }
+      .control .tag { display: inline-block; font-size: var(--t-micro); font-weight: var(--w-strong); color: var(--red); background: var(--white); border-radius: var(--r-pill); padding: 3px var(--s-1); }
+      .control .big { margin: var(--s-2) 0 var(--s-1); }
+      .control p { margin: 0; font-size: var(--t-body); }
+      .control p + p { margin-top: var(--s-1); font-size: var(--t-small); }
+      .cap { font-size: var(--t-micro); margin: var(--s-1) 0 0; }
+      .control .cap { font-size: var(--t-micro) !important; margin-top: 4px; }
+      .reply summary { cursor: pointer; color: var(--red); font-weight: var(--w-strong); list-style: none; min-height: 44px; display: flex; align-items: center; }
+      .reply summary::-webkit-details-marker { display: none; }
+      .reply p { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--t-micro) !important; word-break: break-all; }
+
+      /* 4. The haggle */
+      .haggle { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--s-4); align-items: start; }
+      .haggle .bubbles { margin: 0; }
+      .haggle .thread { grid-column: 1; grid-row: 1; }
+      .haggle .side { grid-column: 2; grid-row: 1; position: sticky; top: calc(24px + var(--bh, 34px)); }
+      .win { background: var(--teal-wash); border-radius: var(--r-3); padding: 26px var(--s-3); }
+      .legend { list-style: none; margin: var(--s-2) 0 0; padding: 0; display: grid; gap: var(--s-2); font-size: var(--t-small); }
+      .legend li { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: var(--s-1); align-items: center; }
+      .lg { justify-self: start; display: inline-flex; align-items: center; gap: 5px; font-size: var(--t-micro); font-weight: var(--w-strong); letter-spacing: .03em; padding: 3px var(--s-1); border-radius: var(--r-pill); }
+      .lg.seller { border: 1px solid var(--ink2); background: var(--white); }
+      .lg.ai { background: var(--paper); }
+      .lg.code { border: 2px solid var(--teal); color: var(--teal); text-transform: uppercase; letter-spacing: .06em; font-size: var(--t-micro); }
+      .lg.code svg { width: 12px; height: 12px; }
+      .win .big { display: block; font-size: var(--t-num, var(--t-h2)); color: var(--teal); }
+      .win b { display: block; font-size: var(--t-lead); margin: var(--s-1) 0 var(--s-1); } .win p { margin: 0; font-size: var(--t-body); }
+      .rec { display: inline-block; font-size: var(--t-micro); font-weight: var(--w-strong); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 2px var(--s-1); margin: 0 0 var(--s-2); }
+      .seeall { display: none; }
+      .rest { font-size: var(--t-small); margin: 4px 0 0; }
+
+      /* 5. Your yes */
+      /* Desktop: the cart and its checks side by side, full width; a phone stacks them. */
+      .cart { border: 1px solid var(--line); border-radius: var(--r-3); padding: var(--s-3) 26px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 var(--s-4); align-items: center; }
+      .cart .from { font-size: var(--t-body); margin: 6px 0 var(--s-2); }
+      /* A recorded cart: the button's picture, plainly inert (dashed, no fill, says it can't be paid). */
+      .approve { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 62px; padding: var(--s-2) var(--s-3) var(--s-2); border-radius: var(--r-3); border: 2px dashed var(--teal); background: transparent; color: var(--teal); font-weight: var(--w-strong); font-size: var(--t-body); line-height: 1.25; cursor: default; user-select: none; }
+      .approve .a1 { display: inline-flex; align-items: center; gap: var(--s-1); }
+      .approve .a2 { font-size: var(--t-micro); font-weight: var(--w-strong); color: var(--ink2); }
+      .approve .a3 { margin-top: var(--s-1); padding-top: var(--s-1); border-top: 1px dashed var(--line); font-size: var(--t-small); font-weight: var(--w-strong); color: var(--ink); text-align: center; }
+      .approve svg { width: 18px; height: 22px; }
+      .cart .cap { text-align: center; }
+      .replay { display: flex; align-items: center; justify-content: center; gap: var(--s-1); min-height: 52px; margin-top: var(--s-3); border-radius: var(--r-pill); background: var(--teal); color: #fff; font-weight: var(--w-strong); font-size: var(--t-body); text-decoration: none; }
+      .replay svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      /* Dark: a quieter replay (teal on a dark teal wash), secondary to the story; text 7:1. */
+      @media (prefers-color-scheme: dark) { .replay { background: var(--teal-wash); color: var(--teal); box-shadow: inset 0 0 0 1.5px var(--teal); } }
+      .approve .a3 span { white-space: nowrap; }
+      .fine { font-size: var(--t-small); margin: var(--s-1) 0 0; text-align: center; font-weight: var(--w-strong); }
+      .cart .check { padding-left: var(--s-4); border-left: 1px solid var(--line); text-align: left; }
+      .cart .check p { margin: 0; font-size: var(--t-small); } .cart .check code { font-weight: var(--w-strong); }
+      .cart .check .cap { text-align: left; font-weight: var(--w-body); margin-top: 6px; font-size: var(--t-small); }
+      .nopay { font-weight: var(--w-strong); margin: 0; }
+
+      /* Small, and only beside the trick it's about (N26). */
+      .haiku { margin: var(--s-2) 0 0; font-size: var(--t-small); max-width: 60ch; }
+      .haiku b { font-weight: var(--w-strong); } .haiku .day { white-space: nowrap; }
+      .ledger { margin-top: var(--s-3); }
+      .ledger summary { cursor: pointer; list-style: none; min-height: 44px; display: flex; align-items: center; font-weight: var(--w-strong); color: var(--teal); }
+      .ledger summary::-webkit-details-marker { display: none; }
+      .ltable { width: 100%; border-collapse: collapse; font-size: var(--t-small); }
+      .ltable td { padding: var(--s-1) var(--s-1) var(--s-1) 0; border-top: 1px solid var(--line); vertical-align: top; }
+      .ltable td.seq { width: 2.5em; font-weight: var(--w-strong); } .ltable td.who { width: 6.5em; font-weight: var(--w-strong); } .ltable td.amt { width: 5em; text-align: right; padding-right: var(--s-2); font-weight: var(--w-strong); white-space: nowrap; }
+      .ltable tr.hit td { background: var(--teal-wash); }
+      footer { margin-top: var(--s-5); padding-top: var(--s-2); border-top: 1px solid var(--line); font-size: var(--t-small); max-width: 74ch; }
+      footer .gn-foot { margin: 0 0 var(--s-1); padding: 0; border: 0; } /* the practice sentence opens the footer (S1b) */
+
+      .motion .landing { animation: rise var(--d-2) var(--ease) both; } .motion .landing .ring path { stroke-dasharray: 1; animation: draw var(--d-2) var(--ease) both; }
+      .motion .ch.opening { animation: rise var(--d-2) var(--ease) both; }
+      @keyframes rise { from { opacity: 0; transform: translateY(10px); } } @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+      /* Phone: one step per screen, unfolding on a tap; scrolling still works and "Show all" opens everything. */
+      @media (max-width: 899px) {
+        /* One gutter with every route's bar (S1-3's Needs): 32 px from 721, 16 px on a phone (--gut, below). */
+        .page { --gut: var(--s-4); display: flex; flex-direction: column; padding: 0 var(--gut) var(--s-5); }
+        .hero { padding: 6px 0 4px; } .name { font-size: var(--t-body); margin: 2px 0 var(--s-1); } .name svg { width: 24px; height: 29px; }
+        h1 { font-size: var(--t-h2); } .lede { font-size: var(--t-body); margin-top: var(--s-1); }
+        .rail { align-self: stretch; position: sticky; top: var(--bh, 52px); z-index: 5; background: var(--bg); margin: var(--s-2) calc(-1 * var(--gut)) 0; padding: 0 var(--gut) 6px; border-bottom: 1px solid var(--line); }
+        .rail ol { display: flex; gap: 4px; border: 0; }
+        /* Round 1 (a11y, axe target-size): each step's link is a 44 px tall target; its 5 px bar is drawn inside it */
+        .rail li { flex: 1; } .rail li a { position: relative; height: 44px; padding: 0; margin: 0; border: 0; border-radius: 6px; background: none; font-size: 0; }
+        .rail li a::before { content: ""; position: absolute; left: 0; right: 0; top: 12px; height: 5px; border-radius: 3px; background: var(--line); }
+        .rail li a.done::before { background: var(--teal); } .rail li a.on::before { background: var(--ink); }
+        .rail li a:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+        /* the step's name sits over the links' lower half and lets taps through to them; Show all keeps its own */
+        .rail .n { position: relative; display: flex; justify-content: space-between; align-items: center; font-size: var(--t-small); font-weight: var(--w-strong); margin-top: -18px; pointer-events: none; }
+        .rail .n .all { pointer-events: auto; }
+        .rail .all { background: none; border: 0; color: var(--teal); font-weight: var(--w-strong); min-height: 44px; padding: 0 0 0 12px; }
+        .ch { padding: var(--s-3) 0 6px; scroll-margin-top: calc(82px + var(--bh, 52px)); } .ch + .ch, .duo + .ch, .duo { border-top: 0; }
+        .ch.later { display: none; }
+        h2 { font-size: var(--t-h3); } .say { font-size: var(--t-body); margin-bottom: var(--s-2); }
+        .big { font-size: var(--t-num, var(--t-h2)); }
+        .next { display: flex; width: 100%; min-height: 52px; margin: var(--s-3) 0 0; align-items: center; justify-content: center; border-radius: var(--r-pill); border: 1.5px solid var(--ink); background: var(--white); font-weight: var(--w-strong); font-size: var(--t-body); }
+        .ch:not(.last-open) .next { display: none; }
+        .one, .haggle, .duo { display: block; }
+        .one .bubbles { margin-bottom: var(--s-2); } .one .bubbles .b.you { align-self: flex-end; }
+        .panel { height: 180px; } .panel svg.kettle { width: 160px; transform: translateX(-84%); bottom: 12px; }
+        .lockchip { right: 12px; top: 16px; padding: var(--s-2) var(--s-2); } .lockchip .big { font-size: var(--t-h2); }
+        .settings { margin-top: var(--s-2); }
+        .cart { display: block; padding: var(--s-3); } .cart .check { margin-top: var(--s-2); padding: var(--s-2) 0 0; border-left: 0; border-top: 1px solid var(--line); }
+        .settings li .note { display: none; } .settings.all li .note { display: block; }
+        .row .seg { width: 100%; } .seg button { flex: 1 1 auto; white-space: nowrap; padding: 0 var(--s-2); } .seg button[disabled] { font-size: var(--t-micro); } .send { width: 100%; margin: 0; order: 3; } .status { order: 2; margin: 0; }
+        .b.seller .tagd { display: table; margin: 4px 0 2px; }
+        .stamp .v { font-size: var(--t-lead); }
+        .haggle .side { position: static; } .win { margin: 0 0 var(--s-2); padding: var(--s-3); } .win .big { font-size: var(--t-num, var(--t-h2)); }
+        .rec { margin-top: var(--s-2); }
+        .seeall { display: flex; width: 100%; min-height: 48px; align-items: center; justify-content: center; border-radius: var(--r-pill); border: 1.5px solid var(--teal); background: var(--white); color: var(--teal); font-weight: var(--w-strong); }
+        .haggle.shut .bubbles, .haggle.shut .rest, .haggle.shut .rec { display: none; }
+        .ltable td.who { width: 5em; }
+      }
+      @media (max-width: 720px) { .page { --gut: var(--s-2); overflow-x: clip; } } /* clip: as index.html's phone .page */
+      /* W4 (Round 2): the phone bar's menu button ends at the gutter, never in it (nav.css pulls a padded bar's 12 px out) */
+      @media (max-width: 720px) { .page > .gn .dk-menu { margin-right: 0; } }
+      @media (max-width: 599px) {
+        .ltable, .ltable tbody { display: block; }
+        .ltable tr { display: grid; grid-template-columns: auto 1fr auto; gap: 2px var(--s-1); padding: var(--s-1) 0; border-top: 1px solid var(--line); }
+        .ltable td { border: 0; padding: 0; width: auto !important; }
+        .ltable td.amt { padding-right: 0; }
+        .ltable td.why { grid-column: 1 / -1; }
+      }
+      /* The one nav: flush in the page's column, its own first row above the hero (commit 5: out of the hero, so it
+         sticks the whole page through like every route's; nav.css draws it full-bleed and turns it to glass once
+         scrolled). On a phone it scrolls away (nav.css). */
+      .page > .gn { grid-area: nav; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; position: relative; }
+      .page > .gn .dk-nav-in { max-width: none; padding: 0; }
+      /* the hero no longer holds the bar: no 64 px first row, no hairline of its own (safe.css's older header) */
+      .page > .hero { grid-template-rows: auto; } .page > .hero::after { content: none; }
+      .gn-slot { display: contents; }
+      /* the way back to the attack demo, the old header's "‹ Try to break it", now under the lede */
+      .hero .tryit { margin: 0; } .hero .tryit a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font-weight: 500; text-decoration: underline; text-decoration-color: var(--line2); text-underline-offset: 4px; }
+    </style>
+  </head>
+  <body>
+    <!-- B-11 (brand.md §10.1): the vector egg every lockup's o uses (web/src/brand/egg.ts EGG_SYMBOL) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><radialGradient id="ggG" cx="38%" cy="30%" r="78%"><stop offset="0" stop-color="#fff3c4"/><stop offset=".34" stop-color="#f0cb62"/><stop offset=".74" stop-color="#b98a1c"/><stop offset="1" stop-color="#6e4f06"/></radialGradient><symbol id="ggEgg" viewBox="4.4 2.2 15.2 18.8"><path d="M12 2.2c-4.2 0-7.6 6.3-7.6 11.2a7.6 7.6 0 0 0 15.2 0C19.6 8.5 16.2 2.2 12 2.2Z" fill="url(#ggG)"/></symbol></defs></svg>
+    <div class="page">
+      <!-- The one nav every page wears (S1, Joshua Fri 3:40 PM; web/src/nav); safe-main.tsx loads its sheet and the menu. -->
+      <header class="gn dk-nav">
+        <a class="gn-skip" href="#main">Skip to content</a><!-- W6: the first Tab stop (src/skip.ts) -->
+        <div class="dk-nav-in">
+          <a class="gg gg-bar" href="%BASE_URL%?desk=1" aria-label="Gilded Goose">Gilded<span class="sp"> </span>G<span class="o"><span class="oc">o</span><svg aria-hidden="true"><use href="#ggEgg"/></svg></span>ose</a>
+          <span class="dk-practice-ph">Practice only</span>
+          <div class="dk-grow"></div>
+          <span class="gn-slot" data-gn-menu><button type="button" class="gm-btn dk-menu" aria-haspopup="dialog" aria-expanded="false"><span class="gm-w">Everything Goose does <svg viewBox="0 0 12 8" aria-hidden="true"><path d="m1 1.5 5 5 5-5" /></svg></span><span class="gm-ph">Menu</span></button></span>
+          <div class="dk-layer" role="group" aria-label="View"><a href="%BASE_URL%?desk=1">Shopper</a><a href="%BASE_URL%?desk=ledger">Behind the scenes</a></div>
+          <a class="dk-judge" href="%BASE_URL%?desk=tour"><span>Judge<span class="dk-jl">? Start here</span></span><span class="dk-jt"> tour</span> <span class="dk-arr" aria-hidden="true">›</span></a>
+        </div>
+      </header>
+      <section class="hero" aria-labelledby="safe-h">
+        <h1 id="safe-h">See how it keeps you safe.</h1>
+        <p class="lede">The AI proposes, <b>plain code decides.</b></p>
+        <p class="tryit"><a href="%BASE_URL%?desk=1#challenge">Try to break it ›</a></p>
+      </section>
+      <div id="root" style="display: contents"></div>
+      <footer><p class="gn-foot" id="gn-foot">Practice only: simulated market, fictional sellers and products · <span id="rail">PayPal's sandbox (test mode), no real money</span></p>Independent student project; not affiliated with or endorsed by PayPal. Today the guard sits between the agent and PayPal's Orders API, outside PayPal.</footer>
+    </div>
+    <script type="module" src="/src/safe-main.tsx"></script>
+  </body>
+</html>

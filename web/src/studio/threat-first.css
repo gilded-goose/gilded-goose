@@ -1,0 +1,25 @@
+/* The counter's first lines (Track F), moved out of threat.css because they draw in the first paint and threat.css lands
+   with the board's chunk, about 1.9 s later on a cold phone. The room is the board's first height, measured with the seeded
+   week on show, so nothing under it moves when the board lands (`scripts/threat-walk.ts` measures it). */
+
+.tb-room { min-height: 2093px; }
+.tb { margin: var(--s-3) 0 var(--s-5); display: grid; gap: var(--s-2); min-width: 0; }
+.tb-card { padding: var(--s-4); min-width: 0; }
+.tb-counter { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--s-4); align-items: start; }
+.tb-counter > .tb-eye, .tb-counter > .tb-line, .tb-counter > .tb-second, .tb-counter > .tb-try { grid-column: 1; }
+.tb-eye { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-1); }
+.tb-live { width: 6px; height: 6px; border-radius: 50%; background: var(--lx-ink-3); flex: none; }
+.tb-live.on { background: var(--lx-gold); }
+.tb-line { margin: var(--s-2) 0 0; font-family: var(--display); font-size: var(--t-h2); line-height: 1.1; font-weight: var(--w-display); letter-spacing: -0.008em; text-wrap: balance; }
+.tb-line.alarm { color: var(--lx-mark); }
+.tb-line-end { display: block; }
+.tb-second { margin: var(--s-2) 0 0; max-width: 62ch; font-size: var(--t-body); line-height: 1.5; color: var(--lx-ink); text-wrap: pretty; }
+.tb-second:empty { display: none; }
+.tb-try { margin: var(--s-2) 0 0; font-size: var(--t-small); }
+.tb-try a { display: inline-flex; align-items: center; min-height: 44px; color: var(--lx-ink); text-underline-offset: 3px; }
+@media (max-width: 767px) {
+  .tb-room { min-height: 3958px; }
+  .tb { margin-top: var(--s-2); }
+  .tb-card { padding: var(--s-2); }
+  .tb-counter { grid-template-columns: minmax(0, 1fr); }
+}

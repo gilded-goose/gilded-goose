@@ -1,0 +1,45 @@
+/* The board: a dark housing, rows of flaps. Each flap is two halves split by an axle line; a turn drops the top
+   half-leaf and lifts the bottom one (flap.ts). Flat colours only; the fold is a darker flat face, not a gradient. */
+.gg-board {
+  --cell: clamp(9px, calc((100cqw - 2 * var(--gg-board-pad)) / var(--cols) - 3px), 30px);
+  --gg-board-pad: clamp(10px, 2cqw, 22px);
+  display: grid; gap: calc(var(--cell) * 0.22);
+  padding: var(--gg-board-pad);
+  border-radius: 10px;
+  background: var(--gg-housing);
+  box-shadow: inset 0 0 0 1px oklch(1 0 0 / 0.04);
+}
+.gg-board-wrap { container-type: inline-size; }
+.gg-board-row { display: flex; gap: 3px; }
+
+.gg-flap {
+  position: relative; flex: none; width: var(--cell); height: calc(var(--cell) * 1.42);
+  border-radius: var(--gg-r-flap); perspective: 220px;
+  font: 600 calc(var(--cell) * 1.02) / 1 var(--gg-mono); font-variant-numeric: tabular-nums;
+  color: var(--gg-flap-ink);
+  transition: color 240ms ease;
+}
+.gg-flap-half {
+  position: absolute; left: 0; right: 0; height: 50%; overflow: hidden;
+  background: var(--gg-face); backface-visibility: hidden;
+}
+.gg-flap-top { top: 0; border-radius: var(--gg-r-flap) var(--gg-r-flap) 0 0; transform-origin: 50% 100%; }
+.gg-flap-bot { bottom: 0; border-radius: 0 0 var(--gg-r-flap) var(--gg-r-flap); transform-origin: 50% 0; }
+.gg-flap-glyph { display: grid; place-items: center; height: 200%; }
+.gg-flap-bot .gg-flap-glyph { transform: translateY(-50%); }
+/* The axle: the line between the halves. */
+.gg-flap::after { content: ""; position: absolute; left: 0; right: 0; top: calc(50% - 0.5px); height: 1px; background: var(--gg-axle); z-index: 3; }
+/* The moving leaves exist only while turning. */
+.gg-flap-fall, .gg-flap-rise { visibility: hidden; z-index: 2; }
+.gg-flap[data-turning] .gg-flap-fall, .gg-flap[data-turning] .gg-flap-rise { visibility: visible; }
+.gg-flap-fall { background: var(--gg-face-fold); }
+
+.gg-board-row[data-tone="gold"] .gg-flap { color: var(--gg-gold); }
+.gg-board-row[data-tone="red"] .gg-flap { color: var(--gg-red); }
+.gg-board-row[data-tone="dim"] .gg-flap { color: var(--gg-flap-dim); }
+.gg-board-row[data-tone="label"] .gg-flap { color: var(--gg-flap-label); font-weight: 520; }
+/* A held row (the limit, while a seller's note pulls on it) shudders once. */
+.gg-board-row[data-jam] { animation: gg-jam 420ms var(--gg-out); }
+@keyframes gg-jam { 20% { transform: translateX(-3px); } 45% { transform: translateX(3px); } 70% { transform: translateX(-1.5px); } }
+
+@media (prefers-reduced-motion: reduce) { .gg-board-row[data-jam] { animation: none; } }

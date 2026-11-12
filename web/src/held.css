@@ -1,0 +1,4 @@
+/* The last line a page has: what's left when its code didn't load or threw (held.tsx, main.tsx). Nothing else on the page dresses it. */
+#root > main.held { max-width: 34rem; margin-inline: auto; padding: 96px 24px; }
+#root > main.held h1.held-line { font: inherit; letter-spacing: inherit; color: inherit; margin: 1em 0; } /* the page's heading, and still the one plain line the DD ruled on */
+#root > main.held a { color: var(--gold-hi, #efce8c); display: inline-block; line-height: 44px; margin-block: -12px; }

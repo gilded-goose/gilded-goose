@@ -1,0 +1,55 @@
+/* For builders (Joshua, Nov 4, 2a): reading, not a pitch. Tokens only; gold only on what it doesn't promise, the one
+   section a builder must not skim past. The page paints its own room, like How it works. */
+.bd { min-height: 100vh; background: var(--page-solid); color: var(--ink); font-family: var(--face); font-size: var(--t-body); line-height: var(--lh-body); }
+.bd-wrap { box-sizing: border-box; max-width: var(--w-page); margin: 0 auto; padding: 0 var(--gutter); }
+.bd-main { padding-top: var(--s-8); padding-bottom: var(--s-8); display: grid; gap: var(--s-8); }
+.bd-main > * { min-width: 0; }
+.bd-head { max-width: 720px; }
+.bd-head h1 { margin: 0 0 var(--s-2); font: var(--w-display) var(--t-h1) / var(--lh-display) var(--display); letter-spacing: var(--track-display); }
+.bd-lead { margin: 0; font-size: var(--t-lead); line-height: var(--lh-body); color: var(--ink-2); text-wrap: pretty; }
+
+.bd h2 { margin: 0 0 var(--s-2); font: var(--w-head) var(--t-h2) / var(--lh-head) var(--display); letter-spacing: var(--track-head); }
+.bd-text { margin: var(--s-2) 0 0; max-width: 62ch; color: var(--ink-2); text-wrap: pretty; }
+.bd h2 + .bd-text { margin-top: 0; }
+
+.bd-who { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s-2); }
+.bd-who li, .bd-code { background: var(--card); border: 1px solid var(--card-line); border-radius: var(--r-2); }
+.bd-who li { padding: var(--s-3); }
+.bd-who h3 { margin: 0 0 var(--s-1); font: var(--w-head) var(--t-h3) / var(--lh-head) var(--display); letter-spacing: var(--track-head); }
+.bd-who p { margin: 0; font-size: var(--t-small); line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+
+/* The code wraps rather than scrolling sideways: a phone reads all of it, and nothing here needs a second scrollbar. */
+.bd-code { box-sizing: border-box; margin: var(--s-3) 0 0; padding: var(--s-3); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; line-height: 1.6; color: var(--ink); }
+.bd-code, .bd-reads code { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.bd-code code { font: inherit; }
+/* A wrapped line hangs 2ch under its own indent, as an editor's soft wrap does: at 390, "// send the shopper to approveUrl"
+   wrapped to the left edge and read as a line of its own. Blocks, yet textContent and a copy keep the file's single newlines. */
+.bd-ln { display: block; padding-left: calc((var(--i, 0) + 2) * 1ch); text-indent: calc((var(--i, 0) + 2) * -1ch); }
+.bd-note { color: var(--ink-2); }
+
+.bd-reads { list-style: none; margin: var(--s-2) 0 var(--s-3); padding: 0; display: grid; gap: var(--s-2); }
+/* The reading under its note at every width: beside it, a phone wraps some and not others, and a desktop puts it a page away. */
+.bd-reads li { display: grid; padding-bottom: var(--s-2); border-bottom: var(--hair); }
+.bd-reads q { text-wrap: pretty; }
+.bd-reads span { color: var(--ink-2); font-size: var(--t-small); }
+
+.bd-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: var(--s-8) var(--s-6); }
+.bd-list, .bd-not ul { padding: 0 0 0 1.1em; display: grid; gap: var(--s-1); }
+.bd-list li, .bd-not li { padding-left: 2px; text-wrap: pretty; }
+.bd-list { margin: var(--s-2) 0 0; color: var(--ink); }
+
+.bd-not { padding: var(--s-4); border: 1px solid var(--gold-line); border-radius: var(--r-2); }
+.bd-not h2 { color: var(--gold); }
+.bd-not ul { margin: 0; max-width: 72ch; }
+
+.bd-next { margin: 0; display: flex; flex-wrap: wrap; gap: 0 var(--s-4); }
+.bd-next a { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; color: var(--ink); text-underline-offset: 4px; }
+.bd-foot { padding-bottom: var(--s-6); color: var(--ink-3); font-size: var(--t-micro); }
+.bd-foot p { margin: 0; padding-top: var(--s-2); border-top: var(--hair); }
+
+@media (max-width: 720px) {
+  .bd-main { padding-top: var(--s-6); gap: var(--s-6); }
+  .bd-code { padding: var(--s-2); font-size: 13px; }
+  .bd-not { padding: var(--s-3); }
+  .bd-foot { padding-bottom: calc(var(--s-10) + env(safe-area-inset-bottom)); }
+}

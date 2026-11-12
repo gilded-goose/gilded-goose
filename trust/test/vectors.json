@@ -1,0 +1,316 @@
+{
+  "about": "Test vectors for the Gilded Goose cart fingerprint, v0 (docs/fingerprint-v0.md). Written by scripts/fingerprint-vectors.ts from the shipped guard (trust/src/cart.ts); do not edit by hand.",
+  "hash": "SHA-256 over the canonical text's UTF-8 bytes, lowercase hex, first 32 characters. No key.",
+  "vectors": [
+    {
+      "name": "recorded-week-1",
+      "note": "The recorded demo week's cart. Its fingerprint is the one in docs/fixtures/tape-seed-1.json. It names a catalog entry and no payee, so the payee's place holds null.",
+      "cart": {
+        "item": "Goldfeather Kettle (fictional)",
+        "merchant": "Reedbank Outfitters (fictional)",
+        "sellerId": "reedbank",
+        "qty": 1,
+        "price": 4773,
+        "currency": "USD",
+        "shape": "one-off",
+        "catalogId": "kettle"
+      },
+      "nonce": "9ce301efb8829f5b6d01076ffeacb770",
+      "expiresAt": 1760000900000,
+      "canonical": "[\"Goldfeather Kettle (fictional)\",\"Reedbank Outfitters (fictional)\",\"reedbank\",1,\"47.73\",\"USD\",\"one-off\",\"kettle\",null,\"9ce301efb8829f5b6d01076ffeacb770\",1760000900000]",
+      "fingerprint": "79bb57798eb7360767778c2bd795f0c3"
+    },
+    {
+      "name": "one-cent-more",
+      "note": "The same cart at $47.74: one cent changes the fingerprint.",
+      "cart": {
+        "item": "Goldfeather Kettle (fictional)",
+        "merchant": "Reedbank Outfitters (fictional)",
+        "sellerId": "reedbank",
+        "qty": 1,
+        "price": 4774,
+        "currency": "USD",
+        "shape": "one-off",
+        "catalogId": "kettle"
+      },
+      "nonce": "9ce301efb8829f5b6d01076ffeacb770",
+      "expiresAt": 1760000900000,
+      "differsFrom": "recorded-week-1",
+      "canonical": "[\"Goldfeather Kettle (fictional)\",\"Reedbank Outfitters (fictional)\",\"reedbank\",1,\"47.74\",\"USD\",\"one-off\",\"kettle\",null,\"9ce301efb8829f5b6d01076ffeacb770\",1760000900000]",
+      "fingerprint": "ffa30679bee07af4c96d51883bca4971"
+    },
+    {
+      "name": "reordered-fields",
+      "note": "The same cart with its fields written in another order. The recipe fixes the order, so the fingerprint is the same.",
+      "cart": {
+        "shape": "one-off",
+        "catalogId": "kettle",
+        "currency": "USD",
+        "price": 4773,
+        "qty": 1,
+        "sellerId": "reedbank",
+        "merchant": "Reedbank Outfitters (fictional)",
+        "item": "Goldfeather Kettle (fictional)"
+      },
+      "nonce": "9ce301efb8829f5b6d01076ffeacb770",
+      "expiresAt": 1760000900000,
+      "sameAs": "recorded-week-1",
+      "canonical": "[\"Goldfeather Kettle (fictional)\",\"Reedbank Outfitters (fictional)\",\"reedbank\",1,\"47.73\",\"USD\",\"one-off\",\"kettle\",null,\"9ce301efb8829f5b6d01076ffeacb770\",1760000900000]",
+      "fingerprint": "79bb57798eb7360767778c2bd795f0c3"
+    },
+    {
+      "name": "different-nonce",
+      "note": "The same cart bound a second time: a new nonce, a new fingerprint.",
+      "cart": {
+        "item": "Goldfeather Kettle (fictional)",
+        "merchant": "Reedbank Outfitters (fictional)",
+        "sellerId": "reedbank",
+        "qty": 1,
+        "price": 4773,
+        "currency": "USD",
+        "shape": "one-off",
+        "catalogId": "kettle"
+      },
+      "nonce": "00000000000000000000000000000001",
+      "expiresAt": 1760000900000,
+      "differsFrom": "recorded-week-1",
+      "canonical": "[\"Goldfeather Kettle (fictional)\",\"Reedbank Outfitters (fictional)\",\"reedbank\",1,\"47.73\",\"USD\",\"one-off\",\"kettle\",null,\"00000000000000000000000000000001\",1760000900000]",
+      "fingerprint": "49a3f6bf270f62491ab978a9827b605e"
+    },
+    {
+      "name": "one-millisecond-later",
+      "note": "The same cart with an expiry one millisecond later.",
+      "cart": {
+        "item": "Goldfeather Kettle (fictional)",
+        "merchant": "Reedbank Outfitters (fictional)",
+        "sellerId": "reedbank",
+        "qty": 1,
+        "price": 4773,
+        "currency": "USD",
+        "shape": "one-off",
+        "catalogId": "kettle"
+      },
+      "nonce": "9ce301efb8829f5b6d01076ffeacb770",
+      "expiresAt": 1760000900001,
+      "differsFrom": "recorded-week-1",
+      "canonical": "[\"Goldfeather Kettle (fictional)\",\"Reedbank Outfitters (fictional)\",\"reedbank\",1,\"47.73\",\"USD\",\"one-off\",\"kettle\",null,\"9ce301efb8829f5b6d01076ffeacb770\",1760000900001]",
+      "fingerprint": "09530b510bdc2a15dca2dce884a2cdd6"
+    },
+    {
+      "name": "plain-cart",
+      "note": "A cart that names no catalog entry, no payee and no attributes: seven fields, then the nonce and the expiry.",
+      "cart": {
+        "item": "Blue mug",
+        "merchant": "Pondside Goods",
+        "sellerId": "pondside",
+        "qty": 2,
+        "price": 1850,
+        "currency": "USD",
+        "shape": "one-off"
+      },
+      "nonce": "0123456789abcdef0123456789abcdef",
+      "expiresAt": 1790000000000,
+      "canonical": "[\"Blue mug\",\"Pondside Goods\",\"pondside\",2,\"18.50\",\"USD\",\"one-off\",\"0123456789abcdef0123456789abcdef\",1790000000000]",
+      "fingerprint": "c11dddd47670d30eaa81a7f70d5b27cc"
+    },
+    {
+      "name": "with-payee",
+      "note": "The recorded cart, paid to a named PayPal merchant id.",
+      "cart": {
+        "item": "Goldfeather Kettle (fictional)",
+        "merchant": "Reedbank Outfitters (fictional)",
+        "sellerId": "reedbank",
+        "qty": 1,
+        "price": 4773,
+        "currency": "USD",
+        "shape": "one-off",
+        "catalogId": "kettle",
+        "payee": "MERCHANTA1B2C"
+      },
+      "nonce": "9ce301efb8829f5b6d01076ffeacb770",
+      "expiresAt": 1760000900000,
+      "differsFrom": "recorded-week-1",
+      "canonical": "[\"Goldfeather Kettle (fictional)\",\"Reedbank Outfitters (fictional)\",\"reedbank\",1,\"47.73\",\"USD\",\"one-off\",\"kettle\",\"MERCHANTA1B2C\",\"9ce301efb8829f5b6d01076ffeacb770\",1760000900000]",
+      "fingerprint": "51ebf2d8136a492d631139afbb6e088c"
+    },
+    {
+      "name": "different-payee",
+      "note": "The same cart paid to another merchant id.",
+      "cart": {
+        "item": "Goldfeather Kettle (fictional)",
+        "merchant": "Reedbank Outfitters (fictional)",
+        "sellerId": "reedbank",
+        "qty": 1,
+        "price": 4773,
+        "currency": "USD",
+        "shape": "one-off",
+        "catalogId": "kettle",
+        "payee": "MERCHANTZ9Y8X"
+      },
+      "nonce": "9ce301efb8829f5b6d01076ffeacb770",
+      "expiresAt": 1760000900000,
+      "differsFrom": "with-payee",
+      "canonical": "[\"Goldfeather Kettle (fictional)\",\"Reedbank Outfitters (fictional)\",\"reedbank\",1,\"47.73\",\"USD\",\"one-off\",\"kettle\",\"MERCHANTZ9Y8X\",\"9ce301efb8829f5b6d01076ffeacb770\",1760000900000]",
+      "fingerprint": "498a60d60f766e88408d368fad0ebc4d"
+    },
+    {
+      "name": "payee-without-catalog",
+      "note": "A payee and no catalog entry: the catalog entry's place holds null.",
+      "cart": {
+        "item": "Blue mug",
+        "merchant": "Pondside Goods",
+        "sellerId": "pondside",
+        "qty": 2,
+        "price": 1850,
+        "currency": "USD",
+        "shape": "one-off",
+        "payee": "MERCHANTA1B2C"
+      },
+      "nonce": "0123456789abcdef0123456789abcdef",
+      "expiresAt": 1790000000000,
+      "differsFrom": "plain-cart",
+      "canonical": "[\"Blue mug\",\"Pondside Goods\",\"pondside\",2,\"18.50\",\"USD\",\"one-off\",null,\"MERCHANTA1B2C\",\"0123456789abcdef0123456789abcdef\",1790000000000]",
+      "fingerprint": "ffe6021be4fe2c083635869511eb00fd"
+    },
+    {
+      "name": "unicode-item",
+      "note": "Accents, curly quotes, Japanese and an emoji outside the Basic Multilingual Plane. JSON.stringify leaves them as they are; the hash reads their UTF-8 bytes.",
+      "cart": {
+        "item": "Café “Zoë” teapot 急須 🫖",
+        "merchant": "Señor Té",
+        "sellerId": "pondside",
+        "qty": 2,
+        "price": 1850,
+        "currency": "USD",
+        "shape": "one-off"
+      },
+      "nonce": "0123456789abcdef0123456789abcdef",
+      "expiresAt": 1790000000000,
+      "differsFrom": "plain-cart",
+      "canonical": "[\"Café “Zoë” teapot 急須 🫖\",\"Señor Té\",\"pondside\",2,\"18.50\",\"USD\",\"one-off\",\"0123456789abcdef0123456789abcdef\",1790000000000]",
+      "fingerprint": "014664fd64c0249866d931bb18a46c47"
+    },
+    {
+      "name": "escaped-characters",
+      "note": "A double quote, a backslash, a newline, a tab and a control character: each is written the way JSON.stringify escapes it.",
+      "cart": {
+        "item": "12\" pan \\ lid\nline two\tend\u0001",
+        "merchant": "Pondside Goods",
+        "sellerId": "pondside",
+        "qty": 2,
+        "price": 1850,
+        "currency": "USD",
+        "shape": "one-off"
+      },
+      "nonce": "0123456789abcdef0123456789abcdef",
+      "expiresAt": 1790000000000,
+      "differsFrom": "plain-cart",
+      "canonical": "[\"12\\\" pan \\\\ lid\\nline two\\tend\\u0001\",\"Pondside Goods\",\"pondside\",2,\"18.50\",\"USD\",\"one-off\",\"0123456789abcdef0123456789abcdef\",1790000000000]",
+      "fingerprint": "ade07d33d54ee0b58ec7cccad7dd0c6d"
+    },
+    {
+      "name": "with-attributes",
+      "note": "Attributes join the text as [key, value] pairs sorted by key, by UTF-16 code unit, so \"Finish\" sorts before \"colour\".",
+      "cart": {
+        "item": "Goldfeather Kettle (fictional)",
+        "merchant": "Reedbank Outfitters (fictional)",
+        "sellerId": "reedbank",
+        "qty": 1,
+        "price": 4773,
+        "currency": "USD",
+        "shape": "one-off",
+        "catalogId": "kettle",
+        "attributes": {
+          "size": "1.7 L",
+          "colour": "gold",
+          "Finish": "matte"
+        }
+      },
+      "nonce": "9ce301efb8829f5b6d01076ffeacb770",
+      "expiresAt": 1760000900000,
+      "differsFrom": "recorded-week-1",
+      "canonical": "[\"Goldfeather Kettle (fictional)\",\"Reedbank Outfitters (fictional)\",\"reedbank\",1,\"47.73\",\"USD\",\"one-off\",\"kettle\",null,[[\"Finish\",\"matte\"],[\"colour\",\"gold\"],[\"size\",\"1.7 L\"]],\"9ce301efb8829f5b6d01076ffeacb770\",1760000900000]",
+      "fingerprint": "5794aa4bbbe22254e908803c4a2c416b"
+    },
+    {
+      "name": "attributes-reordered",
+      "note": "The same attributes written in another order: the same fingerprint.",
+      "cart": {
+        "item": "Goldfeather Kettle (fictional)",
+        "merchant": "Reedbank Outfitters (fictional)",
+        "sellerId": "reedbank",
+        "qty": 1,
+        "price": 4773,
+        "currency": "USD",
+        "shape": "one-off",
+        "catalogId": "kettle",
+        "attributes": {
+          "Finish": "matte",
+          "colour": "gold",
+          "size": "1.7 L"
+        }
+      },
+      "nonce": "9ce301efb8829f5b6d01076ffeacb770",
+      "expiresAt": 1760000900000,
+      "sameAs": "with-attributes",
+      "canonical": "[\"Goldfeather Kettle (fictional)\",\"Reedbank Outfitters (fictional)\",\"reedbank\",1,\"47.73\",\"USD\",\"one-off\",\"kettle\",null,[[\"Finish\",\"matte\"],[\"colour\",\"gold\"],[\"size\",\"1.7 L\"]],\"9ce301efb8829f5b6d01076ffeacb770\",1760000900000]",
+      "fingerprint": "5794aa4bbbe22254e908803c4a2c416b"
+    },
+    {
+      "name": "empty-attributes",
+      "note": "An attributes object with nothing in it still adds an empty list, so it is not the cart without attributes.",
+      "cart": {
+        "item": "Goldfeather Kettle (fictional)",
+        "merchant": "Reedbank Outfitters (fictional)",
+        "sellerId": "reedbank",
+        "qty": 1,
+        "price": 4773,
+        "currency": "USD",
+        "shape": "one-off",
+        "catalogId": "kettle",
+        "attributes": {}
+      },
+      "nonce": "9ce301efb8829f5b6d01076ffeacb770",
+      "expiresAt": 1760000900000,
+      "differsFrom": "recorded-week-1",
+      "canonical": "[\"Goldfeather Kettle (fictional)\",\"Reedbank Outfitters (fictional)\",\"reedbank\",1,\"47.73\",\"USD\",\"one-off\",\"kettle\",null,[],\"9ce301efb8829f5b6d01076ffeacb770\",1760000900000]",
+      "fingerprint": "e3755a72b8ac4b4377751b81f25fd860"
+    },
+    {
+      "name": "free-trial-zero",
+      "note": "A $0.00 free trial: the total is written \"0.00\".",
+      "cart": {
+        "item": "Blue mug",
+        "merchant": "Pondside Goods",
+        "sellerId": "pondside",
+        "qty": 1,
+        "price": 0,
+        "currency": "USD",
+        "shape": "free-trial"
+      },
+      "nonce": "0123456789abcdef0123456789abcdef",
+      "expiresAt": 1790000000000,
+      "differsFrom": "plain-cart",
+      "canonical": "[\"Blue mug\",\"Pondside Goods\",\"pondside\",1,\"0.00\",\"USD\",\"free-trial\",\"0123456789abcdef0123456789abcdef\",1790000000000]",
+      "fingerprint": "9b3817b29547f5bbeb0e5e61bbd1a2eb"
+    },
+    {
+      "name": "large-total",
+      "note": "$1,234,567.05: no thousands separator, and five cents is written \"05\".",
+      "cart": {
+        "item": "Blue mug",
+        "merchant": "Pondside Goods",
+        "sellerId": "pondside",
+        "qty": 2,
+        "price": 123456705,
+        "currency": "USD",
+        "shape": "one-off"
+      },
+      "nonce": "0123456789abcdef0123456789abcdef",
+      "expiresAt": 1790000000000,
+      "differsFrom": "plain-cart",
+      "canonical": "[\"Blue mug\",\"Pondside Goods\",\"pondside\",2,\"1234567.05\",\"USD\",\"one-off\",\"0123456789abcdef0123456789abcdef\",1790000000000]",
+      "fingerprint": "d8f49dedd26532b46a5a7d5e4508a33e"
+    }
+  ]
+}

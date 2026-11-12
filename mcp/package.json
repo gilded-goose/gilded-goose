@@ -1,0 +1,19 @@
+{
+  "name": "@gilded-goose/mcp",
+  "version": "0.1.0",
+  "description": "An MCP server (stdio) with one tool: an agent hands it a seller's note, and the plain-code guard from @gilded-goose/trust says clear, hold or refuse. Lives in this repo; not on npm.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build": "echo mcp runs as source"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}

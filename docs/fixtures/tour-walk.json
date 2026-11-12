@@ -1,0 +1,135 @@
+{
+  "source": "scripts/tour-walk.ts against http://localhost:8801/ (PAYMENT=fake), 2026-11-04: seconds from each press to the feature being ready, and back to the tour. The site's own waits only: the look at each stop is the stated allowance (TOUR_LOOK_S), and PayPal's sandbox login is not counted.",
+  "load": {
+    "390": 0,
+    "1440": 0.1
+  },
+  "at1440": [
+    {
+      "stop": "trick",
+      "open": 0.9,
+      "back": 0
+    },
+    {
+      "stop": "watcher",
+      "open": 1.9,
+      "back": 0
+    },
+    {
+      "stop": "pay",
+      "open": 0.9,
+      "back": 0
+    },
+    {
+      "stop": "ask",
+      "open": 0.1,
+      "back": 0
+    },
+    {
+      "stop": "talk",
+      "open": 0.1,
+      "back": 0
+    },
+    {
+      "stop": "limits",
+      "open": 0.1,
+      "back": 0
+    },
+    {
+      "stop": "haggle",
+      "open": 0.1,
+      "back": 0
+    },
+    {
+      "stop": "wants",
+      "open": 0.1,
+      "back": 0
+    },
+    {
+      "stop": "list",
+      "open": 0.1,
+      "back": 0
+    },
+    {
+      "stop": "ledger",
+      "open": 0,
+      "back": 0
+    },
+    {
+      "stop": "after",
+      "open": 0.8,
+      "back": 0
+    },
+    {
+      "stop": "proof",
+      "open": 0.1,
+      "back": 0
+    }
+  ],
+  "at390": [
+    {
+      "stop": "trick",
+      "open": 0.8,
+      "back": 0
+    },
+    {
+      "stop": "watcher",
+      "open": 2.8,
+      "back": 0
+    },
+    {
+      "stop": "pay",
+      "open": 0.9,
+      "back": 0
+    },
+    {
+      "stop": "ask",
+      "open": 0.1,
+      "back": 0
+    },
+    {
+      "stop": "talk",
+      "open": 0,
+      "back": 0
+    },
+    {
+      "stop": "limits",
+      "open": 0.1,
+      "back": 0
+    },
+    {
+      "stop": "haggle",
+      "open": 0,
+      "back": 0
+    },
+    {
+      "stop": "wants",
+      "open": 0.1,
+      "back": 0
+    },
+    {
+      "stop": "list",
+      "open": 0.1,
+      "back": 0
+    },
+    {
+      "stop": "ledger",
+      "open": 0,
+      "back": 0
+    },
+    {
+      "stop": "after",
+      "open": 0.9,
+      "back": 0
+    },
+    {
+      "stop": "proof",
+      "open": 0.1,
+      "back": 0
+    }
+  ],
+  "waits": {
+    "at1440": 5.3,
+    "at390": 5.9
+  }
+}

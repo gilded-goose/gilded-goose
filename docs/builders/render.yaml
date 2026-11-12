@@ -1,0 +1,20 @@
+# A builder's own copy, for the Deploy to Render button: free plan, no auto-deploy, no keys asked for. Root render.yaml is the live site's
+# Blueprint and stays as it is. Render's button reads a branch's root render.yaml, so branch auto/render-button holds this file there.
+# With no keys the rail is off: the Challenge and the guard work, and no cart can be paid. PAYMENT=fake isn't set because the server
+# refuses it on Render, on purpose: a hosted fake rail would show orders that don't exist (assertFakeAllowed).
+services:
+  - type: web
+    name: gilded-goose-builder
+    runtime: node
+    plan: free
+    # Render's button page advises this: otherwise a push here would redeploy every copy made from the button.
+    autoDeployTrigger: off
+    # Not corepack, as in root render.yaml: it can't run this pnpm on Render. No carry-assets step: a copy has no older release to keep.
+    buildCommand: npx --yes pnpm@12.15.0 install --frozen-lockfile && VITE_WALLET=1 npx --yes pnpm@12.15.0 --filter @goose/web build
+    startCommand: cd server && node src/main.ts
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: HOST
+        value: 0.0.0.0

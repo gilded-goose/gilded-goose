@@ -1,0 +1,81 @@
+{
+  "about": "The ratchet's live numbers, from scripts/ratchet-record.ts. best only improves; lower is better for all of them.",
+  "latest": {
+    "at": "2026-11-04T13:42:31.430Z",
+    "base": "https://gilded-goose.onrender.com",
+    "ranFrom": "38a8124a",
+    "metrics": {
+      "firstScreenP95Ms /": {
+        "value": 453
+      },
+      "firstScreenP95Ms /?wallet=1": {
+        "value": 626
+      },
+      "firstScreenP95Ms /?wallet=0": {
+        "value": 340
+      },
+      "assets404": {
+        "value": 0
+      },
+      "consoleErrors": {
+        "value": 0
+      },
+      "axeViolations": {
+        "value": 0
+      },
+      "interactionP95Ms": {
+        "value": 32,
+        "note": "23 slow-enough events"
+      },
+      "keyboardTourFailed": {
+        "value": 4,
+        "note": "of 24 stops"
+      },
+      "liveWalksFailed": {
+        "value": 1,
+        "note": "failed: keyboard-tour"
+      }
+    }
+  },
+  "best": {
+    "firstScreenP95Ms /": 453,
+    "firstScreenP95Ms /?wallet=1": 573,
+    "firstScreenP95Ms /?wallet=0": 340,
+    "assets404": 0,
+    "consoleErrors": 0,
+    "axeViolations": 0,
+    "interactionP95Ms": 24,
+    "keyboardTourFailed": 4,
+    "liveWalksFailed": 1
+  },
+  "history": [
+    {
+      "at": "2026-11-04T08:11:26.334Z",
+      "ranFrom": "d8d467e4",
+      "metrics": {
+        "firstScreenP95Ms /": 457,
+        "firstScreenP95Ms /?wallet=1": 573,
+        "firstScreenP95Ms /?wallet=0": 439,
+        "assets404": 0,
+        "consoleErrors": 0,
+        "axeViolations": 21,
+        "interactionP95Ms": 24
+      }
+    },
+    {
+      "at": "2026-11-04T13:42:31.430Z",
+      "ranFrom": "38a8124a",
+      "metrics": {
+        "firstScreenP95Ms /": 453,
+        "firstScreenP95Ms /?wallet=1": 626,
+        "firstScreenP95Ms /?wallet=0": 340,
+        "assets404": 0,
+        "consoleErrors": 0,
+        "axeViolations": 0,
+        "interactionP95Ms": 32,
+        "keyboardTourFailed": 4,
+        "liveWalksFailed": 1
+      }
+    }
+  ]
+}

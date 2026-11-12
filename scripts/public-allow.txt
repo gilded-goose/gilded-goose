@@ -1,0 +1,67 @@
+# The public copy's allowlist (Lead-12, Nov 5): one path per line, relative to the repo root; a folder takes all of it.
+# Anything not listed stays out of the public copy. The copy's build reads this file from the commit it copies, and
+# core/test/public-copy.ts reads it too, so a test that reads a file left out finds that out in the private tree.
+# The build also writes three files of its own: docs/guild/board.md (the ratchet's section only), .env.example (the tracked
+# one) and docs/launch/.public-copy (scripts/brief.ts's mark). A line starting with ! takes a path back out of a kept folder.
+# The build and its scan: bash scripts/public-copy.sh <sha> <outdir> (Track L, Nov 11). Its never-list (keys, .env, films,
+# .mp4/.mov/.wav/.npy, web/.probe/, private notes, home paths, session ids, authors' emails) fails the copy whatever this says.
+.githooks
+.github
+.gitignore
+.npmrc
+LICENSE
+README.md
+package.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+render.yaml
+tsconfig.base.json
+core
+server
+trust
+# The MCP server (Wed Nov 11): a workspace package of its own; `pnpm check` runs its tests and docs/claims.md's mcp-* rows start it.
+mcp
+web
+scripts
+docs/builders
+docs/claims.md
+# The cart fingerprint recipe (its test vectors sit in trust/test, kept above).
+docs/fingerprint-v0.md
+docs/devpost.md
+docs/fixtures
+docs/launch
+docs/ops
+docs/video-kit
+docs/video-shot-list.md
+docs/beat-script.md
+docs/beat-script-2.md
+docs/guild/ratchet.json
+docs/guild/ratchet-overrides.json
+docs/guild/ratchet-live.json
+docs/guild/ratchet-days.json
+docs/guild/brand.md
+# core/test/wallet.test.ts plays this mockup's own ticks.
+docs/design/a3-wallet.html
+# spikes: what the code reads or cites. server/tsconfig.json type-checks s3-claude whole.
+spikes/s3-claude
+spikes/s8-voice/voice.html
+spikes/s8-voice/results/chrome-speak.jsonl
+spikes/v-voice-on-device/run.ts
+spikes/v-voice-on-device/results/tiny-wasm-words-items.md
+# The new white site (Lucas, merging Nov 11 on lead13/site-live). Each sits inside a kept folder above already; named here so
+# narrowing a folder can't drop the site by accident. A line that matches nothing yet is fine.
+web/goose.html
+web/kettle-data.ts
+web/src/site
+web/src/goose
+web/public/site
+scripts/check-site-spacing.ts
+scripts/site-shots.ts
+# A designer's debug probes and renders: local only (the site branch removes them and ignores the folder).
+!web/.probe
+# Left out on purpose (Track L, Nov 11; decided by default, flip if Joshua says: keep them):
+# - docs/design/ but a3-wallet.html: Lucas's design plan and research notes, internal planning that quotes the team and names
+#   other companies; nothing in the code or the README reads them (web/src/goose/tokens.css only names one in a comment).
+# - docs/superpowers/: the site's agent build plan and spec, internal planning; nothing reads them.
+# - PRODUCT.md: the design tools' product brief, internal planning; nothing reads it, and README.md says what Goose is.
+# - docs/claims-pending/: claims rows still in review; docs/claims.md is the public ledger.

@@ -1,0 +1,596 @@
+{
+  "about": "Channel3 reference prices as a real /v1/search call returned them, one entry per generic query in server/src/adapters/channel3.ts QUERIES. Written only by scripts/record-channel3.ts from a live call; never by hand.",
+  "queries": {
+    "electric kettle": {
+      "fetchedAt": "2026-11-05T11:09:52.034Z",
+      "items": [
+        {
+          "name": "KT-1900 Electric kettle",
+          "store": "newegg.com",
+          "price": "37.99",
+          "url": "https://newegg.com/",
+          "also": [
+            {
+              "store": "belk.com",
+              "price": "63.99",
+              "url": "https://belk.com/"
+            }
+          ]
+        },
+        {
+          "name": "Perfectemp® Electric Kettle",
+          "store": "crateandbarrel.ca",
+          "price": "129.95",
+          "url": "https://crateandbarrel.ca/",
+          "also": [
+            {
+              "store": "belk.com",
+              "price": "129.95",
+              "url": "https://belk.com/"
+            },
+            {
+              "store": "kohls.com",
+              "price": "129.99",
+              "url": "https://kohls.com/"
+            }
+          ]
+        },
+        {
+          "name": "KitchenAid 1.7L Electric Kettle with Variable Temperature Control",
+          "store": "hsn.com",
+          "price": "179.99",
+          "url": "https://hsn.com/",
+          "also": [
+            {
+              "store": "qvc.com",
+              "price": "179.99",
+              "url": "https://qvc.com/"
+            }
+          ]
+        }
+      ],
+      "flagged": []
+    },
+    "noise cancelling headphones": {
+      "fetchedAt": "2026-11-05T11:09:54.095Z",
+      "items": [
+        {
+          "name": "Bose QuietComfort Headphones",
+          "store": "bose.com",
+          "price": "149.00",
+          "url": "https://bose.com/",
+          "also": [
+            {
+              "store": "bestbuy.com",
+              "price": "229.00",
+              "url": "https://bestbuy.com/"
+            }
+          ]
+        },
+        {
+          "name": "Sony WH-1000XM4C Gen2 Wireless Noise Cancelling Headphones with Accessories",
+          "store": "focuscamera.com",
+          "price": "298.00",
+          "url": "https://focuscamera.com/",
+          "also": [
+            {
+              "store": "bestbuy.com",
+              "price": "298.00",
+              "url": "https://bestbuy.com/"
+            }
+          ]
+        },
+        {
+          "name": "Bang & Olufsen Beoplay H100 Noise‑Cancelling Headphones",
+          "store": "harrods.com",
+          "price": "1850.00",
+          "url": "https://harrods.com/",
+          "also": [
+            {
+              "store": "mrporter.com",
+              "price": "2200.00",
+              "url": "https://mrporter.com/"
+            }
+          ]
+        }
+      ],
+      "flagged": []
+    },
+    "headphones": {
+      "fetchedAt": "2026-11-05T11:09:56.447Z",
+      "items": [
+        {
+          "name": "HD 400S Headphones",
+          "store": "us.sennheiser-hearing.com",
+          "price": "69.97",
+          "url": "https://us.sennheiser-hearing.com/",
+          "also": [
+            {
+              "store": "bestbuy.com",
+              "price": "89.99",
+              "url": "https://bestbuy.com/"
+            }
+          ]
+        },
+        {
+          "name": "Mix Jockey Headphones",
+          "store": "staples.com",
+          "price": "33.77",
+          "url": "https://staples.com/",
+          "also": [
+            {
+              "store": "koss.com",
+              "price": "34.99",
+              "url": "https://koss.com/"
+            },
+            {
+              "store": "bestbuy.com",
+              "price": "63.72",
+              "url": "https://bestbuy.com/"
+            }
+          ]
+        },
+        {
+          "name": "ED1TC Institutional Headphones",
+          "store": "koss.com",
+          "price": "9.99",
+          "url": "https://koss.com/",
+          "also": [
+            {
+              "store": "cdw.com",
+              "price": "11.99",
+              "url": "https://cdw.com/"
+            },
+            {
+              "store": "staples.com",
+              "price": "13.09",
+              "url": "https://staples.com/"
+            }
+          ]
+        }
+      ],
+      "flagged": []
+    },
+    "running shoes": {
+      "fetchedAt": "2026-11-05T11:09:57.731Z",
+      "items": [
+        {
+          "name": "Runfalcon 5 Running Shoes",
+          "store": "academy.com",
+          "price": "64.99",
+          "url": "https://academy.com/",
+          "also": [
+            {
+              "store": "garmentory.com",
+              "price": "65.00",
+              "url": "https://garmentory.com/"
+            }
+          ]
+        },
+        {
+          "name": "Bondi 9 Running Shoes",
+          "store": "jdsports.com",
+          "price": "140.00",
+          "url": "https://jdsports.com/",
+          "also": [
+            {
+              "store": "dickssportinggoods.com",
+              "price": "174.99",
+              "url": "https://dickssportinggoods.com/"
+            },
+            {
+              "store": "publiclands.com",
+              "price": "174.99",
+              "url": "https://publiclands.com/"
+            }
+          ]
+        },
+        {
+          "name": "Men's Launch Running Shoes",
+          "store": "dickssportinggoods.com",
+          "price": "119.99",
+          "url": "https://dickssportinggoods.com/",
+          "also": [
+            {
+              "store": "publiclands.com",
+              "price": "119.99",
+              "url": "https://publiclands.com/"
+            },
+            {
+              "store": "brooksrunning.com",
+              "price": "120.00",
+              "url": "https://brooksrunning.com/"
+            }
+          ]
+        }
+      ],
+      "flagged": []
+    },
+    "rain jacket": {
+      "fetchedAt": "2026-11-05T11:09:59.497Z",
+      "items": [
+        {
+          "name": "Women's Rain Jacket",
+          "store": "landsend.com",
+          "price": "53.97",
+          "url": "https://landsend.com/",
+          "also": [
+            {
+              "store": "kohls.com",
+              "price": "67.46",
+              "url": "https://kohls.com/"
+            }
+          ]
+        },
+        {
+          "name": "Ada Rain Jacket",
+          "store": "apparis.com",
+          "price": "172.00",
+          "url": "https://apparis.com/",
+          "also": [
+            {
+              "store": "garmentory.com",
+              "price": "245.00",
+              "url": "https://garmentory.com/"
+            }
+          ]
+        },
+        {
+          "name": "Torrent Rain Jacket",
+          "store": "100percent.com",
+          "price": "39.95",
+          "url": "https://100percent.com/"
+        }
+      ],
+      "flagged": []
+    },
+    "jacket": {
+      "fetchedAt": "2026-11-05T11:10:00.953Z",
+      "items": [
+        {
+          "name": "Unisex Boxy Jacket",
+          "store": "garmentory.com",
+          "price": "790.00",
+          "url": "https://garmentory.com/",
+          "also": [
+            {
+              "store": "ateliernewyork.com",
+              "price": "790.00",
+              "url": "https://ateliernewyork.com/"
+            }
+          ]
+        },
+        {
+          "name": "Summer Country jacket",
+          "store": "net-a-porter.com",
+          "price": "492.00",
+          "url": "https://net-a-porter.com/",
+          "also": [
+            {
+              "store": "farfetch.com",
+              "price": "796.00",
+              "url": "https://farfetch.com/"
+            }
+          ]
+        },
+        {
+          "name": "Jacket",
+          "store": "italist.com",
+          "price": "400.00",
+          "url": "https://italist.com/"
+        }
+      ],
+      "flagged": [
+        {
+          "name": "Purple Ninety Puffer Jacket",
+          "store": "pacsun.com",
+          "price": "27.00",
+          "url": "https://pacsun.com/",
+          "reason": "Marked 72% off its own list price of $99.95."
+        }
+      ]
+    },
+    "backpack": {
+      "fetchedAt": "2026-11-05T11:10:02.353Z",
+      "items": [
+        {
+          "name": "Aiden Backpack",
+          "store": "ca.coach.com",
+          "price": "229.00",
+          "url": "https://ca.coach.com/",
+          "also": [
+            {
+              "store": "coach.com",
+              "price": "229.00",
+              "url": "https://coach.com/"
+            }
+          ]
+        },
+        {
+          "name": "The North Face Jester Backpack",
+          "store": "thenorthface.com",
+          "price": "75.00",
+          "url": "https://thenorthface.com/",
+          "also": [
+            {
+              "store": "backcountry.com",
+              "price": "90.00",
+              "url": "https://backcountry.com/"
+            },
+            {
+              "store": "zappos.com",
+              "price": "90.00",
+              "url": "https://zappos.com/"
+            }
+          ]
+        },
+        {
+          "name": "Urban Backpack",
+          "store": "italist.com",
+          "price": "1218.00",
+          "url": "https://italist.com/",
+          "also": [
+            {
+              "store": "cettire.com",
+              "price": "1329.36",
+              "url": "https://cettire.com/"
+            },
+            {
+              "store": "farfetch.com",
+              "price": "1749.00",
+              "url": "https://farfetch.com/"
+            }
+          ]
+        }
+      ],
+      "flagged": [
+        {
+          "name": "Outdoor Backpack",
+          "store": "32degrees.com",
+          "price": "19.99",
+          "url": "https://32degrees.com/",
+          "reason": "Marked 72% off its own list price of $72.00."
+        }
+      ]
+    },
+    "coffee maker": {
+      "fetchedAt": "2026-11-05T11:10:03.873Z",
+      "items": [
+        {
+          "name": "BrewSense 12-Cup Drip Coffee Maker",
+          "store": "jossandmain.com",
+          "price": "116.00",
+          "url": "https://jossandmain.com/",
+          "also": [
+            {
+              "store": "lowes.com",
+              "price": "119.95",
+              "url": "https://lowes.com/"
+            },
+            {
+              "store": "qvc.com",
+              "price": "119.95",
+              "url": "https://qvc.com/"
+            }
+          ]
+        },
+        {
+          "name": "Dome Brew Classic Coffee Maker",
+          "store": "target.com",
+          "price": "80.99",
+          "url": "https://target.com/",
+          "also": [
+            {
+              "store": "kohls.com",
+              "price": "103.99",
+              "url": "https://kohls.com/"
+            },
+            {
+              "store": "bestbuy.com",
+              "price": "129.99",
+              "url": "https://bestbuy.com/"
+            }
+          ]
+        },
+        {
+          "name": "OXO On Barista Brain 9-Cup Coffee Maker",
+          "store": "williams-sonoma.com",
+          "price": "249.95",
+          "url": "https://williams-sonoma.com/",
+          "also": [
+            {
+              "store": "macys.com",
+              "price": "249.99",
+              "url": "https://macys.com/"
+            },
+            {
+              "store": "kohls.com",
+              "price": "249.99",
+              "url": "https://kohls.com/"
+            }
+          ]
+        }
+      ],
+      "flagged": []
+    },
+    "toaster": {
+      "fetchedAt": "2026-11-05T11:10:05.264Z",
+      "items": [
+        {
+          "name": "Betty Crocker 4-Slice Toaster",
+          "store": "campingworld.com",
+          "price": "44.99",
+          "url": "https://campingworld.com/",
+          "also": [
+            {
+              "store": "tractorsupply.com",
+              "price": "44.99",
+              "url": "https://tractorsupply.com/"
+            }
+          ]
+        },
+        {
+          "name": "Toaster",
+          "store": "target.com",
+          "price": "32.49",
+          "url": "https://target.com/",
+          "also": [
+            {
+              "store": "macys.com",
+              "price": "35.99",
+              "url": "https://macys.com/"
+            },
+            {
+              "store": "hamiltonbeach.com",
+              "price": "44.99",
+              "url": "https://hamiltonbeach.com/"
+            }
+          ]
+        },
+        {
+          "name": "4-Slice Toaster",
+          "store": "bestbuy.com",
+          "price": "279.95",
+          "url": "https://bestbuy.com/",
+          "also": [
+            {
+              "store": "dillards.com",
+              "price": "279.95",
+              "url": "https://dillards.com/"
+            },
+            {
+              "store": "cookswarehouse.com",
+              "price": "279.95",
+              "url": "https://cookswarehouse.com/"
+            }
+          ]
+        }
+      ],
+      "flagged": []
+    },
+    "blender": {
+      "fetchedAt": "2026-11-05T11:10:06.432Z",
+      "items": [
+        {
+          "name": "Vitamix C-Series 6500 Professional Blender",
+          "store": "kohls.com",
+          "price": "566.96",
+          "url": "https://kohls.com/",
+          "also": [
+            {
+              "store": "macys.com",
+              "price": "599.99",
+              "url": "https://macys.com/"
+            }
+          ]
+        },
+        {
+          "name": "Electric Blender with Glass Jar",
+          "store": "bestbuy.com",
+          "price": "45.99",
+          "url": "https://bestbuy.com/",
+          "also": [
+            {
+              "store": "tractorsupply.com",
+              "price": "49.99",
+              "url": "https://tractorsupply.com/"
+            },
+            {
+              "store": "michaels.com",
+              "price": "51.99",
+              "url": "https://michaels.com/"
+            }
+          ]
+        },
+        {
+          "name": "Classic 575 Blender",
+          "store": "qvc.com",
+          "price": "399.95",
+          "url": "https://qvc.com/",
+          "also": [
+            {
+              "store": "lowes.com",
+              "price": "413.95",
+              "url": "https://lowes.com/"
+            },
+            {
+              "store": "jcpenney.com",
+              "price": "419.99",
+              "url": "https://jcpenney.com/"
+            }
+          ]
+        }
+      ],
+      "flagged": []
+    },
+    "umbrella": {
+      "fetchedAt": "2026-11-05T11:10:07.722Z",
+      "items": [
+        {
+          "name": "100% Strike Umbrella",
+          "store": "revzilla.com",
+          "price": "35.00",
+          "url": "https://revzilla.com/",
+          "also": [
+            {
+              "store": "100percent.com",
+              "price": "49.95",
+              "url": "https://100percent.com/"
+            }
+          ]
+        },
+        {
+          "name": "6.5ft. Large Stripes Tilting Market Umbrella",
+          "store": "boscovs.com",
+          "price": "179.99",
+          "url": "https://boscovs.com/",
+          "also": [
+            {
+              "store": "qvc.com",
+              "price": "196.00",
+              "url": "https://qvc.com/"
+            }
+          ]
+        },
+        {
+          "name": "LUXEYARD Outsunny Portable Beach Umbrella Ruffled Outdoor Cabana",
+          "store": "kohls.com",
+          "price": "77.99",
+          "url": "https://kohls.com/",
+          "also": [
+            {
+              "store": "outsunny.com",
+              "price": "99.99",
+              "url": "https://outsunny.com/"
+            }
+          ]
+        }
+      ],
+      "flagged": []
+    },
+    "water bottle": {
+      "fetchedAt": "2026-11-05T11:10:08.854Z",
+      "items": [
+        {
+          "name": "Classic Water Bottle",
+          "store": "herschel.com",
+          "price": "13.99",
+          "url": "https://herschel.com/"
+        },
+        {
+          "name": "Water Bottle",
+          "store": "bestbuy.com",
+          "price": "16.99",
+          "url": "https://bestbuy.com/"
+        },
+        {
+          "name": "WATER BOTTLE 500ml 17oz",
+          "store": "kinto-usa.com",
+          "price": "17.40",
+          "url": "https://kinto-usa.com/"
+        }
+      ],
+      "flagged": []
+    }
+  }
+}

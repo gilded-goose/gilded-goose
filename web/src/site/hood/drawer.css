@@ -1,0 +1,102 @@
+/* Under the hood: a ledger drawer beside the run at 1100px+, the same grid in a pull-up sheet on a phone. */
+
+.hood {
+  position: sticky;
+  top: calc(var(--header-h) + var(--s4));
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: var(--s3);
+  height: calc(100dvh - var(--header-h) - var(--s8));
+  min-height: 480px;
+  padding: var(--s5);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-4);
+  background: var(--surface-raised);
+}
+@media (max-width: 1099px) { .hood { display: none; } }
+.hood-loading { min-height: 480px; }
+.hood-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); }
+.hood-head h2 { font-family: var(--font-display); font-size: var(--t-xl); font-weight: 600; font-stretch: 100%; letter-spacing: -0.02em; }
+.hood-close {
+  min-height: var(--tap);
+  padding: 0 var(--s3);
+  margin-right: calc(-1 * var(--s2));
+  border: 0;
+  border-radius: var(--r-2);
+  background: transparent;
+  color: var(--ink-2);
+  font-size: var(--t-sm);
+  transition: background-color var(--d-ui) ease, color var(--d-ui) ease;
+}
+@media (hover: hover) and (pointer: fine) { .hood-close:hover { background: var(--surface-2); color: var(--ink); } }
+
+/* Closed on a laptop: one tab, the row count beside it. */
+.hood-closed { height: auto; min-height: 0; padding: 0; border: 0; background: transparent; box-shadow: none; }
+.hood-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--tap);
+  padding: 0 var(--s4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface-raised);
+  color: var(--ink);
+  font-size: var(--t-sm);
+  font-weight: var(--w-strong);
+  white-space: nowrap;
+  transition: border-color var(--d-ui) ease, transform var(--d-press) var(--ease-out);
+}
+.hood-tab:active { transform: scale(0.97); }
+.hood-tab .figure { color: var(--ink-3); }
+@media (hover: hover) and (pointer: fine) { .hood-tab:hover { background: var(--surface-2); } }
+
+.hood-caption { display: grid; gap: var(--s2); }
+.hood-sum { color: var(--ink-2); font-size: var(--t-sm); }
+.hood-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s3); color: var(--ink-3); font-size: var(--t-xs); }
+.hood-meta p + p { margin-top: 0; }
+.hood-note { padding: var(--s2) var(--s3); border-radius: var(--r-2); background: var(--surface-2); color: var(--ink-2); font-size: var(--t-xs); }
+.hood-caption p + p { margin-top: 0; }
+
+.hood-grid { min-height: 0; height: 100%; border-top: 1px solid var(--line-strong); overflow: hidden; }
+.sheet .hood-grid { height: 64dvh; margin-top: var(--s3); }
+.sheet .hood-caption { margin-top: 0; }
+
+.hood-grid .ag-cell { line-height: 1.4; }
+.hood-grid .ag-cell.hood-seq { color: var(--ink-3); padding-top: var(--s3); }
+.hood-who { display: grid; gap: var(--s1); padding-block: var(--s3); font-size: var(--t-sm); font-weight: var(--w-medium); white-space: normal; line-height: 1.3; }
+.hood-kind {
+  justify-self: start;
+  padding: 0 var(--s2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  color: var(--ink-3);
+  font-size: var(--t-xs);
+  font-weight: var(--w-regular);
+}
+.hood-kind[data-kind="live"] { border-color: var(--signal); color: var(--ink-2); }
+.hood-what { display: grid; gap: var(--s1); padding-block: var(--s3); white-space: normal; }
+.hood-what-line { font-weight: var(--w-medium); overflow-wrap: anywhere; }
+.hood-why { color: var(--ink-2); font-size: var(--t-sm); overflow-wrap: anywhere; }
+.hood-call { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1) var(--s2); font-size: var(--t-xs); color: var(--ink-2); }
+.hood-call-k { color: var(--gold-ink); font-weight: var(--w-medium); }
+.hood-call code { font-size: var(--t-xs); overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hood-tab, .hood-close { transition: none; }
+  .hood-tab:active { transform: none; }
+}
+
+/* Phone: one stacked cell per ledger row (Drawer.tsx StackedCell). */
+.hood-stack { display: grid; gap: var(--s1); min-width: 0; padding-block: var(--s1); }
+.hood-stack-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1) var(--s2); color: var(--ink-2); font-size: var(--t-sm); }
+.hood-stack-top .hood-seq { color: var(--ink-3); }
+.hood-stack-who { font-weight: var(--w-medium); color: var(--ink); }
+
+/* One kind of row (all Recorded, or all Live): the caption says it once, so the rows don't repeat it. */
+.hood-grid:not([data-mixed]) .hood-kind { display: none; }
+
+/* "Recompute it yourself" sits inside the ledger's section on the page (Below.tsx), whose rows are 12 px apart; this
+   makes up the rest of the 24 px the page keeps between its sections. Here, not in a sheet of its own: one more file in
+   the page's list of chunks is bytes on the page's first load. */
+.hood-next { margin-top: var(--s3); }

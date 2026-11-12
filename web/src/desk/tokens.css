@@ -1,0 +1,216 @@
+/* Desk tokens: the single source for the brand (docs/guild/brand.md is the spec; this file is the values). Every
+   surface paints with these roles, so a palette flip is one palette block and nothing else. Velvet (v) is the Shopper
+   view: a jewelry case at night, the gold egg as the only light (Joshua, Oct 30). Midnight (c, or "midnight") is the
+   same case with the lights lowered: Behind the scenes. Its --lx-* names (ledger/midnight.css) are aliases of these.
+   Gold is only for the egg, "you're protected" and the approvable deal; every action button is --cta, never gold. The
+   Design Director's system.md is the arbiter; these are its values.
+
+   Shared (every palette): a light display face over the body face, hierarchy by size, space and ink tier, not weight;
+   corner radii 8-12 px; hairlines, and a light edge or a shadow, never both (glass is the one exception: it is a lit
+   object); an 8 px grid; two curves (--ease, --spring), 200-400 ms, no overshoot (no bounce). Other tracks consume
+   these names; they don't fork them. */
+
+@font-face { font-family: "Archivo Goose"; font-style: normal; font-display: swap; font-weight: 100 900; font-stretch: 62% 125%; src: url("../../node_modules/@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2") format("woff2-variations"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Hanken Goose"; font-style: normal; font-display: swap; font-weight: 100 900; src: url("../../node_modules/@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2") format("woff2-variations"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+/* No layout shift: the fallback Arial is sized to each face's measured width and line box, so the swap doesn't move a
+   line (measured in Chromium against Arial: Hanken 0.99-1.00 wide, ascent 1.00, descent .30; Archivo .97-.99, .88, .21).
+   Stand-ins (system.md §5, ruled B-6): the weights the site really paints get a local face of their own weight, so the
+   swap changes neither a line nor the ink's weight: the 300 display is Helvetica Neue Light (Hanken 300's h1 on Behind
+   the scenes at 1440: 435.17 px, Light at 99.9% 435.16; Arial painted it ~400 and 447 px wide) and Archivo 560 is
+   Helvetica Neue Medium at 99.6% ("Gilded Goose" in the bar: 106.97 vs 106.95; Arial 102.38). The 400 body stays
+   Arial at 98.5%. Where those faces aren't installed (not a Mac), each falls through to Arial. Track B session 7.
+   Linux has no face named Arial (`local()` matches a face's own name), so each also names Liberation Sans and Arimo
+   (ChromeOS), drawn to Arial's metrics: the same overrides hold (core/test/fallback-faces.test.ts). Helvetica came after
+   Arial and never won (every Apple system has Arial), so its bytes went to them. Track F, Nov 5. */
+@font-face { font-family: "Hanken Fallback"; src: local("Arial"), local("Liberation Sans"), local("Arimo"); size-adjust: 99.5%; ascent-override: 100%; descent-override: 30%; line-gap-override: 0%; }
+@font-face { font-family: "Hanken Fallback"; font-weight: 300; src: local("HelveticaNeue-Light"), local("Helvetica Neue Light"), local("Arial"), local("Liberation Sans"), local("Arimo"); size-adjust: 99.9%; ascent-override: 100%; descent-override: 30%; line-gap-override: 0%; }
+@font-face { font-family: "Archivo Fallback"; src: local("Arial"), local("Liberation Sans"), local("Arimo"); size-adjust: 98.5%; ascent-override: 89%; descent-override: 21%; line-gap-override: 0%; }
+@font-face { font-family: "Archivo Fallback"; font-weight: 500 800; src: local("HelveticaNeue-Medium"), local("Helvetica Neue Medium"), local("Arial"), local("Liberation Sans"), local("Arimo"); size-adjust: 99.6%; ascent-override: 89%; descent-override: 21%; line-gap-override: 0%; }
+
+#dk-case, /* the opening's case (index.html) glides on --spring and --d-* before the Desk mounts */
+.dk, .gm-root, .gv-cap {
+  /* type: two faces, seven sizes, four weights. Display lines are light and tight; body is regular and open. */
+  --face: "Archivo Goose", "Archivo Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --display: "Hanken Goose", "Hanken Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* The scale is the Design Director's (system.md section 2): --t-hero the landing h1 only, --t-h1 a room's title,
+     --t-h2 a landing section head and the deal price, --t-h3 a card or panel head, --t-num one big number on a card,
+     --t-price the landing's live ticket price only (two fixed sizes, 104 and 72 on a phone; the DD, no clamp). */
+  --t-price: 104px;
+  /* The scale's one named exception (the DD's gate on b304f9c0): the two lines that end an act on the landing, the
+     difference's payoff and the close's question. It scales with the screen, so it needs no phone step. */
+  --t-payoff: clamp(44px, 7.4vw, 108px);
+  --t-hero: clamp(44px, 5.4vw, 68px); --t-h1: clamp(36px, 4vw, 56px); --t-h2: clamp(30px, 3.4vw, 44px); --t-h3: 24px; --t-sec: 24px; --t-lead: 20px; --t-body: 17px; --t-small: 15px; --t-micro: 13px; --t-num: 40px;
+  --w-display: 300; --w-head: 400; --w-body: 400; --w-strong: 560;
+  --track-display: -.016em; --track-head: -.008em; --track-eyebrow: .08em;
+  --lh-display: 1.04; --lh-head: 1.2; --lh-body: 1.5; --lh-micro: 1.4;
+  /* shape */
+  --r-1: 8px; --r-2: 10px; --r-3: 12px; --r-pill: 999px;
+  --hair-w: 1px; --hair: var(--hair-w) solid var(--line);
+  /* space: the 8 px grid */
+  --s-1: 8px; --s-2: 16px; --s-3: 24px; --s-4: 32px; --s-5: 40px; --s-6: 48px; --s-8: 64px; --s-10: 80px; --s-12: 96px;
+  /* Width and the page's frame (system.md section 3): 1200 px of content, 1280 for the data grid alone; gutters 32,
+     16 on a phone; the nav 64 tall, 56 on a phone. Between two landing sections: --section-y above and below one
+     hairline (96, 48 on a phone), and never more empty velvet than that between two things: a section is never held
+     taller than its content (no min-height in vh around a few lines), and its content is laid out before it reveals. */
+  --w-page: 1200px; --w-wide: 1280px; --gutter: var(--s-4); --nav-h: 64px;
+  --section-y: var(--s-12); --section: calc(var(--section-y) * 2);
+  /* motion (system.md section 7): --ease for fades and color, --spring for anything that moves into place; both settle
+     without overshoot. --d-1 hover and color, --d-2 a panel in and the underline glide, --d-3 a card arriving
+     (opacity, and 8 px: --s-1). The opening runs on its own clock (opening-clock.ts). */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --spring: cubic-bezier(.22, .8, .24, 1);
+  --d-1: 200ms; --d-2: 300ms; --d-3: 400ms;
+  /* brand.md §10.7's one named exception: the single 900 ms reveal of the two cinematic sections, on --spring. */
+  --d-cine: 900ms;
+  /* The lockup "Gilded G◯ose" (brand.md §10.1, web/src/brand): the display face at 400, tracked -.02em. */
+  --mark-face: var(--display); --mark-w: 400; --mark-track: -.02em;
+  /* The bar's frost (brand.md §10.6): a 40 px blur, the bar alone (glass objects keep 24 px). nav.css writes this value
+     literally in both backdrop lines (some Safari builds drop a var() inside -webkit-backdrop-filter); its probe holds
+     them to this token. The tint, --glass-bar-bg, is per palette below: the page's own colour at 93%. */
+  --glass-bar-blur: blur(40px) saturate(140%);
+  /* Where the egg's light falls (--egg-light, in each palette below): the same place in both rooms (Design Director's
+     ruling, Oct 30 23:15: two rooms, one case), behind the hero egg; in the app, behind the deal's column; high and
+     centred on a phone. Set once here, never per palette. */
+  --egg-at: 74% 38%;
+  /* depth: layered surfaces and soft shadows, tinted by each palette's --elev */
+  --elev-1: 0 1px 1px rgb(var(--elev) / .05), 0 1px 3px rgb(var(--elev) / .06);
+  --elev-2: 0 1px 1px rgb(var(--elev) / .04), 0 4px 10px -2px rgb(var(--elev) / .06), 0 16px 32px -16px rgb(var(--elev) / .16);
+  --elev-3: 0 1px 1px rgb(var(--elev) / .04), 0 12px 24px -8px rgb(var(--elev) / .1), 0 40px 80px -32px rgb(var(--elev) / .28);
+}
+
+/* Midnight: the same jewelry case with the lights lowered (Behind the scenes). A flat, matte aubergine black with a
+   finer grain, cream ink a step quieter, gold only for protection. The back room's --lx-* names point here
+   (ledger/midnight.css). The old teal set is gone: no teal or blue anywhere (system.md section 1). */
+.dk[data-palette="c"], .dk[data-palette="midnight"], .gm-root[data-glass="midnight"] { /* S1-13 part 3: the menu in the back room */
+  --page: none;
+  --page-solid: #151013;
+  --grain: .05;
+  --stage-bg: transparent;
+  --stage-line: rgba(242, 233, 220, .09); --stage-hi: none;
+  --card: #1c1619; --card-flat: #1c1619; --card-2: #241d21; --card-line: rgba(242, 233, 220, .09);
+  --well: rgba(242, 233, 220, .045);
+  --glass: rgba(21, 16, 19, .72); --sheet: #1c1619; --panel: #1c1619;
+  --line: rgba(242, 233, 220, .09); --line-2: rgba(242, 233, 220, .18);
+  --ink: #f2e9dc; --ink-2: #c9bdaf; --ink-3: #a3978a;
+  --surface: rgba(242, 233, 220, .045); --surface-2: #221b1f;
+  --cta: #f2e9dc; --on-cta: #151013; --cta-hover: #fff6ea; --accent: #f2e9dc; --accent-wash: rgba(242, 233, 220, .08);
+  --gold: #e2b866; --gold-hi: #efce8c; --gold-ink: #151013; --gold-wash: rgba(226, 184, 102, .2); --gold-line: rgba(226, 184, 102, .62);
+  --gold-glow: none; --gold-halo: transparent;
+  --protect-bg: transparent;
+  --tag-bg: rgba(226, 184, 102, .1); --tag-ink: #efce8c; --foot: #151013;
+  --red: #e48676; --red-dot: #e48676;
+  --focus: #f2e9dc;
+  --scrim: rgba(10, 7, 9, .66);
+  --card-lift: var(--card-2); /* DK part 6: Midnight's raised card is its --card-2, declared so neither palette leans on desk.css's fallback */
+  --elev: 5 3 4;
+  --shadow: 0 32px 80px -24px rgba(0, 0, 0, .72);
+  /* Glass: the Midnight glass block below Velvet's. */
+  /* The egg's light, lowered with the room: the same eased pool at the same place (--egg-at, shared above), in
+     Midnight's gold. The back room paints it (ledger/midnight.css, .mn-lit) where the Desk paints Velvet's. */
+  --egg-light: radial-gradient(60vmax 50vmax at var(--egg-at), rgba(226, 184, 102, .11), rgba(226, 184, 102, .09) 15%, rgba(226, 184, 102, .065) 32%, rgba(226, 184, 102, .04) 50%, rgba(226, 184, 102, .02) 68%, rgba(226, 184, 102, .007) 84%, rgba(226, 184, 102, 0) 100%);
+  --glass-light: var(--egg-light);
+  color-scheme: dark;
+}
+.dk[data-palette="v"], .gm-root, .gv-cap { /* the menu (web/src/menu) and Goose's captions (web/src/voice) are velvet glass on every page */
+  /* Velvet: flat, matte wine-aubergine (never indigo); the grain is a separate fixed layer (desk.css), never a gradient. */
+  --page: none;
+  --page-solid: #2c1520;
+  --grain: .07;
+  --stage-bg: transparent;
+  --stage-line: rgba(244, 234, 220, .1); --stage-hi: none;
+  --card: #371c2a; --card-flat: #371c2a; --card-2: #3a1d2c; --card-line: rgba(244, 234, 220, .09);
+  --well: rgba(244, 234, 220, .05);
+  --glass: rgba(55, 28, 42, .72); --sheet: #341a27; --panel: #341a27;
+  --line: rgba(244, 234, 220, .12); --line-2: rgba(244, 234, 220, .3);
+  --ink: #f4eadc; --ink-2: #cdb9b5; --ink-3: #b49f9c;
+  --surface: rgba(244, 234, 220, .04); --surface-2: rgba(244, 234, 220, .07);
+  /* --cta-hover: the one filled action brightening under the cursor (hover is colour only; :active is scale .98 or
+     translateY(1px), never a second colour). The same cream in both palettes: it reads against either room. */
+  --cta: #f4eadc; --on-cta: #2c1520; --cta-hover: #fff6ea; --accent: #f4eadc; --accent-wash: rgba(244, 234, 220, .08);
+  --gold: #e3ba6a; --gold-hi: #efce8c; --gold-ink: #2c1520; --gold-wash: rgba(227, 186, 106, .07); --gold-line: rgba(227, 186, 106, .62);
+  --gold-glow: none; --gold-halo: transparent;
+  --protect-bg: transparent;
+  --tag-bg: rgba(227, 186, 106, .1); --tag-ink: #efce8c; --foot: #2c1520;
+  --red: #f0a59a; --red-dot: #b49f9c;
+  --focus: #f4eadc;
+  --elev: 10 3 7;
+  --shadow: 0 30px 60px -32px rgba(10, 3, 7, .6);
+  --scrim: rgba(12, 4, 8, .58); /* a sheet's scrim: the velvet lowered */
+  --card-lift: #3f2131; /* the one raised card in a room (Desk-S7): a step lighter than --card-2 */
+  /* Glass (Joshua, Fri Oct 30, item 4; brand.md "Glass"): the velvet card at 55%, blurred 24 px and saturated 140%, a
+     1 px lit top edge, a hairline and a deep soft shadow. At most three glass surfaces on screen. Glass only reads with
+     light behind it, so it always sits over the egg's light (below). Apply all five together:
+       background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+       border: 1px solid var(--glass-line); box-shadow: var(--glass-edge), var(--glass-shadow); border-radius: var(--glass-r); */
+  --glass-bg: rgba(55, 28, 42, .55);
+  --glass-bg-read: rgba(55, 28, 42, .86); /* a glass surface read in paragraphs */
+  --glass-bar-bg: rgba(44, 21, 32, .93); /* the scrolled bar (§10.6): Velvet's page at 93%, so it never changes hue */
+  --glass-blur: blur(24px) saturate(140%);
+  --glass-edge: inset 0 1px 0 rgba(244, 234, 220, .18);
+  --glass-line: rgba(244, 234, 220, .1);
+  --glass-shadow: 0 40px 80px -24px rgba(10, 3, 7, .72), 0 12px 24px -12px rgba(10, 3, 7, .4);
+  --glass-r: var(--r-3);
+  /* The egg's light: the one warm light in the case, falling on the velvet around the egg. Static (it never moves or
+     pulses), wide and low, so it reads as light on fabric, never as a glow or an orb. The Desk paints it once, fixed
+     behind everything (below); glass catches it. --egg-at (shared, above) is where the egg stands. */
+  /* An eased falloff (no straight stretch ending in a corner), so the eye finds no edge: a pool of light, not a disc. */
+  --egg-light: radial-gradient(60vmax 50vmax at var(--egg-at), rgba(227, 186, 106, .11), rgba(227, 186, 106, .09) 15%, rgba(227, 186, 106, .065) 32%, rgba(227, 186, 106, .04) 50%, rgba(227, 186, 106, .02) 68%, rgba(227, 186, 106, .007) 84%, rgba(227, 186, 106, 0) 100%);
+  /* The menu's scrim (its older name): the page lowered a little more, then the egg's light over it, so the glass above
+     still catches the light but a small bright control under it (a cream button) can't blur into a glowing dot. */
+  --glass-light: var(--egg-light), linear-gradient(rgba(10, 3, 7, .82), rgba(10, 3, 7, .82));
+  color-scheme: dark;
+}
+/* Midnight's glass, the same shape as Velvet's: Midnight's page at 55% (86% for a surface read in paragraphs, the
+   ledger's side sheet, so rows never show through text), the same blur, edge, hairline and shadow (system.md section 6).
+   The whole back room takes it with its palette (data-palette="midnight"); a surface that wears Velvet's names but sits
+   in the back room (Every decision's full screen) takes the glass alone with data-glass="midnight". After Velvet's
+   block, so it wins there at the same specificity. */
+.dk[data-palette="c"], .dk[data-palette="midnight"], .dk[data-glass="midnight"], .gn[data-room="back"], .gm-root[data-glass="midnight"] {
+  --glass-bg: rgba(21, 16, 19, .55);
+  --glass-bg-read: rgba(21, 16, 19, .86);
+  --glass-bar-bg: rgba(21, 16, 19, .93); /* the scrolled bar (§10.6): Midnight's page at 93% */
+  --glass-blur: blur(24px) saturate(140%);
+  --glass-edge: inset 0 1px 0 rgba(242, 233, 220, .18);
+  --glass-line: rgba(242, 233, 220, .1);
+  --glass-shadow: 0 40px 80px -24px rgba(5, 3, 4, .72), 0 12px 24px -12px rgba(5, 3, 4, .4);
+  --glass-r: var(--r-3);
+}
+.dk[data-app] { --egg-at: 78% 40%; }
+@media (max-width: 720px) {
+  .dk, .gm-root, .gv-cap { --egg-at: 50% 26%; } /* both palettes: high and centred, under the one-row nav */
+  .dk[data-app] { --egg-at: 50% 46%; }
+  /* A phone's menu is a full-screen sheet: the page under it is covered whole, so the egg can't blur through as a
+     brown spot; the sheet's glass catches only the egg's light. */
+  .gm-root, .gm-root[data-glass="midnight"] { --glass-light: var(--egg-light), linear-gradient(var(--page-solid), var(--page-solid)); }
+  .dk, .gm-root { --gutter: var(--s-2); --nav-h: 56px; --section-y: var(--s-6); }
+  /* The phone's type steps (brand.md §4): --t-h3 to 20, here and nowhere else (type-steps.test.ts). --t-lead stays 20
+     at every width (at 17 it equals --t-body and reads as body); --t-h2's clamp already reads 30 at 390. The moment's
+     price steps to 72 (brand.md §10.7's 104/72; S2-cine, the DD's gate). */
+  .dk, .gm-root, .gv-cap { --t-h3: 20px; --t-price: 72px; }
+}
+/* The Desk paints the egg's light once, fixed, under the grain (so the light falls on the velvet's texture). On the
+   session's first visit it comes on as the egg glides into place (the case light coming on, opening.ts). */
+.dk[data-layer="shopper"]::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: var(--egg-light); transition: opacity var(--d-3) var(--ease); }
+html.dk-opening:not(.dk-gliding) .dk[data-layer="shopper"]::before { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .dk[data-layer="shopper"]::before { transition: none; } }
+/* The solid fallback: where backdrop-filter isn't supported, or the device asks for reduced transparency, the glass is
+   the palette's sheet, opaque, with the same edge, hairline and shadow. The egg's light stays: it is light, not glass. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .dk[data-palette], .gm-root, .gv-cap { --glass-bg: var(--sheet); --glass-bg-read: var(--sheet); --glass-blur: none; }
+  .dk[data-glass="midnight"], .gn[data-room="back"], .gm-root[data-glass="midnight"] { --glass-bg: #1c1619; --glass-bg-read: #1c1619; --glass-blur: none; } /* Midnight's sheet, under Velvet's names */
+}
+@media (prefers-reduced-transparency: reduce) {
+  .dk[data-palette], .gm-root, .gv-cap { --glass-bg: var(--sheet); --glass-bg-read: var(--sheet); --glass-blur: none; }
+  .dk[data-glass="midnight"], .gm-root[data-glass="midnight"] { --glass-bg: #1c1619; --glass-bg-read: #1c1619; --glass-blur: none; }
+}
+/* The one glass recipe on the site (system.md section 6), in either palette: a surface that is glass takes this class
+   and sets none of these five itself. No other blur value exists. `.dk-glass-read` for a surface read in paragraphs. */
+.dk-glass, .dk-glass-read {
+  background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-line); border-radius: var(--glass-r); box-shadow: var(--glass-edge), var(--glass-shadow);
+}
+.dk-glass-read { background: var(--glass-bg-read); }
+/* The one eyebrow on the site (system.md section 2 and 5): --t-micro, uppercase, tracked .08em, strong, --ink-2. A
+   surface that needs a small label over a head takes this class (today's .dk-k 12px/.14em, .gm-title 13px/ink-3 and
+   .hg-round h3 13px/.02em are three; they become this one). Margins belong to the surface. */
+.dk-eyebrow { margin: 0; font: var(--w-strong) var(--t-micro) / var(--lh-micro) var(--face); text-transform: uppercase; letter-spacing: var(--track-eyebrow); color: var(--ink-2); }

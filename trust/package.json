@@ -1,0 +1,28 @@
+{
+  "name": "@gilded-goose/trust",
+  "sideEffects": false,
+  "version": "0.1.0",
+  "description": "A spending guard for shopping agents: the model proposes a cart, plain code binds it, and only the shopper's tap pays through PayPal Orders v2.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./node": "./src/node.ts",
+    "./paypal": "./src/paypal.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build": "echo trust is consumed as source"
+  },
+  "dependencies": {
+    "@paypal/agent-toolkit": "1.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}

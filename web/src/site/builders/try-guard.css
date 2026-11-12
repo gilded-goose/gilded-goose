@@ -1,0 +1,23 @@
+/* Try the guard's lazy part: examples, the button, the reading and the two lines. Tokens only; text wraps, nothing scrolls sideways. */
+.tg > * { max-width: 720px; }
+.tg p { margin: 0; }
+.tg-label { font-size: var(--t-sm); font-weight: var(--w-strong); color: var(--ink); }
+.tg-note { width: 100%; min-height: 120px; padding: var(--s4); border: 1px solid var(--line-strong); border-radius: var(--r-4); background: var(--surface-raised); line-height: var(--lh-body); resize: vertical; }
+.tg-note:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.tg-small { font-size: var(--t-sm); line-height: var(--lh-body); color: var(--ink-2); text-wrap: pretty; }
+.tg-small a { color: var(--ink); text-underline-offset: 4px; }
+.tg-small code, .tg-code { font-family: var(--font-mono); }
+.tg-small code { overflow-wrap: anywhere; }
+.tg-cap { font-size: var(--t-sm); color: var(--ink); }
+.tg-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
+.tg-row .tg-small { width: 100%; }
+.tg-chip { min-height: var(--tap); padding: 0 var(--s3); border: 1px solid var(--line-strong); border-radius: var(--r-pill); background: transparent; color: var(--ink); font-size: var(--t-sm); }
+.tg-chip[aria-pressed="true"] { border-color: var(--ink); color: var(--surface); background: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .tg-chip:hover { border-color: var(--ink-3); } }
+.tg-read { display: grid; gap: var(--s2); padding: var(--s4); border: 1px solid var(--line); border-radius: var(--r-4); background: var(--surface-raised); }
+.tg-how { display: grid; gap: var(--s1); }
+.tg-code { margin: 0; padding: var(--s4); border: 1px solid var(--line); border-radius: var(--r-4); background: var(--surface-raised); font-size: var(--t-sm); line-height: 1.6; white-space: pre-wrap; }
+/* A wrapped code line hangs under its own start, so a phone never reads a piece of a line as a line of its own; and it
+   wraps between words only, so a name like "@gilded-goose/trust" is never cut at its hyphen. */
+.tg-ln { display: block; padding-left: 2ch; text-indent: -2ch; }
+.tg-ln span { white-space: nowrap; }

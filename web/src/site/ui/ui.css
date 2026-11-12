@@ -1,0 +1,222 @@
+/* Shared parts: the stamp, provenance tags, buttons, sections and the egg's frame. */
+
+/* ── Stamp ─────────────────────────────────────────────────────────────── */
+.stamp {
+  --stamp-clear: var(--ink);
+  --stamp-held: var(--held);
+  --stamp-aside: var(--vermilion-ink);
+  --stamp-over: var(--lead);
+  --stamp-ink: currentColor;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--s2);
+  row-gap: var(--s1);
+  vertical-align: middle;
+  max-width: 100%;
+}
+.stone .stamp, .stamp:where(.stone *) {
+  --stamp-clear: var(--stone-ink);
+  --stamp-held: var(--held-stone);
+  --stamp-aside: var(--vermilion-stone);
+  --stamp-over: var(--lead-stone);
+}
+.stamp[data-verdict="clear"] { --stamp-ink: var(--stamp-clear); }
+.stamp[data-verdict="held"] { --stamp-ink: var(--stamp-held); }
+.stamp[data-verdict="aside"] { --stamp-ink: var(--stamp-aside); }
+.stamp[data-verdict="over"] { --stamp-ink: var(--stamp-over); }
+
+/* The die: an outline chip, pressed once. Clear is plain ink; vermilion belongs to "Set aside" alone. */
+.stamp-die {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 var(--s3);
+  border-radius: var(--r-pill);
+  font-family: var(--font-sans);
+  font-size: var(--t-sm);
+  font-weight: var(--w-strong);
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ink-3);
+  border: 1px dashed var(--line-strong);
+  transform-origin: 50% 60%;
+}
+.stone .stamp-die { color: var(--stone-ink-2); border-color: var(--stone-line); }
+
+.stamp[data-struck] .stamp-die {
+  color: var(--stamp-ink);
+  border: 1px solid var(--stamp-ink);
+  animation: stamp-strike var(--d-stamp) var(--ease-out) both;
+}
+.stamp-reason {
+  font-size: var(--t-sm);
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+.stone .stamp-reason { color: var(--stone-ink-2); }
+/* Set aside reads as a soft red tint, never a filled block; the reason stays in body ink. */
+.stamp[data-struck][data-verdict="aside"] .stamp-die, .stone .stamp[data-struck][data-verdict="aside"] .stamp-die { background: oklch(0.52 0.19 32 / 0.1); border-color: transparent; color: var(--vermilion-ink); }
+
+/* The press: down past flat by about 2px of its width, then back. 90ms, once. */
+@keyframes stamp-strike {
+  0% { transform: scale(1.12); opacity: 0.2; }
+  70% { transform: scale(0.97); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Provenance ────────────────────────────────────────────────────────── */
+.prov {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 24px;
+  padding: 0 var(--s2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--ink-2);
+  font-size: var(--t-xs);
+  font-weight: var(--w-medium);
+  line-height: 1;
+  white-space: nowrap;
+}
+.stone .prov { background: transparent; border-color: var(--stone-line); color: var(--stone-ink-2); }
+.prov-mark {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  flex: none;
+}
+.prov[data-kind="live"] .prov-mark { background: var(--signal); border-color: var(--signal); }
+.prov[data-kind="recorded"] .prov-mark { border-style: solid; background: transparent; }
+.prov[data-kind="practice"] .prov-mark,
+.prov[data-kind="sandbox"] .prov-mark { border-radius: 2px; } /* control */
+.prov[data-kind="fictional"] .prov-mark { border-style: dashed; }
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.btn {
+  --btn-h: var(--tap);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-height: var(--btn-h);
+  padding: 0 var(--s5);
+  border: 1.5px solid transparent;
+  border-radius: var(--r-pill);
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  font-weight: var(--w-strong);
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  transition:
+    transform var(--d-press) var(--ease-out),
+    background-color var(--d-ui) ease,
+    border-color var(--d-ui) ease,
+    color var(--d-ui) ease,
+    box-shadow var(--d-ui) ease;
+}
+.btn[data-size="s"] { --btn-h: 40px; padding: 0 var(--s4); font-size: var(--t-sm); }
+.btn:active:not(:disabled) { transform: scale(0.97); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: 0.45; }
+
+.btn[data-tone="gold"] {
+  /* Flat gold: the metal belongs to the egg, the button stays chrome. Ink on --gold is 9.58:1. */
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.btn[data-tone="paypal"] { background: var(--paypal); color: #fff; border-color: transparent; box-shadow: 0 1px 2px oklch(0 0 0 / 0.12); }
+.btn[data-tone="ink"] { background: var(--ink); color: var(--surface); }
+.btn[data-tone="line"] { background: transparent; color: var(--ink); border-color: var(--ink); }
+.stone .btn[data-tone="line"] { color: var(--stone-ink); border-color: var(--stone-ink-2); }
+.stone .btn[data-tone="quiet"] { color: var(--stone-ink-2); }
+.btn[data-tone="quiet"] { background: transparent; color: var(--ink-2); padding: 0 var(--s3); }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn[data-tone="gold"]:hover:not(:disabled) { background: oklch(0.83 0.13 86); }
+  .btn[data-tone="paypal"]:hover:not(:disabled) { background: var(--paypal-deep); }
+  .btn[data-tone="ink"]:hover:not(:disabled) { background: var(--ink-2); }
+  .btn[data-tone="line"]:hover:not(:disabled) { background: var(--surface-2); }
+  .btn[data-tone="quiet"]:hover:not(:disabled) { color: var(--ink); background: var(--surface-2); }
+  .stone .btn[data-tone="line"]:hover:not(:disabled), .stone .btn[data-tone="quiet"]:hover:not(:disabled) { background: var(--stone-2); color: var(--stone-ink); }
+}
+
+/* ── Section ───────────────────────────────────────────────────────────── */
+.section { padding-block: calc(var(--section-gap) / 2); }
+.section-head { display: grid; gap: var(--s3); margin-bottom: var(--s8); }
+
+/* ── Egg ───────────────────────────────────────────────────────────────── */
+.egg {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  aspect-ratio: 200 / 240;
+}
+.egg[data-size="s"] { width: 24px; }
+.egg[data-size="m"] { width: 96px; }
+.egg[data-size="l"] { width: 240px; }
+.egg[data-size="xl"] { width: 100%; }
+.egg-img { display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; }
+.egg[data-moment="approve"] .egg-img,
+.egg[data-moment="receipt"] .egg-img { animation: egg-settle 900ms var(--ease-out) both; transform-origin: 50% 92%; }
+@keyframes egg-settle {
+  0% { transform: translateY(-24px) scale(0.96); opacity: 0; }
+  55% { transform: translateY(0) scale(1.02, 0.97); opacity: 1; }
+  100% { transform: none; }
+}
+
+/* The egg as an object: a soft contact shadow under every egg above the 24px mark, so it sits on the page. */
+.egg:not([data-size="s"]) .egg-img { filter: drop-shadow(0 10px 12px oklch(0.17 0.01 70 / 0.16)) drop-shadow(0 2px 2px oklch(0.17 0.01 70 / 0.12)); }
+
+/* Light crossing the shell (Egg.tsx): resting off the egg's left edge, invisible until it moves. */
+.egg-glint { opacity: 0; mix-blend-mode: soft-light; }
+@media (prefers-reduced-motion: no-preference) {
+  .egg-glint[data-shine="once"] { animation: egg-glint 1300ms var(--ease-in-out) 520ms both; }
+}
+@keyframes egg-glint {
+  0% { translate: 0 0; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { translate: 330px 0; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp[data-struck] .stamp-die { animation: none; }
+  .egg .egg-img { animation: none; }
+  .btn { transition: background-color var(--d-ui) ease, border-color var(--d-ui) ease, color var(--d-ui) ease; }
+  .btn:active:not(:disabled) { transform: none; }
+}
+
+/* The mic and the camera beside an Ask field: quiet until used; listening takes the gold tint. */
+.ask-tools { display: inline-flex; align-items: center; gap: var(--s1); flex: none; }
+.ask-tool {
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border: 0;
+  border-radius: var(--r-3);
+  background: transparent;
+  color: var(--ink-2);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background-color var(--d-ui) ease, color var(--d-ui) ease, transform var(--d-press) var(--ease-out);
+}
+.ask-tool:active:not(:disabled) { transform: scale(0.96); }
+.ask-tool[aria-pressed="true"] { background: var(--gold-tint); color: var(--ink); }
+.ask-tool:disabled { opacity: 0.45; }
+@media (hover: hover) and (pointer: fine) {
+  .ask-tool:hover:not(:disabled) { background: var(--surface-2); color: var(--ink); }
+}
+.ask-help { min-height: 24px; font-size: var(--t-sm); color: var(--ink-3); }
+.ask-help[data-on] { color: var(--ink-2); }

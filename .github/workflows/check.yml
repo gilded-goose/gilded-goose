@@ -1,0 +1,80 @@
+# Pushes to the live branch and pull requests only (Joshua, Sat Oct 31: November's 2,000 free Actions minutes must
+# last through Nov 12, so ci/lead-stack* branches gate on these same steps run locally by ci-local.sh). It runs the
+# private-data gate, typecheck, tests, the bundle gate and the quality ratchet (pnpm check; the ratchet adds its own
+# few seconds, and fails on a number worse than docs/guild/ratchet.json), then the two PROFILE budgets against a real build and
+# server. No keys at all (Joshua, 2026-10-23): the rule buyer, and PAYMENT=fake, a
+# localhost-only port whose order ids all start "FAKE-". The real sandbox path is
+# checked by pnpm e2e:sandbox on a machine with .env.
+name: check
+on:
+  push:
+    branches: [auto/m2-attacks-blocked]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # 45 (Fri Nov 6): push 12's run 42231157612 was cancelled at 25 when the runner's apt took 11m34s for playwright
+    # --with-deps; push 13's green run 42252951401 took 29.2 min (apt 9). core/test/ci-timeout.test.ts holds 1.5x the slowest green.
+    timeout-minutes: 45
+    # Faster without more minutes (Joshua, Nov 4: a parallel job bills each job; this is one job). Node keeps what it compiled, so the
+    # dozens of times a step or a test starts node, or boots the server, it doesn't parse and strip the same files again: the slowest
+    # test file went from 70 s to 42 s. It's keyed on each file's content, so a changed file can't be served stale.
+    env:
+      NODE_COMPILE_CACHE: /tmp/goose-node-cache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: corepack enable
+      - run: corepack pnpm install --frozen-lockfile
+      - run: corepack pnpm check
+      - name: "npm publish --dry-run: builds the package, runs it, publishes nothing"
+        run: node scripts/trust-pack.ts
+      - run: cp .env.example .env
+      - run: corepack pnpm exec playwright install --with-deps chromium
+      - name: "budget: first screen < 1 s"
+        run: |
+          corepack pnpm --filter @goose/web preview --port 4173 --strictPort &
+          for i in $(seq 30); do curl -sf http://localhost:4173/ >/dev/null && break; sleep 1; done
+          corepack pnpm budget:first-screen http://localhost:4173/ 5
+          corepack pnpm budget:first-screen "http://localhost:4173/?wallet=1" 5
+          corepack pnpm budget:first-screen "http://localhost:4173/?wallet=0" 5
+      - name: "budget: round event < 2 s"
+        run: |
+          PAYMENT=fake PORT=8787 corepack pnpm --filter @goose/server start &
+          for i in $(seq 30); do curl -sf http://localhost:8787/api/health >/dev/null && break; sleep 1; done
+          corepack pnpm budget:round http://localhost:8787
+      - name: "approve_has_accessible_name_and_amount (W53)"
+        run: |
+          PAYMENT=fake BUYER=rule PORT=8788 PUBLIC_URL=http://localhost:8788 WEB_URL=http://localhost:8788 PAYPAL_CLIENT_SECRET=ci.stand-in corepack pnpm --filter @goose/server start &
+          for i in $(seq 30); do curl -sf http://localhost:8788/api/health >/dev/null && break; sleep 1; done
+          node scripts/approve-check.ts http://localhost:8788
+      # Joshua's 1(d): axe 0 on every route, keyboard-only through the judge tour, 0 console errors, 0 failed walks. On the
+      # fake server above, so it spends nothing and can't flake on live's network. 2 minutes 40 on a Mac. The 8-minute one
+      # nav runs in the daily record instead (ratchet-record.ts), to stay inside GitHub's 60 minutes a day.
+      - name: "ratchet: axe 0, and the walks (cold loads, console sweep, keyboard through the judge tour)"
+        run: |
+          curl -sf http://localhost:8788/api/health >/dev/null
+          node scripts/axe-routes.ts http://localhost:8788
+          node scripts/approve-hold.ts http://localhost:8788
+          node scripts/misses-walk.ts http://localhost:8788
+          node scripts/try-guard-walk.ts http://localhost:8788
+          node scripts/design-holds.ts http://localhost:8788
+          node scripts/desk-walk.ts http://localhost:8788
+          node scripts/suggest-walk.ts http://localhost:8788
+          node scripts/fingerprint-walk.ts http://localhost:8788
+          node scripts/verify-walk.ts http://localhost:8788
+          node scripts/loader-walk.ts http://localhost:8788
+          node scripts/live-walks.ts http://localhost:8788 --quick
+      # The Pages mirror, on every push (Lead-10, Nov 4): a moved link passed here and would only have failed at the `pages`
+      # run, whose path filter skips web/src. Last, since this build replaces web/dist with one for the mirror's sub-path.
+      - name: "pages-smoke: the wallet, the demo and the safe page under /gilded-goose/ with no server"
+        run: |
+          GOOSE_BASE=/gilded-goose/ VITE_WALLET=1 corepack pnpm --filter @goose/web build
+          mkdir -p site && cp -r web/dist site/gilded-goose
+          (cd site && python3 -m http.server 4174 >/dev/null 2>&1 &)
+          for i in $(seq 30); do curl -sf http://localhost:4174/gilded-goose/ >/dev/null && break; sleep 1; done
+          node scripts/pages-smoke.ts http://localhost:4174/gilded-goose/

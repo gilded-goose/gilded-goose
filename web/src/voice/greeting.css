@@ -1,0 +1,26 @@
+/* Track V (042), calm since Track DK: the Desk's greeting, one short line above the Ask box (web/src/voice/Greeting.tsx),
+   and the name field in Limits in code. Desk tokens only; the line arrives on the hero's own clock (desk.css's `fade`,
+   between the sub line and the Ask box) and is still under reduced motion. */
+.vg-line { margin: calc(-1 * var(--s-1)) 0 var(--s-2); font-size: var(--t-body); line-height: 1.5; color: var(--ink); animation: fade 700ms var(--ease) 700ms both; }
+/* Cancel in the name field: a quiet text button, 44 px tall. */
+.dk .vg-link { display: inline-flex; align-items: center; border: 0; background: none; padding: 0 2px; min-height: 44px; color: var(--ink-2); font: inherit; font-size: var(--t-small); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 4px; cursor: pointer; transition: color var(--d-1), text-decoration-color var(--d-1); }
+.dk .vg-link:hover { color: var(--ink); text-decoration-color: currentColor; }
+
+.vg-form { margin-top: var(--s-1); }
+.vg-label { display: block; font-size: var(--t-small); color: var(--ink-2); margin-bottom: 6px; }
+.vg-row { display: flex; align-items: center; gap: var(--s-1); flex-wrap: wrap; }
+.dk .vg-input { flex: 0 1 240px; min-width: 0; min-height: 44px; padding: 0 14px; border-radius: var(--r-2); border: 1px solid var(--ink-3); background: var(--surface); color: var(--ink); font: inherit; font-size: var(--t-body); }
+.dk .vg-input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.dk .vg-input[aria-invalid="true"] { border-color: var(--red); }
+.dk .vg-save { min-height: 44px; padding: 0 var(--s-2); border-radius: var(--r-2); border: 0; background: var(--cta); color: var(--on-cta); font: inherit; font-size: var(--t-small); font-weight: var(--w-strong); cursor: pointer; }
+.vg-note { margin: 6px 0 0; font-size: var(--t-micro); color: var(--ink-3); }
+.vg-note.vg-bad { color: var(--red); }
+.vg-note.vg-bad:empty { margin: 0; }
+
+html.dk-opening .vg-line, html.dk-opened .vg-line { animation: fade 420ms var(--spring) 280ms both; }
+@media (max-width: 720px) {
+  .dk .vg-input { flex: 1 1 100%; } /* Save and Cancel share the next row */
+  html.dk-opening .vg-line, html.dk-opened .vg-line { animation-delay: 520ms; }
+}
+html.dk-skip .vg-line { animation: none; }
+@media (prefers-reduced-motion: reduce) { .vg-line, html.dk-opening .vg-line, html.dk-opened .vg-line { animation: none; } .dk .vg-link { transition: none; } }

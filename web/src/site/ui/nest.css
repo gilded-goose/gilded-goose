@@ -1,0 +1,10 @@
+/* The nest line (Nest.tsx). */
+.nest { display: grid; gap: var(--s2); }
+.nest-bar { position: relative; display: block; height: var(--s2); border-radius: var(--r-pill); background: var(--gold-tint); overflow: hidden; }
+.nest-bar::after { content: ""; position: absolute; inset: 0; background: var(--gold-ink); transform: scaleX(var(--share, 0)); transform-origin: 0 50%; }
+.nest-line { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s1) var(--s4); color: var(--ink-2); font-size: var(--t-sm); }
+.nest-line b { color: var(--ink); font-weight: var(--w-strong); }
+@media (prefers-reduced-motion: no-preference) {
+  .nest-bar::after { animation: nest-fill 700ms var(--ease-out) 320ms both; }
+}
+@keyframes nest-fill { from { transform: scaleX(0); } }

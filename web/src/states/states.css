@@ -1,0 +1,78 @@
+/* Track R: the states kit, to brand.md §10.9. One block for every state, in the content column where the missing content
+   would go: left-aligned, at most 32em, no card, no box, no glass, no icon. What happened (--t-h3 in --display 400, --ink),
+   the cause (--t-body, --ink-2, --s-1 below), one outline pill (--s-3 below). Only the waking state carries the vector egg.
+   Tokens by role name (desk/tokens.css); every value falls back to Velvet's, so a page without `.dk` tokens reads right.
+   Motion: the one Enter (opacity + 8 px, --d-3 --spring), and only after 400 ms of waiting, so a fast answer never
+   flashes a state (an animation delay, so a block removed before then never paints); it leaves by opacity (--d-1). */
+
+.st-note {
+  display: block; max-width: 32em; margin: 0; padding: var(--s-12, 96px) 0; text-align: left;
+  color: var(--ink, #f4eadc); font: var(--t-body, 17px)/1.5 var(--face, system-ui, sans-serif);
+  animation: st-in var(--d-3, 400ms) var(--spring, cubic-bezier(.22, .8, .24, 1)) 400ms both;
+}
+/* `hidden` must win over every display rule here: an author `display` beats the browser's [hidden] rule, and an empty
+   toast drew on every page before this line (Track R's own stills). core/test/r-deploy.test.ts pins it. */
+.st-note[hidden], .st-note [hidden], .st-strip[hidden] { display: none !important; }
+.st-note-title {
+  margin: 0; color: var(--ink, #f4eadc); text-wrap: balance;
+  font-family: var(--display, system-ui, sans-serif); font-size: var(--t-h3, 24px); font-weight: var(--w-head, 400); line-height: var(--lh-head, 1.2);
+  letter-spacing: var(--track-head, -.008em);
+}
+/* balance, like the title (DD, stack 79): "pretty" left "by itself." alone at 390; balanced, each row is a sentence. */
+.st-note-line { margin: var(--s-1, 8px) 0 0; color: var(--ink-2, #cdb9b5); font-size: var(--t-body, 17px); text-wrap: balance; }
+.st-note-action {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-1, 8px);
+  margin-top: var(--s-3, 24px); min-height: 44px; padding: 0 var(--s-3, 24px);
+  border: 1px solid var(--line-2, rgba(244, 234, 220, .3)); border-radius: var(--r-pill, 999px);
+  background: none; color: var(--ink, #f4eadc); font: inherit; font-size: var(--t-small, 15px); font-weight: var(--w-strong, 560);
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: border-color var(--d-1, 200ms) var(--ease, cubic-bezier(.2, .7, .2, 1)), background var(--d-1, 200ms) var(--ease, cubic-bezier(.2, .7, .2, 1));
+}
+.st-note-action:hover { border-color: var(--ink-2, #cdb9b5); background: var(--surface, rgba(244, 234, 220, .04)); }
+.st-note-action:focus-visible { outline: 2px solid var(--focus, #f4eadc); outline-offset: 3px; }
+/* Disabled (a 429 before its Retry-After): still focusable, --ink-3 on a --line border, its cause as its description. */
+.st-note-action[aria-disabled="true"], .st-note-action[aria-disabled="true"]:hover { color: var(--ink-3, #b49f9c); border-color: var(--line, rgba(244, 234, 220, .12)); background: none; cursor: default; }
+/* The waking egg: 48 px tall at 40% while it waits; lit to 100% in one --d-3 as the answer arrives. Never pulses. */
+.st-egg { display: block; height: 48px; width: auto; aspect-ratio: 15.2 / 18.8; margin: 0 0 var(--s-3, 24px); overflow: visible; opacity: .4; transition: opacity var(--d-3, 400ms) var(--ease, cubic-bezier(.2, .7, .2, 1)); }
+.st-note[data-lit] .st-egg { opacity: 1; }
+@keyframes st-in { from { opacity: 0; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
+@keyframes st-show { from { opacity: 0; } to { opacity: 1; } }
+/* --t-h3 is 20 px at ≤720 (§10.9); tokens.css keeps it 24 everywhere, so the kit steps it down here (20 px = --t-lead). */
+@media (max-width: 720px) { .st-note { padding: var(--s-8, 64px) 0; } } /* the title keeps --t-h3: the phone's step is tokens.css's */
+
+/* The page-wide line (offline, waking, a chunk lost to a deploy), for a page whose content is already drawn: there is no
+   empty slot to stand in, so the same block stands at the window's foot on the page's own ground, under one hairline,
+   aligned to the page's 1200 px column. Not a card: full width, no radius, no shadow. Above a phone's rail while one is
+   drawn (nav.css); flush with the foot once it's gone (brand.md 10.4). */
+.st-strip {
+  position: fixed; z-index: 60; left: 0; right: 0; bottom: 0;
+  padding: var(--s-3, 24px) max(var(--s-4, 32px), calc((100vw - 1200px) / 2 + var(--s-4, 32px))) calc(var(--s-3, 24px) + env(safe-area-inset-bottom));
+  background: var(--page-solid, #2c1520); border-top: 1px solid var(--line, rgba(244, 234, 220, .12));
+  transition: opacity var(--d-1, 200ms) var(--ease, cubic-bezier(.2, .7, .2, 1));
+  /* The strip itself waits and enters (its ground and hairline would otherwise paint empty for 400 ms while the block
+     inside waited). `backwards`, not `both`: once it has entered, [data-leaving] can still take its opacity. */
+  animation: st-in var(--d-3, 400ms) var(--spring, cubic-bezier(.22, .8, .24, 1)) 400ms backwards;
+}
+.st-strip > .st-note { padding: 0; animation: none; }
+/* The page-wide line's live region: always in the page, so a screen reader hears the words when they are set (a region
+   that appears together with its words is often not announced). Seen by no one. */
+.st-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.st-strip > .st-note .st-note-action { margin-top: var(--s-2, 16px); }
+.st-strip[data-leaving] { opacity: 0; }
+@media (max-width: 720px) {
+  .st-strip { padding-left: var(--s-2, 16px); padding-right: var(--s-2, 16px); padding-top: var(--s-2, 16px); padding-bottom: calc(var(--s-2, 16px) + env(safe-area-inset-bottom)); }
+  /* S1-13 (the DD's 06:25 ruling; brand.md 10.4, the rail is gone): directly above the judge tour's strip while one is
+     drawn (its 46 px row and its inset, tour-pill.css), flush with the foot otherwise. */
+  body:has(.tp) .st-strip { bottom: calc(var(--tp-h, 46px) + max(12px, env(safe-area-inset-bottom))); padding-bottom: var(--s-2, 16px); }
+}
+/* S1-13 (the DD's 06:25 ruling): under any open sheet or the menu, back on close. The menu is on the body (60): the
+   line steps under it. A Desk sheet stacks inside the Desk's own layer (.dk isolates), which no z-index outside it
+   can go under while the line still shows over the page, so the line yields while a sheet is open, as the tour's
+   pill does (tour-pill.css). Its words stay in the live region (.st-sr), so a screen reader still has them. */
+body:has(.gm-root) .st-strip { z-index: 19; }
+body:has(.dk-sheet[role="dialog"]) .st-strip { visibility: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  .st-note, .st-strip { animation-name: st-show; animation-duration: 1ms; }
+  .st-strip > .st-note { animation: none; }
+  .st-egg, .st-strip { transition: none; }
+}

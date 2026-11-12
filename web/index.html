@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>var $q=new URLSearchParams(location.search),$h=document.documentElement,$P=["1","ledger","studio","proof","haggle","tour","system","how","builders","list"],$R=["desk","wallet","market","ledger","row","seed","run"]</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gilded Goose</title>
+    <!-- A tap before the page's code lands counts once it's live (web/src/held-tap.ts decides which). -->
+    <script>addEventListener("click",e=>{var b=e.target.closest?.("button");if(b&&self.__tap!==0)self.__tap=[b.textContent.trim(),Date.now()]},!0)</script>
+    <!-- W76: the gold egg (first-paint.tsx EGG); the .ico answers browsers that ask for /favicon.ico directly -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <!-- B-11 (brand.md §10.8): the share card. Link scrapers run no script, so every address shares this one card
+         (web/src/brand/meta.ts; core/test/brand.test.ts holds this copy to it). -->
+    <meta name="description" content="Goose can't be fooled into paying, can't overspend and can't hide anything. Practice only: no real money." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Gilded Goose" />
+    <meta property="og:description" content="Goose can't be fooled into paying, can't overspend and can't hide anything. Practice only: no real money." />
+    <meta property="og:image" content="https://gilded-goose.onrender.com/og/share.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A gold egg beside the words: Nothing is paid until you tap." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#2c1520" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- B-11: "<Page> · Gilded Goose" before the first paint, by the menu's name for the room (web/src/brand/title.ts) -->
+    <script>(function(){var u=$q,d=u.get("desk"),R=[["market","1","The cart, step by step"],["desk","ledger","Behind the scenes"],["desk","studio","Behind the scenes"],["desk","proof","Proof"],["desk","haggle","The haggle"],["desk","tour","Judge tour"],["desk","how","How it works"],["desk","builders","For builders"],["desk","list","Your Christmas list"],["desk","system","Design system"],["wallet","1","Approve in PayPal"],["wallet","0","Try to trick Goose","#break"]],t=function(p,v){for(var i=0;i<R.length;i++)if(R[i][0]===p&&R[i][1]===v&&(!R[i][3]||R[i][3]===location.hash)){document.title=R[i][2]+" \u00b7 Gilded Goose";return 1}};if(u.get("market")==="1"){t("market","1");return}if(d===null&&u.get("studio")==="force"&&!u.has("wallet"))d="studio";if(d==="1"||t("desk",d))return;t("wallet",u.get("wallet"))})()</script>
+    <!-- B-11 (brand.md §10.1): the lockup's sheet, web/src/brand/lockup.css verbatim, so a bar drawn here wears it before any script -->
+<style data-gg>
+/* The lockup "Gilded G◯ose" (brand.md §10.1): Hanken 400, -.02em (the bar .05em), the vector egg as the first o of Goose. Each HTML entry's <head> carries this file verbatim (core/test/brand.test.ts), so a bar painted before any script wears it. */
+.gg { display: inline-flex; align-items: baseline; font-family: var(--mark-face, var(--display)); font-weight: var(--mark-w, 400); letter-spacing: var(--mark-track, -.02em); line-height: 1; color: var(--ink, #f4eadc); white-space: nowrap; font-kerning: normal; text-decoration: none; }
+.gg .sp { display: inline-block; width: .24em; }
+.gg .o { display: inline-block; width: .5em; height: .62em; margin: 0 .035em 0 .025em; transform: translateY(.012em); }
+.gg .o svg { display: block; width: 100%; height: 100%; overflow: visible; }
+/* The name in the visible text too (WCAG 2.5.3, axe label-content-name-mismatch): a real space in .sp and a real "o" under the egg, so the link reads "Gilded Goose" to voice control and to copy. The o is out of flow (absolute at its static place, so the egg's box and baseline are as before) and transparent; forced colours would repaint it, so it keeps its own colour there. Its letter-spacing is 0: the bar's .05em tracking would make the absolute o wider than .o's fixed box, so .o would hold more than it shows (a3b-screens, Nov 6); the egg's spacing is .o's own margins. scripts/lockup-name.ts diffs the pixels and measures that spill. */
+.gg .oc { position: absolute; color: transparent; letter-spacing: 0; }
+@media (forced-colors: active) { .gg .oc { forced-color-adjust: none; } }
+.gg-bar { --mark-track: .05em; font-size: 22px; }
+.gg-bar .o { width: .55em; height: .68em; margin: 0 .03em 0 .02em; }
+.gg-share { font-size: 40px; }
+.gg-end { --mark-w: 300; --mark-track: -.03em; font-size: 96px; }
+@media (max-width: 720px) { .gg-bar { font-size: 20px; } }
+</style>
+    <!-- v3 design, built for real in M2 step 4. The nav, the title and the lines
+         below the app are static, so the first screen paints before any script runs (budget:first-screen). -->
+    <style>
+      /* Track W (Fri Oct 30, DD crit #1 [12]): the first paint is the Desk's Velvet, never the old light/teal base. These
+         are tokens.css's own role names and Velvet values (.dk[data-palette="v"]), inlined because the static header paints
+         before any stylesheet that carries them; every surface's .dk scope sets the same values again. The page's older
+         names (--grey, --teal, --paper ...) point at the roles, so nothing teal or light is left to over-paint. */
+      :root {
+        --face: "Archivo Goose", "Archivo Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --display: "Hanken Goose", "Hanken Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --t-hero: clamp(44px, 5.6vw, 80px); --t-h2: clamp(30px, 3.4vw, 44px); --t-h3: 24px; --t-lead: 20px; --t-body: 17px; --t-small: 15px; --t-micro: 13px;
+        --w-display: 300; --w-head: 400; --w-body: 400; --w-strong: 560; --track-display: -.016em; --track-head: -.008em; --track-eyebrow: .08em;
+        --r-1: 8px; --r-2: 10px; --r-3: 12px; --r-pill: 999px;
+        --s-1: 8px; --s-2: 16px; --s-3: 24px; --s-4: 32px; --s-5: 40px; --s-6: 48px; --s-8: 64px; --s-10: 80px; --s-12: 96px;
+        --spring: cubic-bezier(.22, .8, .24, 1); --ease: cubic-bezier(.2, .7, .2, 1); --d-1: 200ms; --d-2: 300ms; --d-3: 400ms;
+        --page-solid: #2c1520; --card: #371c2a; --card-line: rgba(244, 234, 220, .09); --well: rgba(244, 234, 220, .05); --sheet: #341a27;
+        --line: rgba(244, 234, 220, .12); --line-2: rgba(244, 234, 220, .3); --ink: #f4eadc; --ink-2: #cdb9b5; --ink-3: #b49f9c;
+        --surface: rgba(244, 234, 220, .04); --surface-2: rgba(244, 234, 220, .07); --cta: #f4eadc; --on-cta: #2c1520;
+        --gold: #e3ba6a; --gold-hi: #efce8c; --gold-line: rgba(227, 186, 106, .62); --gold-wash: rgba(227, 186, 106, .07); --red: #f0a59a; --focus: #f4eadc;
+        --grey: var(--ink-2); --soft: var(--ink-3); --paper: var(--well); --white: var(--card); --bg: var(--page-solid); --cream: transparent;
+        --teal: var(--ink); --teal-wash: var(--surface-2); --red-wash: rgba(240, 165, 154, .08); --amber: var(--ink);
+        --desk: var(--page-solid); --desk-2: var(--page-solid); --on-desk: var(--ink); --on-desk-2: var(--ink-2);
+        --brass: var(--gold); --brass-ink: var(--gold-hi); --brass-hi: var(--gold-hi); --brass-wash: var(--gold-wash);
+        /* B's glass (tokens.css), for the bar once scrolled (nav.css): the classic page's and the market's bar sits
+           outside any .dk scope, so without these it stayed solid (S1-3's follow-up). */
+        --glass-bg: rgba(55, 28, 42, .55); --glass-blur: blur(24px) saturate(140%); --glass-edge: inset 0 1px 0 rgba(244, 234, 220, .18); --glass-line: rgba(244, 234, 220, .1);
+        /* B-11 (brand.md §10.1, §10.6, §10.7): tokens.css's new names, for the same reason: the bar's frost, the lockup, the cinematic reveal. */
+        --glass-bar-bg: rgba(44, 21, 32, .93); --glass-bar-blur: blur(40px) saturate(140%); --mark-face: var(--display); --mark-w: 400; --mark-track: -.02em; --d-cine: 900ms;
+        color-scheme: dark;
+      }
+      /* tokens.css's solid fallback: no backdrop-filter, or the device asks for reduced transparency. */
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { :root { --glass-bg: var(--sheet); --glass-blur: none; } }
+      @media (prefers-reduced-transparency: reduce) { :root { --glass-bg: var(--sheet); --glass-blur: none; } }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; background: var(--bg); color: var(--ink); font: var(--t-body)/1.5 var(--face); font-variant-numeric: tabular-nums; }
+      /* One header for both pages (guild-visual's "make it a 9" for W64): the same 1200 px column with a 32 px edge (16 px
+         on a phone), and the one nav every page wears (S1, Joshua Fri 3:40 PM) with "Practice only" in its slot. The
+         practice sentence, every word, is the page's last line (.gn-foot, nav.css; S1b: no strip above the nav). */
+      .page { max-width: 1200px; margin: 0 auto; padding: 0 var(--s-4) var(--s-8); }
+      /* The one nav (web/src/nav/nav.css) sits flush in this page's 1200 px column, which holds the gutter. */
+      .page > .gn .dk-nav-in { max-width: none; padding: 0; }
+      .page > .gn { position: relative; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+      .gn-slot { display: contents; }
+      /* One gutter with every route's bar (S1-3's Needs): 32 px from 721 px, as the Desk's, 16 px on a phone. */
+      @media (max-width: 720px) {
+        /* clip: never a sideways scroll, as the Desk's pages (.dk, .tr, .lx). W4 (Round 2): the menu button's box ends at
+           the gutter, never in it (nav.css pulls a padded bar's button 12 px out; this bar's column is the gutter). */
+        .page { padding-left: var(--s-2); padding-right: var(--s-2); overflow-x: clip; }
+        .page > .gn .dk-menu { margin-right: 0; }
+      }
+      /* The wallet draws its own header and pitch in #root; this page's are the classic home's. */
+      body.wallet-on .page > .gn, body.wallet-on .page > .brand { display: none; }
+      /* The Desk (the bare address, or `?desk=1`) draws its whole page in #root, edge to edge; so does its ledger
+         (`?desk=ledger`). The class is set by the first script in <body>, before this page's own header can paint. */
+      body.desk-on { margin: 0; }
+      body.desk-on .gn-footer, body.desk-on .page > .gn, body.desk-on .page > .brand { display: none; }
+      /* The practice line waits for the page: with #root still empty it would paint under the header and jump about 750 px when the page lands. */
+      #root:empty + .gn-footer { visibility: hidden; }
+      body.desk-on .page { max-width: none; padding: 0; }
+      body.desk-on .desk-ledger { max-width: 1200px; margin: 0 auto; padding: var(--s-3) var(--s-2) var(--s-8); }
+      body.desk-on .desk-ledger > p a { color: var(--ink); text-underline-offset: 3px; }
+      /* The Desk's own page is velvet from the first paint (no cream frame before its script). Joshua's opening (Oct 30):
+         a jewelry case at night. Before any script runs, the egg stands centred as a near-black silhouette (the still's
+         own outline, egg.webp) over one hairline; web/src/desk/opening.ts then lights it as the page really loads and
+         glides it to the hero. Once per session, never under reduced motion, never on PayPal's return; if the Desk
+         never arrives, the case steps aside after 6 s. */
+      html.dk-velvet, html.dk-velvet body { background: #2c1520; }
+      #dk-case { display: none; }
+      html.dk-opening #dk-case, html.dk-fade #dk-case { --cw: 192px; display: block; position: fixed; inset: 0; z-index: 40; pointer-events: none; animation: dk-case-out 0s 6s forwards; font: 0/0 system-ui; } /* the system font: the case must not fetch a webfont ahead of the Desk's code */
+      /* The opening gave up (no Desk by EGG_BY, prerender.ts): the dark egg fades as the gold one comes, never gone in one frame. DD, Nov 4. */
+      html.dk-fade #dk-case { animation: dk-case-fade 160ms forwards; }
+      @keyframes dk-case-fade { to { opacity: 0; visibility: hidden; } }
+      @media (max-width: 760px) { html.dk-opening #dk-case, html.dk-fade #dk-case { --cw: 150px; } }
+      @keyframes dk-case-out { to { visibility: hidden; } }
+      #dk-case svg { position: absolute; left: 50%; top: calc(50% - 12px); width: var(--cw); height: calc(var(--cw) * 1.2); transform: translate(-50%, -50%); fill: #120810; }
+      html.dk-handed #dk-case svg { visibility: hidden; }
+      #dk-case i { --l: 0; position: absolute; left: 50%; top: calc(50% - 12px + var(--cw) * .548 + 18px); width: calc(var(--cw) * .7); height: 1px; transform: translateX(-50%); transform-origin: 0 50%; background: rgba(244, 234, 220, .2); }
+      #dk-case i::after { content: ""; position: absolute; inset: 0; background: #e3ba6a; transform: scaleX(var(--l)); transform-origin: 0 50%; }
+      /* The name and its mark come first (Joshua, 2026-10-23), then the one-sentence headline (011 §6 #3), and beside it
+         the two short lines that used to sit at the bottom. Gold appears once, in the mark: the golden egg is your money. */
+      .brand { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--s-2) var(--s-5); align-items: start; padding: 0 0 var(--s-2); }
+      .brand h1 { font-size: var(--t-h3); line-height: 1.25; font-weight: var(--w-strong); margin: 0; max-width: 34ch; letter-spacing: -0.01em; color: var(--ink); }
+      .brand h1 b { font-weight: var(--w-strong); color: var(--teal); }
+      .lines { list-style: none; margin: 0; padding: 0 0 2px; border-left: 3px solid var(--teal); padding-left: var(--s-2); }
+      .lines .safe a { color: var(--teal); font-weight: var(--w-strong); display: inline-flex; min-height: 44px; align-items: center; }
+      .lines li { font-weight: var(--w-strong); font-size: var(--t-small); line-height: 1.4; margin: 0 0 var(--s-1); } .lines li:last-child { margin: 0; }
+      h2 { font-size: var(--t-body); font-weight: var(--w-strong); margin: 0 0 4px; }
+      h2 small { font-size: var(--t-micro); color: var(--grey); font-weight: var(--w-body); margin-left: var(--s-1); }
+      .muted { color: var(--grey); } .small { font-size: var(--t-micro); }
+      .refused { color: var(--red); } .ok { color: var(--teal); } .asked { color: var(--amber); }
+      button { font: inherit; cursor: pointer; }
+      button[disabled] { opacity: .55; cursor: default; }
+      /* An idle send button reads as idle, not broken: white on pale teal was about 2.3:1. */
+      .send[disabled] { opacity: 1; background: var(--line); color: var(--grey); }
+      .run a:not(.btn) { color: var(--teal); font-weight: var(--w-strong); }
+      .btn, .send { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--s-3); border-radius: var(--r-pill); border: 0; background: var(--teal); color: #fff; font-weight: var(--w-strong); text-decoration: none; }
+      @media (prefers-color-scheme: dark) { .btn, .send { color: #0e1015; } }
+      .linkish { background: none; border: 0; color: var(--teal); font-weight: var(--w-strong); padding: var(--s-2) 4px; margin: calc(-1 * var(--s-2)) 0; }
+      input { font: inherit; color: var(--ink); background: transparent; }
+      q { font-style: italic; color: var(--grey); } q::before { content: "“"; } q::after { content: "”"; }
+      .tag { display: inline-block; font-size: var(--t-micro); border-radius: var(--r-pill); padding: 2px var(--s-1); background: var(--paper); color: var(--grey); margin: 2px 4px 2px 0; font-style: normal; }
+      .tag.red { background: var(--red-wash); color: var(--red); font-weight: var(--w-strong); }
+      .tag.teal { background: var(--teal-wash); color: var(--teal); font-weight: var(--w-strong); }
+
+      /* the judge card */
+      .ask { background: var(--paper); border-radius: var(--r-3); padding: var(--s-3); margin-top: var(--s-2); }
+      .ask-q { display: block; font-size: var(--t-h3); font-weight: var(--w-strong); margin: 0 0 var(--s-2); letter-spacing: -0.01em; }
+      .field { display: flex; gap: var(--s-1); align-items: center; background: var(--white); border: 1px solid var(--line); border-radius: var(--r-3); padding: 6px 6px 6px var(--s-2); min-height: 60px; }
+      /* A textarea, so a long note wraps instead of hiding its end; it grows with the note where the browser can. */
+      .field .note { flex: 1; border: 0; outline: 0; font-size: var(--t-body); min-width: 0; min-height: 44px; padding: var(--s-1) 0; line-height: 1.4; resize: none; background: transparent; color: var(--ink); font: inherit; font-size: var(--t-body); field-sizing: content; }
+      .field .price { display: inline-flex; align-items: center; gap: 4px; border-radius: var(--r-pill); background: var(--paper); padding: 0 var(--s-2); min-height: 44px; font-size: var(--t-body); font-weight: var(--w-strong); white-space: nowrap; }
+      .field .price input { width: 5.6em; border: 0; outline: 0; font-weight: var(--w-strong); }
+      .field:focus-within { outline: 2px solid var(--teal); outline-offset: 1px; }
+      .chips { display: flex; gap: var(--s-1); flex-wrap: wrap; margin: var(--s-2) 0; }
+      .chip { min-height: 44px; padding: var(--s-1) var(--s-2); border-radius: var(--r-pill); background: var(--white); border: 1px solid var(--line); color: var(--grey); font-style: italic; text-align: left; }
+      .chip[aria-pressed="true"] { background: var(--ink); color: var(--white); border-color: var(--ink); }
+      .seg { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: var(--r-3); overflow: hidden; background: var(--white); }
+      .seg button { background: transparent; color: var(--ink); border: 0; text-align: left; padding: var(--s-1) var(--s-2); min-height: 52px; }
+      .seg button + button { border-left: 1px solid var(--line); }
+      .seg button[aria-pressed="true"] { background: var(--ink); color: var(--white); }
+      .seg small { display: block; font-size: var(--t-micro); opacity: .8; }
+
+      /* Ask Goose (A1): a typed box (the keyboard's own mic works in it), chips checked by code, the reader named. */
+      .askg { margin-top: var(--s-4); padding-top: var(--s-2); border-top: 1px solid var(--line); }
+      .askrow { display: flex; gap: var(--s-1); align-items: flex-end; background: var(--white); border: 1px solid var(--line); border-radius: var(--r-3); padding: 6px 6px 6px var(--s-2); margin-top: var(--s-1); }
+      .askrow:focus-within { outline: 2px solid var(--teal); outline-offset: 1px; }
+      .askrow .snap { background: transparent; color: var(--teal); box-shadow: inset 0 0 0 2px var(--teal); padding: 0 var(--s-2); white-space: nowrap; }
+      .askrow .snapin { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+      .askrow .snapin:focus-visible + .snap { outline: 3px solid var(--teal); outline-offset: 2px; }
+      .askrow .snapin:disabled + .snap { opacity: 0.5; }
+      .askrow .snap { cursor: pointer; }
+      .askrow textarea { flex: 1; min-width: 0; border: 0; outline: 0; resize: none; font: inherit; font-size: var(--t-body); line-height: 1.35; padding: var(--s-1) 0; min-height: 44px; max-height: 9.5em; field-sizing: content; background: transparent; color: inherit; }
+      .askg .mic { margin: 6px 0 0; }
+      /* Under 480 px the home's Ask box keeps the whole want on its own line, Ask and Snap it side by side below it
+         (voice visual re-score, phone 7.5: a 157 px box wrapped "buy this right now" beside two buttons). */
+      @media (max-width: 479px) {
+        .askrow.stack { flex-wrap: wrap; padding: 6px; }
+        .askrow.stack textarea { flex: 1 1 100%; padding: var(--s-1) var(--s-1) 4px; }
+        .askrow.stack .btn { flex: 1 1 0; justify-content: center; }
+      }
+      .gchips { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s-1); align-items: center; margin: var(--s-2) 0 6px; padding: 0; }
+      .gchip { display: inline-flex; align-items: center; min-height: 36px; padding: 4px var(--s-2); border-radius: var(--r-pill); background: var(--ink); color: var(--bg); font-weight: var(--w-strong); }
+      .gchips .fict { font-size: var(--t-micro); color: var(--grey); }
+      .askout p { margin: 4px 0; }
+      .askdone { margin: var(--s-2) 0 var(--s-2); font-size: var(--t-body); font-weight: var(--w-strong); line-height: 1.45; color: var(--ink); text-wrap: balance; }
+      .askdone b { font-weight: var(--w-strong); } .asknote { display: block; margin-top: 2px; font-size: var(--t-small); color: var(--grey); }
+      .askdone a { color: var(--teal); font-weight: var(--w-strong); white-space: nowrap; display: inline-block; padding: var(--s-1) 0; margin: calc(-1 * var(--s-1)) 0; }
+      .askdot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--teal); margin: 0 var(--s-1) 1px 0; animation: none; }
+      .quiet { background: var(--white); border: 1px solid var(--soft); margin-top: 6px; border-radius: var(--r-2); color: var(--ink); font: inherit; font-weight: var(--w-strong); min-height: 44px; padding: 0 var(--s-2); cursor: pointer; }
+      .quiet:hover { border-color: var(--grey); } .quiet:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+      .rcard:focus { outline: 2px solid var(--teal); outline-offset: 2px; } .rcard:focus #approve { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--teal); }
+      .saw { margin: var(--s-2) 0 4px; padding-top: var(--s-2); border-top: 1px solid var(--line); }
+      .sawrow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1); font-weight: var(--w-strong); }
+      .sawbox { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 12px; border: 1px solid var(--soft); border-radius: var(--r-2); background: var(--white); font-size: var(--t-body); }
+      .sawbox:focus-within { outline: 2px solid var(--teal); outline-offset: 1px; }
+      .sawbox input { width: 9ch; border: 0; outline: 0; font-size: var(--t-body); font-weight: var(--w-strong); padding: var(--s-1) 0; }
+      .sawbox:has(input[aria-invalid="true"]) { border-color: var(--red); } .sawbox:has(input[aria-invalid="true"]):focus-within { outline-color: var(--red); }
+      .sawbox input::placeholder { color: var(--soft); font-weight: var(--w-strong); }
+      .sawbox:has(input:placeholder-shown) > span[aria-hidden] { color: var(--soft); }
+      .walletmissed { max-width: 34rem; margin: 3rem auto; padding: 0 var(--s-2); color: var(--ink); } .walletmissed h1 { font-size: 1.5rem; margin: 0 0 .5rem; } .walletmissed a { color: var(--teal); }
+      .sawrow .muted { font-weight: var(--w-strong); }
+      .sawx[hidden] { display: inline-block; visibility: hidden; }
+      .sawx { width: 44px; height: 44px; margin-right: -12px; border: 0; border-radius: var(--r-2); background: none; color: var(--grey); font-size: var(--t-lead); line-height: 1; cursor: pointer; }
+      .sawx:hover { color: var(--ink); } .sawx:focus-visible { outline: 2px solid var(--teal); outline-offset: -4px; }
+      .sawpick { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1); margin: var(--s-1) 0 var(--s-2); }
+      .sawpick p { flex-basis: 100%; margin: 0; font-weight: var(--w-strong); color: var(--ink); }
+      .sawpick button { min-height: 44px; padding: 0 var(--s-2); border-radius: var(--r-pill); border: 2px solid var(--teal); background: var(--white); color: var(--teal); font: inherit; font-weight: var(--w-strong); }
+      /* The answer ladder (item 9): refused sellers first in their own wash, then the answer, then what it compared. */
+      .ladder { margin: var(--s-2) 0 4px; }
+      .ladans { background: var(--paper); border-left: 4px solid var(--soft); border-radius: 0 10px 10px 0; padding: var(--s-2) var(--s-2) 2px; margin: 0 0 var(--s-1); }
+      .ladder[data-layer="cheaper"] .ladans { background: var(--teal-wash); border-left-color: var(--teal); }
+      .ladder[data-layer="cheaper"] .ladline { color: var(--teal); }
+      .ladline { margin: 0; font-size: var(--t-lead); font-weight: var(--w-strong); line-height: 1.35; letter-spacing: -0.01em; color: var(--ink); text-wrap: balance; }
+      @media (min-width: 768px) { .ladline { font-size: var(--t-lead); } }
+      .ladhear { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; margin: 0; }
+      .ladder[data-layer="over-budget"] .ladans { background: color-mix(in srgb, var(--amber) 13%, transparent); border-left-color: var(--amber); }
+      .ladsim { border-left: 4px dashed var(--soft); padding: 4px var(--s-2); margin: 0 0 var(--s-1); }
+      .ladno { background: var(--red-wash); border-left: 4px solid var(--red); border-radius: 0 10px 10px 0; padding: var(--s-1) var(--s-2); margin: 0 0 var(--s-1); }
+      .ladno p { margin: 2px 0; font-size: var(--t-micro); line-height: 1.45; }
+      .ladans .ladfrom { margin: 6px 0 0; font-size: var(--t-micro); max-width: 80ch; text-wrap: pretty; }
+      /* A2: memory's chip says where it came from, with its own 44 px tap to forget it. */
+      .gchip[data-remembered] { gap: 6px; padding-right: 4px; }
+      .gchip .gfrom { font-weight: var(--w-body); opacity: .85; }
+      .gchip .gforget { font: inherit; font-size: var(--t-body); line-height: 1; min-width: 44px; min-height: 44px; margin: -4px 0; border: 0; border-radius: var(--r-pill); background: transparent; color: inherit; cursor: pointer; }
+      .gchip[data-over] { background: color-mix(in srgb, var(--amber) 16%, var(--white)); color: var(--amber); box-shadow: inset 0 0 0 1px var(--amber); }
+      details.readby summary { font-size: var(--t-small); padding: 0; } details.readby summary::before { content: "▶"; display: inline-block; width: 1.1em; font-size: 0.7em; vertical-align: 0.12em; } details.readby[open] summary::before { content: "▼"; }
+      .ask-foot { display: flex; gap: var(--s-2); align-items: flex-end; justify-content: space-between; margin-top: var(--s-2); }
+      .ask-foot p { margin: 0; font-size: var(--t-micro); color: var(--grey); max-width: 60ch; }
+      .send { flex: none; }
+      .notice { margin: var(--s-1) 0 0; font-size: var(--t-small); }
+
+      /* the two identical cards */
+      .same { text-align: center; color: var(--grey); font-size: var(--t-micro); margin: var(--s-3) 0 var(--s-2); }
+      .pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); align-items: start; }
+      .card { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-3); padding: var(--s-3); display: flex; flex-direction: column; min-height: 260px; }
+      .card.empty { border-style: dashed; justify-content: center; align-items: center; color: var(--grey); text-align: center; }
+      .card .who { font-size: var(--t-micro); color: var(--grey); margin-bottom: var(--s-1); }
+      .card .item { font-size: var(--t-body); font-weight: var(--w-strong); }
+      .card .sub { color: var(--grey); }
+      .amt { font-size: var(--t-h2); font-weight: var(--w-strong); letter-spacing: -0.02em; line-height: 1.1; margin: var(--s-2) 0 4px; display: flex; align-items: center; gap: var(--s-2); }
+      .amt.red { color: var(--red); } .amt.step { font-size: var(--t-h3); }
+      .ring { width: 28px; height: 28px; border-radius: 50%; border: 2.5px solid var(--teal); display: inline-flex; align-items: center; justify-content: center; color: var(--teal); font-size: var(--t-small); flex: none; }
+      .ring svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+      .card .state b { font-weight: var(--w-strong); }
+      .rows { margin-top: var(--s-2); border-top: 1px solid var(--line); }
+      .rows > div { display: grid; grid-template-columns: 5.5em 1fr; gap: var(--s-1); padding: 7px 0; border-bottom: 1px solid var(--line); font-size: var(--t-small); }
+      .rows > div:last-child { border-bottom: 0; }
+      .rows .k { color: var(--grey); font-size: var(--t-micro); text-transform: uppercase; letter-spacing: .05em; padding-top: 2px; }
+      .rows .full { grid-template-columns: 1fr; }
+      .reply summary { cursor: pointer; color: var(--teal); font-weight: var(--w-strong); list-style: none; min-height: 44px; display: flex; align-items: center; }
+      .reply summary::-webkit-details-marker { display: none; }
+      .reply p { font-size: var(--t-micro); color: var(--grey); margin: 4px 0 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; }
+
+      /* the run */
+      .run { margin-top: var(--s-5); border-top: 1px solid var(--line); padding-top: var(--s-3); }
+      .go { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin: var(--s-2) 0; }
+      .go .max { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); border-radius: var(--r-pill); padding: 0 var(--s-2); min-height: 48px; font-weight: var(--w-strong); }
+      .go .max input { width: 5em; border: 0; outline: 0; font-weight: var(--w-strong); }
+      .cap { margin: 4px 0 0; color: var(--grey); } .cap b { color: var(--ink); }
+      .lanes { margin-top: var(--s-3); }
+      .edge { display: grid; grid-template-columns: 190px 1fr; gap: var(--s-2); height: 22px; font-size: var(--t-micro); font-weight: var(--w-strong); }
+      .edge > span:last-child { position: relative; }
+      .edge em { position: absolute; transform: translateX(-100%); white-space: nowrap; font-style: normal; padding-right: 6px; }
+      .lane { display: grid; grid-template-columns: 190px 1fr; align-items: center; gap: var(--s-2); min-height: 60px; padding: 2px 0; }
+      .lane .name { font-size: var(--t-micro); color: var(--grey); line-height: 1.3; }
+      .lane .name b { display: block; color: var(--ink); font-weight: var(--w-strong); font-size: var(--t-small); }
+      .bar { position: relative; height: 48px; }
+      .bar .line { position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: var(--line); }
+      .bar .max { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); }
+      .bar .fill { position: absolute; left: 0; top: 50%; height: 8px; margin-top: -4px; border-radius: var(--r-pill); background: var(--teal); opacity: .9; }
+      .dot { position: absolute; top: 50%; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: var(--soft); opacity: .6; }
+      .pill { position: absolute; top: 50%; transform: translate(-50%, -50%); height: 30px; padding: 0 var(--s-1); border-radius: var(--r-pill); background: var(--white); border: 1.5px solid var(--soft); font-size: var(--t-small); font-weight: var(--w-strong); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+      .pill.r { transform: translate(-100%, -50%); } .pill.l { transform: translate(0, -50%); }
+      .pill.agent { border-color: var(--teal); color: var(--teal); }
+      .pill.deal { border-color: var(--teal); background: var(--teal-wash); color: var(--teal); }
+      .pill.over { border-color: var(--red); color: var(--red); }
+      .pill small { font-weight: var(--w-body); color: var(--grey); }
+      .legend { font-size: var(--t-micro); color: var(--grey); margin: var(--s-1) 0 0; }
+      .empty-run { border: 1px dashed var(--line); border-radius: var(--r-3); padding: var(--s-4); text-align: center; color: var(--grey); margin-top: var(--s-2); }
+      .steps { margin: var(--s-3) 0 0; padding: 0; list-style: none; }
+      .steps li { padding: var(--s-1) 0; border-top: 1px solid var(--line); font-size: var(--t-small); }
+      .steps .r { color: var(--grey); font-size: var(--t-micro); text-transform: uppercase; letter-spacing: .05em; }
+      .steps .code { margin-top: 4px; padding-left: var(--s-2); border-left: 3px solid var(--teal); }
+      .rcard { background: var(--paper); border-radius: var(--r-3); padding: var(--s-3); margin-top: var(--s-3); }
+      .rcard .amt { margin: 6px 0 2px; }
+      .more { display: none; } @media (max-width: 767px) { .more { display: inline-flex; min-height: 44px; align-items: center; } }
+      .rcard p.saved { color: var(--teal); font-weight: var(--w-strong); font-size: var(--t-body); margin: 0 0 6px; text-wrap: balance; }
+      .rcard p { margin: 4px 0; color: var(--grey); } .rcard p b { color: var(--ink); font-weight: var(--w-strong); }
+      .rcard code { font-size: var(--t-micro); background: var(--line); padding: 1px 5px; border-radius: 4px; }
+      .strip { color: var(--grey); margin: var(--s-3) 0 0; padding: var(--s-2) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); } .strip b { color: var(--ink); font-weight: var(--w-strong); }
+      /* The run's facts, one per line on a phone (a 13 px run-on block there), dot-separated on a wide screen. */
+      .strip span + span::before { content: " · "; }
+      @media (max-width: 599px) { .strip { line-height: 1.5; } .strip span { display: block; } .strip span + span::before { content: none; } }
+      /* A cart set aside: its amount struck through and muted, so it never reads as one waiting for Approve. */
+      .rcard .tag { background: var(--white); border: 1px solid var(--grey); color: var(--ink); font-size: var(--t-micro); margin-left: 2px; }
+      .rcard[data-outcome="declined"] .amt { color: var(--grey); text-decoration: line-through; text-decoration-thickness: 2px; }
+      .dial { margin: var(--s-2) 0 0; padding: var(--s-2) var(--s-2); border: 1px solid var(--line); border-radius: var(--r-3); }
+      .dial b { font-weight: var(--w-strong); }
+      details.ledger > summary { cursor: pointer; padding: var(--s-2) 0; list-style: none; min-height: 44px; } details.ledger > summary::-webkit-details-marker { display: none; }
+      details.ledger > summary b { font-weight: var(--w-strong); color: var(--teal); } details.ledger > summary b span { display: inline-block; margin: 0; color: inherit; transition: transform var(--d-1); } details.ledger[open] > summary b span { transform: rotate(90deg); } details.ledger > summary span { color: var(--grey); margin-left: var(--s-1); }
+      .ltable { width: 100%; border-collapse: collapse; font-size: var(--t-small); }
+      .ltable td { padding: var(--s-1) var(--s-1) var(--s-1) 0; border-top: 1px solid var(--line); vertical-align: top; }
+      .ltable td.seq { color: var(--soft); width: 2.5em; } .ltable td.who { color: var(--grey); width: 9em; } .ltable td.amt { text-align: right; width: 6em; padding-right: var(--s-2); white-space: nowrap; font-weight: var(--w-strong); font-size: var(--t-small); letter-spacing: 0; margin: 0; display: table-cell; }
+      .ltable tr.refused td.why { color: var(--red); }
+      /* The judge cards' verdict, and the guard-off card's "made earlier" line, which sits above its big number. */
+      .verdict { font-size: var(--t-lead); font-weight: var(--w-strong); color: var(--teal); margin: var(--s-2) 0 0; letter-spacing: -0.01em; }
+      .earlier { margin: var(--s-2) 0 0; font-size: var(--t-micro); color: var(--grey); } .earlier .tag { margin: 0 6px 0 0; }
+      details.how summary { cursor: pointer; color: var(--teal); font-weight: var(--w-strong); padding: var(--s-1) 0; min-height: 44px; list-style: none; } details.how summary::-webkit-details-marker { display: none; }
+      .flagline { margin: var(--s-1) 0 0; font-size: var(--t-small); color: var(--red); font-weight: var(--w-strong); }
+      .holdline { margin: var(--s-1) 0 0; font-size: var(--t-small); color: var(--amber); }
+      .pill.flag { border-color: var(--red); color: var(--red); background: var(--red-wash); } .pill.flag small { color: var(--red); font-weight: var(--w-strong); }
+      /* The live counter under the judge box (video-first addition b): the server's count, never typed. */
+      .tally { margin: var(--s-2) 0 0; font-size: var(--t-small); color: var(--grey); } .tally b { font-weight: var(--w-strong); color: var(--ink); } .tally b.ok { color: var(--teal); } .tally b.refused { color: var(--red); }
+
+      @media (max-width: 767px) {
+        .brand { grid-template-columns: 1fr; padding: 0 0 var(--s-2); gap: var(--s-1); }
+        .brand h1 { font-size: var(--t-lead); } .lines li { font-size: var(--t-small); margin-bottom: 4px; }
+        .chips { gap: 6px; margin: var(--s-2) 0; } .chip { flex: 1 1 auto; padding: 6px 7px; font-size: var(--t-micro); text-align: center; white-space: nowrap; }
+        .seg button { min-height: 44px; padding: var(--s-1) 12px; }
+        .pill.flag small { display: inline; }
+        .ask { padding: var(--s-3) var(--s-2); } .ask-q { font-size: var(--t-lead); }
+        .field { padding: 6px 6px 6px var(--s-2); } .field .price { padding: 0 var(--s-1); } .field .price input { width: 6.2ch; padding: 0; font-variant-numeric: tabular-nums; }
+        /* The practice line already says sandbox; the stakes keep their first line beside the headline. */
+        .lines li + li:not(.safe) { display: none; }
+        .seg button { text-align: center; }
+        .ask-foot { flex-direction: column; align-items: stretch; } .send { width: 100%; }
+        /* Phone (Joshua, 2026-10-23: ~7 screens and a lot of small grey text): each card full width, guard on first,
+           read top to bottom; details stay one tap away; repeated or secondary lines go. */
+        .pair { grid-template-columns: 1fr; gap: var(--s-2); margin-top: var(--s-3); } .card { min-height: 0; padding: var(--s-2); } .card.empty { min-height: 96px; }
+        .amt { font-size: var(--t-h2); } .amt.step { font-size: var(--t-h3); }
+        /* W65: the toggle's own lines (what each mode costs and reads) and "what the agent may spend" stay: without them
+           the toggle and the locked max lose their meaning at 390 px. */
+        .pair .muted.small, .earlier .t, .earlier .what, .same, .ask-foot p, .legend, .fp, .btn .long { display: none; }
+        .pair .verdict { font-size: var(--t-lead); margin-top: 6px; } .pair .state { font-size: var(--t-small); }
+        .steps.short li.plain { display: none; }
+        .pair .rows > div { grid-template-columns: 1fr; gap: 2px; } .rows span { overflow-wrap: anywhere; }
+        .edge { grid-template-columns: 1fr; } .edge > span:first-child { display: none; }
+        .lane { grid-template-columns: 1fr; gap: 0; padding: 6px 0; } .lane .name b { display: inline; margin-right: 6px; }
+        /* An ask over your max hangs from the limit line into the space past it, so it never covers the line, and
+           "past the line" says over without relying on red. */
+        .pill small { display: none; } .pill.over { left: var(--edge) !important; transform: translate(4px, -50%); }
+        .rcard .btn + .small { display: block; margin-top: 6px; }
+        /* The practice line already says simulated, and the agent's lane names the buyer. */
+        .run .intro, .run h2 small .by { display: none; }
+        /* Said once on a phone: the limit, by the chart's line. ("made earlier" stays: on a fresh page it's the only
+           line saying the $500 order isn't live.) An earlier ask past the line sits under the pill that hangs there, so
+           it goes too. */
+        .run .cap, .dot.past { display: none; } .run { margin-top: var(--s-4); padding-top: var(--s-2); }
+        .ltable td.who { width: 6em; }
+      }
+      /* Under 600 px the ledger is a stack of cards: number, who and price on one line, the words below at full width. */
+      @media (max-width: 599px) {
+        .ltable, .ltable tbody { display: block; }
+        .ltable tr { display: grid; grid-template-columns: auto 1fr auto; gap: 2px var(--s-1); padding: var(--s-1) 0; border-top: 1px solid var(--line); }
+        .ltable td { border: 0; padding: 0; width: auto !important; }
+        .ltable td.amt { padding-right: 0; }
+        .ltable td.why { grid-column: 1 / -1; }
+      }
+      /* Motion (011 §5): each one answers a row that just arrived, nothing on its own clock. main.tsx adds .motion after
+         load and never under reduced motion, so the first paint and reduced-motion visitors get the end state at once. */
+      .motion .pill { transition: left var(--d-2) var(--ease), transform var(--d-2) var(--ease), opacity var(--d-2) var(--ease), color var(--d-2) var(--ease), border-color var(--d-2) var(--ease), background-color var(--d-2) var(--ease); }
+      .motion .fill { transition: width var(--d-2) var(--ease); }
+      /* The Watcher's sentence follows its red pill (cause, then explanation); the old-round dot is there at once, so
+         a moving pill reads as a move; code's counter washes teal as it lands, the haggle's key moment. */
+      .motion .flagline { transition: opacity var(--d-2) var(--ease) var(--d-1); }
+      .motion .steps .code { transition: background-color var(--d-3) var(--ease); }
+      @starting-style { .motion .fill { width: 0; } .motion .pill, .motion .flagline { opacity: 0; } .motion .steps .code { background-color: var(--teal-wash); } }
+      .motion .ring svg.draw path { stroke-dasharray: 1; animation: draw var(--d-2) var(--ease) both; }
+      .motion [data-card="guard-off"][data-state="landed"] { animation: land var(--d-2) var(--ease) both; }
+      @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+      @keyframes land { from { opacity: 0; transform: translateY(12px); } }
+    </style>
+  </head>
+  <body>
+    <!-- B-11 (brand.md §10.1): the vector egg every lockup's o uses (web/src/brand/egg.ts EGG_SYMBOL) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><radialGradient id="ggG" cx="38%" cy="30%" r="78%"><stop offset="0" stop-color="#fff3c4"/><stop offset=".34" stop-color="#f0cb62"/><stop offset=".74" stop-color="#b98a1c"/><stop offset="1" stop-color="#6e4f06"/></radialGradient><symbol id="ggEgg" viewBox="4.4 2.2 15.2 18.8"><path d="M12 2.2c-4.2 0-7.6 6.3-7.6 11.2a7.6 7.6 0 0 0 15.2 0C19.6 8.5 16.2 2.2 12 2.2Z" fill="url(#ggG)"/></symbol></defs></svg>
+    <script>(function(){var q=new URLSearchParams(location.search),d=q.get("desk"),h=$h,P=$P,R=$R;if(location.pathname==="/"&&!q.has("wallet")&&q.get("market")!=="1"&&(d!==null&&P.indexOf(d)<0||d===null&&q.get("studio")==="force")){q.set("desk",d===null?"studio":"1");history.replaceState(history.state,"","?"+q+location.hash);d=q.get("desk")}if(q.get("market")==="1"||!(P.indexOf(d)>=0||(location.pathname==="/"&&!R.some(function(k){return q.has(k)}))))return;document.body.classList.add("desk-on");if(d==="ledger"||d==="studio"||d==="proof"||d==="haggle"||d==="how")return;h.classList.add("dk-velvet");if(d&&d!=="1")return;var s;try{s=sessionStorage.getItem("gg-opened")}catch(e){s="1"}if(!s&&!q.has("run")&&!location.hash&&!matchMedia("(prefers-reduced-motion: reduce)").matches){h.classList.add("dk-opening");setTimeout(function(){h.classList.remove("dk-opening")},6000)}})()</script>
+    <div id="dk-case" aria-hidden="true"><svg viewBox="0 0 600 720"><path d="M300.5 61L311 61L347 71L365 81L380 91L392 101L402 111L411 121L420 131L428 141L435 151L442 161L448 171L454 181L460 191L465 201L470 211L475 221L480 231L484 241L488 251L492 261L495 271L498 281L502 291L504 301L507 311L510 321L512 331L514 341L516 351L517 361L519 371L520 381L521 391L522 401L522 411L522 421L522 431L522 441L522 451L521 461L520 471L518 481L517 491L515 501L512 511L510 521L507 531L503 541L499 551L495 561L490 571L484 581L478 591L471 601L463 611L455 621L445 631L434 641L421 651L405 661L386 671L359 681L314 689L299.5 690L285 689L241 681L214 671L195 661L179 651L166 641L155 631L145 621L137 611L129 601L122 591L116 581L110 571L105 561L101 551L97 541L94 531L90 521L88 511L85 501L83 491L82 481L80 471L79 461L78 451L78 441L78 431L78 421L78 411L78 401L79 391L80 381L81 371L83 361L84 351L86 341L88 331L90 321L93 311L95 301L98 291L101 281L105 271L108 261L112 251L116 241L120 231L125 221L130 211L135 201L140 191L146 181L152 171L158 161L165 151L172 141L180 131L189 121L198 111L209 101L221 91L235 81L253 71L290 61Z"/></svg><i></i></div>
+    <div class="page">
+      <!-- The one nav every page wears (S1, Joshua Fri 3:40 PM; web/src/nav): the classic page's and the market's, before
+           any script. Its styles load with the first screen's own (main.tsx); the menu button becomes the real one there. -->
+      <header class="gn dk-nav">
+        <a class="gn-skip" href="#main">Skip to content</a><!-- W6: the first Tab stop (src/skip.ts) -->
+        <div class="dk-nav-in">
+          <a class="gg gg-bar" href="%BASE_URL%?desk=1" aria-label="Gilded Goose">Gilded<span class="sp"> </span>G<span class="o"><span class="oc">o</span><svg aria-hidden="true"><use href="#ggEgg"/></svg></span>ose</a>
+          <span class="dk-practice-ph">Practice only</span>
+          <div class="dk-grow"></div>
+          <span class="gn-slot" data-gn-menu><button type="button" class="gm-btn dk-menu" aria-haspopup="dialog" aria-expanded="false"><span class="gm-w">Everything Goose does <svg viewBox="0 0 12 8" aria-hidden="true"><path d="m1 1.5 5 5 5-5" /></svg></span><span class="gm-ph">Menu</span></button></span>
+          <div class="dk-layer" role="group" aria-label="View"><a href="%BASE_URL%?desk=1">Shopper</a><a href="%BASE_URL%?desk=ledger">Behind the scenes</a></div>
+          <a class="dk-judge" href="%BASE_URL%?desk=tour"><span>Judge<span class="dk-jl">? Start here</span></span><span class="dk-jt"> tour</span> <span class="dk-arr" aria-hidden="true">›</span></a>
+        </div>
+      </header>
+      <!-- A phone's bottom rail (S1b; nav/SiteNav.tsx's ViewRail, the same markup): the views, under a one-row bar. -->
+      <section class="brand" aria-labelledby="brand-h">
+        <h1 id="brand-h">Try to trick Goose.</h1>
+        <ul class="lines">
+          <li>You’re the seller. The AI can’t reach the limit.</li>
+          <li class="safe"><a href="safe.html">See how it keeps you safe ›</a></li>
+        </ul>
+      </section>
+      <!-- W4 (Round 2's judges): the bench's heading exists only where the bench is the page. On the Desk's routes (the
+           first <body> script's desk-on) and the wallet's first paint (data-first, web/prerender.ts) it is removed before
+           it paints, so those pages' one h1 is their own; main.tsx removes it for the market and a wallet without one. -->
+      <script>if(document.body.classList.contains("desk-on")||$h.hasAttribute("data-first")||$h.hasAttribute("data-first-route"))document.querySelector(".page > .brand").remove()</script>
+      <div id="root"></div>
+      <!-- Landmarks (Round 1's a11y review): the practice line is the page's footer; each view in #root is its own <main>. -->
+      <footer class="gn-footer"><p class="gn-foot" id="gn-foot">Fictional sellers. <span id="rail">PayPal sandbox</span>. Practice only: no real money.</p></footer>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

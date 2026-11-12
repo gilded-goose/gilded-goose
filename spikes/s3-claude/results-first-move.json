@@ -1,0 +1,142 @@
+{
+  "at": "2026-10-23T15:29:59.459Z",
+  "pairs": 10,
+  "summary": {
+    "r1First": 1348,
+    "r2Second": 1143,
+    "r2First": 1235,
+    "r1Second": 1368
+  },
+  "out": [
+    {
+      "order": "1 then 2",
+      "round1": {
+        "ms": 1335,
+        "type": "counter",
+        "whyChars": 93
+      },
+      "round2": {
+        "ms": 1134,
+        "type": "accept",
+        "whyChars": 117
+      }
+    },
+    {
+      "order": "2 then 1",
+      "round1": {
+        "ms": 1312,
+        "type": "counter",
+        "whyChars": 94
+      },
+      "round2": {
+        "ms": 1233,
+        "type": "accept",
+        "whyChars": 118
+      }
+    },
+    {
+      "order": "1 then 2",
+      "round1": {
+        "ms": 1448,
+        "type": "counter",
+        "whyChars": 109
+      },
+      "round2": {
+        "ms": 1179,
+        "type": "accept",
+        "whyChars": 122
+      }
+    },
+    {
+      "order": "2 then 1",
+      "round1": {
+        "ms": 1428,
+        "type": "counter",
+        "whyChars": 105
+      },
+      "round2": {
+        "ms": 1270,
+        "type": "accept",
+        "whyChars": 136
+      }
+    },
+    {
+      "order": "1 then 2",
+      "round1": {
+        "ms": 1386,
+        "type": "counter",
+        "whyChars": 114
+      },
+      "round2": {
+        "ms": 1055,
+        "type": "accept",
+        "whyChars": 107
+      }
+    },
+    {
+      "order": "2 then 1",
+      "round1": {
+        "ms": 1314,
+        "type": "counter",
+        "whyChars": 93
+      },
+      "round2": {
+        "ms": 1275,
+        "type": "accept",
+        "whyChars": 116
+      }
+    },
+    {
+      "order": "1 then 2",
+      "round1": {
+        "ms": 1188,
+        "type": "counter",
+        "whyChars": 93
+      },
+      "round2": {
+        "ms": 1174,
+        "type": "counter",
+        "whyChars": 95
+      }
+    },
+    {
+      "order": "2 then 1",
+      "round1": {
+        "ms": 1322,
+        "type": "counter",
+        "whyChars": 100
+      },
+      "round2": {
+        "ms": 1135,
+        "type": "accept",
+        "whyChars": 108
+      }
+    },
+    {
+      "order": "1 then 2",
+      "round1": {
+        "ms": 1382,
+        "type": "counter",
+        "whyChars": 93
+      },
+      "round2": {
+        "ms": 1174,
+        "type": "accept",
+        "whyChars": 115
+      }
+    },
+    {
+      "order": "2 then 1",
+      "round1": {
+        "ms": 1465,
+        "type": "counter",
+        "whyChars": 96
+      },
+      "round2": {
+        "ms": 1261,
+        "type": "accept",
+        "whyChars": 100
+      }
+    }
+  ]
+}

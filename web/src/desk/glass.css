@@ -1,0 +1,28 @@
+/* Glass on the Desk (Joshua, Fri Oct 30, item 4; S1). B's glass tokens only (tokens.css): the velvet at 55%, blurred,
+   a lit top edge, a faint hairline, a soft deep shadow; where backdrop-filter isn't supported or the device asks for
+   reduced transparency, the tokens turn it into the solid velvet sheet. Its own chunk, fetched once the Desk is an app
+   or the page scrolls, so the landing's first screen loads nothing new.
+
+   Never more than three glass surfaces on screen: the nav once scrolled, and in the app either the understood card or
+   the steps panel (the sellers) with the deal card (those two views never show together). The app's Ask box drops its
+   blur, and while the menu (its own glass) is open the nav goes back to solid. No light is painted on the page itself
+   (Joshua, Fri 3:15 PM: a lit spot that isn't the egg reads as a glow orb): the app's glass sits on the plain velvet. */
+
+/* 1. The nav, once the page scrolls under it: web/src/nav/nav.css (.gn[data-scrolled]), on every page with SiteNav. */
+
+/* Not glass: the app's Ask box keeps its velvet fill, so the count stays at three. */
+.dk[data-app] .dk-ask { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* 2. The understood card. */
+.dk[data-app] .dk-ut, .dk[data-app] .dk-s-ut > .dk-ut { background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-line); box-shadow: var(--glass-edge), var(--glass-shadow); }
+
+/* 3. The steps panel: the sellers Goose read, in order. */
+.dk[data-app] .dk-live-grid > .dk-feed { background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border-color: var(--glass-line); box-shadow: var(--glass-edge); }
+
+/* 4. The deal card: glass, and still the one gold-edged object (its bottom edge is the gold line). While Goose reads,
+   it's the deal on its own; once the run is done it's one card with the skip at its top (`.dk-one`), and that whole
+   card is the one glass surface: its two parts go clear inside it, so no glass sits on glass. */
+.dk[data-app] .dk-live-grid .dk-right:not(.dk-one) .dk-deal2.dk-mat,
+.dk[data-app] .dk-live-grid .dk-right.dk-one { background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-line); border-bottom: 2px solid var(--gold-line); border-radius: 14px; box-shadow: var(--glass-edge), var(--glass-shadow); }
+.dk[data-app] .dk-live-grid .dk-right.dk-one .dk-protect,
+.dk[data-app] .dk-live-grid .dk-right.dk-one .dk-deal2.dk-mat { background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }

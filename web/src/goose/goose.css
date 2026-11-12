@@ -1,0 +1,296 @@
+/* The page around the board: a quiet concourse. Type and hairlines carry the chrome; the board is the one rich thing,
+   the egg its one gold light. Values come from tokens.css. */
+html, body { margin: 0; background: var(--gg-stone, #eceef1); }
+.gg {
+  min-height: 100dvh; display: grid; grid-template-rows: auto 1fr auto;
+  background: var(--gg-stone); color: var(--gg-ink);
+  font: 400 var(--gg-t-m) / 1.55 var(--gg-sans);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+.gg *, .gg *::before, .gg *::after { box-sizing: border-box; }
+.gg :where(h1, h2, p, ul, ol, dl, dd, blockquote) { margin: 0; }
+.gg :where(ul, ol) { padding: 0; list-style: none; }
+:where(.gg) button { font: inherit; color: inherit; }
+.gg :focus-visible { outline: 2px solid var(--gg-ink); outline-offset: 3px; border-radius: 4px; }
+.gg-icon { flex: none; }
+.gg-num { font-variant-numeric: tabular-nums; }
+.gg-log p, .gg-found p, .gg-jam p, .gg-sheet p, .gg-sheet li, .gg-receipt-copy p, .gg-brief-limit { text-wrap: pretty; }
+.gg-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.gg-skip { position: absolute; left: var(--gg-gutter); top: -48px; z-index: 50; padding: 8px 12px; background: var(--gg-ink); color: var(--gg-paper); border-radius: var(--gg-r-control); }
+.gg-skip:focus { top: 12px; }
+
+/* Bar: the name and how payments run. */
+.gg-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--gg-4); padding: var(--gg-4) var(--gg-gutter); }
+.gg-mark {
+  display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; border: 0; background: none; cursor: pointer; white-space: nowrap;
+  font: 600 1.0625rem / 1 var(--gg-display); letter-spacing: -0.01em;
+  transition: transform var(--gg-press) var(--gg-out);
+}
+.gg-mark:active { transform: scale(0.97); }
+.gg-mark-egg { width: 13px; height: 17px; border-radius: 50% 50% 50% 50% / 60% 60% 42% 42%; background: var(--gg-gold); box-shadow: inset -2px -3px 0 oklch(0.7 0.13 75 / 0.6); }
+.gg-mode { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; color: var(--gg-ink-2); font: 500 var(--gg-t-xs) / 1 var(--gg-mono); letter-spacing: 0.01em; }
+.gg-mode span { width: 7px; height: 7px; border-radius: 50%; background: var(--gg-ink-3); }
+.gg-mode[data-mode="sandbox"] span { background: var(--gg-ok); }
+.gg-mode[data-mode="away"] span { background: var(--gg-red); }
+.gg-mode[data-mode="checking"] span { background: var(--gg-ink-3); }
+
+.gg-main { padding: 0 var(--gg-gutter); min-width: 0; }
+.gg-foot { display: flex; flex-wrap: wrap; gap: 4px 24px; justify-content: space-between; padding: var(--gg-6) var(--gg-gutter) var(--gg-5); color: var(--gg-ink-3); font-size: var(--gg-t-xs); }
+
+/* Buttons. One gold button per screen at most: the one that moves toward paying. */
+.gg-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px;
+  border: 0; border-radius: var(--gg-r-control); cursor: pointer; white-space: nowrap;
+  font: 560 var(--gg-t-s) / 1 var(--gg-sans);
+  transition: transform var(--gg-press) var(--gg-out), background-color var(--gg-ui) ease, opacity var(--gg-ui) ease;
+}
+.gg-btn:active:not(:disabled) { transform: scale(0.97); }
+.gg-btn:disabled { opacity: 0.5; cursor: default; }
+.gg-btn-ink { background: var(--gg-ink); color: var(--gg-paper); }
+.gg-btn-gold { background: var(--gg-gold); color: var(--gg-ink); }
+.gg-btn-line { background: transparent; color: var(--gg-ink); box-shadow: inset 0 0 0 1px var(--gg-hair-2); }
+.gg-btn-stop { min-height: 44px; padding: 0 14px; background: var(--gg-paper); color: var(--gg-ink); box-shadow: inset 0 0 0 1px var(--gg-hair-2); }
+.gg-link {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 2px; border: 0; background: none; cursor: pointer;
+  color: var(--gg-ink-2); font-size: var(--gg-t-s); text-decoration: underline; text-decoration-color: var(--gg-hair-2); text-underline-offset: 4px;
+  transition: color var(--gg-ui) ease, text-decoration-color var(--gg-ui) ease;
+}
+.gg-link:disabled { opacity: 0.5; cursor: default; }
+
+.gg-status { color: var(--gg-ink-2); font-size: var(--gg-t-s); }
+.gg-status-away { margin-top: var(--gg-4); color: var(--gg-red-text); }
+.gg-fail { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin-top: var(--gg-4); color: var(--gg-red-text); font-size: var(--gg-t-s); }
+.gg-run-fail { max-width: 1440px; margin: 0 auto; }
+
+/* ── Hero: the ask on the left, the board on the wall to the right. ── */
+.gg-hero {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: var(--gg-7) clamp(32px, 5vw, 80px);
+  max-width: 1440px; margin: 0 auto; min-height: calc(100dvh - 160px); padding: var(--gg-6) 0 var(--gg-7);
+}
+.gg-hero-copy { display: grid; gap: var(--gg-5); align-content: center; }
+.gg-hero h1 {
+  font: 600 var(--gg-t-hero) / 0.98 var(--gg-display); letter-spacing: -0.035em; text-wrap: balance; max-width: 11ch;
+}
+.gg-lede { max-width: 40ch; color: var(--gg-ink-2); font-size: var(--gg-t-l); line-height: 1.45; text-wrap: pretty; }
+.gg-hero-board { min-width: 0; }
+
+/* The ask. */
+.gg-ask { display: grid; gap: var(--gg-5); margin-top: var(--gg-2); }
+.gg-ask-form { display: grid; gap: var(--gg-2); }
+.gg-ask-label { font-weight: 560; font-size: var(--gg-t-s); }
+.gg-ask-field {
+  display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: calc(var(--gg-r-control) + 6px);
+  background: var(--gg-paper); box-shadow: inset 0 0 0 1px var(--gg-hair-2), var(--gg-shadow-float);
+  transition: box-shadow var(--gg-ui) ease;
+}
+.gg-ask-field:focus-within { box-shadow: inset 0 0 0 1.5px var(--gg-ink), var(--gg-shadow-float); }
+.gg-ask-form[data-hearing] .gg-ask-field { box-shadow: inset 0 0 0 1.5px var(--gg-gold-text), var(--gg-shadow-float); }
+.gg-ask-field input {
+  flex: 1; min-width: 0; height: 48px; padding: 0 10px; border: 0; background: none; outline: none;
+  font: 400 var(--gg-t-m) / 1 var(--gg-sans); color: var(--gg-ink);
+}
+.gg-ask-field input::placeholder { color: var(--gg-ink-3); }
+.gg-ask-field input:focus-visible { outline: none; }
+.gg-ask-field .gg-tool:focus-visible { outline-offset: 1px; }
+.gg-tool {
+  display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 0; border-radius: var(--gg-r-control);
+  background: none; color: var(--gg-ink-2); cursor: pointer; transition: background-color var(--gg-ui) ease, color var(--gg-ui) ease, transform var(--gg-press) var(--gg-out);
+  touch-action: manipulation; -webkit-user-select: none; user-select: none;
+}
+.gg-tool:active:not(:disabled) { transform: scale(0.96); }
+.gg-tool[aria-pressed="true"], .gg-ask-form[data-hearing] .gg-tool:first-of-type { background: var(--gg-gold-tint); color: var(--gg-ink); }
+.gg-tool:disabled { opacity: 0.45; cursor: default; }
+.gg-ask-help { min-height: 1.5em; color: var(--gg-ink-3); font-size: var(--gg-t-xs); }
+.gg-ask-help[data-error] { color: var(--gg-red-text); font-size: var(--gg-t-s); }
+.gg-ask-form[data-error] .gg-ask-field:not(:focus-within) { box-shadow: inset 0 0 0 1.5px var(--gg-red-text), var(--gg-shadow-float); }
+
+.gg-tries { display: grid; gap: var(--gg-2); }
+.gg-tries-k { color: var(--gg-ink-3); font-size: var(--gg-t-xs); }
+.gg-tries ul { border-top: 1px solid var(--gg-hair); }
+.gg-tries li { border-bottom: 1px solid var(--gg-hair); }
+.gg-tries button {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 2px 16px; width: 100%;
+  min-height: 52px; padding: 12px 4px; border: 0; background: none; cursor: pointer; text-align: left;
+  transition: background-color var(--gg-ui) ease;
+}
+.gg-tries button:disabled { opacity: 0.5; cursor: default; }
+.gg-try-words { grid-column: 1; font: 500 var(--gg-t-s) / 1.35 var(--gg-sans); }
+.gg-try-shows { grid-column: 1; color: var(--gg-ink-3); font-size: var(--gg-t-xs); }
+.gg-tries .gg-icon { grid-column: 2; grid-row: 1 / span 2; color: var(--gg-ink-3); transition: transform var(--gg-ui) var(--gg-out); }
+
+/* ── The panel: board on the wall, egg on its top edge. ── */
+/* The 3D egg draws centred on its box and ~9px past each edge, so the box ends just above the rim. */
+.gg-panel { position: relative; display: grid; gap: var(--gg-3); padding-top: 72px; }
+/* The egg sits on the board's top edge, its foot just over the housing's rim. */
+.gg-perch { position: absolute; top: -6px; right: clamp(20px, 7%, 48px); z-index: var(--gg-z-egg); width: 60px; height: 76px; pointer-events: none; }
+.gg-panel .gg-board { box-shadow: inset 0 0 0 1px oklch(1 0 0 / 0.04), 0 2px 4px oklch(0.2 0.012 260 / 0.1), 0 28px 56px -28px oklch(0.2 0.012 260 / 0.45); }
+.gg-panel-cap { color: var(--gg-ink-3); font-size: var(--gg-t-xs); }
+
+/* The egg: a still CSS egg until the WebGL one is live. */
+.gg-egg { position: relative; width: 100%; height: 100%; }
+.gg-egg-css {
+  position: absolute; inset: 6% 14% 10%; border-radius: 50% 50% 50% 50% / 60% 60% 42% 42%;
+  background: var(--gg-gold); box-shadow: inset -6px -9px 0 oklch(0.68 0.13 72 / 0.55), inset 5px 6px 0 oklch(0.95 0.08 90 / 0.5);
+  transition: opacity 300ms ease;
+}
+.gg-egg-gl { position: absolute; inset: -30% -40%; width: 180%; height: 160%; opacity: 0; transition: opacity 400ms ease; }
+.gg-egg-gl[data-live] { opacity: 1; }
+.gg-egg-gl[data-live] ~ .gg-egg-shadow { opacity: 0.5; }
+.gg-egg:has(.gg-egg-gl[data-live]) .gg-egg-css { opacity: 0; }
+.gg-egg-shadow { position: absolute; left: 22%; right: 22%; bottom: 4%; height: 6px; border-radius: 50%; background: oklch(0.1 0 0 / 0.5); filter: blur(3px); opacity: 0.4; }
+.gg-egg[data-mood="guarding"] .gg-egg-css { box-shadow: inset -6px -9px 0 oklch(0.6 0.15 40 / 0.6), inset 5px 6px 0 oklch(0.95 0.08 90 / 0.5); }
+
+/* Notes that sit under the board. */
+.gg-jam, .gg-found {
+  display: grid; gap: var(--gg-2); padding: var(--gg-4) var(--gg-5); border-radius: 12px;
+  background: var(--gg-paper); box-shadow: inset 0 0 0 1px var(--gg-hair), var(--gg-shadow-float);
+  animation: gg-rise 320ms var(--gg-out) both;
+}
+.gg-jam { box-shadow: inset 0 0 0 1px oklch(0.69 0.19 32 / 0.4), var(--gg-shadow-float); }
+.gg-jam-k { color: var(--gg-red-text); font-size: var(--gg-t-xs); font-weight: 560; }
+.gg-jam q { font: 500 var(--gg-t-s) / 1.45 var(--gg-mono); quotes: "“" "”"; }
+.gg-found { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--gg-4); }
+.gg-found p { font-size: var(--gg-t-m); }
+.gg-found[data-empty] { grid-template-columns: 1fr; }
+@keyframes gg-rise { from { opacity: 0; transform: translateY(8px); } }
+
+/* ── A run: board left, rail right. ── */
+.gg-run {
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(320px, 4fr); align-items: start; gap: var(--gg-7) clamp(32px, 4vw, 64px);
+  max-width: 1440px; margin: 0 auto; padding: var(--gg-5) 0 var(--gg-7);
+}
+.gg-run-board { position: sticky; top: var(--gg-4); min-width: 0; }
+.gg-rail { display: grid; gap: var(--gg-6); min-width: 0; padding-top: 72px; }
+.gg-brief { display: grid; gap: var(--gg-3); }
+.gg-brief-k { color: var(--gg-ink-3); font-size: var(--gg-t-xs); }
+.gg-brief-h { font: 600 var(--gg-t-2xl) / 1.02 var(--gg-display); letter-spacing: -0.03em; text-wrap: balance; overflow-wrap: anywhere; }
+.gg-brief-h[data-long] { font-size: var(--gg-t-xl); line-height: 1.1; letter-spacing: -0.02em; }
+.gg-brief-limit { color: var(--gg-ink-2); }
+.gg-brief-limit b { color: var(--gg-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.gg-brief-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gg-3) var(--gg-5); margin-top: var(--gg-2); }
+
+.gg-limit { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gg-2) var(--gg-3); margin-top: var(--gg-1); padding: var(--gg-3) 0; border-block: 1px solid var(--gg-hair); }
+.gg-limit > span:first-child { margin-right: auto; font-size: var(--gg-t-s); font-weight: 560; }
+.gg-limit output { min-width: 4.5ch; text-align: center; font: 600 var(--gg-t-l) / 1 var(--gg-mono); font-variant-numeric: tabular-nums; }
+.gg-step {
+  display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: var(--gg-r-control); cursor: pointer;
+  background: var(--gg-paper); color: var(--gg-ink); box-shadow: inset 0 0 0 1px var(--gg-hair-2);
+  transition: transform var(--gg-press) var(--gg-out), opacity var(--gg-ui) ease;
+}
+.gg-step:active:not(:disabled) { transform: scale(0.96); }
+.gg-step:disabled { opacity: 0.35; cursor: default; }
+.gg-limit-note { flex-basis: 100%; text-align: right; color: var(--gg-ink-3); font-size: var(--gg-t-xs); }
+
+.gg-week { display: grid; gap: var(--gg-4); }
+.gg-week-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gg-2) var(--gg-5); }
+
+.gg-log { display: grid; border-top: 1px solid var(--gg-hair); }
+.gg-log li { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: var(--gg-3); padding: var(--gg-3) 0; border-bottom: 1px solid var(--gg-hair); animation: gg-rise 280ms var(--gg-out) both; font-size: var(--gg-t-s); }
+.gg-log li > div { display: grid; gap: var(--gg-2); }
+.gg-log-day { color: var(--gg-ink-3); font: 500 var(--gg-t-xs) / 1.9 var(--gg-mono); }
+.gg-log b { font-weight: 600; }
+.gg-log li[data-kind="under"] { margin-top: -1px; padding-inline: var(--gg-3); border-radius: var(--gg-r-control); border-bottom-color: transparent; background: var(--gg-gold-tint); }
+.gg-log[data-flat] li { grid-template-columns: minmax(0, 1fr); }
+.gg-refused { color: var(--gg-red-text); font-weight: 600; }
+.gg-quote summary { width: fit-content; min-height: 32px; display: flex; align-items: center; color: var(--gg-ink-2); font-size: var(--gg-t-xs); cursor: pointer; text-decoration: underline; text-decoration-color: var(--gg-hair-2); text-underline-offset: 4px; }
+.gg-quote p { margin-top: var(--gg-1); padding: var(--gg-2) var(--gg-3); border-radius: var(--gg-r-control); background: var(--gg-stone-2); font: 400 var(--gg-t-xs) / 1.55 var(--gg-mono); color: var(--gg-ink-2); overflow-wrap: anywhere; }
+
+/* ── Approve sheet. ── */
+.gg-layer { position: fixed; inset: 0; z-index: var(--gg-z-sheet); display: grid; place-items: center; padding: var(--gg-4); }
+.gg-scrim { position: absolute; inset: 0; background: oklch(0.2 0.012 260 / 0.42); animation: gg-fade 200ms ease both; }
+.gg-sheet {
+  position: relative; display: grid; gap: var(--gg-5); width: min(100%, 460px); max-height: calc(100dvh - 32px); overflow: auto;
+  padding: var(--gg-6); border-radius: var(--gg-r-sheet); background: var(--gg-paper); box-shadow: var(--gg-shadow-sheet);
+  animation: gg-sheet-in 280ms var(--gg-drawer) both;
+}
+@keyframes gg-fade { from { opacity: 0; } }
+@keyframes gg-sheet-in { from { opacity: 0; transform: translateY(16px) scale(0.98); } }
+.gg-sheet-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--gg-2) var(--gg-4); }
+.gg-sheet-k { grid-column: 1; color: var(--gg-ink-3); font-size: var(--gg-t-xs); }
+.gg-sheet-head h2 { grid-column: 1; font: 600 var(--gg-t-xl) / 1.1 var(--gg-display); letter-spacing: -0.02em; }
+.gg-x { grid-column: 2; grid-row: 1 / span 2; align-self: start; display: grid; place-items: center; width: 44px; height: 44px; margin: -10px -10px 0 0; border: 0; border-radius: var(--gg-r-control); background: none; cursor: pointer; color: var(--gg-ink-2); }
+.gg-bill { display: grid; border-top: 1px solid var(--gg-hair); }
+.gg-bill > div { display: flex; justify-content: space-between; gap: var(--gg-4); padding: var(--gg-3) 0; border-bottom: 1px solid var(--gg-hair); }
+.gg-bill dt { color: var(--gg-ink-2); }
+.gg-bill dd { font: 500 var(--gg-t-m) / 1.5 var(--gg-sans); font-variant-numeric: tabular-nums; }
+.gg-bill-total dt { color: var(--gg-ink); font-weight: 600; }
+.gg-bill-total dd { font-weight: 640; font-size: var(--gg-t-l); }
+.gg-checks { display: grid; gap: var(--gg-3); font-size: var(--gg-t-s); color: var(--gg-ink-2); }
+.gg-checks li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--gg-3); align-items: start; }
+.gg-checks .gg-icon { margin-top: 2px; color: var(--gg-ink); }
+.gg-checks b { color: var(--gg-ink); font-weight: 560; }
+.gg-pay-note { padding: var(--gg-3) var(--gg-4); border-radius: var(--gg-r-control); background: var(--gg-red-tint); color: var(--gg-red-text); font-size: var(--gg-t-s); }
+.gg-sheet-actions { display: grid; gap: var(--gg-3); justify-items: center; }
+.gg-sheet-promise { justify-self: stretch; display: flex; gap: var(--gg-2); align-items: flex-start; color: var(--gg-ink); font-size: var(--gg-t-s); font-weight: 500; }
+.gg-sheet-promise svg { flex-shrink: 0; margin-top: 2px; }
+.gg-approve { width: 100%; min-height: 56px; font-size: var(--gg-t-m); }
+.gg-sheet-mode { color: var(--gg-ink-3); font-size: var(--gg-t-xs); text-align: center; }
+
+/* ── Receipt. ── */
+.gg-receipt {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: var(--gg-7) clamp(32px, 5vw, 80px);
+  max-width: 1440px; margin: 0 auto; min-height: calc(100dvh - 160px); padding: var(--gg-6) 0;
+}
+.gg-receipt-copy { display: grid; gap: var(--gg-4); justify-items: start; }
+.gg-receipt-copy h1 { font: 600 var(--gg-t-2xl) / 1.04 var(--gg-display); letter-spacing: -0.03em; text-wrap: balance; }
+.gg-receipt-copy p { color: var(--gg-ink-2); }
+.gg-receipt-id code { font: 500 var(--gg-t-s) / 1 var(--gg-mono); color: var(--gg-ink); }
+.gg-receipt-copy .gg-btn { margin-top: var(--gg-3); }
+
+/* Hover only where a pointer really hovers; a tap on a phone shouldn't leave a stuck highlight. */
+@media (hover: hover) and (pointer: fine) {
+  .gg-btn-ink:hover:not(:disabled) { background: oklch(0.28 0.012 260); }
+  .gg-btn-gold:hover:not(:disabled) { background: var(--gg-gold-press); }
+  .gg-link:hover:not(:disabled) { color: var(--gg-ink); text-decoration-color: currentColor; }
+  .gg-tool:hover:not(:disabled) { background: var(--gg-stone); color: var(--gg-ink); }
+  .gg-tries button:hover:not(:disabled) { background: oklch(1 0 0 / 0.45); }
+  .gg-tries button:hover:not(:disabled) .gg-icon { transform: translateX(3px); color: var(--gg-ink); }
+  .gg-x:hover:not(:disabled) { background: var(--gg-stone); color: var(--gg-ink); }
+  .gg-step:hover:not(:disabled) { background: var(--gg-stone); }
+  .gg-quote summary:hover { color: var(--gg-ink); text-decoration-color: currentColor; }
+}
+
+/* ── Below 1200 the landing stacks: two columns there would squeeze the board to its phone width. ── */
+@media (max-width: 1199px) {
+  .gg-hero { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-top: var(--gg-4); gap: var(--gg-6); }
+  .gg-hero h1 { max-width: 14ch; }
+  .gg-hero-board { max-width: 680px; }
+  /* Stacked, the replaying board comes before the ask, so the idea shows in the first screen. */
+  .gg-hero-copy { display: contents; }
+  .gg-hero-board { order: 3; }
+  .gg-hero .gg-ask { order: 4; }
+  .gg-hero-copy > :not(h1, .gg-lede, .gg-ask) { order: 5; }
+}
+
+/* ── Tablet: stack, board first on a run. ── */
+@media (max-width: 1023px) {
+  .gg-run, .gg-receipt { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .gg-run-board { position: static; }
+  .gg-rail { padding-top: 0; }
+}
+
+/* ── Phone. ── */
+@media (max-width: 599px) {
+  .gg-bar { padding-block: var(--gg-3); }
+  .gg-mode { font-size: 0.75rem; }
+  .gg-mark { font-size: 1rem; }
+  .gg-hero { gap: var(--gg-5); padding-bottom: var(--gg-5); }
+  .gg-lede { font-size: var(--gg-t-m); }
+  .gg-ask-field { flex-wrap: wrap; }
+  .gg-ask-field input { flex-basis: 100%; height: 52px; font-size: 1rem; }
+  .gg-ask-field .gg-btn { flex: 1; }
+  .gg-found { grid-template-columns: 1fr; }
+  .gg-found .gg-btn { width: 100%; }
+  .gg-layer { place-items: end stretch; padding: 0; }
+  .gg-sheet { width: 100%; border-radius: var(--gg-r-sheet) var(--gg-r-sheet) 0 0; padding: var(--gg-5) var(--gg-4) calc(var(--gg-5) + env(safe-area-inset-bottom)); animation-name: gg-sheet-up; }
+  @keyframes gg-sheet-up { from { transform: translateY(100%); } }
+  .gg-perch { width: 48px; height: 62px; }
+  .gg-panel { padding-top: 58px; }
+  .gg-rail { padding-top: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gg-jam, .gg-found, .gg-log li, .gg-sheet, .gg-scrim { animation: gg-fade 160ms ease both; }
+  .gg-btn, .gg-tool, .gg-tries .gg-icon { transition: none; }
+}

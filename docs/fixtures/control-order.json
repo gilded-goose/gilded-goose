@@ -1,0 +1,8 @@
+{
+  "orderId": "821193914R209014J",
+  "status": "PAYER_ACTION_REQUIRED",
+  "amount": "500.00",
+  "currency": "USD",
+  "ranAt": "2026-10-23T07:40:18.765Z",
+  "note": "guard-off control: the adapter called directly with the attacker's number; unapproved, never captured"
+}

@@ -1,0 +1,5 @@
+<!-- The lockup for a bar drawn in HTML (brand.md §10.1; web/src/brand/Lockup.tsx's lockupHtml(), byte for byte).
+     Replaces `<a class="dk-brand" href="…"><span class="dk-mark" aria-hidden="true"></span><span>Gilded Goose</span></a>`.
+     Needs, on the page: the egg symbol at the top of <body> (EGG_SYMBOL, web/src/brand/egg.ts) and lockup.css in the
+     <head>; index.html, safe.html and 404.html carry both. The href is the site's base plus the query (vite fills %BASE_URL%), never "./?…", which resolves wrong from a nested path. -->
+<a class="gg gg-bar" href="%BASE_URL%?desk=1" aria-label="Gilded Goose">Gilded<span class="sp"> </span>G<span class="o"><span class="oc">o</span><svg aria-hidden="true"><use href="#ggEgg"/></svg></span>ose</a>

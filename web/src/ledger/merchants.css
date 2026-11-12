@@ -1,0 +1,37 @@
+/* For merchants (MerchantOrders.tsx): a section under the dashboard or the ledger, in the ledger's own inks. The grid is
+   as tall as its rows (set inline), never the ledger panel's 628 px, and sits in the page's column, not its panel's. */
+.mo { margin: var(--s-8) 0 0; color: var(--lx-ink); font-family: var(--lx-face); }
+.mo-h { margin: 0; font-family: var(--display, var(--lx-face)); font-size: var(--t-h3); line-height: 1.2; font-weight: var(--w-head, 400); letter-spacing: -0.008em; text-wrap: balance; }
+.mo-sub { margin: var(--s-1) 0 var(--s-3); max-width: 72ch; font-size: var(--t-small, 15px); line-height: 1.55; color: var(--lx-ink-2); text-wrap: pretty; }
+.mo-none { margin: 0; font-size: var(--t-small, 15px); color: var(--lx-ink-2); }
+.lx-grid.mo-grid { margin: 0; border: 1px solid var(--lx-edge); border-radius: var(--r-3); }
+.mo-grid .mo-mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: var(--t-micro); letter-spacing: .02em; }
+.mo-grid .mo-recorded { color: var(--lx-ink); font-weight: var(--w-strong, 560); }
+.mo-grid .mo-wrap { display: flex; align-items: center; white-space: normal; line-height: 1.35; overflow-wrap: break-word; }
+.mo-grid .ag-header-cell-label { line-height: 1.25; }
+.mo-word { display: flex; flex-direction: column; line-height: 1.4; white-space: normal; }
+.mo-id { overflow-wrap: anywhere; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: var(--t-micro); color: var(--lx-ink-3); }
+.mo-grid .mo-lost { padding: var(--s-3) var(--s-4); }
+/* The DD (Nov 6): headers at 13 px in ink-2 (AA on the glass), not the ledger's small caps; the money that moved and
+   stayed in the gold token; "signed by PayPal" a small badge with its check; the recorded order named under its id. */
+.lx-grid.mo-grid .ag-header-cell-text { font-variant-caps: normal; text-transform: none; letter-spacing: 0.01em; font-size: var(--t-micro, 13px); color: var(--lx-ink-2); }
+/* Every status a pill, so the column scans; only the money that moved and stayed takes the gold. */
+.mo-status { display: inline-flex; align-items: center; min-height: 26px; padding: 2px var(--s-1); border: 1px solid var(--lx-edge-2); border-radius: var(--r-2, 10px); line-height: 1.3; color: var(--lx-ink); }
+.mo-status.mo-done { border-color: var(--lx-gold-wash); border-radius: var(--r-pill, 999px); color: var(--lx-gold); font-weight: var(--w-strong, 560); }
+.mo-empty { padding: var(--s-4); border: 1px dashed var(--lx-edge-2); border-radius: var(--r-3); }
+.mo-empty-h { margin: 0 0 var(--s-1); font-size: var(--t-body, 17px); color: var(--lx-ink); font-weight: var(--w-strong, 560); }
+.mo-badge { display: inline-flex; align-items: center; gap: 4px; align-self: flex-start; margin-top: 2px; padding: 1px var(--s-1); border: 1px solid var(--lx-edge-2); border-radius: var(--r-pill, 999px); font-size: var(--t-micro, 13px); line-height: 1.5; color: var(--lx-ink); }
+.mo-badge .mo-check { flex: none; color: var(--lx-gold); }
+.mo-order { display: flex; flex-direction: column; line-height: 1.4; }
+.mo-order .mo-mono, .mo-cards .mo-mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: var(--t-micro); letter-spacing: .02em; overflow-wrap: anywhere; }
+.mo-from { font-size: var(--t-micro, 13px); color: var(--lx-ink-2); }
+/* The narrow page's cards (MerchantCards): one per order, every field labelled, the proof first. */
+.mo-cards { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.mo-card { padding: var(--s-3); border: 1px solid var(--lx-edge); border-radius: var(--r-3); }
+.mo-card-h { margin: 0 0 var(--s-2); font-size: var(--t-small, 15px); color: var(--lx-ink-2); }
+.mo-card.mo-recorded .mo-card-h { color: var(--lx-ink); font-weight: var(--w-strong, 560); }
+.mo-card dl { display: grid; gap: var(--s-2); margin: 0; }
+.mo-card dl > div { display: grid; grid-template-columns: minmax(0, 9.5em) minmax(0, 1fr); gap: var(--s-2); align-items: baseline; }
+.mo-card dl > .mo-stack { grid-template-columns: minmax(0, 1fr); gap: var(--s-1); }
+.mo-card dt { font-size: var(--t-micro, 13px); color: var(--lx-ink-2); }
+.mo-card dd { margin: 0; min-width: 0; font-size: var(--t-small, 15px); overflow-wrap: anywhere; }

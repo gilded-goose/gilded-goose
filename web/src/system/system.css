@@ -1,0 +1,113 @@
+/* The living design system (Track SYS): the page's own frame only. Every specimen is drawn by the site's own CSS; the
+   rules here only lay the specimens out and take fixed, sticky or animated parts (the sheet, the menu, the bar) out of
+   the window and into their frames, so each sits still where it can be looked at. Tokens only: no colour of its own. */
+
+/* The page paints its own room: the heading shows before desk.css (with .dk's own fill) arrives in the specimens' chunk. */
+.sys { min-height: 100vh; background: var(--page-solid); color: var(--ink); font-family: var(--face); font-size: var(--t-body); line-height: var(--lh-body); -webkit-font-smoothing: antialiased; }
+.sys-wrap { box-sizing: border-box; max-width: var(--w-page); margin: 0 auto; padding: 0 var(--gutter); }
+.sys-main { padding-top: var(--s-6); padding-bottom: var(--s-10); }
+.sys-head { display: grid; gap: var(--s-1); max-width: 760px; }
+.sys-head h1 { margin: 0; font: var(--w-display) var(--t-h1) / var(--lh-display) var(--display); letter-spacing: var(--track-display); }
+.sys-lead { margin: 0; font-size: var(--t-lead); color: var(--ink-2); }
+.sys-switch { margin: 0; }
+.sys-switch a, .sys-index a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); text-underline-offset: 4px; }
+.sys-index { display: flex; flex-wrap: wrap; column-gap: var(--s-2); margin-top: var(--s-1); padding-top: var(--s-1); border-top: var(--hair); }
+.sys-index a { font-size: var(--t-small); color: var(--ink-2); text-decoration: none; }
+.sys-index a:hover { color: var(--ink); text-decoration: underline; }
+
+.sys-fam { padding-top: var(--s-8); scroll-margin-top: calc(var(--nav-h) + var(--s-2)); }
+.sys-h2 { margin: 0 0 var(--s-3); padding-bottom: var(--s-1); border-bottom: var(--hair); font: var(--w-head) var(--t-h3) / var(--lh-head) var(--display); letter-spacing: var(--track-head); }
+.sys-h3 { margin: 0 0 var(--s-2); font: var(--w-strong) var(--t-small) / var(--lh-body) var(--face); }
+.sys-count { color: var(--ink-3); font: var(--w-body) var(--t-small) / 1 var(--face); }
+.sys-label { margin: 0 0 var(--s-1); font-size: var(--t-micro); line-height: var(--lh-micro); color: var(--ink-2); }
+.sys-val { color: var(--ink-2); font-size: var(--t-micro); overflow-wrap: anywhere; }
+.sys-total { margin: 0 0 var(--s-3); }
+.sys code { font: var(--t-micro) / 1.4 ui-monospace, "SF Mono", Menlo, monospace; color: var(--ink); }
+
+/* Colour */
+.sys-pals { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); }
+.sys-swatches { list-style: none; margin: 0 0 var(--s-2); padding: 0; display: grid; gap: 0; }
+.sys-swatches li { display: grid; grid-template-columns: 40px minmax(0, 11em) minmax(0, 1fr); grid-template-areas: "c n v" "c r r"; column-gap: var(--s-2); align-items: center; padding: var(--s-1) 0; border-bottom: var(--hair); }
+.sys-swatches li > code { grid-area: n; }
+.sys-swatches li > .sys-val { grid-area: v; }
+.sys-swatches li > .sys-ratio { grid-area: r; font-size: var(--t-micro); color: var(--ink); }
+.sys-chip { grid-area: c; width: 40px; height: 32px; border-radius: var(--r-1); box-shadow: inset 0 0 0 1px var(--line-2); }
+.sys-list { margin: 0; display: grid; gap: 0; }
+.sys-list > div { display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr); column-gap: var(--s-2); padding: var(--s-1) 0; border-bottom: var(--hair); }
+.sys-list dd { margin: 0; color: var(--ink-2); font-size: var(--t-micro); overflow-wrap: anywhere; }
+
+/* Type */
+.sys-type { list-style: none; margin: 0 0 var(--s-3); padding: 0; }
+.sys-type li { display: grid; grid-template-columns: minmax(0, 14em) minmax(0, 1fr); column-gap: var(--s-3); align-items: baseline; padding: var(--s-1) 0; border-bottom: var(--hair); }
+.sys-meta { font-size: var(--t-micro); color: var(--ink-2); }
+.sys-sample { line-height: 1.2; overflow-wrap: anywhere; }
+.sys-display { font-family: var(--display); font-weight: var(--w-display); letter-spacing: var(--track-display); line-height: var(--lh-display); }
+
+/* Space, shape, motion */
+.sys-space { list-style: none; margin: 0 0 var(--s-2); padding: 0; display: grid; gap: var(--s-1); }
+.sys-space li { display: grid; grid-template-columns: minmax(0, 6em) auto minmax(0, 1fr); column-gap: var(--s-2); align-items: center; }
+.sys-bar { display: block; height: 12px; border-radius: 0; background: var(--ink-3); }
+.sys-tiles { list-style: none; margin: 0 0 var(--s-2); padding: 0; display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+.sys-tiles li { display: grid; gap: var(--s-1); justify-items: start; }
+.sys-tile { width: 96px; height: 64px; background: var(--card); border: 1px solid var(--line); }
+.sys-raised { border-radius: var(--r-2); border-color: transparent; }
+.sys-curve { width: 96px; height: 96px; fill: none; stroke: var(--ink); stroke-width: 2; }
+.sys-curve-box { stroke: var(--line-2); stroke-width: 1; }
+
+/* Specimens */
+.sys-row { display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); align-items: start; }
+.sys-wide { grid-column: 1 / -1; }
+.sys-cards { grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }
+.sys-spec { min-width: 0; }
+.sys-frame { position: relative; padding: var(--s-3); border: var(--hair); border-radius: var(--r-3); background: var(--page-solid); overflow: hidden; }
+.sys-frame[data-frame="lit"] { background: var(--egg-light), var(--page-solid); }
+.sys-frame[data-frame="none"] { padding: 0; border: 0; background: none; }
+/* A picture holds still: nothing in a specimen plays an entrance or a loop. */
+.sys-frame *, .sys-frame *::before, .sys-frame *::after { animation: none !important; transition: none !important; }
+.sys-inline { display: inline-flex; font-size: var(--t-small); }
+.sys-stack { display: grid; gap: var(--s-2); justify-items: start; }
+.sys-feed { min-height: 0; }
+.sys-focus { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+/* Glass: a line of print under it, so the frost is judged on something. */
+.sys-behind { position: absolute; inset: var(--s-3) var(--s-3) auto; margin: 0; font: var(--w-display) var(--t-h2) / 1.05 var(--display); color: var(--ink); }
+.sys-glass { position: relative; margin-top: var(--s-4); padding: var(--s-3); border-radius: var(--r-3); }
+.sys-glass p { margin: var(--s-1) 0 0; color: var(--ink-2); font-size: var(--t-small); }
+.sys-egg { display: block; margin: 0 auto; width: 120px; height: auto; }
+
+/* The bar, out of the window: each specimen bar sits in its frame. */
+.sys-frame header.gn.dk-nav { position: relative; top: auto; z-index: auto; }
+.sys-frame .dk-wrap { padding: 0 var(--s-2); }
+.sys-under { inset: 50% var(--s-3) auto; transform: translateY(-50%); white-space: nowrap; }
+/* A bar is drawn edge to edge in its frame, as wide as the window it sits in. */
+.sys-frame.sys-bare { padding: 0; }
+.sys-frame .gn .gn-skip.sys-skip-on { transform: none; outline: 2px solid var(--focus); outline-offset: 3px; box-shadow: calc(-1 * var(--s-2)) 0 0 var(--page-solid); }
+.sys-frame .gn:has(> .sys-skip-on) .gg .o { opacity: 0; }
+
+/* The menu and the sheet, drawn in place. */
+/* The menu's palette is always Velvet (tokens.css gives .gm-root the Velvet block); a .gm-root here would also turn every scrolled bar solid (nav.css: html:has(.gm-root)), so the specimen takes the same tokens from .dk[data-palette="v"]. */
+.sys-frame .dk { min-height: 0; }
+.sys-frame .sys-menu { background: none; }
+.sys-frame .sys-menu .gm-panel { position: relative; top: auto; left: auto; width: auto; height: auto; max-height: none; transform: none; overflow: visible; }
+.sys-frame .dk-sheet.sys-sheet { position: relative; top: auto; left: auto; bottom: auto; z-index: auto; width: 100%; max-height: none; transform: none; border-radius: var(--r-3); }
+.sys-frame .dk-sheet .dk-handle { display: block; }
+
+/* The back room's ledger inside a Velvet page: its own palette, never a whole window tall. */
+.sys-mn { min-height: 0; padding: var(--s-2); border-radius: var(--r-2); }
+
+.sys-slot { padding: var(--s-3); border: 1px solid var(--line-2); border-radius: var(--r-3); }
+.sys-slot .sys-label { color: var(--ink); }
+
+.sys-foot { padding-bottom: var(--s-6); color: var(--ink-3); font-size: var(--t-micro); }
+.sys-foot p { margin: 0; padding-top: var(--s-2); border-top: var(--hair); }
+
+@media (max-width: 720px) {
+  .sys-main { padding-top: var(--s-4); }
+  .sys-swatches li { grid-template-columns: 32px minmax(0, 1fr); grid-template-areas: "c n" "c v" "c r"; }
+  .sys-chip { width: 32px; }
+  .sys-list > div, .sys-type li { grid-template-columns: minmax(0, 1fr); }
+  .sys-frame { padding: var(--s-2); }
+  .sys-behind { inset: var(--s-2) var(--s-2) auto; }
+  .sys-frame .sys-menu .gm-panel { padding: var(--s-2); }
+  .sys-foot { padding-bottom: calc(var(--s-10) + env(safe-area-inset-bottom)); }
+}

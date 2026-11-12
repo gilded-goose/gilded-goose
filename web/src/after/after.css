@@ -1,0 +1,23 @@
+/* "After you pay": three quiet parts (tracking, Undo, if it never arrives). Desk tokens only; no glass here (the
+   glass budget is the nav, the steps panel, the deal card and the understood card). Its own chunk with AfterPay. */
+.ap { text-align: left; width: 100%; }
+.ap-h { margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.2; }
+.ap-room .ap-h { font-size: 32px; }
+.ap-h-card { font-size: var(--t-h3, 22px); margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid var(--line); }
+.ap-lead { margin: var(--s-1) 0 var(--s-4); max-width: 40em; color: var(--ink-2); font-size: var(--t-small); line-height: 1.55; }
+.ap-card .ap-lead { margin-bottom: var(--s-2); }
+.ap-parts { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.ap-card .ap-parts { margin-top: var(--s-2); }
+.ap-part { border: 1px solid var(--line); border-radius: var(--r-2); padding: var(--s-3); background: var(--surface); }
+.ap-part h2, .ap-part h3, .ap-part h4 { margin: 0 0 var(--s-1); font-size: var(--t-body); font-weight: var(--w-strong); }
+.ap-part p { margin: 0 0 var(--s-1); font-size: var(--t-small); line-height: 1.55; }
+.ap-part p:empty { margin: 0; }
+.ap-small { color: var(--ink-2); font-size: var(--t-micro) !important; }
+.ap-mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .92em; overflow-wrap: anywhere; }
+.ap-err { color: var(--red); }
+.ap-undo { margin: var(--s-1) 0; }
+.ap-link { border: 0; background: none; padding: 0; min-height: 44px; display: inline-flex; align-items: center; gap: 6px; color: inherit; font: inherit; font-size: var(--t-small); font-weight: var(--w-strong); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-2); cursor: pointer; }
+.ap-link:hover { text-decoration-color: currentColor; }
+.ap-go { width: auto; margin-top: var(--s-4); padding: 0 var(--s-4); }
+.ap :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+.ap-card .ap-parts { grid-template-columns: 1fr; }

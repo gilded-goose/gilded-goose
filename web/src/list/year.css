@@ -1,0 +1,19 @@
+/* The year view (Track X). One recessive dot per month; the pick is the one solid mark, with a ring so it reads without color.
+   No gold: tokens.css keeps gold for the egg and the approvable deal. */
+.xy { margin-top: var(--s-5, 40px); }
+.xy-note { margin: var(--s-1) 0 var(--s-3); color: var(--ink-2); }
+.xy-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.xy-t { width: 100%; table-layout: fixed; border-collapse: collapse; }
+.xy-t thead th { padding: 0 0 var(--s-1); font-size: var(--t-micro); font-weight: inherit; color: var(--ink-3); text-align: center; }
+.xy-t thead th:not([data-past]) { color: var(--ink); }
+.xy-gift { padding: var(--s-2) 0 2px; font-weight: inherit; font-size: var(--t-small); text-align: left; color: var(--ink-2); border-top: 1px solid var(--line-2); }
+.xy-gift b { color: var(--ink); font-weight: var(--w-strong); }
+.xy-row td { position: relative; height: 44px; padding: 0; }
+.xy-row td[data-needed] { box-shadow: inset -2px 0 0 var(--ink-3); }
+.xy-row i { position: absolute; left: 50%; width: 8px; height: 8px; margin: 0 0 -4px -4px; background: var(--ink-3); border-radius: 50%; }
+.xy-row td[data-past] i { opacity: 0.4; }
+.xy-row td[data-plan] i { width: 12px; height: 12px; margin: 0 0 -6px -6px; background: var(--ink); box-shadow: 0 0 0 2px var(--card), 0 0 0 3px var(--ink); }
+.xy-key { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1); margin: var(--s-2) 0 0; font-size: var(--t-micro); color: var(--ink-3); }
+.xy-key i { width: 10px; height: 10px; background: var(--ink); border-radius: 50%; }
+.xy-key span { margin-left: var(--s-2); }
+.xy-key em { width: 2px; height: 12px; margin-left: var(--s-2); background: var(--ink-3); }
